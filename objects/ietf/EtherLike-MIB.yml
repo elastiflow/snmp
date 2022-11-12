@@ -1,0 +1,178 @@
+EtherLike-MIB::dot3StatsEntry:
+  mib: EtherLike-MIB
+  object: dot3StatsEntry
+  augments: IF-MIB::ifEntry
+  discovery_attribute: dot3StatsAlignmentErrors
+  attributes:
+    dot3StatsAlignmentErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.2
+      name: netif.ethernet.errors.alignment
+      syntax: Counter32
+    dot3StatsFCSErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.3
+      name: netif.ethernet.errors.fcs
+      syntax: Counter32
+    dot3StatsSingleCollisionFrames:
+      oid: .1.3.6.1.2.1.10.7.2.1.4
+      name: netif.ethernet.frames.single_collision
+      syntax: Counter32
+    dot3StatsMultipleCollisionFrames:
+      oid: .1.3.6.1.2.1.10.7.2.1.5
+      name: netif.ethernet.frames.multi_collision
+      syntax: Counter32
+    dot3StatsSQETestErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.6
+      name: netif.ethernet.errors.sqetest
+      syntax: Counter32
+    dot3StatsDeferredTransmissions:
+      oid: .1.3.6.1.2.1.10.7.2.1.7
+      name: netif.ethernet.deferred_tx
+      syntax: Counter32
+    dot3StatsLateCollisions:
+      oid: .1.3.6.1.2.1.10.7.2.1.8
+      name: netif.ethernet.collisions.late
+      syntax: Counter32
+    dot3StatsExcessiveCollisions:
+      oid: .1.3.6.1.2.1.10.7.2.1.9
+      name: netif.ethernet.collisions.excess
+      syntax: Counter32
+    dot3StatsInternalMacTransmitErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.10
+      name: netif.ethernet.errors.mac.tx
+      syntax: Counter32
+    dot3StatsCarrierSenseErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.11
+      name: netif.ethernet.errors.carrier_sense
+      syntax: Counter32
+    dot3StatsFrameTooLongs:
+      oid: .1.3.6.1.2.1.10.7.2.1.12
+      name: netif.ethernet.frames.too_long
+      syntax: Counter32
+    dot3StatsInternalMacReceiveErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.13
+      name: netif.ethernet.errors.mac.rx
+      syntax: Counter32
+    dot3StatsEtherChipSet:
+      oid: .1.3.6.1.2.1.10.7.2.1.14
+      name: netif.ethernet.chipset
+      syntax: ObjectIdentifier
+    dot3StatsSymbolErrors:
+      oid: .1.3.6.1.2.1.10.7.2.1.15
+      name: netif.ethernet.errors.symbol
+      syntax: Counter32
+    dot3StatsDuplexStatus:
+      oid: .1.3.6.1.2.1.10.7.2.1.16
+      name: netif.ethernet.duplex
+      syntax: EnumInteger
+    dot3StatsRateControlAbility:
+      oid: .1.3.6.1.2.1.10.7.2.1.17
+      name: netif.ethernet.rate_cntrl.capable
+      syntax: TruthValue
+    dot3StatsRateControlStatus:
+      oid: .1.3.6.1.2.1.10.7.2.1.18
+      name: netif.ethernet.rate_cntrl
+      syntax: EnumInteger
+
+EtherLike-MIB::dot3ControlEntry:
+  mib: EtherLike-MIB
+  object: dot3ControlEntry
+  augments: IF-MIB::ifEntry
+  discovery_attribute: dot3ControlInUnknownOpcodes
+  attributes:
+    dot3ControlInUnknownOpcodes:
+      oid: .1.3.6.1.2.1.10.7.9.1.2
+      name: netif.ethernet.frames.mac_cntrl.opcode_unknown.in
+      syntax: Counter32
+    dot3HCControlInUnknownOpcodes:
+      oid: .1.3.6.1.2.1.10.7.9.1.3
+      name: netif.ethernet.frames.mac_cntrl.opcode_unknown.in
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3ControlEntry
+        attribute: dot3ControlInUnknownOpcodes
+
+EtherLike-MIB::dot3PauseEntry:
+  mib: EtherLike-MIB
+  object: dot3PauseEntry
+  augments: IF-MIB::ifEntry
+  discovery_attribute: dot3PauseAdminMode
+  attributes:
+    dot3PauseAdminMode:
+      oid: .1.3.6.1.2.1.10.7.10.1.1
+      name: netif.ethernet.pause.admin
+      syntax: EnumInteger
+    dot3PauseOperMode:
+      oid: .1.3.6.1.2.1.10.7.10.1.2
+      name: netif.ethernet.pause.oper
+      syntax: EnumInteger
+    dot3InPauseFrames:
+      oid: .1.3.6.1.2.1.10.7.10.1.3
+      name: netif.ethernet.frames.pause.in
+      syntax: Counter32
+    dot3OutPauseFrames:
+      oid: .1.3.6.1.2.1.10.7.10.1.4
+      name: netif.ethernet.frames.pause.out
+      syntax: Counter32
+    dot3HCInPauseFrames:
+      oid: .1.3.6.1.2.1.10.7.10.1.5
+      name: netif.ethernet.frames.pause.in
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3PauseEntry
+        attribute: dot3InPauseFrames
+    dot3HCOutPauseFrames:
+      oid: .1.3.6.1.2.1.10.7.10.1.6
+      name: netif.ethernet.frames.pause.out
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3PauseEntry
+        attribute: dot3OutPauseFrames
+
+EtherLike-MIB::dot3HCStatsEntry:
+  mib: EtherLike-MIB
+  object: dot3HCStatsEntry
+  augments: IF-MIB::ifEntry
+  discovery_attribute: dot3HCStatsAlignmentErrors
+  attributes:
+    dot3HCStatsAlignmentErrors:
+      oid: .1.3.6.1.2.1.10.7.11.1.1
+      name: netif.ethernet.errors.alignment
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsAlignmentErrors
+    dot3HCStatsFCSErrors:
+      oid: .1.3.6.1.2.1.10.7.11.1.2
+      name: netif.ethernet.errors.fcs
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsFCSErrors
+    dot3HCStatsInternalMacTransmitErrors:
+      oid: .1.3.6.1.2.1.10.7.11.1.3
+      name: netif.ethernet.errors.mac.tx
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsInternalMacTransmitErrors
+    dot3HCStatsFrameTooLongs:
+      oid: .1.3.6.1.2.1.10.7.11.1.4
+      name: netif.ethernet.frames.too_long
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsFrameTooLongs
+    dot3HCStatsInternalMacReceiveErrors:
+      oid: .1.3.6.1.2.1.10.7.11.1.5
+      name: netif.ethernet.errors.mac.rx
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsInternalMacReceiveErrors
+    dot3HCStatsSymbolErrors:
+      oid: .1.3.6.1.2.1.10.7.11.1.6
+      name: netif.ethernet.errors.symbol
+      syntax: Counter64
+      overrides:
+        object: EtherLike-MIB::dot3StatsEntry
+        attribute: dot3StatsSymbolErrors

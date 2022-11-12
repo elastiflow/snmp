@@ -1,0 +1,233 @@
+IF-MIB::system:
+  mib: IF-MIB
+  object: system
+  augments: SNMPv2-MIB::system
+  discovery_attribute: ifNumber
+  attributes:
+    ifNumber:
+      oid: .1.3.6.1.2.1.2.1
+      name: system.netifs
+      syntax: Integer32
+      rediscover: OnChange
+    ifTableLastChange:
+      oid: .1.3.6.1.2.1.31.1.5
+      name: system.netifs_last_chg
+      syntax: Integer32
+      rediscover: OnChange
+    ifStackLastChange:
+      oid: .1.3.6.1.2.1.31.1.6
+      name: system.netif_stack_last_chg
+      syntax: Integer32
+      rediscover: OnChange
+
+IF-MIB::ifEntry:
+  mib: IF-MIB
+  object: ifEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif
+      syntax: IF-MIB::InterfaceIndex
+  discovery_attribute: ifDescr
+  attributes:
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType-MIB::IANAifType
+    ifMtu:
+      oid: .1.3.6.1.2.1.2.2.1.4
+      name: netif.mtu
+      syntax: Integer32
+    ifSpeed:
+      oid: .1.3.6.1.2.1.2.2.1.5
+      name: netif.bandwidth.bw
+      syntax: Gauge32
+    ifPhysAddress:
+      oid: .1.3.6.1.2.1.2.2.1.6
+      tag: true
+      name: netif.mac
+      syntax: PhysAddress
+    ifAdminStatus:
+      oid: .1.3.6.1.2.1.2.2.1.7
+      name: netif.state.admin
+      syntax: EnumInteger
+    ifOperStatus:
+      oid: .1.3.6.1.2.1.2.2.1.8
+      name: netif.state.oper
+      syntax: EnumInteger
+    ifLastChange:
+      oid: .1.3.6.1.2.1.2.2.1.9
+      name: netif.last_change
+      syntax: TimeTicks
+    ifInOctets:
+      oid: .1.3.6.1.2.1.2.2.1.10
+      name: netif.bytes.in
+      syntax: Counter32
+    ifInUcastPkts:
+      oid: .1.3.6.1.2.1.2.2.1.11
+      name: netif.packets.ucast.in
+      syntax: Counter32
+    ifInNUcastPkts:
+      oid: .1.3.6.1.2.1.2.2.1.12
+      name: netif.packets.nucast.in
+      syntax: Counter32
+    ifInDiscards:
+      oid: .1.3.6.1.2.1.2.2.1.13
+      name: netif.packets.discard.in
+      syntax: Counter32
+    ifInErrors:
+      oid: .1.3.6.1.2.1.2.2.1.14
+      name: netif.packets.error.in
+      syntax: Counter32
+    ifInUnknownProtos:
+      oid: .1.3.6.1.2.1.2.2.1.15
+      name: netif.packets.unkproto.in
+      syntax: Counter32
+    ifOutOctets:
+      oid: .1.3.6.1.2.1.2.2.1.16
+      name: netif.bytes.out
+      syntax: Counter32
+    ifOutUcastPkts:
+      oid: .1.3.6.1.2.1.2.2.1.17
+      name: netif.packets.ucast.out
+      syntax: Counter32
+    ifOutNUcastPkts:
+      oid: .1.3.6.1.2.1.2.2.1.18
+      name: netif.packets.nucast.out
+      syntax: Counter32
+    ifOutDiscards:
+      oid: .1.3.6.1.2.1.2.2.1.19
+      name: netif.packets.discard.out
+      syntax: Counter32
+    ifOutErrors:
+      oid: .1.3.6.1.2.1.2.2.1.20
+      name: netif.packets.error.out
+      syntax: Counter32
+    ifOutQLen:
+      oid: .1.3.6.1.2.1.2.2.1.21
+      name: netif.queue.out
+      syntax: Gauge32
+    ifSpecific:
+      oid: .1.3.6.1.2.1.2.2.1.22
+      tag: true
+      name: netif.specific
+      syntax: ObjectIdentifier
+
+IF-MIB::ifXEntry:
+  mib: IF-MIB
+  object: ifXEntry
+  augments: IF-MIB::ifEntry
+  discovery_attribute: ifName
+  attributes:
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifInMulticastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.2
+      name: netif.packets.mcast.in
+      syntax: Counter32
+    ifInBroadcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.3
+      name: netif.packets.bcast.in
+      syntax: Counter32
+    ifOutMulticastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.4
+      name: netif.packets.mcast.out
+      syntax: Counter32
+    ifOutBroadcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.5
+      name: netif.packets.bcast.out
+      syntax: Counter32
+    ifHCInOctets:
+      oid: .1.3.6.1.2.1.31.1.1.1.6
+      name: netif.bytes.in
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifEntry
+        attribute: ifInOctets
+    ifHCInUcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.7
+      name: netif.packets.ucast.in
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifEntry
+        attribute: ifInUcastPkts
+    ifHCInMulticastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.8
+      name: netif.packets.mcast.in
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifXEntry
+        attribute: ifInMulticastPkts
+    ifHCInBroadcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.9
+      name: netif.packets.bcast.in
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifXEntry
+        attribute: ifInBroadcastPkts
+    ifHCOutOctets:
+      oid: .1.3.6.1.2.1.31.1.1.1.10
+      name: netif.bytes.out
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifEntry
+        attribute: ifOutOctets
+    ifHCOutUcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.11
+      name: netif.packets.ucast.out
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifEntry
+        attribute: ifOutUcastPkts
+    ifHCOutMulticastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.12
+      name: netif.packets.mcast.out
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifXEntry
+        attribute: ifOutMulticastPkts
+    ifHCOutBroadcastPkts:
+      oid: .1.3.6.1.2.1.31.1.1.1.13
+      name: netif.packets.bcast.out
+      syntax: Counter64
+      overrides:
+        object: IF-MIB::ifXEntry
+        attribute: ifOutBroadcastPkts
+    ifLinkUpDownTrapEnable:
+      oid: .1.3.6.1.2.1.31.1.1.1.14
+      name: netif.link_trap_enable
+      syntax: TruthValue
+    ifHighSpeed:
+      oid: .1.3.6.1.2.1.31.1.1.1.15
+      name: netif.bandwidth.bw
+      syntax: Gauge32
+      #syntax: IF-MIB::ifHighSpeed
+      overrides:
+        object: IF-MIB::ifEntry
+        attribute: ifSpeed
+    ifPromiscuousMode:
+      oid: .1.3.6.1.2.1.31.1.1.1.16
+      name: netif.promiscuous_mode
+      syntax: TruthValue
+    ifConnectorPresent:
+      oid: .1.3.6.1.2.1.31.1.1.1.17
+      name: netif.connector.present
+      syntax: TruthValue
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
+    ifCounterDiscontinuityTime:
+      oid: .1.3.6.1.2.1.31.1.1.1.19
+      name: netif.counter_discontinuity_time
+      syntax: TimeTicks
