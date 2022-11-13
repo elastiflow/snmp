@@ -5,111 +5,99 @@ IP-MIB::ip:
   attributes:
     ipForwarding:
       oid: .1.3.6.1.2.1.4.1
-      name: ipForwarding
+      name: ip.fwd
       syntax: EnumInteger
     ipDefaultTTL:
       oid: .1.3.6.1.2.1.4.2
-      name: ipDefaultTTL
+      name: ip.ttl_default
       syntax: Integer32
     ipInReceives:
       oid: .1.3.6.1.2.1.4.3
-      name: ipInReceives
+      name: ip.dgrms.in
       syntax: Counter32
     ipInHdrErrors:
       oid: .1.3.6.1.2.1.4.4
-      name: ipInHdrErrors
+      name: ip.dgrms.discard.header_error.in
       syntax: Counter32
     ipInAddrErrors:
       oid: .1.3.6.1.2.1.4.5
-      name: ipInAddrErrors
+      name: ip.dgrms.discard.addr_error.in
       syntax: Counter32
     ipForwDatagrams:
       oid: .1.3.6.1.2.1.4.6
-      name: ipForwDatagrams
+      name: ip.dgrms.fwd.in
       syntax: Counter32
     ipInUnknownProtos:
       oid: .1.3.6.1.2.1.4.7
-      name: ipInUnknownProtos
+      name: ip.dgrms.discard.unkproto.in
       syntax: Counter32
     ipInDiscards:
       oid: .1.3.6.1.2.1.4.8
-      name: ipInDiscards
+      name: ip.dgrms.discard.in
       syntax: Counter32
     ipInDelivers:
       oid: .1.3.6.1.2.1.4.9
-      name: ipInDelivers
+      name: ip.dgrms.deliver.in
       syntax: Counter32
     ipOutRequests:
       oid: .1.3.6.1.2.1.4.10
-      name: ipOutRequests
+      name: ip.dgrms.req.out
       syntax: Counter32
     ipOutDiscards:
       oid: .1.3.6.1.2.1.4.11
-      name: ipOutDiscards
+      name: ip.dgrms.discard.no_error.out
       syntax: Counter32
     ipOutNoRoutes:
       oid: .1.3.6.1.2.1.4.12
-      name: ipOutNoRoutes
+      name: ip.dgrms.discard.no_route.out
       syntax: Counter32
     ipReasmTimeout:
       oid: .1.3.6.1.2.1.4.13
-      name: ipReasmTimeout
+      name: ip.frags.reassem.timeout
       syntax: Integer32
     ipReasmReqds:
       oid: .1.3.6.1.2.1.4.14
-      name: ipReasmReqds
+      name: ip.frags.reassem.req
       syntax: Counter32
     ipReasmOKs:
       oid: .1.3.6.1.2.1.4.15
-      name: ipReasmOKs
+      name: ip.dgrms.reassem.ok
       syntax: Counter32
     ipReasmFails:
       oid: .1.3.6.1.2.1.4.16
-      name: ipReasmFails
+      name: ip.dgrms.reassem.fail
       syntax: Counter32
     ipFragOKs:
       oid: .1.3.6.1.2.1.4.17
-      name: ipFragOKs
+      name: ip.dgrms.frag.ok.out
       syntax: Counter32
     ipFragFails:
       oid: .1.3.6.1.2.1.4.18
-      name: ipFragFails
+      name: ip.dgrms.frag.fail.out
       syntax: Counter32
     ipFragCreates:
       oid: .1.3.6.1.2.1.4.19
-      name: ipFragCreates
-      syntax: Counter32
-    ipRoutingDiscards:
-      oid: .1.3.6.1.2.1.4.23
-      name: ipRoutingDiscards
+      name: ip.frags.created.out
       syntax: Counter32
     ipv6IpForwarding:
       oid: .1.3.6.1.2.1.4.25
-      name: ipv6IpForwarding
+      name: ip.v6.forward
       syntax: EnumInteger
     ipv6IpDefaultHopLimit:
       oid: .1.3.6.1.2.1.4.26
-      name: ipv6IpDefaultHopLimit
+      name: ip.v6.hop_limit_default
       syntax: Integer32
     ipv4InterfaceTableLastChange:
       oid: .1.3.6.1.2.1.4.27
-      name: ipv4InterfaceTableLastChange
+      name: ip.v4.netif.last_change
       syntax: TimeStamp
     ipv6InterfaceTableLastChange:
       oid: .1.3.6.1.2.1.4.29
-      name: ipv6InterfaceTableLastChange
+      name: ip.v6.netif.last_change
       syntax: TimeStamp
-    ipAddressSpinLock:
-      oid: .1.3.6.1.2.1.4.33
-      name: ipAddressSpinLock
-      syntax: TestAndIncr
-    ipv6RouterAdvertSpinLock:
-      oid: .1.3.6.1.2.1.4.38
-      name: ipv6RouterAdvertSpinLock
-      syntax: TestAndIncr
     ipIfStatsTableLastChange:
       oid: .1.3.6.1.2.1.4.31.2
-      name: ipIfStatsTableLastChange
+      name: ip.stats.netif.last_change
       syntax: TimeStamp
 
 IP-MIB::ipAddrEntry:
@@ -118,14 +106,10 @@ IP-MIB::ipAddrEntry:
   index:
     - type: IpAddress
       oid: .1.3.6.1.2.1.4.20.1.1
-      name: ipAdEntAddr
+      name: '' # ipAdEntAddr
       syntax: IpAddress
   discovery_attribute: ipAdEntAddr
   attributes:
-    # ipAdEntAddr:
-    #   oid: .1.3.6.1.2.1.4.20.1.1
-    #   name: ipAdEntAddr
-    #   syntax: IpAddress
     ipAdEntIfIndex:
       oid: .1.3.6.1.2.1.4.20.1.2
       name: ipAdEntIfIndex
@@ -157,18 +141,10 @@ IP-MIB::ipNetToMediaEntry:
       syntax: IpAddress
   discovery_attribute: ipNetToMediaPhysAddress
   attributes:
-    # ipNetToMediaIfIndex:
-    #   oid: .1.3.6.1.2.1.4.22.1.1
-    #   name: ipNetToMediaIfIndex
-    #   syntax: IF-MIB::InterfaceIndex
     ipNetToMediaPhysAddress:
       oid: .1.3.6.1.2.1.4.22.1.2
       name: ipNetToMediaPhysAddress
       syntax: PhysAddress
-    # ipNetToMediaNetAddress:
-    #   oid: .1.3.6.1.2.1.4.22.1.3
-    #   name: ipNetToMediaNetAddress
-    #   syntax: IpAddress
     ipNetToMediaType:
       oid: .1.3.6.1.2.1.4.22.1.4
       name: ipNetToMediaType
@@ -180,7 +156,7 @@ IP-MIB::ipv4InterfaceEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.4.28.1.1
-      name: ipv4InterfaceIfIndex
+      name: netif # ipv4InterfaceIfIndex
       syntax: IF-MIB::InterfaceIndex
   discovery_attribute: ipv4InterfaceEnableStatus
   attributes:
@@ -224,7 +200,7 @@ IP-MIB::ipv6InterfaceEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.4.30.1.1
-      name: ipv6InterfaceEntry
+      name: netif # ipv6InterfaceIfIndex
       syntax: IF-MIB::InterfaceIndex
   discovery_attribute: ipv6InterfaceEnableStatus
   attributes:
@@ -280,189 +256,231 @@ IP-MIB::ipSystemStatsEntry:
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.4.31.1.1.1
-      name: ipSystemStatsIPVersion
+      name: ip.version # ipSystemStatsIPVersion
       syntax: EnumInteger
   discovery_attribute: ipSystemStatsInReceives
   attributes:
     ipSystemStatsInReceives:
       oid: .1.3.6.1.2.1.4.31.1.1.3
-      name: ipSystemStatsInReceives
+      name: ip.dgrms.in
       syntax: Counter32
     ipSystemStatsHCInReceives:
       oid: .1.3.6.1.2.1.4.31.1.1.4
-      name: ipSystemStatsHCInReceives
+      name: ip.dgrms.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInReceives
     ipSystemStatsInOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.5
-      name: ipSystemStatsInOctets
+      name: ip.bytes.in
       syntax: Counter32
     ipSystemStatsHCInOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.6
-      name: ipSystemStatsHCInOctets
+      name: ip.bytes.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInOctets
     ipSystemStatsInHdrErrors:
       oid: .1.3.6.1.2.1.4.31.1.1.7
-      name: ipSystemStatsInHdrErrors
+      name: ip.dgrms.discard.header_error.in
       syntax: Counter32
     ipSystemStatsInNoRoutes:
       oid: .1.3.6.1.2.1.4.31.1.1.8
-      name: ipSystemStatsInNoRoutes
+      name: ip.dgrms.discard.no_route.in
       syntax: Counter32
     ipSystemStatsInAddrErrors:
       oid: .1.3.6.1.2.1.4.31.1.1.9
-      name: ipSystemStatsInAddrErrors
+      name: ip.dgrms.discard.addr_error.in
       syntax: Counter32
     ipSystemStatsInUnknownProtos:
       oid: .1.3.6.1.2.1.4.31.1.1.10
-      name: ipSystemStatsInUnknownProtos
+      name: ip.dgrms.discard.unkproto.in
       syntax: Counter32
     ipSystemStatsInTruncatedPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.11
-      name: ipSystemStatsInTruncatedPkts
+      name: ip.dgrms.discard.trunc.in
       syntax: Counter32
     ipSystemStatsInForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.1.1.12
-      name: ipSystemStatsInForwDatagrams
+      name: ip.dgrms.fwd.in
       syntax: Counter32
     ipSystemStatsHCInForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.1.1.13
-      name: ipSystemStatsHCInForwDatagrams
+      name: ip.dgrms.fwd.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInForwDatagrams
     ipSystemStatsReasmReqds:
       oid: .1.3.6.1.2.1.4.31.1.1.14
-      name: ipSystemStatsReasmReqds
+      name: ip.frags.reassem.req
       syntax: Counter32
     ipSystemStatsReasmOKs:
       oid: .1.3.6.1.2.1.4.31.1.1.15
-      name: ipSystemStatsReasmOKs
+      name: ip.dgrms.reassem.ok
       syntax: Counter32
     ipSystemStatsReasmFails:
       oid: .1.3.6.1.2.1.4.31.1.1.16
-      name: ipSystemStatsReasmFails
+      name: ip.dgrms.reassem.fail
       syntax: Counter32
     ipSystemStatsInDiscards:
       oid: .1.3.6.1.2.1.4.31.1.1.17
-      name: ipSystemStatsInDiscards
+      name: ip.dgrms.discard.in
       syntax: Counter32
     ipSystemStatsInDelivers:
       oid: .1.3.6.1.2.1.4.31.1.1.18
-      name: ipSystemStatsInDelivers
+      name: ip.dgrms.deliver.in
       syntax: Counter32
     ipSystemStatsHCInDelivers:
       oid: .1.3.6.1.2.1.4.31.1.1.19
-      name: ipSystemStatsHCInDelivers
+      name: ip.dgrms.deliver.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInDelivers
     ipSystemStatsOutRequests:
       oid: .1.3.6.1.2.1.4.31.1.1.20
-      name: ipSystemStatsOutRequests
+      name: ip.dgrms.req.out
       syntax: Counter32
     ipSystemStatsHCOutRequests:
       oid: .1.3.6.1.2.1.4.31.1.1.21
-      name: ipSystemStatsHCOutRequests
+      name: ip.dgrms.req.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutRequests
     ipSystemStatsOutNoRoutes:
       oid: .1.3.6.1.2.1.4.31.1.1.22
-      name: ipSystemStatsOutNoRoutes
+      name: ip.dgrms.discard.no_route.out
       syntax: Counter32
     ipSystemStatsOutForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.1.1.23
-      name: ipSystemStatsOutForwDatagrams
+      name: ip.dgrms.fwd.out
       syntax: Counter32
     ipSystemStatsHCOutForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.1.1.24
-      name: ipSystemStatsHCOutForwDatagrams
+      name: ip.dgrms.fwd.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutForwDatagrams
     ipSystemStatsOutDiscards:
       oid: .1.3.6.1.2.1.4.31.1.1.25
-      name: ipSystemStatsOutDiscards
+      name: ip.dgrms.discard.no_error.out
       syntax: Counter32
     ipSystemStatsOutFragReqds:
       oid: .1.3.6.1.2.1.4.31.1.1.26
-      name: ipSystemStatsOutFragReqds
+      name: ip.dgrms.frag.req.out
       syntax: Counter32
     ipSystemStatsOutFragOKs:
       oid: .1.3.6.1.2.1.4.31.1.1.27
-      name: ipSystemStatsOutFragOKs
+      name: ip.dgrms.frag.ok.out
       syntax: Counter32
     ipSystemStatsOutFragFails:
       oid: .1.3.6.1.2.1.4.31.1.1.28
-      name: ipSystemStatsOutFragFails
+      name: ip.dgrms.frag.fail.out
       syntax: Counter32
     ipSystemStatsOutFragCreates:
       oid: .1.3.6.1.2.1.4.31.1.1.29
-      name: ipSystemStatsOutFragCreates
+      name: ip.frags.created.out
       syntax: Counter32
     ipSystemStatsOutTransmits:
       oid: .1.3.6.1.2.1.4.31.1.1.30
-      name: ipSystemStatsOutTransmits
+      name: ip.dgrms.out
       syntax: Counter32
     ipSystemStatsHCOutTransmits:
       oid: .1.3.6.1.2.1.4.31.1.1.31
-      name: ipSystemStatsHCOutTransmits
+      name: ip.dgrms.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutTransmits
     ipSystemStatsOutOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.32
-      name: ipSystemStatsOutOctets
+      name: ip.bytes.out
       syntax: Counter32
     ipSystemStatsHCOutOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.33
-      name: ipSystemStatsHCOutOctets
+      name: ip.bytes.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutOctets
     ipSystemStatsInMcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.34
-      name: ipSystemStatsInMcastPkts
+      name: ip.dgrms.mcast.in
       syntax: Counter32
     ipSystemStatsHCInMcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.35
-      name: ipSystemStatsHCInMcastPkts
+      name: ip.dgrms.mcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInMcastPkts
     ipSystemStatsInMcastOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.36
-      name: ipSystemStatsInMcastOctets
+      name: ip.bytes.mcast.in
       syntax: Counter32
     ipSystemStatsHCInMcastOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.37
-      name: ipSystemStatsHCInMcastOctets
+      name: ip.bytes.mcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInMcastOctets
     ipSystemStatsOutMcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.38
-      name: ipSystemStatsOutMcastPkts
+      name: ip.dgrms.mcast.out
       syntax: Counter32
     ipSystemStatsHCOutMcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.39
-      name: ipSystemStatsHCOutMcastPkts
+      name: ip.dgrms.mcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutMcastPkts
     ipSystemStatsOutMcastOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.40
-      name: ipSystemStatsOutMcastOctets
+      name: ip.bytes.mcast.out
       syntax: Counter32
     ipSystemStatsHCOutMcastOctets:
       oid: .1.3.6.1.2.1.4.31.1.1.41
-      name: ipSystemStatsHCOutMcastOctets
+      name: ip.bytes.mcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutMcastOctets
     ipSystemStatsInBcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.42
-      name: ipSystemStatsInBcastPkts
+      name: ip.dgrms.bcast.in
       syntax: Counter32
     ipSystemStatsHCInBcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.43
-      name: ipSystemStatsHCInBcastPkts
+      name: ip.dgrms.bcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsInBcastPkts
     ipSystemStatsOutBcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.44
-      name: ipSystemStatsOutBcastPkts
+      name: ip.dgrms.bcast.out
       syntax: Counter32
     ipSystemStatsHCOutBcastPkts:
       oid: .1.3.6.1.2.1.4.31.1.1.45
-      name: ipSystemStatsHCOutBcastPkts
+      name: ip.dgrms.bcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipSystemStatsEntry
+        attribute: ipSystemStatsOutBcastPkts
     ipSystemStatsDiscontinuityTime:
       oid: .1.3.6.1.2.1.4.31.1.1.46
-      name: ipSystemStatsDiscontinuityTime
+      name: ip.stats.system.discontinuity_time
       syntax: TimeStamp
     ipSystemStatsRefreshRate:
       oid: .1.3.6.1.2.1.4.31.1.1.47
-      name: ipSystemStatsRefreshRate
+      name: ip.stats.system.refresh_rate
       syntax: Unsigned32
 
 IP-MIB::ipIfStatsEntry:
@@ -471,189 +489,231 @@ IP-MIB::ipIfStatsEntry:
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.4.31.3.1.1
-      name: ipSystemStatsIPVersion
+      name: ip.version # ipSystemStatsIPVersion
       syntax: EnumInteger
     - type: Integer32
       oid: .1.3.6.1.2.1.4.31.3.1.2
-      name: ipIfStatsIfIndex
+      name: netif # ipIfStatsIfIndex
       syntax: IF-MIB::InterfaceIndex
   discovery_attribute: ipIfStatsInReceives
   attributes:
     ipIfStatsInReceives:
       oid: .1.3.6.1.2.1.4.31.3.1.3
-      name: ipIfStatsInReceives
+      name: ip.dgrms.in
       syntax: Counter32
     ipIfStatsHCInReceives:
       oid: .1.3.6.1.2.1.4.31.3.1.4
-      name: ipIfStatsHCInReceives
+      name: ip.dgrms.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInReceives
     ipIfStatsInOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.5
-      name: ipIfStatsInOctets
+      name: ip.bytes.in
       syntax: Counter32
     ipIfStatsHCInOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.6
-      name: ipIfStatsHCInOctets
+      name: ip.bytes.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInOctets
     ipIfStatsInHdrErrors:
       oid: .1.3.6.1.2.1.4.31.3.1.7
-      name: ipIfStatsInHdrErrors
+      name: ip.dgrms.discard.header_error.in
       syntax: Counter32
     ipIfStatsInNoRoutes:
       oid: .1.3.6.1.2.1.4.31.3.1.8
-      name: ipIfStatsInNoRoutes
+      name: ip.dgrms.discard.no_route.in
       syntax: Counter32
     ipIfStatsInAddrErrors:
       oid: .1.3.6.1.2.1.4.31.3.1.9
-      name: ipIfStatsInAddrErrors
+      name: ip.dgrms.discard.addr_error.in
       syntax: Counter32
     ipIfStatsInUnknownProtos:
       oid: .1.3.6.1.2.1.4.31.3.1.10
-      name: ipIfStatsInUnknownProtos
+      name: ip.dgrms.discard.unkproto.in
       syntax: Counter32
     ipIfStatsInTruncatedPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.11
-      name: ipIfStatsInTruncatedPkts
+      name: ip.dgrms.discard.trunc.in
       syntax: Counter32
     ipIfStatsInForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.3.1.12
-      name: ipIfStatsInForwDatagrams
+      name: ip.dgrms.fwd.in
       syntax: Counter32
     ipIfStatsHCInForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.3.1.13
-      name: ipIfStatsHCInForwDatagrams
+      name: ip.dgrms.fwd.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInForwDatagrams
     ipIfStatsReasmReqds:
       oid: .1.3.6.1.2.1.4.31.3.1.14
-      name: ipIfStatsReasmReqds
+      name: ip.frags.reassem.req
       syntax: Counter32
     ipIfStatsReasmOKs:
       oid: .1.3.6.1.2.1.4.31.3.1.15
-      name: ipIfStatsReasmOKs
+      name: ip.dgrms.reassem.ok
       syntax: Counter32
     ipIfStatsReasmFails:
       oid: .1.3.6.1.2.1.4.31.3.1.16
-      name: ipIfStatsReasmFails
+      name: ip.dgrms.reassem.fail
       syntax: Counter32
     ipIfStatsInDiscards:
       oid: .1.3.6.1.2.1.4.31.3.1.17
-      name: ipIfStatsInDiscards
+      name: ip.dgrms.discard.in
       syntax: Counter32
     ipIfStatsInDelivers:
       oid: .1.3.6.1.2.1.4.31.3.1.18
-      name: ipIfStatsInDelivers
+      name: ip.dgrms.deliver.in
       syntax: Counter32
     ipIfStatsHCInDelivers:
       oid: .1.3.6.1.2.1.4.31.3.1.19
-      name: ipIfStatsHCInDelivers
+      name: ip.dgrms.deliver.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInDelivers
     ipIfStatsOutRequests:
       oid: .1.3.6.1.2.1.4.31.3.1.20
-      name: ipIfStatsOutRequests
+      name: ip.dgrms.req.out
       syntax: Counter32
     ipIfStatsHCOutRequests:
       oid: .1.3.6.1.2.1.4.31.3.1.21
-      name: ipIfStatsHCOutRequests
+      name: ip.dgrms.req.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutRequests
     ipIfStatsOutForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.3.1.23
-      name: ipIfStatsOutForwDatagrams
+      name: ip.dgrms.fwd.out
       syntax: Counter32
     ipIfStatsHCOutForwDatagrams:
       oid: .1.3.6.1.2.1.4.31.3.1.24
-      name: ipIfStatsHCOutForwDatagrams
+      name: ip.dgrms.fwd.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutForwDatagrams
     ipIfStatsOutDiscards:
       oid: .1.3.6.1.2.1.4.31.3.1.25
-      name: ipIfStatsOutDiscards
+      name: ip.dgrms.discard.no_error.out
       syntax: Counter32
     ipIfStatsOutFragReqds:
       oid: .1.3.6.1.2.1.4.31.3.1.26
-      name: ipIfStatsOutFragReqds
+      name: ip.dgrms.frag.req.out
       syntax: Counter32
     ipIfStatsOutFragOKs:
       oid: .1.3.6.1.2.1.4.31.3.1.27
-      name: ipIfStatsOutFragOKs
+      name: ip.dgrms.frag.ok.out
       syntax: Counter32
     ipIfStatsOutFragFails:
       oid: .1.3.6.1.2.1.4.31.3.1.28
-      name: ipIfStatsOutFragFails
+      name: ip.dgrms.frag.fail.out
       syntax: Counter32
     ipIfStatsOutFragCreates:
       oid: .1.3.6.1.2.1.4.31.3.1.29
-      name: ipIfStatsOutFragCreates
+      name: ip.frags.created.out
       syntax: Counter32
     ipIfStatsOutTransmits:
       oid: .1.3.6.1.2.1.4.31.3.1.30
-      name: ipIfStatsOutTransmits
+      name: ip.dgrms.out
       syntax: Counter32
     ipIfStatsHCOutTransmits:
       oid: .1.3.6.1.2.1.4.31.3.1.31
-      name: ipIfStatsHCOutTransmits
+      name: ip.dgrms.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutTransmits
     ipIfStatsOutOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.32
-      name: ipIfStatsOutOctets
+      name: ip.bytes.out
       syntax: Counter32
     ipIfStatsHCOutOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.33
-      name: ipIfStatsHCOutOctets
+      name: ip.bytes.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutOctets
     ipIfStatsInMcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.34
-      name: ipIfStatsInMcastPkts
+      name: ip.dgrms.mcast.in
       syntax: Counter32
     ipIfStatsHCInMcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.35
-      name: ipIfStatsHCInMcastPkts
+      name: ip.dgrms.mcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInMcastPkts
     ipIfStatsInMcastOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.36
-      name: ipIfStatsInMcastOctets
+      name: ip.bytes.mcast.in
       syntax: Counter32
     ipIfStatsHCInMcastOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.37
-      name: ipIfStatsHCInMcastOctets
+      name: ip.bytes.mcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInMcastOctets
     ipIfStatsOutMcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.38
-      name: ipIfStatsOutMcastPkts
+      name: ip.dgrms.mcast.out
       syntax: Counter32
     ipIfStatsHCOutMcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.39
-      name: ipIfStatsHCOutMcastPkts
+      name: ip.dgrms.mcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutMcastPkts
     ipIfStatsOutMcastOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.40
-      name: ipIfStatsOutMcastOctets
+      name: ip.bytes.mcast.out
       syntax: Counter32
     ipIfStatsHCOutMcastOctets:
       oid: .1.3.6.1.2.1.4.31.3.1.41
-      name: ipIfStatsHCOutMcastOctets
+      name: ip.bytes.mcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutMcastOctets
     ipIfStatsInBcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.42
-      name: ipIfStatsInBcastPkts
+      name: ip.dgrms.bcast.in
       syntax: Counter32
     ipIfStatsHCInBcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.43
-      name: ipIfStatsHCInBcastPkts
+      name: ip.dgrms.bcast.in
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsInBcastPkts
     ipIfStatsOutBcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.44
-      name: ipIfStatsOutBcastPkts
+      name: ip.dgrms.bcast.out
       syntax: Counter32
     ipIfStatsHCOutBcastPkts:
       oid: .1.3.6.1.2.1.4.31.3.1.45
-      name: ipIfStatsHCOutBcastPkts
+      name: ip.dgrms.bcast.out
       syntax: Counter64
+      overrides:
+        object: IP-MIB::ipIfStatsEntry
+        attribute: ipIfStatsOutBcastPkts
     ipIfStatsDiscontinuityTime:
       oid: .1.3.6.1.2.1.4.31.3.1.46
-      name: ipIfStatsDiscontinuityTime
+      name: ip.stats.netif.discontinuity_time
       syntax: TimeStamp
     ipIfStatsRefreshRate:
       oid: .1.3.6.1.2.1.4.31.3.1.47
-      name: ipIfStatsRefreshRate
+      name: ip.stats.netif.refresh_rate
       syntax: Unsigned32
 
 IP-MIB::ipAddressPrefixEntry:
@@ -662,41 +722,41 @@ IP-MIB::ipAddressPrefixEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.4.32.1.1
-      name: ipIfStatsIfIndex
+      name: netif # ipIfStatsIfIndex
       syntax: IF-MIB::InterfaceIndex
     - type: Integer
       oid: .1.3.6.1.2.1.4.32.1.2
-      name: ipAddressPrefixType
+      name: ip.subnet.prefix.type # ipAddressPrefixType
       syntax: EnumInteger
     - type: OctetString
       oid: .1.3.6.1.2.1.4.32.1.3
-      name: ipAddressPrefixPrefix
+      name: ip.subnet.prefix # ipAddressPrefixPrefix
       syntax: INET-ADDRESS-MIB::InetAddress
     - type: Unsigned32
       oid: .1.3.6.1.2.1.4.32.1.4
-      name: ipAddressPrefixLength
+      name: ip.subnet.mask_size # ipAddressPrefixLength
       syntax: Unsigned32
   discovery_attribute: ipAddressPrefixOrigin
   attributes:
     ipAddressPrefixOrigin:
       oid: .1.3.6.1.2.1.4.32.1.5
-      name: ipAddressPrefixOrigin
+      name: ip.subnet.prefix.origin
       syntax: EnumInteger
     ipAddressPrefixOnLinkFlag:
       oid: .1.3.6.1.2.1.4.32.1.6
-      name: ipAddressPrefixOnLinkFlag
+      name: ip.subnet.prefix.flag.on_link
       syntax: TruthValue
     ipAddressPrefixAutonomousFlag:
       oid: .1.3.6.1.2.1.4.32.1.7
-      name: ipAddressPrefixAutonomousFlag
+      name: ip.subnet.prefix.flag.autonomous
       syntax: TruthValue
     ipAddressPrefixAdvPreferredLifetime:
       oid: .1.3.6.1.2.1.4.32.1.8
-      name: ipAddressPrefixAdvPreferredLifetime
+      name: ip.subnet.prefix.prefer.lifetime
       syntax: Unsigned32
     ipAddressPrefixAdvValidLifetime:
       oid: .1.3.6.1.2.1.4.32.1.9
-      name: ipAddressPrefixAdvValidLifetime
+      name: ip.subnet.prefix.valid.lifetime
       syntax: Unsigned32
 
 IP-MIB::ipAddressEntry:
@@ -705,49 +765,41 @@ IP-MIB::ipAddressEntry:
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.4.34.1.1
-      name: ipAddressAddrType
+      name: ip.address.addr_type # ipAddressAddrType
       syntax: EnumInteger
     - type: OctetString
       oid: .1.3.6.1.2.1.4.34.1.2
-      name: ipAddressAddr
+      name: '' # ipAddressAddr
       syntax: INET-ADDRESS-MIB::InetAddress
   discovery_attribute: ipAddressIfIndex
   attributes:
     ipAddressIfIndex:
       oid: .1.3.6.1.2.1.4.34.1.3
-      name: ipAddressIfIndex
+      name: netif
       syntax: IF-MIB::InterfaceIndex
     ipAddressType:
       oid: .1.3.6.1.2.1.4.34.1.4
-      name: ipAddressType
+      name: ip.address.type
       syntax: EnumInteger
-    # ipAddressPrefix:
-    #   oid: .1.3.6.1.2.1.4.34.1.5
-    #   name: ipAddressPrefix
-    #   syntax: RowPointer
     ipAddressOrigin:
       oid: .1.3.6.1.2.1.4.34.1.6
-      name: ipAddressOrigin
+      name: ip.address.origin
       syntax: EnumInteger
     ipAddressStatus:
       oid: .1.3.6.1.2.1.4.34.1.7
-      name: ipAddressStatus
+      name: ip.address.status
       syntax: EnumInteger
     ipAddressCreated:
       oid: .1.3.6.1.2.1.4.34.1.8
-      name: ipAddressCreated
+      name: ip.address.created
       syntax: TimeStamp
     ipAddressLastChanged:
       oid: .1.3.6.1.2.1.4.34.1.9
-      name: ipAddressLastChanged
+      name: ip.address.last_chg
       syntax: TimeStamp
-    # ipAddressRowStatus:
-    #   oid: .1.3.6.1.2.1.4.34.1.10
-    #   name: ipAddressRowStatus
-    #   syntax: RowStatus
     ipAddressStorageType:
       oid: .1.3.6.1.2.1.4.34.1.11
-      name: ipAddressStorageType
+      name: ip.address.storage_type
       syntax: EnumInteger
 
 IP-MIB::ipNetToPhysicalEntry:
@@ -784,10 +836,6 @@ IP-MIB::ipNetToPhysicalEntry:
       oid: .1.3.6.1.2.1.4.35.1.7
       name: ipNetToPhysicalState
       syntax: EnumInteger
-    # ipNetToPhysicalRowStatus:
-    #   oid: .1.3.6.1.2.1.4.35.1.8
-    #   name: ipNetToPhysicalRowStatus
-    #   syntax: RowStatus
 
 IP-MIB::ipv6ScopeZoneIndexEntry:
   mib: IP-MIB
@@ -795,7 +843,7 @@ IP-MIB::ipv6ScopeZoneIndexEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.4.36.1.1
-      name: ipv6ScopeZoneIndexIfIndex
+      name: netif # ipv6ScopeZoneIndexIfIndex
       syntax: IF-MIB::InterfaceIndex
   discovery_attribute: ipv6ScopeZoneIndexLinkLocal
   attributes:
@@ -902,7 +950,7 @@ IP-MIB::ipv6RouterAdvertEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.4.39.1.1
-      name: ipv6RouterAdvertIfIndex
+      name: netif # ipv6RouterAdvertIfIndex
       syntax: IF-MIB::InterfaceIndex
   discovery_attribute: ipv6RouterAdvertSendAdverts
   attributes:
@@ -979,107 +1027,107 @@ IP-MIB::icmp:
   attributes:
     icmpInMsgs:
       oid: .1.3.6.1.2.1.5.1
-      name: icmpInMsgs
+      name: icmp.msgs.in
       syntax: Counter32
     icmpInErrors:
       oid: .1.3.6.1.2.1.5.2
-      name: icmpInErrors
+      name: icmp.errors.in
       syntax: Counter32
     icmpInDestUnreachs:
       oid: .1.3.6.1.2.1.5.3
-      name: icmpInDestUnreachs
+      name: icmp.msgs.dst_unreach.in
       syntax: Counter32
     icmpInTimeExcds:
       oid: .1.3.6.1.2.1.5.4
-      name: icmpInTimeExcds
+      name: icmp.msgs.time_exceed.in
       syntax: Counter32
     icmpInParmProbs:
       oid: .1.3.6.1.2.1.5.5
-      name: icmpInParmProbs
+      name: icmp.msgs.param_prob.in
       syntax: Counter32
     icmpInSrcQuenchs:
       oid: .1.3.6.1.2.1.5.6
-      name: icmpInSrcQuenchs
+      name: icmp.msgs.src_quench.in
       syntax: Counter32
     icmpInRedirects:
       oid: .1.3.6.1.2.1.5.7
-      name: icmpInRedirects
+      name: icmp.msgs.redirect.in
       syntax: Counter32
     icmpInEchos:
       oid: .1.3.6.1.2.1.5.8
-      name: icmpInEchos
+      name: icmp.msgs.echo_req.in
       syntax: Counter32
     icmpInEchoReps:
       oid: .1.3.6.1.2.1.5.9
-      name: icmpInEchoReps
+      name: icmp.msgs.echo_reply.in
       syntax: Counter32
     icmpInTimestamps:
       oid: .1.3.6.1.2.1.5.10
-      name: icmpInTimestamps
+      name: icmp.msgs.timestamp_req.in
       syntax: Counter32
     icmpInTimestampReps:
       oid: .1.3.6.1.2.1.5.11
-      name: icmpInTimestampReps
+      name: icmp.msgs.timestamp_reply.in
       syntax: Counter32
     icmpInAddrMasks:
       oid: .1.3.6.1.2.1.5.12
-      name: icmpInAddrMasks
+      name: icmp.msgs.addr_mask_req.in
       syntax: Counter32
     icmpInAddrMaskReps:
       oid: .1.3.6.1.2.1.5.13
-      name: icmpInAddrMaskReps
+      name: icmp.msgs.addr_mask_reply.in
       syntax: Counter32
     icmpOutMsgs:
       oid: .1.3.6.1.2.1.5.14
-      name: icmpOutMsgs
+      name: icmp.msgs.out
       syntax: Counter32
     icmpOutErrors:
       oid: .1.3.6.1.2.1.5.15
-      name: icmpOutErrors
+      name: icmp.errors.out
       syntax: Counter32
     icmpOutDestUnreachs:
       oid: .1.3.6.1.2.1.5.16
-      name: icmpOutDestUnreachs
+      name: icmp.msgs.dst_unreach.out
       syntax: Counter32
     icmpOutTimeExcds:
       oid: .1.3.6.1.2.1.5.17
-      name: icmpOutTimeExcds
+      name: icmp.msgs.time_exceed.out
       syntax: Counter32
     icmpOutParmProbs:
       oid: .1.3.6.1.2.1.5.18
-      name: icmpOutParmProbs
+      name: icmp.msgs.param_prob.out
       syntax: Counter32
     icmpOutSrcQuenchs:
       oid: .1.3.6.1.2.1.5.19
-      name: icmpOutSrcQuenchs
+      name: icmp.msgs.src_quench.out
       syntax: Counter32
     icmpOutRedirects:
       oid: .1.3.6.1.2.1.5.20
-      name: icmpOutRedirects
+      name: icmp.msgs.redirect.out
       syntax: Counter32
     icmpOutEchos:
       oid: .1.3.6.1.2.1.5.21
-      name: icmpOutEchos
+      name: icmp.msgs.echo_req.out
       syntax: Counter32
     icmpOutEchoReps:
       oid: .1.3.6.1.2.1.5.22
-      name: icmpOutEchoReps
+      name: icmp.msgs.echo_reply.out
       syntax: Counter32
     icmpOutTimestamps:
       oid: .1.3.6.1.2.1.5.23
-      name: icmpOutTimestamps
+      name: icmp.msgs.timestamp_req.out
       syntax: Counter32
     icmpOutTimestampReps:
       oid: .1.3.6.1.2.1.5.24
-      name: icmpOutTimestampReps
+      name: icmp.msgs.timestamp_reply.out
       syntax: Counter32
     icmpOutAddrMasks:
       oid: .1.3.6.1.2.1.5.25
-      name: icmpOutAddrMasks
+      name: icmp.msgs.addr_mask_req.out
       syntax: Counter32
     icmpOutAddrMaskReps:
       oid: .1.3.6.1.2.1.5.26
-      name: icmpOutAddrMaskReps
+      name: icmp.msgs.addr_mask_reply.out
       syntax: Counter32
 
 IP-MIB::icmpStatsEntry:
@@ -1088,25 +1136,25 @@ IP-MIB::icmpStatsEntry:
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.5.29.1.1
-      name: icmpStatsIPVersion
+      name: ip.version # icmpStatsIPVersion
       syntax: EnumInteger
   discovery_attribute: icmpStatsInMsgs
   attributes:
     icmpStatsInMsgs:
       oid: .1.3.6.1.2.1.5.29.1.2
-      name: icmpStatsInMsgs
+      name: icmp.msgs.in
       syntax: Counter32
     icmpStatsInErrors:
       oid: .1.3.6.1.2.1.5.29.1.3
-      name: icmpStatsInErrors
+      name: icmp.errors.in
       syntax: Counter32
     icmpStatsOutMsgs:
       oid: .1.3.6.1.2.1.5.29.1.4
-      name: icmpStatsOutMsgs
+      name: icmp.msgs.out
       syntax: Counter32
     icmpStatsOutErrors:
       oid: .1.3.6.1.2.1.5.29.1.5
-      name: icmpStatsOutErrors
+      name: icmp.errors.out
       syntax: Counter32
 
 IP-MIB::icmpMsgStatsEntry:
@@ -1115,19 +1163,19 @@ IP-MIB::icmpMsgStatsEntry:
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.5.29.1.1
-      name: icmpStatsIPVersion
+      name: ip.version # icmpStatsIPVersion
       syntax: EnumInteger
     - type: Integer32
       oid: .1.3.6.1.2.1.5.30.1.2
-      name: icmpMsgStatsType
+      name: icmp.type.id # icmpMsgStatsType
       syntax: Integer32
   discovery_attribute: icmpMsgStatsInPkts
   attributes:
     icmpMsgStatsInPkts:
       oid: .1.3.6.1.2.1.5.30.1.3
-      name: icmpMsgStatsInPkts
+      name: icmp.msgs.in
       syntax: Counter32
     icmpMsgStatsOutPkts:
       oid: .1.3.6.1.2.1.5.30.1.4
-      name: icmpMsgStatsOutPkts
+      name: icmp.msgs.out
       syntax: Counter32
