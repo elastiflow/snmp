@@ -1,13 +1,77 @@
-HOST-RESOURCES-MIB::hrStorage:
+HOST-RESOURCES-MIB::hrSystem:
   mib: HOST-RESOURCES-MIB
-  object: hrStorage
-  discovery_attribute: hrMemorySize
+  object: hrSystem
+  discovery_attribute: hrSystemUptime
   attributes:
-    hrMemorySize:
-      oid: .1.3.6.1.2.1.25.2.2.0
-      name: hrMemorySize
+    hrSystemUptime:
+      oid: .1.3.6.1.2.1.25.1.1
+      name: system.uptime
+      syntax: TimeTicks
+    # hrSystemDate:
+    #   oid: .1.3.6.1.2.1.25.1.2
+    #   name: hrSystemDate
+    #   syntax: DateAndTime
+    # hrSystemInitialLoadDevice:
+    #   oid: .1.3.6.1.2.1.25.1.3
+    #   name: hrSystemInitialLoadDevice
+    #   syntax: Integer32
+    # hrSystemInitialLoadParameters:
+    #   oid: .1.3.6.1.2.1.25.1.4
+    #   name: hrSystemInitialLoadParameters
+    #   syntax: DisplayString
+    hrSystemNumUsers:
+      oid: .1.3.6.1.2.1.25.1.5
+      name: system.users
+      syntax: Gauge32
+    hrSystemProcesses:
+      oid: .1.3.6.1.2.1.25.1.6
+      name: system.procs
+      syntax: Gauge32
+    hrSystemMaxProcesses:
+      oid: .1.3.6.1.2.1.25.1.7
+      name: system.procs_max
       syntax: Integer32
-      #TO-DO: syntax: HOST-RESOURCES-MIB::KBytes
+    hrMemorySize:
+      oid: .1.3.6.1.2.1.25.2.2
+      name: mem.total.bytes
+      syntax: BytesKB
+
+HOST-RESOURCES-MIB::hrStorageEntry:
+  mib: HOST-RESOURCES-MIB
+  object: hrStorageEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.25.2.3.1.1
+      name: storage.index # hrStorageIndex
+      syntax: Integer32
+  discovery_attribute: hrStorageType
+  attributes:
+    hrStorageType:
+      oid: .1.3.6.1.2.1.25.2.3.1.2
+      tag: true
+      name: storage.type
+      syntax: EnumObjectIdentifier
+    hrStorageDescr:
+      oid: .1.3.6.1.2.1.25.2.3.1.3
+      tag: true
+      name: storage.name
+      syntax: DisplayString
+    hrStorageAllocationUnits:
+      oid: .1.3.6.1.2.1.25.2.3.1.4
+      name: storage.alloc_unit.size
+      syntax: Integer32
+    hrStorageSize:
+      oid: .1.3.6.1.2.1.25.2.3.1.5
+      name: storage.alloc_unit.total
+      syntax: Integer32
+    hrStorageUsed:
+      oid: .1.3.6.1.2.1.25.2.3.1.6
+      name: storage.alloc_unit.used
+      syntax: Integer32
+    hrStorageAllocationFailures:
+      oid: .1.3.6.1.2.1.25.2.3.1.7
+      name: storage.alloc.fails
+      syntax: Counter32
 
 HOST-RESOURCES-MIB::hrDeviceEntry:
   mib: HOST-RESOURCES-MIB
@@ -15,7 +79,7 @@ HOST-RESOURCES-MIB::hrDeviceEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.25.3.2.1.1
-      name: device.index
+      name: device.index # hrDeviceIndex
       syntax: Integer32
   discovery_attribute: hrDeviceType
   attributes:
@@ -27,7 +91,7 @@ HOST-RESOURCES-MIB::hrDeviceEntry:
     hrDeviceDescr:
       oid: .1.3.6.1.2.1.25.3.2.1.3
       tag: true
-      name: device.descr
+      name: device.name
       syntax: DisplayString
     hrDeviceID:
       oid: .1.3.6.1.2.1.25.3.2.1.4
@@ -46,332 +110,35 @@ HOST-RESOURCES-MIB::hrDeviceEntry:
 HOST-RESOURCES-MIB::hrProcessorEntry:
   mib: HOST-RESOURCES-MIB
   object: hrProcessorEntry
-  augments: HOST-RESOURCES-MIB::hrDeviceEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.25.3.2.1.1
+      name: device.index # hrDeviceIndex
+      syntax: Integer32
+  # augments: HOST-RESOURCES-MIB::hrDeviceEntry
   discovery_attribute: hrProcessorLoad
   attributes:
     hrProcessorLoad:
       oid: .1.3.6.1.2.1.25.3.3.1.2
-      tag: true
       name: cpu.util.pct
       syntax: Percent100
 
-# HOST-RESOURCES-MIB::hrSystem:
-#   mib: HOST-RESOURCES-MIB
-#   object: hrSystem
-#   discovery_attribute: hrSystemUptime
-#   attributes:
-#     hrSystemUptime:
-#       oid: .1.3.6.1.2.1.25.1.1
-#       name: hrSystemUptime
-#       syntax: TimeTicks
-#     hrSystemDate:
-#       oid: .1.3.6.1.2.1.25.1.2
-#       name: hrSystemDate
-#       syntax: DateAndTime
-#     hrSystemInitialLoadDevice:
-#       oid: .1.3.6.1.2.1.25.1.3
-#       name: hrSystemInitialLoadDevice
-#       syntax: Integer32
-#     hrSystemInitialLoadParameters:
-#       oid: .1.3.6.1.2.1.25.1.4
-#       name: hrSystemInitialLoadParameters
-#       syntax: HOST-RESOURCES-MIB::InternationalDisplayString
-#     hrSystemNumUsers:
-#       oid: .1.3.6.1.2.1.25.1.5
-#       name: hrSystemNumUsers
-#       syntax: Gauge32
-#     hrSystemProcesses:
-#       oid: .1.3.6.1.2.1.25.1.6
-#       name: hrSystemProcesses
-#       syntax: Gauge32
-#     hrSystemMaxProcesses:
-#       oid: .1.3.6.1.2.1.25.1.7
-#       name: hrSystemMaxProcesses
-#       syntax: Integer32
-
-# HOST-RESOURCES-MIB::hrStorageEntry:
-#   mib: HOST-RESOURCES-MIB
-#   object: hrStorageEntry
-#   index: 
-#     - type: Integer32
-#       oid: .1.3.6.1.2.1.25.2.3.1.1
-#       name: hrStorageIndex
-#       syntax: Integer32
-#   discovery_attribute: hrStorageType
-#   attributes:
-#     hrStorageType:
-#       oid: .1.3.6.1.2.1.25.2.3.1.2
-#       name: hrStorageType
-#       syntax: AutonomousType
-#     hrStorageDescr:
-#       oid: .1.3.6.1.2.1.25.2.3.1.3
-#       name: hrStorageDescr
-#       syntax: DisplayString
-#     hrStorageAllocationUnits:
-#       oid: .1.3.6.1.2.1.25.2.3.1.4
-#       name: hrStorageAllocationUnits
-#       syntax: Integer32
-#     hrStorageSize:
-#       oid: .1.3.6.1.2.1.25.2.3.1.5
-#       name: hrStorageSize
-#       syntax: Integer32
-#     hrStorageUsed:
-#       oid: .1.3.6.1.2.1.25.2.3.1.6
-#       name: hrStorageUsed
-#       syntax: Integer32
-#     hrStorageAllocationFailures:
-#       oid: .1.3.6.1.2.1.25.2.3.1.7
-#       name: hrStorageAllocationFailures
-#       syntax: Counter32
-
-# HOST-RESOURCES-MIB::hrPrinterEntry:
-#   mib: HOST-RESOURCES-MIB
-#   object: hrPrinterEntry
-#   augments: HOST-RESOURCES-MIB::hrDeviceEntry
-#   discovery_attribute: hrPrinterStatus
-#   attributes:
-#     hrPrinterStatus:
-#       oid: .1.3.6.1.2.1.25.3.5.1.1
-#       name: hrPrinterStatus
-#       syntax: HOST-RESOURCES-MIB::hrPrinterStatus
-#     hrPrinterDetectedErrorState:
-#       oid: .1.3.6.1.2.1.25.3.5.1.2
-#       name: hrPrinterDetectedErrorState
-#       syntax: HOST-RESOURCES-MIB::hrPrinterDetectedErrorState
-
-# HOST-RESOURCES-MIB:::
-#   mib: HOST-RESOURCES-MIB
-#   object: 
-#   index: 
-#     - type: 
-#       oid: .
-#       name: 
-#       syntax: 
-#   augments: 
-#   discovery_attribute: 
-#   attributes:
-#     hrDiskStorageAccess
-#       oid: .1.3.6.1.2.1.25.3.6.1.1
-#       name: hrDiskStorageAccess
-#       syntax: INTEGER
-#       IDs: [hrDiskStorageEntry 1]
-#     hrDiskStorageMedia
-#       oid: .1.3.6.1.2.1.25.3.6.1.2
-#       name: hrDiskStorageMedia
-#       syntax: INTEGER
-#       IDs: [hrDiskStorageEntry 2]
-#     hrDiskStorageRemoveble
-#       oid: .1.3.6.1.2.1.25.3.6.1.3
-#       name: hrDiskStorageRemoveble
-#       syntax: TruthValue
-#       IDs: [hrDiskStorageEntry 3]
-#     hrDiskStorageCapacity
-#       oid: .1.3.6.1.2.1.25.3.6.1.4
-#       name: hrDiskStorageCapacity
-#       syntax: KBytes
-#       IDs: [hrDiskStorageEntry 4]
-
-# HOST-RESOURCES-MIB:::
-#   mib: HOST-RESOURCES-MIB
-#   object: 
-#   index: 
-#     - type: 
-#       oid: .
-#       name: 
-#       syntax: 
-#   augments: 
-#   discovery_attribute: 
-#   attributes:
-#     hrPartitionIndex
-#       oid: .1.3.6.1.2.1.25.3.7.1.1
-#       name: hrPartitionIndex
-#       syntax: Integer32
-#       IDs: [hrPartitionEntry 1]
-#     hrPartitionLabel
-#       oid: .1.3.6.1.2.1.25.3.7.1.2
-#       name: hrPartitionLabel
-#       syntax: InternationalDisplayString
-#       IDs: [hrPartitionEntry 2]
-#     hrPartitionID
-#       oid: .1.3.6.1.2.1.25.3.7.1.3
-#       name: hrPartitionID
-#       syntax: OCTET
-#       IDs: [hrPartitionEntry 3]
-#     hrPartitionSize
-#       oid: .1.3.6.1.2.1.25.3.7.1.4
-#       name: hrPartitionSize
-#       syntax: KBytes
-#       IDs: [hrPartitionEntry 4]
-#     hrPartitionFSIndex
-#       oid: .1.3.6.1.2.1.25.3.7.1.5
-#       name: hrPartitionFSIndex
-#       syntax: Integer32
-#       IDs: [hrPartitionEntry 5]
-
-
-# HOST-RESOURCES-MIB:::
-#   mib: HOST-RESOURCES-MIB
-#   object: 
-#   index: 
-#     - type: 
-#       oid: .
-#       name: 
-#       syntax: 
-#   augments: 
-#   discovery_attribute: 
-#   attributes:
-#     hrFSIndex
-#       oid: .1.3.6.1.2.1.25.3.8.1.1
-#       name: hrFSIndex
-#       syntax: Integer32
-#       IDs: [hrFSEntry 1]
-#     hrFSMountPoint
-#       oid: .1.3.6.1.2.1.25.3.8.1.2
-#       name: hrFSMountPoint
-#       syntax: InternationalDisplayString
-#       IDs: [hrFSEntry 2]
-#     hrFSRemoteMountPoint
-#       oid: .1.3.6.1.2.1.25.3.8.1.3
-#       name: hrFSRemoteMountPoint
-#       syntax: InternationalDisplayString
-#       IDs: [hrFSEntry 3]
-#     hrFSType
-#       oid: .1.3.6.1.2.1.25.3.8.1.4
-#       name: hrFSType
-#       syntax: AutonomousType
-#       IDs: [hrFSEntry 4]
-#     hrFSAccess
-#       oid: .1.3.6.1.2.1.25.3.8.1.5
-#       name: hrFSAccess
-#       syntax: INTEGER
-#       IDs: [hrFSEntry 5]
-#     hrFSBootable
-#       oid: .1.3.6.1.2.1.25.3.8.1.6
-#       name: hrFSBootable
-#       syntax: TruthValue
-#       IDs: [hrFSEntry 6]
-#     hrFSStorageIndex
-#       oid: .1.3.6.1.2.1.25.3.8.1.7
-#       name: hrFSStorageIndex
-#       syntax: Integer32
-#       IDs: [hrFSEntry 7]
-#     hrFSLastFullBackupDate
-#       oid: .1.3.6.1.2.1.25.3.8.1.8
-#       name: hrFSLastFullBackupDate
-#       syntax: DateAndTime
-#       IDs: [hrFSEntry 8]
-#     hrFSLastPartialBackupDate
-#       oid: .1.3.6.1.2.1.25.3.8.1.9
-#       name: hrFSLastPartialBackupDate
-#       syntax: DateAndTime
-#       IDs: [hrFSEntry 9]
-
-
-# HOST-RESOURCES-MIB:::
-#   mib: HOST-RESOURCES-MIB
-#   object: 
-#   index: 
-#     - type: 
-#       oid: .
-#       name: 
-#       syntax: 
-#   augments: 
-#   discovery_attribute: 
-#   attributes:
-#     hrSWOSIndex
-#       oid: .1.3.6.1.2.1.25.4.1
-#       name: hrSWOSIndex
-#       syntax: Integer32
-#       IDs: [hrSWRun 1]
-#     hrSWRunIndex
-#       oid: .1.3.6.1.2.1.25.4.2.1.1
-#       name: hrSWRunIndex
-#       syntax: Integer32
-#       IDs: [hrSWRunEntry 1]
-#     hrSWRunName
-#       oid: .1.3.6.1.2.1.25.4.2.1.2
-#       name: hrSWRunName
-#       syntax: InternationalDisplayString
-#       IDs: [hrSWRunEntry 2]
-#     hrSWRunID
-#       oid: .1.3.6.1.2.1.25.4.2.1.3
-#       name: hrSWRunID
-#       syntax: ProductID
-#       IDs: [hrSWRunEntry 3]
-#     hrSWRunPath
-#       oid: .1.3.6.1.2.1.25.4.2.1.4
-#       name: hrSWRunPath
-#       syntax: InternationalDisplayString
-#       IDs: [hrSWRunEntry 4]
-#     hrSWRunParameters
-#       oid: .1.3.6.1.2.1.25.4.2.1.5
-#       name: hrSWRunParameters
-#       syntax: InternationalDisplayString
-#       IDs: [hrSWRunEntry 5]
-#     hrSWRunType
-#       oid: .1.3.6.1.2.1.25.4.2.1.6
-#       name: hrSWRunType
-#       syntax: INTEGER
-#       IDs: [hrSWRunEntry 6]
-#     hrSWRunStatus
-#       oid: .1.3.6.1.2.1.25.4.2.1.7
-#       name: hrSWRunStatus
-#       syntax: INTEGER
-#       IDs: [hrSWRunEntry 7]
-#     hrSWRunPerfCPU
-#       oid: .1.3.6.1.2.1.25.5.1.1.1
-#       name: hrSWRunPerfCPU
-#       syntax: Integer32
-#       IDs: [hrSWRunPerfEntry 1]
-#     hrSWRunPerfMem
-#       oid: .1.3.6.1.2.1.25.5.1.1.2
-#       name: hrSWRunPerfMem
-#       syntax: KBytes
-#       IDs: [hrSWRunPerfEntry 2]
-
-# HOST-RESOURCES-MIB:::
-#   mib: HOST-RESOURCES-MIB
-#   object: 
-#   index: 
-#     - type: 
-#       oid: .
-#       name: 
-#       syntax: 
-#   augments: 
-#   discovery_attribute: 
-#   attributes:
-#     hrSWInstalledLastChange
-#       oid: .1.3.6.1.2.1.25.6.1
-#       name: hrSWInstalledLastChange
-#       syntax: TimeTicks
-#       IDs: [hrSWInstalled 1]
-#     hrSWInstalledLastUpdateTime
-#       oid: .1.3.6.1.2.1.25.6.2
-#       name: hrSWInstalledLastUpdateTime
-#       syntax: TimeTicks
-#       IDs: [hrSWInstalled 2]
-#     hrSWInstalledIndex
-#       oid: .1.3.6.1.2.1.25.6.3.1.1
-#       name: hrSWInstalledIndex
-#       syntax: Integer32
-#       IDs: [hrSWInstalledEntry 1]
-#     hrSWInstalledName
-#       oid: .1.3.6.1.2.1.25.6.3.1.2
-#       name: hrSWInstalledName
-#       syntax: InternationalDisplayString
-#       IDs: [hrSWInstalledEntry 2]
-#     hrSWInstalledID
-#       oid: .1.3.6.1.2.1.25.6.3.1.3
-#       name: hrSWInstalledID
-#       syntax: ProductID
-#       IDs: [hrSWInstalledEntry 3]
-#     hrSWInstalledType
-#       oid: .1.3.6.1.2.1.25.6.3.1.4
-#       name: hrSWInstalledType
-#       syntax: INTEGER
-#       IDs: [hrSWInstalledEntry 4]
-#     hrSWInstalledDate
-#       oid: .1.3.6.1.2.1.25.6.3.1.5
-#       name: hrSWInstalledDate
-#       syntax: DateAndTime
-#       IDs: [hrSWInstalledEntry 5]
+HOST-RESOURCES-MIB::hrPrinterEntry:
+  mib: HOST-RESOURCES-MIB
+  object: hrPrinterEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.25.3.2.1.1
+      name: device.index # hrDeviceIndex
+      syntax: Integer32
+  # augments: HOST-RESOURCES-MIB::hrDeviceEntry
+  discovery_attribute: hrPrinterStatus
+  attributes:
+    hrPrinterStatus:
+      oid: .1.3.6.1.2.1.25.3.5.1.1
+      name: hrPrinterStatus
+      syntax: EnumInteger
+    hrPrinterDetectedErrorState:
+      oid: .1.3.6.1.2.1.25.3.5.1.2
+      name: hrPrinterDetectedErrorState
+      syntax: OctetString
