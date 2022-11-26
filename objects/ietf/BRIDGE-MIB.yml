@@ -1,0 +1,236 @@
+BRIDGE-MIB::dot1dBase:
+  mib: BRIDGE-MIB
+  object: dot1dBase
+  discovery_attribute: dot1dBaseBridgeAddress
+  attributes:
+    dot1dBaseBridgeAddress:
+      oid: .1.3.6.1.2.1.17.1.1
+      name: dot1dBaseBridgeAddress
+      syntax: MacAddress
+    dot1dBaseNumPorts:
+      oid: .1.3.6.1.2.1.17.1.2
+      name: dot1dBaseNumPorts
+      syntax: Integer32
+      # rediscover: OnChange
+    dot1dBaseType:
+      oid: .1.3.6.1.2.1.17.1.3
+      name: dot1dBaseType
+      syntax: EnumInteger
+
+BRIDGE-MIB::dot1dBasePortEntry:
+  mib: BRIDGE-MIB
+  object: dot1dBasePortEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.17.1.4.1.1
+      name: dot1dBasePort
+      syntax: Integer32
+  discovery_attribute: dot1dBasePortIfIndex
+  attributes:
+    dot1dBasePortIfIndex:
+      oid: .1.3.6.1.2.1.17.1.4.1.2
+      tag: true
+      name: dot1dBasePortIfIndex
+      syntax: InterfaceIndex
+    dot1dBasePortCircuit:
+      oid: .1.3.6.1.2.1.17.1.4.1.3
+      tag: true
+      name: dot1dBasePortCircuit
+      syntax: ObjectIdentifier
+    dot1dBasePortDelayExceededDiscards:
+      oid: .1.3.6.1.2.1.17.1.4.1.4
+      name: dot1dBasePortDelayExceededDiscards
+      syntax: Counter32
+    dot1dBasePortMtuExceededDiscards:
+      oid: .1.3.6.1.2.1.17.1.4.1.5
+      name: dot1dBasePortMtuExceededDiscards
+      syntax: Counter32
+
+BRIDGE-MIB::dot1dStp:
+  mib: BRIDGE-MIB
+  object: dot1dStp
+  discovery_attribute: dot1dStpProtocolSpecification
+  attributes:
+    dot1dStpProtocolSpecification:
+      oid: .1.3.6.1.2.1.17.2.1
+      name: dot1dStpProtocolSpecification
+      syntax: EnumInteger
+    dot1dStpPriority:
+      oid: .1.3.6.1.2.1.17.2.2
+      name: dot1dStpPriority
+      syntax: Integer32
+    dot1dStpTimeSinceTopologyChange:
+      oid: .1.3.6.1.2.1.17.2.3
+      name: dot1dStpTimeSinceTopologyChange
+      syntax: TimeTicks
+    dot1dStpTopChanges:
+      oid: .1.3.6.1.2.1.17.2.4
+      name: dot1dStpTopChanges
+      syntax: Counter32
+    dot1dStpDesignatedRoot:
+      oid: .1.3.6.1.2.1.17.2.5
+      name: dot1dStpDesignatedRoot
+      syntax: PhysAddress # TO-DO: add translator for BRIDGE-MIB::BridgeId
+    dot1dStpRootCost:
+      oid: .1.3.6.1.2.1.17.2.6
+      name: dot1dStpRootCost
+      syntax: Integer32
+    dot1dStpRootPort:
+      oid: .1.3.6.1.2.1.17.2.7
+      name: dot1dStpRootPort
+      syntax: Integer32
+    dot1dStpMaxAge:
+      oid: .1.3.6.1.2.1.17.2.8
+      name: dot1dStpMaxAge
+      syntax: Integer32
+    dot1dStpHelloTime:
+      oid: .1.3.6.1.2.1.17.2.9
+      name: dot1dStpHelloTime
+      syntax: Integer32
+    dot1dStpHoldTime:
+      oid: .1.3.6.1.2.1.17.2.10
+      name: dot1dStpHoldTime
+      syntax: Integer32
+    dot1dStpForwardDelay:
+      oid: .1.3.6.1.2.1.17.2.11
+      name: dot1dStpForwardDelay
+      syntax: Integer32
+    dot1dStpBridgeMaxAge:
+      oid: .1.3.6.1.2.1.17.2.12
+      name: dot1dStpBridgeMaxAge
+      syntax: Integer32
+    dot1dStpBridgeHelloTime:
+      oid: .1.3.6.1.2.1.17.2.13
+      name: dot1dStpBridgeHelloTime
+      syntax: Integer32
+    dot1dStpBridgeForwardDelay:
+      oid: .1.3.6.1.2.1.17.2.14
+      name: dot1dStpBridgeForwardDelay
+      syntax: Integer32
+
+BRIDGE-MIB::dot1dStpPortEntry:
+  mib: BRIDGE-MIB
+  object: dot1dStpPortEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: dot1dStpPortPriority
+  attributes:
+    dot1dStpPortPriority:
+      oid: .1.3.6.1.2.1.17.2.15.1.2
+      name: dot1dStpPortPriority
+      syntax: Integer32
+    dot1dStpPortState:
+      oid: .1.3.6.1.2.1.17.2.15.1.3
+      name: dot1dStpPortState
+      syntax: EnumInteger
+    dot1dStpPortEnable:
+      oid: .1.3.6.1.2.1.17.2.15.1.4
+      name: dot1dStpPortEnable
+      syntax: EnumInteger
+    dot1dStpPortPathCost:
+      oid: .1.3.6.1.2.1.17.2.15.1.5
+      name: dot1dStpPortPathCost
+      syntax: Integer32
+    dot1dStpPortDesignatedRoot:
+      oid: .1.3.6.1.2.1.17.2.15.1.6
+      name: dot1dStpPortDesignatedRoot
+      syntax: PhysAddress # TO-DO: add translator for BRIDGE-MIB::BridgeId
+    dot1dStpPortDesignatedCost:
+      oid: .1.3.6.1.2.1.17.2.15.1.7
+      name: dot1dStpPortDesignatedCost
+      syntax: Integer32
+    dot1dStpPortDesignatedBridge:
+      oid: .1.3.6.1.2.1.17.2.15.1.8
+      name: dot1dStpPortDesignatedBridge
+      syntax: PhysAddress # TO-DO: add translator for BRIDGE-MIB::BridgeId
+    dot1dStpPortDesignatedPort:
+      oid: .1.3.6.1.2.1.17.2.15.1.9
+      name: dot1dStpPortDesignatedPort
+      syntax: PhysAddress # TO-DO: add translator for BRIDGE-MIB::dot1dStpPortDesignatedPort
+    dot1dStpPortForwardTransitions:
+      oid: .1.3.6.1.2.1.17.2.15.1.10
+      name: dot1dStpPortForwardTransitions
+      syntax: Counter32
+    dot1dStpPortPathCost32:
+      oid: .1.3.6.1.2.1.17.2.15.1.11
+      name: dot1dStpPortPathCost32
+      syntax: Integer32
+
+BRIDGE-MIB::dot1dTp:
+  mib: BRIDGE-MIB
+  object: dot1dTp
+  augments: BRIDGE-MIB::dot1dBase
+  discovery_attribute: dot1dTpLearnedEntryDiscards
+  attributes:
+    dot1dTpLearnedEntryDiscards:
+      oid: .1.3.6.1.2.1.17.4.1
+      name: dot1dTpLearnedEntryDiscards
+      syntax: Counter32
+    dot1dTpAgingTime:
+      oid: .1.3.6.1.2.1.17.4.2
+      name: dot1dTpAgingTime
+      syntax: TicksSec # Integer32
+
+BRIDGE-MIB::dot1dTpFdbEntry:
+  mib: BRIDGE-MIB
+  object: dot1dTpFdbEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.2.1.17.4.3.1.1
+      name: dot1dTpFdbAddress
+      syntax: MacAddress
+  discovery_attribute: dot1dTpFdbPort
+  attributes:
+    dot1dTpFdbPort:
+      oid: .1.3.6.1.2.1.17.4.3.1.2
+      name: dot1dTpFdbPort
+      syntax: Integer32
+    dot1dTpFdbStatus:
+      oid: .1.3.6.1.2.1.17.4.3.1.3
+      name: dot1dTpFdbStatus
+      syntax: EnumInteger
+
+BRIDGE-MIB::dot1dTpPortEntry:
+  mib: BRIDGE-MIB
+  object: dot1dTpPortEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: dot1dTpPortMaxInfo
+  attributes:
+    dot1dTpPortMaxInfo:
+      oid: .1.3.6.1.2.1.17.4.4.1.2
+      name: dot1dTpPortMaxInfo
+      syntax: Integer32
+    dot1dTpPortInFrames:
+      oid: .1.3.6.1.2.1.17.4.4.1.3
+      name: dot1dTpPortInFrames
+      syntax: Counter32
+    dot1dTpPortOutFrames:
+      oid: .1.3.6.1.2.1.17.4.4.1.4
+      name: dot1dTpPortOutFrames
+      syntax: Counter32
+    dot1dTpPortInDiscards:
+      oid: .1.3.6.1.2.1.17.4.4.1.5
+      name: dot1dTpPortInDiscards
+      syntax: Counter32
+
+BRIDGE-MIB::dot1dStaticEntry:
+  mib: BRIDGE-MIB
+  object: dot1dStaticEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.2.1.17.5.1.1.1
+      name: dot1dStaticAddress
+      syntax: MacAddress
+    - type: Integer32
+      oid: .1.3.6.1.2.1.17.5.1.1.2
+      name: dot1dStaticReceivePort
+      syntax: Integer32
+  discovery_attribute: dot1dStaticAllowedToGoTo
+  attributes:
+    dot1dStaticAllowedToGoTo:
+      oid: .1.3.6.1.2.1.17.5.1.1.3
+      name: dot1dStaticAllowedToGoTo
+      syntax: OctetString
+    dot1dStaticStatus:
+      oid: .1.3.6.1.2.1.17.5.1.1.4
+      name: dot1dStaticStatus
+      syntax: EnumInteger
