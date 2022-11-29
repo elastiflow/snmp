@@ -1,0 +1,190 @@
+P-BRIDGE-MIB::dot1dExtBase:
+  mib: P-BRIDGE-MIB
+  object: dot1dExtBase
+  augments: BRIDGE-MIB::dot1dBase
+  discovery_attribute: dot1dDeviceCapabilities
+  attributes:
+    dot1dDeviceCapabilities:
+      oid: .1.3.6.1.2.1.17.6.1.1.1
+      name: bridge.capability
+      syntax: EnumBitmap
+    dot1dTrafficClassesEnabled:
+      oid: .1.3.6.1.2.1.17.6.1.1.2
+      name: bridge.traffic_class.enable
+      syntax: TruthValue
+    dot1dGmrpStatus:
+      oid: .1.3.6.1.2.1.17.6.1.1.3
+      name: bridge.gmrp.status
+      syntax: EnumInteger
+
+P-BRIDGE-MIB::dot1dPortCapabilitiesEntry:
+  mib: P-BRIDGE-MIB
+  object: dot1dPortCapabilitiesEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: dot1dPortCapabilities
+  attributes:
+    dot1dPortCapabilities:
+      oid: .1.3.6.1.2.1.17.6.1.1.4.1.1
+      name: bridge.port.capability
+      syntax: EnumBitmap
+
+# P-BRIDGE-MIB::dot1dPortPriorityEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dPortPriorityEntry
+#   augments: BRIDGE-MIB::dot1dBasePortEntry
+#   discovery_attribute: dot1dPortDefaultUserPriority
+#   attributes:
+#     dot1dPortDefaultUserPriority:
+#       oid: .1.3.6.1.2.1.17.6.1.2.1.1.1
+#       name: dot1dPortDefaultUserPriority
+#       syntax: Integer32
+#     dot1dPortNumTrafficClasses:
+#       oid: .1.3.6.1.2.1.17.6.1.2.1.1.2
+#       name: dot1dPortNumTrafficClasses
+#       syntax: Integer32
+
+# P-BRIDGE-MIB::dot1dUserPriorityRegenEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dUserPriorityRegenEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.1.4.1.1
+#       name: dot1dBasePort
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.6.1.2.2.1.1
+#       name: dot1dUserPriority
+#       syntax: Integer32
+#   discovery_attribute: dot1dRegenUserPriority
+#   attributes:
+#     dot1dRegenUserPriority:
+#       oid: .1.3.6.1.2.1.17.6.1.2.2.1.2
+#       name: dot1dRegenUserPriority
+#       syntax: Integer32
+
+# P-BRIDGE-MIB::dot1dTrafficClassEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dTrafficClassEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.1.4.1.1
+#       name: dot1dBasePort
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.6.1.2.3.1.1
+#       name: dot1dTrafficClassPriority
+#       syntax: Integer32
+#   discovery_attribute: dot1dTrafficClass
+#   attributes:
+#     dot1dTrafficClass:
+#       oid: .1.3.6.1.2.1.17.6.1.2.3.1.2
+#       name: dot1dTrafficClass
+#       syntax: Integer32
+
+# P-BRIDGE-MIB::dot1dPortOutboundAccessPriorityEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dPortOutboundAccessPriorityEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.1.4.1.1
+#       name: dot1dBasePort
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.17.6.1.2.2.1.2
+#       name: dot1dRegenUserPriority
+#       syntax: Integer32
+#   discovery_attribute: dot1dPortOutboundAccessPriority
+#   attributes:
+#     dot1dPortOutboundAccessPriority:
+#       oid: .1.3.6.1.2.1.17.6.1.2.4.1.1
+#       name: dot1dPortOutboundAccessPriority
+#       syntax: Integer32
+
+# P-BRIDGE-MIB::dot1dPortGarpEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dPortGarpEntry
+#   augments: BRIDGE-MIB::dot1dBasePortEntry
+#   discovery_attribute: dot1dPortGarpJoinTime
+#   attributes:
+#     dot1dPortGarpJoinTime:
+#       oid: .1.3.6.1.2.1.17.6.1.3.1.1.1
+#       name: dot1dPortGarpJoinTime
+#       syntax: Integer32
+#     dot1dPortGarpLeaveTime:
+#       oid: .1.3.6.1.2.1.17.6.1.3.1.1.2
+#       name: dot1dPortGarpLeaveTime
+#       syntax: Integer32
+#     dot1dPortGarpLeaveAllTime:
+#       oid: .1.3.6.1.2.1.17.6.1.3.1.1.3
+#       name: dot1dPortGarpLeaveAllTime
+#       syntax: Integer32
+
+P-BRIDGE-MIB::dot1dPortGmrpEntry:
+  mib: P-BRIDGE-MIB
+  object: dot1dPortGmrpEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: dot1dPortGmrpStatus
+  attributes:
+    dot1dPortGmrpStatus:
+      oid: .1.3.6.1.2.1.17.6.1.4.1.1.1
+      name: bridge.port.gmrp.status
+      syntax: EnumInteger
+    dot1dPortGmrpFailedRegistrations:
+      oid: .1.3.6.1.2.1.17.6.1.4.1.1.2
+      name: bridge.port.gmrp.registrations.failed
+      syntax: Counter32
+    dot1dPortGmrpLastPduOrigin:
+      oid: .1.3.6.1.2.1.17.6.1.4.1.1.3
+      name: bridge.port.gmrp.last_origin
+      syntax: MacAddress
+    dot1dPortRestrictedGroupRegistration:
+      oid: .1.3.6.1.2.1.17.6.1.4.1.1.4
+      name: bridge.port.gmrp.restrict_group_reg
+      syntax: TruthValue
+
+P-BRIDGE-MIB::dot1dTpHCPortEntry:
+  mib: P-BRIDGE-MIB
+  object: dot1dTpHCPortEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: dot1dTpHCPortInFrames
+  attributes:
+    dot1dTpHCPortInFrames:
+      oid: .1.3.6.1.2.1.17.4.5.1.1
+      name: bridge.port.transparent.frames.in
+      syntax: Counter64
+      overrides:
+        object: BRIDGE-MIB::dot1dTpPortEntry
+        attribute: dot1dTpPortInFrames
+    dot1dTpHCPortOutFrames:
+      oid: .1.3.6.1.2.1.17.4.5.1.2
+      name: bridge.port.transparent.frames.out
+      syntax: Counter64
+      overrides:
+        object: BRIDGE-MIB::dot1dTpPortEntry
+        attribute: dot1dTpPortOutFrames
+    dot1dTpHCPortInDiscards:
+      oid: .1.3.6.1.2.1.17.4.5.1.3
+      name: bridge.port.transparent.frames.discard.in
+      syntax: Counter64
+      overrides:
+        object: BRIDGE-MIB::dot1dTpPortEntry
+        attribute: dot1dTpPortInDiscards
+
+# P-BRIDGE-MIB::dot1dTpPortOverflowEntry:
+#   mib: P-BRIDGE-MIB
+#   object: dot1dTpPortOverflowEntry
+#   augments: BRIDGE-MIB::dot1dBasePortEntry
+#   discovery_attribute: dot1dTpPortInOverflowFrames
+#   attributes:
+#     dot1dTpPortInOverflowFrames:
+#       oid: .1.3.6.1.2.1.17.4.6.1.1
+#       name: dot1dTpPortInOverflowFrames
+#       syntax: Counter32
+#     dot1dTpPortOutOverflowFrames:
+#       oid: .1.3.6.1.2.1.17.4.6.1.2
+#       name: dot1dTpPortOutOverflowFrames
+#       syntax: Counter32
+#     dot1dTpPortInOverflowDiscards:
+#       oid: .1.3.6.1.2.1.17.4.6.1.3
+#       name: dot1dTpPortInOverflowDiscards
+#       syntax: Counter32
