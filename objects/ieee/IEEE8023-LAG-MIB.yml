@@ -1,0 +1,444 @@
+IEEE8023-LAG-MIB::lagMIBObjects:
+  mib: IEEE8023-LAG-MIB
+  object: lagMIBObjects
+  discovery_attribute: dot3adTablesLastChanged
+  attributes:
+    dot3adTablesLastChanged:
+      oid: .1.2.840.10006.300.43.1.3
+      name: netif.lag.tables.last_chg
+      syntax: TimeTicks
+      rediscover: OnChange
+
+IEEE8023-LAG-MIB::dot3adAggEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggEntry
+  index:
+    - type: Integer32
+      oid: .1.2.840.10006.300.43.1.1.1.1.1
+      name: netif # dot3adAggIndex
+      syntax: InterfaceIndex
+  discovery_attribute: dot3adAggMACAddress
+  attributes:
+    dot3adAggMACAddress:
+      oid: .1.2.840.10006.300.43.1.1.1.1.2
+      name: netif.mac
+      syntax: MacAddress
+    dot3adAggActorSystemPriority:
+      oid: .1.2.840.10006.300.43.1.1.1.1.3
+      name: netif.lag.actor.system.priority
+      syntax: Integer32
+    dot3adAggActorSystemID:
+      oid: .1.2.840.10006.300.43.1.1.1.1.4
+      name: netif.lag.actor.system.id
+      syntax: MacAddressNoSuffix
+    dot3adAggAggregateOrIndividual:
+      oid: .1.2.840.10006.300.43.1.1.1.1.5
+      name: netif.lag.aggregate
+      syntax: TruthValue
+    dot3adAggActorAdminKey:
+      oid: .1.2.840.10006.300.43.1.1.1.1.6
+      name: netif.lag.actor.key.admin
+      syntax: Integer32
+    dot3adAggActorOperKey:
+      oid: .1.2.840.10006.300.43.1.1.1.1.7
+      name: netif.lag.actor.key.oper
+      syntax: Integer32
+    dot3adAggPartnerSystemID:
+      oid: .1.2.840.10006.300.43.1.1.1.1.8
+      name: netif.lag.partner.system.id
+      syntax: MacAddressNoSuffix
+    dot3adAggPartnerSystemPriority:
+      oid: .1.2.840.10006.300.43.1.1.1.1.9
+      name: netif.lag.partner.system.priority
+      syntax: Integer32
+    dot3adAggPartnerOperKey:
+      oid: .1.2.840.10006.300.43.1.1.1.1.10
+      name: netif.lag.partner.key.oper
+      syntax: Integer32
+    dot3adAggCollectorMaxDelay:
+      oid: .1.2.840.10006.300.43.1.1.1.1.11
+      name: netif.lag.collect.delay_max
+      syntax: OpTicksTenMicroSec
+
+IEEE8023-LAG-MIB::dot3adAggPortListEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortListEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggEntry
+  discovery_attribute: dot3adAggPortListPorts
+  attributes:
+    dot3adAggPortListPorts:
+      oid: .1.2.840.10006.300.43.1.1.2.1.1
+      name: netif.lag.port_list
+      syntax: OctetString
+
+IEEE8023-LAG-MIB::dot3adAggXEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggXEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggEntry
+  discovery_attribute: dot3adAggDescription
+  attributes:
+    dot3adAggDescription:
+      oid: .1.2.840.10006.300.43.1.1.3.1.1
+      name: netif.lag.descr
+      syntax: DisplayString
+    dot3adAggName:
+      oid: .1.2.840.10006.300.43.1.1.3.1.2
+      name: netif.lag.name
+      syntax: DisplayString
+    dot3adAggAdminState:
+      oid: .1.2.840.10006.300.43.1.1.3.1.3
+      name: netif.lag.state.admin
+      syntax: EnumInteger
+    dot3adAggOperState:
+      oid: .1.2.840.10006.300.43.1.1.3.1.4
+      name: netif.lag.state.oper
+      syntax: EnumInteger
+    dot3adAggTimeOfLastOperChange:
+      oid: .1.2.840.10006.300.43.1.1.3.1.5
+      name: netif.lag.state.oper.last_chg
+      syntax: Integer32
+    dot3adAggDataRate:
+      oid: .1.2.840.10006.300.43.1.1.3.1.6
+      name: netif.lag.bandwidth.bw
+      syntax: Integer32
+    dot3adAggOctetsTxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.7
+      name: netif.lag.bytes.out
+      syntax: Counter64
+    dot3adAggOctetsRxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.8
+      name: netif.lag.bytes.in
+      syntax: Counter64
+    dot3adAggFramesTxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.9
+      name: netif.lag.packets.out
+      syntax: Counter64
+    dot3adAggFramesRxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.10
+      name: netif.lag.packets.in
+      syntax: Counter64
+    dot3adAggMulticastFramesTxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.11
+      name: netif.lag.packets.mcast.out
+      syntax: Counter64
+    dot3adAggMulticastFramesRxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.12
+      name: netif.lag.packets.mcast.in
+      syntax: Counter64
+    dot3adAggBroadcastFramesTxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.13
+      name: netif.lag.packets.bcast.out
+      syntax: Counter64
+    dot3adAggBroadcastFramesRxOK:
+      oid: .1.2.840.10006.300.43.1.1.3.1.14
+      name: netif.lag.packets.bcast.in
+      syntax: Counter64
+    dot3adAggFramesDiscardedOnTx:
+      oid: .1.2.840.10006.300.43.1.1.3.1.15
+      name: netif.lag.packets.discard.out
+      syntax: Counter64
+    dot3adAggFramesDiscardedOnRx:
+      oid: .1.2.840.10006.300.43.1.1.3.1.16
+      name: netif.lag.packets.discard.in
+      syntax: Counter64
+    dot3adAggFramesWithTxErrors:
+      oid: .1.2.840.10006.300.43.1.1.3.1.17
+      name: netif.lag.packets.error.out
+      syntax: Counter64
+    dot3adAggFramesWithRxErrors:
+      oid: .1.2.840.10006.300.43.1.1.3.1.18
+      name: netif.lag.packets.error.in
+      syntax: Counter64
+    dot3adAggUnknownProtocolFrames:
+      oid: .1.2.840.10006.300.43.1.1.3.1.19
+      name: netif.lag.packets.unkproto.in
+      syntax: Counter64
+    dot3adAggPortAlgorithm:
+      oid: .1.2.840.10006.300.43.1.1.3.1.21
+      name: netif.lag.port.algorithm.id
+      syntax: OctetString
+    dot3adAggPartnerAdminPortAlgorithm:
+      oid: .1.2.840.10006.300.43.1.1.3.1.22
+      name: netif.lag.partner.port.algorithm.id
+      syntax: OctetString
+    dot3adAggPartnerAdminPortConversationListDigest:
+      oid: .1.2.840.10006.300.43.1.1.3.1.23
+      name: netif.lag.partner.port.conversation_list.digest
+      syntax: OctetString
+    dot3adAggAdminDiscardWrongConversation:
+      oid: .1.2.840.10006.300.43.1.1.3.1.24
+      name: netif.lag.discard_wrong_conversation
+      syntax: TruthValue
+    dot3adAggPartnerAdminConvServiceMappingDigest:
+      oid: .1.2.840.10006.300.43.1.1.3.1.25
+      name: netif.lag.partner.conversation_service_mapping.digest
+      syntax: OctetString
+    dot3adAggAdminDiscardWrongConversation2:
+      oid: .1.2.840.10006.300.43.1.1.3.1.26
+      name: netif.lag.discard_wrong_conversation
+      syntax: EnumInteger
+      overrides:
+        object: IEEE8023-LAG-MIB::dot3adAggXEntry
+        attribute: dot3adAggAdminDiscardWrongConversation
+
+IEEE8023-LAG-MIB::dot3adAggPortEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortEntry
+  index:
+    - type: Integer32
+      oid: .1.2.840.10006.300.43.1.2.1.1.1
+      name: netif # dot3adAggPortIndex
+      syntax: InterfaceIndex
+  discovery_attribute: dot3adAggPortActorSystemPriority
+  attributes:
+    dot3adAggPortActorSystemPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.2
+      name: netif.lag.port.actor.system.priority
+      syntax: Integer32
+    dot3adAggPortActorSystemID:
+      oid: .1.2.840.10006.300.43.1.2.1.1.3
+      name: netif.lag.port.actor.system.id
+      syntax: MacAddressNoSuffix
+    dot3adAggPortActorAdminKey:
+      oid: .1.2.840.10006.300.43.1.2.1.1.4
+      name: netif.lag.port.actor.key.admin
+      syntax: Integer32
+    dot3adAggPortActorOperKey:
+      oid: .1.2.840.10006.300.43.1.2.1.1.5
+      name: netif.lag.port.actor.key.oper
+      syntax: Integer32
+    dot3adAggPortPartnerAdminSystemPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.6
+      name: netif.lag.port.partner.system.priority.admin
+      syntax: Integer32
+    dot3adAggPortPartnerOperSystemPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.7
+      name: netif.lag.port.partner.system.priority.oper
+      syntax: Integer32
+    dot3adAggPortPartnerAdminSystemID:
+      oid: .1.2.840.10006.300.43.1.2.1.1.8
+      name: netif.lag.port.partner.system.id.admin
+      syntax: MacAddressNoSuffix
+    dot3adAggPortPartnerOperSystemID:
+      oid: .1.2.840.10006.300.43.1.2.1.1.9
+      name: netif.lag.port.partner.system.id.oper
+      syntax: MacAddressNoSuffix
+    dot3adAggPortPartnerAdminKey:
+      oid: .1.2.840.10006.300.43.1.2.1.1.10
+      name: netif.lag.port.partner.key.admin
+      syntax: Integer32
+    dot3adAggPortPartnerOperKey:
+      oid: .1.2.840.10006.300.43.1.2.1.1.11
+      name: netif.lag.port.partner.key.oper
+      syntax: Integer32
+    dot3adAggPortSelectedAggID:
+      oid: .1.2.840.10006.300.43.1.2.1.1.12
+      name: netif.lag.port.selected
+      syntax: InterfaceIndex
+    dot3adAggPortAttachedAggID:
+      oid: .1.2.840.10006.300.43.1.2.1.1.13
+      name: netif.lag.port.attached
+      syntax: InterfaceIndex
+    dot3adAggPortActorPort:
+      oid: .1.2.840.10006.300.43.1.2.1.1.14
+      name: netif.lag.port.actor.port
+      syntax: Integer32
+    dot3adAggPortActorPortPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.15
+      name: netif.lag.port.actor.port.priority
+      syntax: Integer32
+    dot3adAggPortPartnerAdminPort:
+      oid: .1.2.840.10006.300.43.1.2.1.1.16
+      name: netif.lag.port.partner.port.admin
+      syntax: Integer32
+    dot3adAggPortPartnerOperPort:
+      oid: .1.2.840.10006.300.43.1.2.1.1.17
+      name: netif.lag.port.partner.port.oper
+      syntax: Integer32
+    dot3adAggPortPartnerAdminPortPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.18
+      name: netif.lag.port.partner.port.priority.admin
+      syntax: Integer32
+    dot3adAggPortPartnerOperPortPriority:
+      oid: .1.2.840.10006.300.43.1.2.1.1.19
+      name: netif.lag.port.partner.port.priority.oper
+      syntax: Integer32
+    dot3adAggPortActorAdminState:
+      oid: .1.2.840.10006.300.43.1.2.1.1.20
+      name: netif.lag.port.actor.state.admin
+      syntax: EnumBitmap
+    dot3adAggPortActorOperState:
+      oid: .1.2.840.10006.300.43.1.2.1.1.21
+      name: netif.lag.port.actor.state.oper
+      syntax: EnumBitmap
+    dot3adAggPortPartnerAdminState:
+      oid: .1.2.840.10006.300.43.1.2.1.1.22
+      name: netif.lag.port.partner.state.admin
+      syntax: EnumBitmap
+    dot3adAggPortPartnerOperState:
+      oid: .1.2.840.10006.300.43.1.2.1.1.23
+      name: netif.lag.port.partner.state.oper
+      syntax: EnumBitmap
+    dot3adAggPortAggregateOrIndividual:
+      oid: .1.2.840.10006.300.43.1.2.1.1.24
+      name: netif.lag.port.aggregate
+      syntax: TruthValue
+
+IEEE8023-LAG-MIB::dot3adAggPortStatsEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortStatsEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggPortEntry
+  discovery_attribute: dot3adAggPortStatsLACPDUsRx
+  attributes:
+    dot3adAggPortStatsLACPDUsRx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.1
+      name: netif.lag.port.lacpdus.in
+      syntax: Counter32
+    dot3adAggPortStatsMarkerPDUsRx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.2
+      name: netif.lag.port.markers.in
+      syntax: Counter32
+    dot3adAggPortStatsMarkerResponsePDUsRx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.3
+      name: netif.lag.port.marker_resps.in
+      syntax: Counter32
+    dot3adAggPortStatsUnknownRx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.4
+      name: netif.lag.port.frames.unknown.in
+      syntax: Counter32
+    dot3adAggPortStatsIllegalRx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.5
+      name: netif.lag.port.frames.illegal.in
+      syntax: Counter32
+    dot3adAggPortStatsLACPDUsTx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.6
+      name: netif.lag.port.lacpdus.out
+      syntax: Counter32
+    dot3adAggPortStatsMarkerPDUsTx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.7
+      name: netif.lag.port.markers.out
+      syntax: Counter32
+    dot3adAggPortStatsMarkerResponsePDUsTx:
+      oid: .1.2.840.10006.300.43.1.2.2.1.8
+      name: netif.lag.port.marker_resps.out
+      syntax: Counter32
+
+IEEE8023-LAG-MIB::dot3adAggPortDebugEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortDebugEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggPortEntry
+  discovery_attribute: dot3adAggPortDebugRxState
+  attributes:
+    dot3adAggPortDebugRxState:
+      oid: .1.2.840.10006.300.43.1.2.3.1.1
+      name: netif.lag.port.debug.rcv.state
+      syntax: EnumInteger
+    dot3adAggPortDebugLastRxTime:
+      oid: .1.2.840.10006.300.43.1.2.3.1.2
+      name: netif.lag.port.debug.rcv.last_time
+      syntax: TimeTicks
+    dot3adAggPortDebugMuxState:
+      oid: .1.2.840.10006.300.43.1.2.3.1.3
+      name: netif.lag.port.debug.mux.state
+      syntax: EnumInteger
+    dot3adAggPortDebugMuxReason:
+      oid: .1.2.840.10006.300.43.1.2.3.1.4
+      name: netif.lag.port.debug.mux.reason
+      syntax: DisplayString
+    dot3adAggPortDebugActorChurnState:
+      oid: .1.2.840.10006.300.43.1.2.3.1.5
+      name: netif.lag.port.debug.actor.churn.state
+      syntax: EnumInteger
+    dot3adAggPortDebugPartnerChurnState:
+      oid: .1.2.840.10006.300.43.1.2.3.1.6
+      name: netif.lag.port.debug.partner.churn.state
+      syntax: EnumInteger
+    dot3adAggPortDebugActorChurnCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.7
+      name: netif.lag.port.debug.actor.churns
+      syntax: Counter32
+    dot3adAggPortDebugPartnerChurnCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.8
+      name: netif.lag.port.debug.partner.churns
+      syntax: Counter32
+    dot3adAggPortDebugActorSyncTransitionCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.9
+      name: netif.lag.port.debug.actor.sync_transitions
+      syntax: Counter32
+    dot3adAggPortDebugPartnerSyncTransitionCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.10
+      name: netif.lag.port.debug.partner.sync_transitions
+      syntax: Counter32
+    dot3adAggPortDebugActorChangeCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.11
+      name: netif.lag.port.debug.actor.chgs
+      syntax: Counter32
+    dot3adAggPortDebugPartnerChangeCount:
+      oid: .1.2.840.10006.300.43.1.2.3.1.12
+      name: netif.lag.port.debug.partner.chgs
+      syntax: Counter32
+
+IEEE8023-LAG-MIB::dot3adAggPortXEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortXEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggPortEntry
+  discovery_attribute: dot3adAggPortProtocolDA
+  attributes:
+    dot3adAggPortProtocolDA:
+      oid: .1.2.840.10006.300.43.1.2.4.1.1
+      name: netif.lag.port.proto_da
+      syntax: MacAddressNoSuffix
+
+IEEE8023-LAG-MIB::dot3adAggPortSecondXEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortSecondXEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggPortEntry
+  discovery_attribute: dot3adAggPortOperConversationPasses
+  attributes:
+    dot3adAggPortOperConversationPasses:
+      oid: .1.2.840.10006.300.43.1.2.5.1.1
+      name: netif.lag.port.conversation_passes
+      syntax: OctetString
+    dot3adAggPortOperConversationCollected:
+      oid: .1.2.840.10006.300.43.1.2.5.1.2
+      name: netif.lag.port.conversation_collected
+      syntax: OctetString
+    dot3adAggPortLinkNumberId:
+      oid: .1.2.840.10006.300.43.1.2.5.1.3
+      name: netif.lag.port.link_number_id
+      syntax: Integer32
+    dot3adAggPortPartnerAdminLinkNumberId:
+      oid: .1.2.840.10006.300.43.1.2.5.1.4
+      name: netif.lag.port.partner.link_number_id
+      syntax: Integer32
+    dot3adAggPortWTRTime:
+      oid: .1.2.840.10006.300.43.1.2.5.1.5
+      name: netif.lag.port.wtr_time
+      syntax: Integer32
+    dot3adAggPortEnableLongPDUXmit:
+      oid: .1.2.840.10006.300.43.1.2.5.1.6
+      name: netif.lag.port.long_pdu_transmit
+      syntax: TruthValue
+
+IEEE8023-LAG-MIB::dot3adAggPortDebugXEntry:
+  mib: IEEE8023-LAG-MIB
+  object: dot3adAggPortDebugXEntry
+  augments: IEEE8023-LAG-MIB::dot3adAggPortEntry
+  discovery_attribute: dot3adAggPortDebugActorCDSChurnState
+  attributes:
+    dot3adAggPortDebugActorCDSChurnState:
+      oid: .1.2.840.10006.300.43.1.2.6.1.1
+      name: netif.lag.port.debug.actor.cds.churn.state
+      syntax: EnumInteger
+    dot3adAggPortDebugPartnerCDSChurnState:
+      oid: .1.2.840.10006.300.43.1.2.6.1.2
+      name: netif.lag.port.debug.partner.cds.churn.state
+      syntax: EnumInteger
+    dot3adAggPortDebugActorCDSChurnCount:
+      oid: .1.2.840.10006.300.43.1.2.6.1.3
+      name: netif.lag.port.debug.actor.cds.churns
+      syntax: Counter64
+    dot3adAggPortDebugPartnerCDSChurnCount:
+      oid: .1.2.840.10006.300.43.1.2.6.1.4
+      name: netif.lag.port.debug.partner.cds.churns
+      syntax: Counter64
