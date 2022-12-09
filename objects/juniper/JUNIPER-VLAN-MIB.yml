@@ -1,0 +1,171 @@
+JUNIPER-VLAN-MIB::jnxVlanEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxVlanEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.1.1.1
+      name: vlan.tag.name
+      syntax: DisplayString
+  discovery_attribute: jnxVlanID
+  attributes:
+    jnxVlanID:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.1.1.2
+      name: vlan.tag.id
+      syntax: Integer32
+    jnxVlanType:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.1.1.3
+      name: juniper.vlan.type
+      syntax: EnumInteger
+    jnxVlanPortGroupInstance:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.1.1.4
+      name: juniper.vlan.port_group.id
+      syntax: Integer32
+    jnxVlanMacListInstance:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.1.1.5
+      name: juniper.vlan.mac_list.id
+      syntax: Integer32
+
+JUNIPER-VLAN-MIB::jnxVlanInterfaceEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxVlanInterfaceEntry
+  augments: JUNIPER-VLAN-MIB::jnxVlanEntry
+  discovery_attribute: jnxVlanInterfaceIpAddress
+  attributes:
+    jnxVlanInterfaceIpAddress:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.1
+      name: vlan
+      syntax: IpAddress
+    jnxVlanInterfaceSubNetMask:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.3
+      name: vlan.ip.subnet.mask
+      syntax: IpAddressNoSuffix
+    jnxVlanInterfaceBroadcastAddress:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.4
+      name: vlan.ip.subnet.bcast
+      syntax: IpAddressNoSuffix
+    jnxVlanInterfaceDescription:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.5
+      name: netif.name
+      syntax: DisplayString
+    jnxVlanInterfaceAdminStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.6
+      name: netif.state.admin
+      syntax: EnumInteger
+    jnxVlanInterfaceOperStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.7
+      name: netif.state.oper.name
+      syntax: DisplayString
+    jnxVlanSnmpIfIndex:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.2.1.8
+      name: netif
+      syntax: InterfaceIndex
+
+JUNIPER-VLAN-MIB::jnxVlanPortGroupEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxVlanPortGroupEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.3.1.1
+      name: juniper.vlan.port_group.id # jnxVlanPortGroupIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.3.1.2
+      name: netif # jnxVlanPort
+      syntax: InterfaceIndex
+  discovery_attribute: jnxVlanPortStatus
+  attributes:
+    jnxVlanPortStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.3.1.3
+      name: juniper.vlan.port.state
+      syntax: EnumInteger
+
+JUNIPER-VLAN-MIB::jnxExVlanEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxExVlanEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.5.1.1
+      name: juniper.vlan.id # jnxExVlanID
+      syntax: Integer32
+  discovery_attribute: jnxExVlanName
+  attributes:
+    jnxExVlanName:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.5.1.2
+      tag: true
+      name: vlan.tag.name
+      syntax: DisplayString
+    jnxExVlanType:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.5.1.3
+      name: juniper.vlan.type
+      syntax: EnumInteger
+    jnxExVlanPortGroupInstance:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.5.1.4
+      name: juniper.vlan.port_group.id
+      syntax: Integer32
+    jnxExVlanTag:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.5.1.5
+      tag: true
+      name: vlan.tag.id
+      syntax: Unsigned32
+
+JUNIPER-VLAN-MIB::jnxExVlanInterfaceEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxExVlanInterfaceEntry
+  augments: JUNIPER-VLAN-MIB::jnxExVlanEntry
+  discovery_attribute: jnxExVlanInterfaceIpAddress
+  attributes:
+    jnxExVlanInterfaceIpAddress:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.2
+      name: vlan
+      syntax: IpAddress
+    jnxExVlanInterfacePrefixLength:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.3
+      name: vlan.ip.subnet.mask_size
+      syntax: Unsigned32
+    jnxExVlanInterfaceBroadcastAddress:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.4
+      name: vlan.ip.subnet.bcast
+      syntax: IpAddressNoSuffix
+    jnxExVlanInterfaceDescription:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.5
+      name: netif.name
+      syntax: DisplayString
+    jnxExVlanInterfaceAdminStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.6
+      name: netif.state.admin
+      syntax: EnumInteger
+    jnxExVlanInterfaceOperStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.7
+      name: netif.state.oper
+      syntax: EnumInteger
+    jnxExVlanSnmpIfIndex:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.6.1.8
+      name: netif
+      syntax: InterfaceIndex
+
+JUNIPER-VLAN-MIB::jnxExVlanPortGroupEntry:
+  mib: JUNIPER-VLAN-MIB
+  object: jnxExVlanPortGroupEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.7.1.1
+      name: juniper.vlan.port_group.id # jnxExVlanPortGroupIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.7.1.2
+      name: netif # jnxExVlanPort
+      syntax: InterfaceIndex
+  discovery_attribute: jnxExVlanPortStatus
+  attributes:
+    jnxExVlanPortStatus:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.7.1.3
+      name: juniper.vlan.port.state
+      syntax: EnumInteger
+    jnxExVlanPortTagness:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.7.1.4
+      name: juniper.vlan.port.tagness
+      syntax: EnumInteger
+    jnxExVlanPortAccessMode:
+      oid: .1.3.6.1.4.1.2636.3.40.1.5.1.7.1.5
+      name: juniper.vlan.port.access_mode
+      syntax: EnumInteger
