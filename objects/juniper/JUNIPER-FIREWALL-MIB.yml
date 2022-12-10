@@ -1,0 +1,84 @@
+JUNIPER-FIREWALL-MIB::jnxFirewallsEntry:
+  mib: JUNIPER-FIREWALL-MIB
+  object: jnxFirewallsEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.5.1.1.1
+      name: juniper.firewall.filter.name # jnxFWFilter
+      syntax: DisplayString
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.5.1.1.2
+      name: juniper.firewall.counter.name # jnxFWCounter
+      syntax: DisplayString
+  discovery_attribute: jnxFWType
+  attributes:
+    jnxFWType:
+      oid: .1.3.6.1.4.1.2636.3.5.1.1.3
+      name: juniper.firewall.type
+      syntax: EnumInteger
+    jnxFWPackets:
+      oid: .1.3.6.1.4.1.2636.3.5.1.1.4
+      name: juniper.firewall.packets
+      syntax: Counter64
+    jnxFWBytes:
+      oid: .1.3.6.1.4.1.2636.3.5.1.1.5
+      name: juniper.firewall.bytes
+      syntax: Counter64
+
+JUNIPER-FIREWALL-MIB::jnxFirewallCounterEntry:
+  mib: JUNIPER-FIREWALL-MIB
+  object: jnxFirewallCounterEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.5.2.1.1
+      name: juniper.firewall.filter.name # jnxFWCounterFilterName
+      syntax: DisplayString
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.5.2.1.2
+      name: juniper.firewall.counter.name # jnxFWCounterName
+      syntax: DisplayString
+    - type: Integer
+      oid: .1.3.6.1.4.1.2636.3.5.2.1.3
+      name: juniper.firewall.counter.type # jnxFWCounterType
+      syntax: EnumInteger
+  discovery_attribute: jnxFWCounterPacketCount
+  attributes:
+    jnxFWCounterPacketCount:
+      oid: .1.3.6.1.4.1.2636.3.5.2.1.4
+      name: juniper.firewall.counter.packets
+      syntax: Counter64
+    jnxFWCounterByteCount:
+      oid: .1.3.6.1.4.1.2636.3.5.2.1.5
+      name: juniper.firewall.counter.bytes
+      syntax: Counter64
+
+JUNIPER-FIREWALL-MIB::jnxFWCntrXEntry:
+  mib: JUNIPER-FIREWALL-MIB
+  object: jnxFWCntrXEntry
+  augments: JUNIPER-FIREWALL-MIB::jnxFirewallCounterEntry
+  discovery_attribute: jnxFWCntrPolicerOfferedPktCount
+  attributes:
+    jnxFWCntrPolicerOfferedPktCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.1
+      name: juniper.firewall.policer.packets.offered
+      syntax: Counter64
+    jnxFWCntrPolicerOfferedByteCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.2
+      name: juniper.firewall.policer.bytes.offered
+      syntax: Counter64
+    jnxFWCntrPolicerOutSpecPktCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.3
+      name: juniper.firewall.policer.packets.out_of_spec
+      syntax: Counter64
+    jnxFWCntrPolicerOutSpecByteCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.4
+      name: juniper.firewall.policer.bytes.out_of_spec
+      syntax: Counter64
+    jnxFWCntrPolicerTxPktCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.5
+      name: juniper.firewall.policer.packets.out
+      syntax: Counter64
+    jnxFWCntrPolicerTxByteCount:
+      oid: .1.3.6.1.4.1.2636.3.5.3.1.6
+      name: juniper.firewall.policer.bytes.out
+      syntax: Counter64
