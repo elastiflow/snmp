@@ -1,0 +1,424 @@
+MPLS-TE-STD-MIB::mplsTeScalars:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTeScalars
+  discovery_attribute: mplsTunnelConfigured
+  attributes:
+    mplsTunnelConfigured:
+      oid: .1.3.6.1.2.1.10.166.3.1.1
+      name: mpls.tunnel.config
+      syntax: Unsigned32
+    mplsTunnelActive:
+      oid: .1.3.6.1.2.1.10.166.3.1.2
+      name: mpls.tunnel.active
+      syntax: Unsigned32
+    mplsTunnelTEDistProto:
+      oid: .1.3.6.1.2.1.10.166.3.1.3
+      name: mpls.tunnel.te.distrib_proto
+      syntax: EnumBitmap
+    mplsTunnelMaxHops:
+      oid: .1.3.6.1.2.1.10.166.3.1.4
+      name: mpls.tunnel.max_hops
+      syntax: Unsigned32
+    mplsTunnelNotificationMaxRate:
+      oid: .1.3.6.1.2.1.10.166.3.1.5
+      name: mpls.tunnel.notifs.max_rate
+      syntax: Unsigned32
+
+MPLS-TE-STD-MIB::mplsTunnelEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.1
+      name: mpls.tunnel.index # mplsTunnelIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.2
+      name: mpls.tunnel.instance # mplsTunnelInstance
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.3
+      name: mpls.tunnel.ingress.lsr.id # mplsTunnelIngressLSRId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.4
+      name: mpls.tunnel.egress.lsr.id # mplsTunnelEgressLSRId
+      syntax: Unsigned32
+  discovery_attribute: mplsTunnelName
+  attributes:
+    mplsTunnelName:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.5
+      tag: true
+      name: mpls.tunnel.name
+      syntax: DisplayString
+    mplsTunnelDescr:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.6
+      tag: true
+      name: mpls.tunnel.descr
+      syntax: DisplayString
+    mplsTunnelIsIf:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.7
+      name: mpls.tunnel.is_netif
+      syntax: TruthValue
+    mplsTunnelIfIndex:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.8
+      name: mpls.tunnel.netif
+      syntax: InterfaceIndexOrZero
+    mplsTunnelOwner:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.9
+      name: mpls.tunnel.owner
+      syntax: EnumInteger
+    mplsTunnelRole:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.10
+      name: mpls.tunnel.role
+      syntax: EnumInteger
+    mplsTunnelXCPointer:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.11
+      name: mpls.tunnel.cross_connect.pointer
+      syntax: RowPointer
+    mplsTunnelSignallingProto:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.12
+      name: mpls.tunnel.signal.proto
+      syntax: EnumInteger
+    mplsTunnelSetupPrio:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.13
+      name: mpls.tunnel.priority.setup
+      syntax: Integer32
+    mplsTunnelHoldingPrio:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.14
+      name: mpls.tunnel.priority.holding
+      syntax: Integer32
+    mplsTunnelSessionAttributes:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.15
+      name: mpls.tunnel.session.attr
+      syntax: EnumBitmap
+    mplsTunnelLocalProtectInUse:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.16
+      name: mpls.tunnel.local.protect.in_use
+      syntax: TruthValue
+    mplsTunnelResourcePointer:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.17
+      name: mpls.tunnel.resource.pointer
+      syntax: RowPointer
+    mplsTunnelPrimaryInstance:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.18
+      name: mpls.tunnel.primary.instance
+      syntax: Unsigned32
+    mplsTunnelInstancePriority:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.19
+      name: mpls.tunnel.instance.priority
+      syntax: Unsigned32
+    mplsTunnelHopTableIndex:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.20
+      name: mpls.tunnel.hop.index
+      syntax: Unsigned32
+    mplsTunnelPathInUse:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.21
+      name: mpls.tunnel.path.in_use
+      syntax: Unsigned32
+    mplsTunnelARHopTableIndex:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.22
+      name: mpls.tunnel.actual_route.hop.index
+      syntax: Unsigned32
+    mplsTunnelCHopTableIndex:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.23
+      name: mpls.tunnel.cspf.hop.index
+      syntax: Unsigned32
+    mplsTunnelIncludeAnyAffinity:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.24
+      name: mpls.tunnel.affinity.incl_any
+      syntax: Unsigned32
+    mplsTunnelIncludeAllAffinity:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.25
+      name: mpls.tunnel.affinity.incl_all
+      syntax: Unsigned32
+    mplsTunnelExcludeAnyAffinity:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.26
+      name: mpls.tunnel.affinity.excl_any
+      syntax: Unsigned32
+    mplsTunnelTotalUpTime:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.27
+      name: mpls.tunnel.total.uptime
+      syntax: TimeTicks
+    mplsTunnelInstanceUpTime:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.28
+      name: mpls.tunnel.instance.uptime
+      syntax: TimeTicks
+    mplsTunnelPrimaryUpTime:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.29
+      name: mpls.tunnel.primary.uptime
+      syntax: TimeTicks
+    mplsTunnelPathChanges:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.30
+      name: mpls.tunnel.path_chgs
+      syntax: Counter32
+    mplsTunnelLastPathChange:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.31
+      name: mpls.tunnel.last_path_chg
+      syntax: TimeTicks
+    mplsTunnelCreationTime:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.32
+      name: mpls.tunnel.create.sysuptime
+      syntax: TimeStamp
+    mplsTunnelStateTransitions:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.33
+      name: mpls.tunnel.state.transitions
+      syntax: Counter32
+    mplsTunnelAdminStatus:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.34
+      name: mpls.tunnel.state.admin
+      syntax: EnumInteger
+    mplsTunnelOperStatus:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.35
+      name: mpls.tunnel.state.oper
+      syntax: EnumInteger
+    mplsTunnelStorageType:
+      oid: .1.3.6.1.2.1.10.166.3.2.2.1.37
+      name: mpls.tunnel.storage_type
+      syntax: StorageType
+
+MPLS-TE-STD-MIB::mplsTunnelHopEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelHopEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.1
+      name: mpls.tunnel.hop.list.index # mplsTunnelHopListIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.2
+      name: mpls.tunnel.hop.path_option.index # mplsTunnelHopPathOptionIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.3
+      name: mpls.tunnel.hop.index # mplsTunnelHopIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsTunnelHopAddrType
+  attributes:
+    mplsTunnelHopAddrType:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.4
+      name: mpls.tunnel.hop.addr_type
+      syntax: EnumInteger
+    mplsTunnelHopIpAddr:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.5
+      name: mpls.tunnel.hop
+      syntax: IpAddress
+    mplsTunnelHopIpPrefixLen:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.6
+      name: mpls.tunnel.hop.ip.subnet.mask_size
+      syntax: Unsigned32
+    mplsTunnelHopAsNumber:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.7
+      name: mpls.tunnel.hop.as.asn
+      syntax: OctetString
+    mplsTunnelHopAddrUnnum:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.8
+      name: mpls.tunnel.hop.addr_unnum
+      syntax: OctetString
+    mplsTunnelHopLspId:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.9
+      name: mpls.tunnel.hop.lsp.id
+      syntax: OctetString
+    mplsTunnelHopType:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.10
+      name: mpls.tunnel.hop.type
+      syntax: EnumInteger
+    mplsTunnelHopInclude:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.11
+      name: mpls.tunnel.hop.in_path
+      syntax: TruthValue
+    mplsTunnelHopPathOptionName:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.12
+      name: mpls.tunnel.hop.path_option.name
+      syntax: DisplayString
+    mplsTunnelHopEntryPathComp:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.13
+      name: mpls.tunnel.hop.path_calc
+      syntax: EnumInteger
+    mplsTunnelHopStorageType:
+      oid: .1.3.6.1.2.1.10.166.3.2.4.1.15
+      name: mpls.tunnel.hop.storage_type
+      syntax: StorageType
+
+MPLS-TE-STD-MIB::mplsTunnelResourceEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelResourceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.1
+      name: mpls.tunnel.resource.index # mplsTunnelResourceIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsTunnelResourceMaxRate
+  attributes:
+    mplsTunnelResourceMaxRate:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.2
+      name: mpls.tunnel.resource.rate.max
+      syntax: BandwidthKBits
+    mplsTunnelResourceMeanRate:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.3
+      name: mpls.tunnel.resource.rate.avg
+      syntax: BandwidthKBits
+    mplsTunnelResourceMaxBurstSize:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.4
+      name: mpls.tunnel.resource.burst_size.max
+      syntax: BytesB
+    mplsTunnelResourceMeanBurstSize:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.5
+      name: mpls.tunnel.resource.burst_size.avg
+      syntax: BytesB
+    mplsTunnelResourceExBurstSize:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.6
+      name: mpls.tunnel.resource.burst_size.excess
+      syntax: BytesB
+    mplsTunnelResourceFrequency:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.7
+      name: mpls.tunnel.resource.freq
+      syntax: EnumInteger
+    mplsTunnelResourceWeight:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.8
+      name: mpls.tunnel.resource.weight
+      syntax: Unsigned32
+    mplsTunnelResourceStorageType:
+      oid: .1.3.6.1.2.1.10.166.3.2.6.1.10
+      name: mpls.tunnel.resource.storage_type
+      syntax: StorageType
+
+MPLS-TE-STD-MIB::mplsTunnelARHopEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelARHopEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.1
+      name: mpls.tunnel.hop.list.index # mplsTunnelARHopListIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.2
+      name: mpls.tunnel.hop.index # mplsTunnelARHopIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsTunnelARHopAddrType
+  attributes:
+    mplsTunnelARHopAddrType:
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.3
+      name: mpls.tunnel.actual_route.hop.addr_type
+      syntax: EnumInteger
+    mplsTunnelARHopIpAddr:
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.4
+      tag: true
+      name: mpls.tunnel.actual_route.hop.addr
+      syntax: OctetString
+    mplsTunnelARHopAddrUnnum:
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.5
+      name: mpls.tunnel.actual_route.hop.addr_unnum
+      syntax: OctetString
+    mplsTunnelARHopLspId:
+      oid: .1.3.6.1.2.1.10.166.3.2.7.1.6
+      name: mpls.tunnel.actual_route.hop.lsp.id
+      syntax: OctetString
+
+MPLS-TE-STD-MIB::mplsTunnelCHopEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelCHopEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.1
+      name: mpls.tunnel.hop.list.index # mplsTunnelCHopListIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.2
+      name: mpls.tunnel.hop.index # mplsTunnelCHopIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsTunnelCHopAddrType
+  attributes:
+    mplsTunnelCHopAddrType:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.3
+      name: mpls.tunnel.cspf.hop.addr_type
+      syntax: EnumInteger
+    mplsTunnelCHopIpAddr:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.4
+      tag: true
+      name: mpls.tunnel.cspf.hop
+      syntax: IpAddress
+    mplsTunnelCHopIpPrefixLen:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.5
+      name: mpls.tunnel.cspf.hop.ip.subnet.mask_size
+      syntax: Unsigned32
+    mplsTunnelCHopAsNumber:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.6
+      name: mpls.tunnel.cspf.hop.as.asn
+      syntax: OctetString
+    mplsTunnelCHopAddrUnnum:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.7
+      name: mpls.tunnel.cspf.hop.addr_unnum
+      syntax: OctetString
+    mplsTunnelCHopLspId:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.8
+      name: mpls.tunnel.cspf.hop.lsp.id
+      syntax: OctetString
+    mplsTunnelCHopType:
+      oid: .1.3.6.1.2.1.10.166.3.2.8.1.9
+      name: mpls.tunnel.cspf.hop.type
+      syntax: EnumInteger
+
+MPLS-TE-STD-MIB::mplsTunnelPerfEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelPerfEntry
+  augments: MPLS-TE-STD-MIB::mplsTunnelEntry
+  discovery_attribute: mplsTunnelPerfPackets
+  attributes:
+    mplsTunnelPerfPackets:
+      oid: .1.3.6.1.2.1.10.166.3.2.9.1.1
+      name: mpls.tunnel.packets
+      syntax: Counter32
+    mplsTunnelPerfHCPackets:
+      oid: .1.3.6.1.2.1.10.166.3.2.9.1.2
+      name: mpls.tunnel.packets
+      syntax: Counter64
+      overrides:
+        object: MPLS-TE-STD-MIB::mplsTunnelPerfEntry
+        attribute: mplsTunnelPerfPackets
+    mplsTunnelPerfErrors:
+      oid: .1.3.6.1.2.1.10.166.3.2.9.1.3
+      name: mpls.tunnel.errors
+      syntax: Counter32
+    mplsTunnelPerfBytes:
+      oid: .1.3.6.1.2.1.10.166.3.2.9.1.4
+      name: mpls.tunnel.bytes
+      syntax: Counter32
+    mplsTunnelPerfHCBytes:
+      oid: .1.3.6.1.2.1.10.166.3.2.9.1.5
+      name: mpls.tunnel.bytes
+      syntax: Counter64
+      overrides:
+        object: MPLS-TE-STD-MIB::mplsTunnelPerfEntry
+        attribute: mplsTunnelPerfBytes
+
+MPLS-TE-STD-MIB::mplsTunnelCRLDPResEntry:
+  mib: MPLS-TE-STD-MIB
+  object: mplsTunnelCRLDPResEntry
+  augments: MPLS-TE-STD-MIB::mplsTunnelResourceEntry
+  discovery_attribute: mplsTunnelCRLDPResMeanBurstSize
+  attributes:
+    mplsTunnelCRLDPResMeanBurstSize:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.1
+      name: mpls.tunnel.cr_ldp.resource.burst_size.avg
+      syntax: BytesB
+    mplsTunnelCRLDPResExBurstSize:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.2
+      name: mpls.tunnel.cr_ldp.resource.burst_size.excess
+      syntax: BytesB
+    mplsTunnelCRLDPResFrequency:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.3
+      name: mpls.tunnel.cr_ldp.resource.freq
+      syntax: EnumInteger
+    mplsTunnelCRLDPResWeight:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.4
+      name: mpls.tunnel.cr_ldp.resource.weight
+      syntax: Unsigned32
+    mplsTunnelCRLDPResFlags:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.5
+      name: mpls.tunnel.cr_ldp.resource.flags
+      syntax: EnumBitmap
+    mplsTunnelCRLDPResStorageType:
+      oid: .1.3.6.1.2.1.10.166.3.2.10.1.7
+      name: mpls.tunnel.cr_ldp.resource.storage_type
+      syntax: StorageType
