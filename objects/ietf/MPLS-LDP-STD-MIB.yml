@@ -1,0 +1,326 @@
+MPLS-LDP-STD-MIB::mplsLdpObjects:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpLsrObjects
+  discovery_attribute: mplsLdpLsrId
+  attributes:
+    mplsLdpLsrId:
+      oid: .1.3.6.1.2.1.10.166.4.1.1.1
+      name: ldp.lsr.id
+      syntax: OctetString
+    mplsLdpLsrLoopDetectionCapable:
+      oid: .1.3.6.1.2.1.10.166.4.1.1.2
+      name: ldp.lsr.loop_detect_capable
+      syntax: EnumInteger
+    mplsLdpEntityLastChange:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.1
+      name: ldp.entity.last_chg
+      syntax: TimeStamp
+    mplsLdpPeerLastChange:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.1
+      name: ldp.peer.last_chg
+      syntax: TimeStamp
+    mplsFecLastChange:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.1
+      name: ldp.fec.last_chg
+      syntax: TimeStamp
+    mplsLdpLspFecLastChange:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.9
+      name: ldp.lsp.fec.last_chg
+      syntax: TimeStamp
+
+MPLS-LDP-STD-MIB::mplsLdpEntityEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpEntityEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.1
+      name: ldp.entity.id # mplsLdpEntityLdpId
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.2
+      name: ldp.entity.index # mplsLdpEntityIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsLdpEntityProtocolVersion
+  attributes:
+    mplsLdpEntityProtocolVersion:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.3
+      name: ldp.entity.proto.version.ver
+      syntax: Unsigned32
+    mplsLdpEntityAdminStatus:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.4
+      name: ldp.entity.state.admin
+      syntax: EnumInteger
+    mplsLdpEntityOperStatus:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.5
+      name: ldp.entity.state.oper
+      syntax: EnumInteger
+    mplsLdpEntityTcpPort:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.6
+      name: ldp.entity.tcp.port.id
+      syntax: Unsigned32
+    mplsLdpEntityUdpDscPort:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.7
+      name: ldp.entity.discovery.udp.port.id
+      syntax: Unsigned32
+    mplsLdpEntityMaxPduLength:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.8
+      name: ldp.entity.max_pdu_size
+      syntax: Unsigned32
+    mplsLdpEntityKeepAliveHoldTimer:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.9
+      name: ldp.entity.keep_alive_hold_time
+      syntax: TicksSec
+    mplsLdpEntityHelloHoldTimer:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.10
+      name: ldp.entity.hello_hold_time
+      syntax: TicksSec
+    mplsLdpEntityInitSessionThreshold:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.11
+      name: ldp.entity.session_init_thresh
+      syntax: Integer32
+    mplsLdpEntityLabelDistMethod:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.12
+      name: ldp.entity.label_distribution_method
+      syntax: EnumInteger
+    mplsLdpEntityLabelRetentionMode:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.13
+      name: ldp.entity.label_retention_mode
+      syntax: EnumInteger
+    mplsLdpEntityPathVectorLimit:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.14
+      name: ldp.entity.path_vector_limit
+      syntax: Integer32
+    mplsLdpEntityHopCountLimit:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.15
+      name: ldp.entity.hop_limit
+      syntax: Integer32
+    mplsLdpEntityTransportAddrKind:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.16
+      name: ldp.entity.transport_addr_kind
+      syntax: EnumInteger
+    mplsLdpEntityTargetPeer:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.17
+      name: ldp.entity.target_peer
+      syntax: TruthValue
+    mplsLdpEntityTargetPeerAddr:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.19
+      name: ldp.entity.target_peer
+      syntax: IpAddress
+    mplsLdpEntityLabelType:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.20
+      name: ldp.entity.label.type
+      syntax: EnumInteger
+    mplsLdpEntityDiscontinuityTime:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.21
+      name: ldp.entity.discontinuity_time
+      syntax: TimeStamp
+    mplsLdpEntityStorageType:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.22
+      name: ldp.entity.storage_type
+      syntax: StorageType
+
+MPLS-LDP-STD-MIB::mplsLdpEntityStatsEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpEntityStatsEntry
+  augments: MPLS-LDP-STD-MIB::mplsLdpEntityEntry
+  discovery_attribute: mplsLdpEntityStatsSessionAttempts
+  attributes:
+    mplsLdpEntityStatsSessionAttempts:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.1
+      name: ldp.entity.sessions.attempt
+      syntax: Counter32
+    mplsLdpEntityStatsSessionRejectedNoHelloErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.2
+      name: ldp.entity.sessions.reject.no_hello
+      syntax: Counter32
+    mplsLdpEntityStatsSessionRejectedAdErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.3
+      name: ldp.entity.sessions.reject.advert
+      syntax: Counter32
+    mplsLdpEntityStatsSessionRejectedMaxPduErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.4
+      name: ldp.entity.sessions.reject.max_pdu
+      syntax: Counter32
+    mplsLdpEntityStatsSessionRejectedLRErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.5
+      name: ldp.entity.sessions.reject.label_range
+      syntax: Counter32
+    mplsLdpEntityStatsBadLdpIdentifierErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.6
+      name: ldp.entity.errors.ldp_id
+      syntax: Counter32
+    mplsLdpEntityStatsBadPduLengthErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.7
+      name: ldp.entity.errors.pdu_size
+      syntax: Counter32
+    mplsLdpEntityStatsBadMessageLengthErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.8
+      name: ldp.entity.errors.msg_size
+      syntax: Counter32
+    mplsLdpEntityStatsBadTlvLengthErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.9
+      name: ldp.entity.errors.tlv_size
+      syntax: Counter32
+    mplsLdpEntityStatsMalformedTlvValueErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.10
+      name: ldp.entity.errors.malformed_tlv
+      syntax: Counter32
+    mplsLdpEntityStatsKeepAliveTimerExpErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.11
+      name: ldp.entity.errors.keep_alive_expire
+      syntax: Counter32
+    mplsLdpEntityStatsShutdownReceivedNotifications:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.12
+      name: ldp.entity.notifs.shutdown.in
+      syntax: Counter32
+    mplsLdpEntityStatsShutdownSentNotifications:
+      oid: .1.3.6.1.2.1.10.166.4.1.2.4.1.13
+      name: ldp.entity.notifs.shutdown.out
+      syntax: Counter32
+
+MPLS-LDP-STD-MIB::mplsLdpPeerEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpPeerEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.1
+      name: ldp.entity.id # mplsLdpEntityLdpId
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.2
+      name: ldp.entity.index # mplsLdpEntityIndex
+      syntax: Unsigned32
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.4.1.3.2.1.1
+      name: ldp.peer.id # mplsLdpPeerLdpId
+      syntax: MacAddressNoSuffix
+  discovery_attribute: mplsLdpPeerLabelDistMethod
+  attributes:
+    mplsLdpPeerLabelDistMethod:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.2.1.2
+      name: ldp.peer.label_distribution_method
+      syntax: EnumInteger
+    mplsLdpPeerPathVectorLimit:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.2.1.3
+      name: ldp.peer.path_vector_limit
+      syntax: Integer32
+    mplsLdpPeerTransportAddr:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.2.1.5
+      name: ldp.peer.transport
+      syntax: IpAddress
+
+MPLS-LDP-STD-MIB::mplsLdpSessionEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpSessionEntry
+  augments: MPLS-LDP-STD-MIB::mplsLdpPeerEntry
+  discovery_attribute: mplsLdpSessionStateLastChange
+  attributes:
+    mplsLdpSessionStateLastChange:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.1
+      name: ldp.session.state.last_chg
+      syntax: TimeStamp
+    mplsLdpSessionState:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.2
+      name: ldp.session.state
+      syntax: EnumInteger
+    mplsLdpSessionRole:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.3
+      name: ldp.session.role
+      syntax: EnumInteger
+    mplsLdpSessionProtocolVersion:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.4
+      name: ldp.session.proto.version.ver
+      syntax: Unsigned32
+    mplsLdpSessionKeepAliveHoldTimeRem:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.5
+      name: ldp.session.keep_alive_remain
+      syntax: TicksSec
+    mplsLdpSessionKeepAliveTime:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.6
+      name: ldp.session.keep_alive_time
+      syntax: TicksSec
+    mplsLdpSessionMaxPduLength:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.7
+      name: ldp.session.max_pdu_size
+      syntax: Unsigned32
+    mplsLdpSessionDiscontinuityTime:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.3.1.8
+      name: ldp.session.discontinuity_time
+      syntax: TimeStamp
+
+MPLS-LDP-STD-MIB::mplsLdpSessionStatsEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpSessionStatsEntry
+  augments: MPLS-LDP-STD-MIB::mplsLdpPeerEntry
+  discovery_attribute: mplsLdpSessionStatsUnknownMesTypeErrors
+  attributes:
+    mplsLdpSessionStatsUnknownMesTypeErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.4.1.1
+      name: ldp.session.errors.msg_type_unk
+      syntax: Counter32
+    mplsLdpSessionStatsUnknownTlvErrors:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.4.1.2
+      name: ldp.session.errors.tlv_unk
+      syntax: Counter32
+
+MPLS-LDP-STD-MIB::mplsLdpHelloAdjacencyEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsLdpHelloAdjacencyEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.1
+      name: ldp.entity.id # mplsLdpEntityLdpId
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.4.1.2.3.1.2
+      name: ldp.entity.index # mplsLdpEntityIndex
+      syntax: Unsigned32
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.4.1.3.2.1.1
+      name: ldp.peer.id # mplsLdpPeerLdpId
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.4.1.3.5.1.1.1
+      name: ldp.session.hello_adj.index # mplsLdpHelloAdjacencyIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsLdpHelloAdjacencyHoldTimeRem
+  attributes:
+    mplsLdpHelloAdjacencyHoldTimeRem:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.5.1.1.2
+      name: ldp.session.hello_adj.hold_remain
+      syntax: Integer
+    mplsLdpHelloAdjacencyHoldTime:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.5.1.1.3
+      name: ldp.session.hello_adj.hold_time
+      syntax: Unsigned32
+    mplsLdpHelloAdjacencyType:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.5.1.1.4
+      name: ldp.session.hello_adj.type
+      syntax: EnumInteger
+
+MPLS-LDP-STD-MIB::mplsFecEntry:
+  mib: MPLS-LDP-STD-MIB
+  object: mplsFecEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.3.1.2
+      name: ldp.fec.index # mplsFecIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsFecType
+  attributes:
+    mplsFecType:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.3.1.2
+      name: ldp.fec.type
+      syntax: EnumInteger
+    mplsFecAddrPrefixLength:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.3.1.3
+      name: ldp.fec.ip.subnet.mask_size
+      syntax: Unsigned32
+    mplsFecAddr:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.3.1.5
+      name: ldp.fec
+      syntax: IpAddress
+    mplsFecStorageType:
+      oid: .1.3.6.1.2.1.10.166.4.1.3.8.3.1.6
+      name: ldp.fec.storage_type
+      syntax: StorageType
