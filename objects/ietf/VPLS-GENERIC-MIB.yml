@@ -1,0 +1,135 @@
+VPLS-GENERIC-MIB::vplsConfigEntry:
+  mib: VPLS-GENERIC-MIB
+  object: vplsConfigEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.274.1.2.1.1
+      name: vpls.index # vplsConfigEntry
+      syntax: Unsigned32
+  discovery_attribute: vplsConfigName
+  attributes:
+    vplsConfigName:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.2
+      tag: true
+      name: vpls.name
+      syntax: DisplayString
+    vplsConfigDescr:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.3
+      name: vpls.descr
+      syntax: DisplayString
+    vplsConfigAdminStatus:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.4
+      name: vpls.state.admin
+      syntax: EnumInteger
+    vplsConfigMacLearning:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.6
+      name: vpls.mac_learning
+      syntax: TruthValue
+    vplsConfigDiscardUnknownDest:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.7
+      name: vpls.discard_unk_dst
+      syntax: TruthValue
+    vplsConfigMacAging:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.8
+      name: vpls.mac_aging
+      syntax: TruthValue
+    vplsConfigFwdFullHighWatermark:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.10
+      name: vpls.fwd.high_thresh
+      syntax: Unsigned32
+    vplsConfigFwdFullLowWatermark:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.11
+      name: vpls.fwd.low_thresh
+      syntax: Unsigned32
+    vplsConfigMtu:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.13
+      name: vpls.mtu
+      syntax: Unsigned32
+    vplsConfigVpnId:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.14
+      name: vpls.vpn.id
+      syntax: OctetString
+    vplsConfigSignalingType:
+      oid: .1.3.6.1.2.1.10.274.1.2.1.16
+      name: vpls.signal.type
+      syntax: EnumInteger
+
+VPLS-GENERIC-MIB::vplsStatusEntry:
+  mib: VPLS-GENERIC-MIB
+  object: vplsStatusEntry
+  augments: VPLS-GENERIC-MIB::vplsConfigEntry
+  discovery_attribute: vplsStatusOperStatus
+  attributes:
+    vplsStatusOperStatus:
+      oid: .1.3.6.1.2.1.10.274.1.3.1.1
+      name: vpls.state.oper
+      syntax: EnumInteger
+    vplsStatusPeerCount:
+      oid: .1.3.6.1.2.1.10.274.1.3.1.2
+      name: vpls.peers
+      syntax: Counter32
+
+VPLS-GENERIC-MIB::vplsPwBindEntry:
+  mib: VPLS-GENERIC-MIB
+  object: vplsPwBindEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.274.1.2.1.1
+      name: vpls.index # vplsConfigEntry
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.246.1.2.1.1
+      name: pwire.index # pwIndex
+      syntax: Unsigned32
+  discovery_attribute: vplsPwBindConfigType
+  attributes:
+    vplsPwBindConfigType:
+      oid: .1.3.6.1.2.1.10.274.1.4.1.1
+      name: vpls.pwire.bind.method
+      syntax: EnumInteger
+    vplsPwBindType:
+      oid: .1.3.6.1.2.1.10.274.1.4.1.2
+      name: vpls.pwire.bind.type
+      syntax: EnumInteger
+
+VPLS-GENERIC-MIB::vplsBgpADConfigEntry:
+  mib: VPLS-GENERIC-MIB
+  object: vplsBgpADConfigEntry
+  augments: VPLS-GENERIC-MIB::vplsConfigEntry
+  discovery_attribute: vplsBgpADConfigRouteDistinguisher
+  attributes:
+    vplsBgpADConfigRouteDistinguisher:
+      oid: .1.3.6.1.2.1.10.274.1.5.1.1
+      name: vpls.bgp.disco.route.distinguisher
+      syntax: OctetString
+    vplsBgpADConfigPrefix:
+      oid: .1.3.6.1.2.1.10.274.1.5.1.2
+      name: vpls.bgp.disco.prefix
+      syntax: Unsigned32
+    vplsBgpADConfigVplsId:
+      oid: .1.3.6.1.2.1.10.274.1.5.1.3
+      name: vpls.bgp.disco.vpls.id
+      syntax: OctetString
+
+VPLS-GENERIC-MIB::vplsBgpRteTargetEntry:
+  mib: VPLS-GENERIC-MIB
+  object: vplsBgpRteTargetEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.274.1.2.1.1
+      name: vpls.index # vplsConfigEntry
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.274.1.6.1.1
+      name: vpls.bgp.route_target.index # vplsBgpRteTargetIndex
+      syntax: Unsigned32
+  discovery_attribute: vplsBgpRteTargetRTType
+  attributes:
+    vplsBgpRteTargetRTType:
+      oid: .1.3.6.1.2.1.10.274.1.6.1.2
+      name: vpls.bgp.route_target.type
+      syntax: EnumInteger
+    vplsBgpRteTargetRT:
+      oid: .1.3.6.1.2.1.10.274.1.6.1.3
+      name: vpls.bgp.route_target.rt
+      syntax: OctetString
