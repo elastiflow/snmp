@@ -1,0 +1,619 @@
+ISIS-MIB::isisSysObject:
+  mib: ISIS-MIB
+  object: isisSysObject
+  discovery_attribute: isisSysVersion
+  attributes:
+    isisSysVersion:
+      oid: .1.3.6.1.2.1.138.1.1.1.1
+      name: isis.system.version
+      syntax: EnumInteger
+    isisSysLevelType:
+      oid: .1.3.6.1.2.1.138.1.1.1.2
+      name: isis.system.level
+      syntax: EnumInteger
+    isisSysID:
+      oid: .1.3.6.1.2.1.138.1.1.1.3
+      name: isis.system.id
+      syntax: OctetString
+    isisSysMaxPathSplits:
+      oid: .1.3.6.1.2.1.138.1.1.1.4
+      name: isis.system.max_path_splits
+      syntax: Unsigned32
+    isisSysMaxLSPGenInt:
+      oid: .1.3.6.1.2.1.138.1.1.1.5
+      name: isis.system.max_lsp_interval
+      syntax: TicksSec
+    isisSysPollESHelloRate:
+      oid: .1.3.6.1.2.1.138.1.1.1.6
+      name: isis.system.es.hello_interval
+      syntax: TicksSec
+    isisSysWaitTime:
+      oid: .1.3.6.1.2.1.138.1.1.1.7
+      name: isis.system.wait_time
+      syntax: TicksSec
+    isisSysAdminState:
+      oid: .1.3.6.1.2.1.138.1.1.1.8
+      name: isis.system.state.admin
+      syntax: EnumInteger
+    isisSysL2toL1Leaking:
+      oid: .1.3.6.1.2.1.138.1.1.1.9
+      name: isis.system.l2_to_l1_leaking
+      syntax: TruthValue
+    isisSysMaxAge:
+      oid: .1.3.6.1.2.1.138.1.1.1.10
+      name: isis.system.max_age
+      syntax: TicksSec
+    isisSysReceiveLSPBufferSize:
+      oid: .1.3.6.1.2.1.138.1.1.1.11
+      name: isis.system.lsp.rcv_buffer_size
+      syntax: BytesB
+    isisSysProtSupported:
+      oid: .1.3.6.1.2.1.138.1.1.1.12
+      name: isis.system.proto.support
+      syntax: EnumBitmap
+
+ISIS-MIB::isisSysLevelEntry:
+  mib: ISIS-MIB
+  object: isisSysLevelEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.2.1.1.1
+      name: isis.level # isisSysLevelIndex
+      syntax: EnumInteger
+  discovery_attribute: isisSysLevelOrigLSPBuffSize
+  attributes:
+    isisSysLevelOrigLSPBuffSize:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.2
+      name: isis.system.level.lsp.size.out
+      syntax: BytesB
+    isisSysLevelMinLSPGenInt:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.3
+      name: isis.system.level.min_lsp_interval
+      syntax: TicksSec
+    isisSysLevelState:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.4
+      name: isis.system.level.state
+      syntax: EnumInteger
+    isisSysLevelSetOverload:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.5
+      name: isis.system.level.overload.set
+      syntax: TruthValue
+    isisSysLevelSetOverloadUntil:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.6
+      name: isis.system.level.overload.set.duration
+      syntax: TicksSec
+    isisSysLevelMetricStyle:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.7
+      name: isis.system.level.lsp.metric.style
+      syntax: EnumInteger
+    isisSysLevelSPFConsiders:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.8
+      name: isis.system.level.spf.metric.consider
+      syntax: EnumInteger
+    isisSysLevelTEEnabled:
+      oid: .1.3.6.1.2.1.138.1.2.1.1.9
+      name: isis.system.level.te.enable
+      syntax: TruthValue
+
+ISIS-MIB::isisCircEntry:
+  mib: ISIS-MIB
+  object: isisCircEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+  discovery_attribute: isisCircAdminState
+  attributes:
+    isisCircIfIndex:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.2
+      tag: true
+      name: netif
+      syntax: InterfaceIndex
+    isisCircAdminState:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.3
+      name: isis.circuit.state.admin
+      syntax: EnumInteger
+    isisCircType:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.5
+      name: isis.circuit.type
+      syntax: EnumInteger
+    isisCircExtDomain:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.6
+      name: isis.circuit.external_domain
+      syntax: TruthValue
+    isisCircLevelType:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.7
+      name: isis.circuit.level
+      syntax: EnumInteger
+    isisCircPassiveCircuit:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.8
+      name: isis.circuit.passive
+      syntax: TruthValue
+    isisCircMeshGroupEnabled:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.9
+      name: isis.circuit.mesh_group.enable
+      syntax: EnumInteger
+    isisCircMeshGroup:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.10
+      name: isis.circuit.mesh_group.id
+      syntax: Unsigned32
+    isisCircSmallHellos:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.11
+      name: isis.circuit.small_hello
+      syntax: TruthValue
+    isisCircLastUpTime:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.12
+      name: isis.circuit.last_uptime
+      syntax: TimeStamp
+    isisCirc3WayEnabled:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.13
+      name: isis.circuit.3_way.enable
+      syntax: TruthValue
+    isisCircExtendedCircID:
+      oid: .1.3.6.1.2.1.138.1.3.2.1.14
+      name: isis.circuit.3_way.id
+      syntax: Unsigned32
+
+ISIS-MIB::isisCircLevelEntry:
+  mib: ISIS-MIB
+  object: isisCircLevelEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.4.1.1.1
+      name: isis.level # isisCircLevelIndex
+      syntax: EnumInteger
+  discovery_attribute: isisCircLevelMetric
+  attributes:
+    isisCircLevelMetric:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.2
+      name: isis.circuit.level.metric
+      syntax: Unsigned32
+    isisCircLevelWideMetric:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.3
+      name: isis.circuit.level.wide_metric
+      syntax: Unsigned32
+    isisCircLevelISPriority:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.4
+      name: isis.circuit.level.is.priority
+      syntax: Unsigned32
+    isisCircLevelIDOctet:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.5
+      name: isis.circuit.level.one_byte.id
+      syntax: Unsigned32
+    isisCircLevelID:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.6
+      name: isis.circuit.level.circuit.id
+      syntax: OctetString
+    isisCircLevelDesIS:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.7
+      name: isis.circuit.level.lan_is.id
+      syntax: OctetString
+    isisCircLevelHelloMultiplier:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.8
+      name: isis.circuit.level.hello_multiplier
+      syntax: Unsigned32
+    isisCircLevelHelloTimer:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.9
+      name: isis.circuit.level.hello_interval
+      syntax: OpTicksMilliSec
+    isisCircLevelDRHelloTimer:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.10
+      name: isis.circuit.level.dr_hello_interval
+      syntax: OpTicksMilliSec
+    isisCircLevelLSPThrottle:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.11
+      name: isis.circuit.level.min_lsp_interval
+      syntax: OpTicksMilliSec
+    isisCircLevelMinLSPRetransInt:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.12
+      name: isis.circuit.level.min_lsp_retrans
+      syntax: TicksSec
+    isisCircLevelCSNPInterval:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.13
+      name: isis.circuit.level.csnp_interval
+      syntax: TicksSec
+    isisCircLevelPartSNPInterval:
+      oid: .1.3.6.1.2.1.138.1.4.1.1.14
+      name: isis.circuit.level.psnp_interval
+      syntax: TicksSec
+
+ISIS-MIB::isisSystemCounterEntry:
+  mib: ISIS-MIB
+  object: isisSystemCounterEntry
+  augments: ISIS-MIB::isisSysLevelEntry
+  discovery_attribute: isisSysStatCorrLSPs
+  attributes:
+    isisSysStatCorrLSPs:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.2
+      name: isis.system.lsps.corrupt
+      syntax: Counter32
+    isisSysStatAuthTypeFails:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.3
+      name: isis.system.auth.type_fails
+      syntax: Counter32
+    isisSysStatAuthFails:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.4
+      name: isis.system.auth.fails
+      syntax: Counter32
+    isisSysStatLSPDbaseOloads:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.5
+      name: isis.system.lsp.db_overloads
+      syntax: Counter32
+    isisSysStatManAddrDropFromAreas:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.6
+      name: isis.system.manual_addr_drops
+      syntax: Counter32
+    isisSysStatAttmptToExMaxSeqNums:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.7
+      name: isis.system.seq_num.exceeds
+      syntax: Counter32
+    isisSysStatSeqNumSkips:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.8
+      name: isis.system.seq_num.skips
+      syntax: Counter32
+    isisSysStatOwnLSPPurges:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.9
+      name: isis.system.lsp.own_purges
+      syntax: Counter32
+    isisSysStatIDFieldLenMismatches:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.10
+      name: isis.system.id_size_mismatches
+      syntax: Counter32
+    isisSysStatPartChanges:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.11
+      name: isis.system.partition_changes
+      syntax: Counter32
+    isisSysStatSPFRuns:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.12
+      name: isis.system.spf_runs
+      syntax: Counter32
+    isisSysStatLSPErrors:
+      oid: .1.3.6.1.2.1.138.1.5.1.1.13
+      name: isis.system.lsp.errors
+      syntax: Counter32
+
+ISIS-MIB::isisCircuitCounterEntry:
+  mib: ISIS-MIB
+  object: isisCircuitCounterEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.5.2.1.1
+      name: isis.circuit.type # isisCircuitType
+      syntax: EnumInteger
+  discovery_attribute: isisCircAdjChanges
+  attributes:
+    isisCircAdjChanges:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.2
+      name: isis.circuit.adjacency.chgs
+      syntax: Counter32
+    isisCircNumAdj:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.3
+      name: isis.circuit.adjacencies
+      syntax: Unsigned32
+    isisCircInitFails:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.4
+      name: isis.circuit.init_fails
+      syntax: Counter32
+    isisCircRejAdjs:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.5
+      name: isis.circuit.adjacency.rejects
+      syntax: Counter32
+    isisCircIDFieldLenMismatches:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.6
+      name: isis.circuit.id_size_mismatches
+      syntax: Counter32
+    isisCircMaxAreaAddrMismatches:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.7
+      name: isis.circuit.max_area_addr_mismatches
+      syntax: Counter32
+    isisCircAuthTypeFails:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.8
+      name: isis.circuit.auth.type_fails
+      syntax: Counter32
+    isisCircAuthFails:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.9
+      name: isis.circuit.auth.fails
+      syntax: Counter32
+    isisCircLANDesISChanges:
+      oid: .1.3.6.1.2.1.138.1.5.2.1.10
+      name: isis.circuit.lan_is_chgs
+      syntax: Counter32
+
+ISIS-MIB::isisPacketCounterEntry:
+  mib: ISIS-MIB
+  object: isisPacketCounterEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.5.3.1.1
+      name: isis.level # isisPacketCountLevel
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.5.3.1.2
+      name: isis.direction # isisPacketCountDirection
+      syntax: EnumInteger
+  discovery_attribute: isisPacketCountIIHello
+  attributes:
+    isisPacketCountIIHello:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.3
+      name: isis.packets.ii_hello
+      syntax: Counter32
+    isisPacketCountISHello:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.4
+      name: isis.packets.is_hello
+      syntax: Counter32
+    isisPacketCountESHello:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.5
+      name: isis.packets.es_hello
+      syntax: Counter32
+    isisPacketCountLSP:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.6
+      name: isis.packets.lsp
+      syntax: Counter32
+    isisPacketCountCSNP:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.7
+      name: isis.packets.csnp
+      syntax: Counter32
+    isisPacketCountPSNP:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.8
+      name: isis.packets.psnp
+      syntax: Counter32
+    isisPacketCountUnknown:
+      oid: .1.3.6.1.2.1.138.1.5.3.1.9
+      name: isis.packets.unknown
+      syntax: Counter32
+
+ISIS-MIB::isisISAdjEntry:
+  mib: ISIS-MIB
+  object: isisISAdjEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.6.1.1.1
+      name: isis.adjacency.index # isisISAdjIndex
+      syntax: Unsigned32
+  discovery_attribute: isisISAdjState
+  attributes:
+    isisISAdjState:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.2
+      name: isis.adjacency.state
+      syntax: EnumInteger
+    isisISAdj3WayState:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.3
+      name: isis.adjacency.3_way.state
+      syntax: EnumInteger
+    isisISAdjNeighSNPAAddress:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.4
+      name: isis.adjacency.neighbor.snpa.addr
+      syntax: OctetString
+    isisISAdjNeighSysType:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.5
+      name: isis.adjacency.neighbor.type
+      syntax: EnumInteger
+    isisISAdjNeighSysID:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.6
+      name: isis.adjacency.neighbor.id
+      syntax: OctetString
+    isisISAdjNbrExtendedCircID:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.7
+      name: isis.adjacency.neighbor.3_way.id
+      syntax: Unsigned32
+    isisISAdjUsage:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.8
+      name: isis.adjacency.usage
+      syntax: EnumInteger
+    isisISAdjHoldTimer:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.9
+      name: isis.adjacency.hold_time
+      syntax: TicksSec
+    isisISAdjNeighPriority:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.10
+      name: isis.adjacency.neighbor.priority
+      syntax: Unsigned32
+    isisISAdjLastUpTime:
+      oid: .1.3.6.1.2.1.138.1.6.1.1.11
+      name: isis.adjacency.last_uptime
+      syntax: TimeStamp
+
+ISIS-MIB::isisRAEntry:
+  mib: ISIS-MIB
+  object: isisRAEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.3.2.1.1
+      name: isis.circuit.index # isisCircIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.7.1.1.1
+      name: isis.ra.index # isisRAIndex
+      syntax: Unsigned32
+  discovery_attribute: isisRAAdminState
+  attributes:
+    isisRAAdminState:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.3
+      name: isis.ra.state.admin
+      syntax: EnumInteger
+    isisRAAddrPrefix:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.4
+      name: isis.ra.addr_prefix
+      syntax: OctetString
+    isisRAMapType:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.5
+      name: isis.ra.map.type
+      syntax: EnumInteger
+    isisRAMetric:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.6
+      name: isis.ra.metric
+      syntax: Unsigned32
+    isisRAMetricType:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.7
+      name: isis.ra.metric.type
+      syntax: EnumInteger
+    isisRASNPAAddress:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.8
+      name: isis.ra.snpa.addr
+      syntax: OctetString
+    isisRASNPAMask:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.9
+      name: isis.ra.snpa.addr_mask
+      syntax: OctetString
+    isisRASNPAPrefix:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.10
+      name: isis.ra.snpa.addr_prefix
+      syntax: OctetString
+    isisRAType:
+      oid: .1.3.6.1.2.1.138.1.7.1.1.11
+      name: isis.ra.type
+      syntax: EnumInteger
+
+ISIS-MIB::isisIPRAEntry:
+  mib: ISIS-MIB
+  object: isisIPRAEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.2.1.1.1
+      name: isis.level # isisSysLevelIndex
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.8.1.1.1
+      name: isis.ipra.dst.ip.type.id # isisIPRADestType
+      syntax: Integer
+    - type: OctetString
+      oid: .1.3.6.1.2.1.138.1.8.1.1.2
+      name: isis.ipra.dst # isisIPRADest
+      syntax: IpAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.8.1.1.3
+      name: isis.ipra.dst.ip.subnet.mask_size # isisIPRADestPrefixLen
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.8.1.1.4
+      name: isis.ipra.next_hop.index # isisIPRANextHopIndex
+      syntax: Unsigned32
+  discovery_attribute: isisIPRANextHop
+  attributes:
+    isisIPRANextHop:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.6
+      name: isis.ipra.next_hop
+      syntax: IpAddress
+    isisIPRAType:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.7
+      name: isis.ipra.type
+      syntax: EnumInteger
+    isisIPRAAdminState:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.9
+      name: isis.ipra.state.admin
+      syntax: EnumInteger
+    isisIPRAMetric:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.10
+      name: isis.ipra.metric
+      syntax: Unsigned32
+    isisIPRAMetricType:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.11
+      name: isis.ipra.metric.type
+      syntax: EnumInteger
+    isisIPRAFullMetric:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.12
+      name: isis.ipra.wide_metric
+      syntax: Unsigned32
+    isisIPRASNPAAddress:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.13
+      name: isis.ipra.snpa.addr
+      syntax: OctetString
+    isisIPRASourceType:
+      oid: .1.3.6.1.2.1.138.1.8.1.1.14
+      name: isis.ipra.origin
+      syntax: EnumInteger
+
+ISIS-MIB::isisLSPSummaryEntry:
+  mib: ISIS-MIB
+  object: isisLSPSummaryEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.9.1.1.1
+      name: isis.level # isisLSPLevel
+      syntax: EnumInteger
+    - type: OctetString
+      oid: .1.3.6.1.2.1.138.1.9.1.1.2
+      name: isis.lsp.id # isisLSPID
+      syntax: OctetString
+  discovery_attribute: isisLSPSeq
+  attributes:
+    isisLSPSeq:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.3
+      name: isis.lsp.seq_num
+      syntax: Unsigned32
+    isisLSPZeroLife:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.4
+      name: isis.lsp.life_zero
+      syntax: TruthValue
+    isisLSPChecksum:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.5
+      name: isis.lsp.checksum
+      syntax: Unsigned32
+    isisLSPLifetimeRemain:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.6
+      name: isis.lsp.life_remain
+      syntax: TicksSec
+    isisLSPPDULength:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.7
+      name: isis.lsp.pdu.size
+      syntax: BytesB
+    isisLSPAttributes:
+      oid: .1.3.6.1.2.1.138.1.9.1.1.8
+      name: isis.lsp.flags.bits
+      syntax: Unsigned32
+
+ISIS-MIB::isisLSPTLVEntry:
+  mib: ISIS-MIB
+  object: isisLSPTLVEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.138.1.9.1.1.1
+      name: isis.level # isisLSPLevel
+      syntax: EnumInteger
+    - type: OctetString
+      oid: .1.3.6.1.2.1.138.1.9.1.1.2
+      name: isis.lsp.id # isisLSPID
+      syntax: OctetString
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.138.1.9.2.1.1
+      name: isis.lsp.tlv.id # isisLSPTLVIndex
+      syntax: Unsigned32
+  discovery_attribute: isisLSPTLVSeq
+  attributes:
+    isisLSPTLVSeq:
+      oid: .1.3.6.1.2.1.138.1.9.2.1.2
+      name: isis.lsp.tlv.seq_num
+      syntax: Unsigned32
+    isisLSPTLVChecksum:
+      oid: .1.3.6.1.2.1.138.1.9.2.1.3
+      name: isis.lsp.tlv.checksum
+      syntax: Unsigned32
+    isisLSPTLVType:
+      oid: .1.3.6.1.2.1.138.1.9.2.1.4
+      name: isis.lsp.tlv.type.id
+      syntax: Unsigned32
+    isisLSPTLVLen:
+      oid: .1.3.6.1.2.1.138.1.9.2.1.5
+      name: isis.lsp.tlv.size
+      syntax: BytesB
+    isisLSPTLVValue:
+      oid: .1.3.6.1.2.1.138.1.9.2.1.6
+      name: isis.lsp.tlv.value
+      syntax: OctetString
