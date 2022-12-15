@@ -1,0 +1,248 @@
+UPS-MIB::upsIdent:
+  mib: UPS-MIB
+  object: upsIdent
+  discovery_attribute: upsIdentManufacturer
+  attributes:
+    upsIdentManufacturer:
+      oid: .1.3.6.1.2.1.33.1.1.1
+      name: ups.manufacturer.name
+      syntax: DisplayString
+    upsIdentModel:
+      oid: .1.3.6.1.2.1.33.1.1.2
+      name: ups.model.name
+      syntax: DisplayString
+    upsIdentUPSSoftwareVersion:
+      oid: .1.3.6.1.2.1.33.1.1.3
+      name: ups.software.version.ver
+      syntax: DisplayString
+    upsIdentAgentSoftwareVersion:
+      oid: .1.3.6.1.2.1.33.1.1.4
+      name: ups.agent.software.version.ver
+      syntax: DisplayString
+    upsIdentName:
+      oid: .1.3.6.1.2.1.33.1.1.5
+      name: ups.name
+      syntax: DisplayString
+    upsIdentAttachedDevices:
+      oid: .1.3.6.1.2.1.33.1.1.6
+      name: ups.attached_devices
+      syntax: DisplayString
+
+UPS-MIB::upsBattery:
+  mib: UPS-MIB
+  object: upsBattery
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsBatteryStatus
+  attributes:
+    upsBatteryStatus:
+      oid: .1.3.6.1.2.1.33.1.2.1
+      name: ups.battery.state
+      syntax: EnumInteger
+    upsSecondsOnBattery:
+      oid: .1.3.6.1.2.1.33.1.2.2
+      name: ups.battery.time.on
+      syntax: TicksSec
+    upsEstimatedMinutesRemaining:
+      oid: .1.3.6.1.2.1.33.1.2.3
+      name: ups.battery.time.remain
+      syntax: TicksMin
+    upsEstimatedChargeRemaining:
+      oid: .1.3.6.1.2.1.33.1.2.4
+      name: ups.battery.charge.remain
+      syntax: Percent100
+    upsBatteryVoltage:
+      oid: .1.3.6.1.2.1.33.1.2.5
+      name: ups.battery.voltage.volts
+      syntax: VoltageDeciVolt
+    upsBatteryCurrent:
+      oid: .1.3.6.1.2.1.33.1.2.6
+      name: ups.battery.current.amps
+      syntax: CurrentDeciAmp
+    upsBatteryTemperature:
+      oid: .1.3.6.1.2.1.33.1.2.7
+      name: ups.battery.temp.degrees
+      syntax: TemperatureC
+
+UPS-MIB::upsInput:
+  mib: UPS-MIB
+  object: upsInput
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsInputLineBads
+  attributes:
+    upsInputLineBads:
+      oid: .1.3.6.1.2.1.33.1.3.1
+      name: ups.input.lines.out_of_tolerance
+      syntax: Counter32
+    upsInputNumLines:
+      oid: .1.3.6.1.2.1.33.1.3.2
+      name: ups.input.lines
+      syntax: Integer
+
+UPS-MIB::upsInputEntry:
+  mib: UPS-MIB
+  object: upsInputEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.33.1.3.3.1.1
+      name: ups.input.line.index # upsInputLineIndex
+      syntax: Integer
+  discovery_attribute: upsInputFrequency
+  attributes:
+    upsInputFrequency:
+      oid: .1.3.6.1.2.1.33.1.3.3.1.2
+      name: ups.input.freq.hertz
+      syntax: FreqDeciHz
+    upsInputVoltage:
+      oid: .1.3.6.1.2.1.33.1.3.3.1.3
+      name: ups.input.voltage.volts
+      syntax: VoltageVolt
+    upsInputCurrent:
+      oid: .1.3.6.1.2.1.33.1.3.3.1.4
+      name: ups.input.current.amps
+      syntax: CurrentDeciAmp
+    upsInputTruePower:
+      oid: .1.3.6.1.2.1.33.1.3.3.1.5
+      name: ups.input.power.watts
+      syntax: PowerWatt
+
+UPS-MIB::upsOutput:
+  mib: UPS-MIB
+  object: upsOutput
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsOutputSource
+  attributes:
+    upsOutputSource:
+      oid: .1.3.6.1.2.1.33.1.4.1
+      name: ups.output.source
+      syntax: EnumInteger
+    upsOutputFrequency:
+      oid: .1.3.6.1.2.1.33.1.4.2
+      name: ups.output.freq.hertz
+      syntax: FreqDeciHz
+    upsOutputNumLines:
+      oid: .1.3.6.1.2.1.33.1.4.3
+      name: ups.output.lines
+      syntax: Integer
+
+UPS-MIB::upsOutputEntry:
+  mib: UPS-MIB
+  object: upsOutputEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.33.1.4.4.1.1
+      name: ups.output.line.index # upsOutputLineIndex
+      syntax: Integer
+  discovery_attribute: upsOutputVoltage
+  attributes:
+    upsOutputVoltage:
+      oid: .1.3.6.1.2.1.33.1.4.4.1.2
+      name: ups.output.voltage.volts
+      syntax: VoltageVolt
+    upsOutputCurrent:
+      oid: .1.3.6.1.2.1.33.1.4.4.1.3
+      name: ups.output.current.amps
+      syntax: CurrentDeciAmp
+    upsOutputPower:
+      oid: .1.3.6.1.2.1.33.1.4.4.1.4
+      name: ups.output.power.watts
+      syntax: PowerWatt
+    upsOutputPercentLoad:
+      oid: .1.3.6.1.2.1.33.1.4.4.1.5
+      name: ups.output.load.pct
+      syntax: Percent100
+
+UPS-MIB::upsBypass:
+  mib: UPS-MIB
+  object: upsBypass
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsBypassFrequency
+  attributes:
+    upsBypassFrequency:
+      oid: .1.3.6.1.2.1.33.1.5.1
+      name: ups.bypass.freq.hertz
+      syntax: FreqDeciHz
+    upsBypassNumLines:
+      oid: .1.3.6.1.2.1.33.1.5.2
+      name: ups.bypass.lines
+      syntax: Integer
+
+UPS-MIB::upsBypassEntry:
+  mib: UPS-MIB
+  object: upsBypassEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.33.1.5.3.1.1
+      name: ups.bypass.line.index # upsBypassPower
+      syntax: Integer
+  discovery_attribute: upsBypassVoltage
+  attributes:
+    upsBypassVoltage:
+      oid: .1.3.6.1.2.1.33.1.5.3.1.2
+      name: ups.bypass.voltage.volts
+      syntax: VoltageVolt
+    upsBypassCurrent:
+      oid: .1.3.6.1.2.1.33.1.5.3.1.3
+      name: ups.bypass.current.amps
+      syntax: CurrentDeciAmp
+    upsBypassPower:
+      oid: .1.3.6.1.2.1.33.1.5.3.1.4
+      name: ups.bypass.power.watts
+      syntax: PowerWatt
+
+UPS-MIB::upsAlarm:
+  mib: UPS-MIB
+  object: upsAlarm
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsAlarmsPresent
+  attributes:
+    upsAlarmsPresent:
+      oid: .1.3.6.1.2.1.33.1.6.1
+      name: ups.alarms
+      syntax: Gauge32
+
+UPS-MIB::upsConfig:
+  mib: UPS-MIB
+  object: upsConfig
+  augments: UPS-MIB::upsIdent
+  discovery_attribute: upsConfigInputVoltage
+  attributes:
+    upsConfigInputVoltage:
+      oid: .1.3.6.1.2.1.33.1.9.1
+      name: ups.input.admin.voltage.volts
+      syntax: VoltageVolt
+    upsConfigInputFreq:
+      oid: .1.3.6.1.2.1.33.1.9.2
+      name: ups.input.admin.freq.hertz
+      syntax: FreqDeciHz
+    upsConfigOutputVoltage:
+      oid: .1.3.6.1.2.1.33.1.9.3
+      name: ups.output.admin.voltage.volts
+      syntax: VoltageVolt
+    upsConfigOutputFreq:
+      oid: .1.3.6.1.2.1.33.1.9.4
+      name: ups.output.admin.freq.hertz
+      syntax: FreqDeciHz
+    upsConfigOutputVA:
+      oid: .1.3.6.1.2.1.33.1.9.5
+      name: ups.output.admin.power.va
+      syntax: PowerWatt
+    upsConfigOutputPower:
+      oid: .1.3.6.1.2.1.33.1.9.6
+      name: ups.output.admin.power.watts
+      syntax: PowerWatt
+    upsConfigLowBattTime:
+      oid: .1.3.6.1.2.1.33.1.9.7
+      name: ups.battery.low_remain
+      syntax: TicksMin
+    upsConfigAudibleStatus:
+      oid: .1.3.6.1.2.1.33.1.9.8
+      name: ups.audible.admin.state
+      syntax: EnumInteger
+    upsConfigLowVoltageTransferPoint:
+      oid: .1.3.6.1.2.1.33.1.9.9
+      name: ups.input.transfer.volts_low
+      syntax: VoltageVolt
+    upsConfigHighVoltageTransferPoint:
+      oid: .1.3.6.1.2.1.33.1.9.10
+      name: ups.input.transfer.volts_high
+      syntax: VoltageVolt
