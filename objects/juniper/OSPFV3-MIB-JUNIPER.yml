@@ -1,0 +1,432 @@
+OSPFV3-MIB-JUNIPER::jnxOspfv3GeneralGroup:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3GeneralGroup
+  discovery_attribute: jnxOspfv3RouterId
+  attributes:
+    jnxOspfv3RouterId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.1
+      name: ospf.router.id
+      syntax: IpAddressAsUnsigned32
+    jnxOspfv3AdminStat:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.2
+      name: ospf.state.admin
+      syntax: EnumInteger
+    jnxOspfv3VersionNumber:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.3
+      name: ospf.version.ver
+      syntax: Integer
+    jnxOspfv3AreaBdrRtrStatus:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.4
+      name: ospf.area_border_router.state
+      syntax: TruthValue
+    jnxOspfv3ASBdrRtrStatus:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.5
+      name: ospf.as_border_router.state
+      syntax: TruthValue
+    jnxOspfv3AsScopeLsaCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.6
+      name: ospf.lsdb.as_scope.lsas
+      syntax: Gauge32
+    jnxOspfv3AsScopeLsaCksumSum:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.7
+      name: ospf.lsdb.as_scope.checksum
+      syntax: Integer32
+    jnxOspfv3OriginateNewLsas:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.8
+      name: ospf.lsas.new.out
+      syntax: Counter32
+    jnxOspfv3RxNewLsas:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.9
+      name: ospf.lsas.new.in
+      syntax: Counter32
+    jnxOspfv3ExtLsaCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.10
+      name: ospf.lsdb.as_extern.lsas
+      syntax: Gauge32
+    jnxOspfv3ExtAreaLsdbLimit:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.11
+      name: ospf.lsdb.as_extern.limit
+      syntax: Integer32
+    jnxOspfv3MulticastExtensions:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.12
+      name: ospf.mcast.ext
+      syntax: EnumBitmap
+    jnxOspfv3ExitOverflowInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.13
+      name: ospf.lsdb.as_extern.overflow_interval
+      syntax: Unsigned32
+    jnxOspfv3DemandExtensions:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.14
+      name: ospf.demand.support
+      syntax: TruthValue
+    jnxOspfv3ReferenceBandwidth:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.15
+      name: ospf.reference_bandwidth
+      syntax: BandwidthKBits
+    jnxOspfv3RestartSupport:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.16
+      name: ospf.graceful_restart.support
+      syntax: EnumInteger
+    jnxOspfv3RestartInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.17
+      name: ospf.graceful_restart.interval
+      syntax: Unsigned32
+    jnxOspfv3RestartStatus:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.18
+      name: ospf.graceful_restart.state
+      syntax: EnumInteger
+    jnxOspfv3RestartAge:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.19
+      name: ospf.graceful_restart.age
+      syntax: Unsigned32
+    jnxOspfv3RestartExitRc:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.20
+      name: ospf.graceful_restart.exit_reason
+      syntax: EnumInteger
+    jnxOspfv3NotificationEnable:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.1.21
+      name: ospf.notifs.enable
+      syntax: TruthValue
+
+OSPFV3-MIB-JUNIPER::jnxOspfv3AreaEntry:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3AreaEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.1
+      name: ospf.area.id # jnxOspfv3AreaId
+      syntax: Unsigned32
+  discovery_attribute: jnxOspfv3ImportAsExtern
+  attributes:
+    jnxOspfv3ImportAsExtern:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.2
+      name: ospf.area.as_extern.import
+      syntax: EnumInteger
+    jnxOspfv3AreaSpfRuns:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.3
+      name: ospf.area.spf.runs
+      syntax: Counter32
+    jnxOspfv3AreaBdrRtrCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.4
+      name: ospf.area.area_border_routers
+      syntax: Gauge32
+    jnxOspfv3AreaAsBdrRtrCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.5
+      name: ospf.area.as_border_routers
+      syntax: Gauge32
+    jnxOspfv3AreaScopeLsaCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.6
+      name: ospf.area.lsdb.area_scope.lsas
+      syntax: Gauge32
+    jnxOspfv3AreaScopeLsaCksumSum:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.7
+      name: ospf.area.lsdb.area_scope.checksum
+      syntax: Integer32
+    jnxOspfv3AreaSummary:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.8
+      name: ospf.area.summary_lsa.state
+      syntax: EnumInteger
+    jnxOspfv3StubMetric:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.10
+      name: ospf.area.stub.metric.value
+      syntax: Integer32
+    jnxOspfv3AreaNssaTranslatorRole:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.11
+      name: ospf.area.nssa_translator.role
+      syntax: EnumInteger
+    jnxOspfv3AreaNssaTranslatorState:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.12
+      name: ospf.area.nssa_translator.state
+      syntax: EnumInteger
+    jnxOspfv3AreaNssaTranslatorStabInt:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.13
+      name: ospf.area.nssa_translator.stability_interval
+      syntax: Unsigned32
+    jnxOspfv3AreaNssaTranslatorEvents:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.14
+      name: ospf.area.nssa_translator.events
+      syntax: Counter32
+    jnxOspfv3AreaStubMetricType:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.2.1.15
+      name: ospf.area.stub.metric.type
+      syntax: EnumInteger
+
+OSPFV3-MIB-JUNIPER::jnxOspfv3IfEntry:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3IfEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.1
+      name: ospf.netif # jnxOspfv3IfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.2
+      name: ospf.netif.inst.id # jnxOspfv3IfInstId
+      syntax: Integer32
+  discovery_attribute: jnxOspfv3IfAreaId
+  attributes:
+    jnxOspfv3IfAreaId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.3
+      name: ospf.netif.area.id
+      syntax: IpAddressAsUnsigned32
+    jnxOspfv3IfType:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.4
+      name: ospf.netif.type
+      syntax: EnumInteger
+    jnxOspfv3IfAdminStat:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.5
+      name: ospf.netif.state.admin
+      syntax: EnumInteger
+    jnxOspfv3IfRtrPriority:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.6
+      name: ospf.netif.designated_router.priority
+      syntax: Integer32
+    jnxOspfv3IfTransitDelay:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.7
+      name: ospf.netif.lsa.transit_delay
+      syntax: Unsigned32
+    jnxOspfv3IfRetransInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.8
+      name: ospf.netif.lsa.retrans_interval
+      syntax: Unsigned32
+    jnxOspfv3IfHelloInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.9
+      name: ospf.netif.hello_interval
+      syntax: Integer32
+    jnxOspfv3IfRtrDeadInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.10
+      name: ospf.netif.router_dead_interval
+      syntax: Unsigned32
+    jnxOspfv3IfPollInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.11
+      name: ospf.netif.poll_interval
+      syntax: Unsigned32
+    jnxOspfv3IfState:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.12
+      name: ospf.netif.state
+      syntax: EnumInteger
+    jnxOspfv3IfDesignatedRouter:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.13
+      name: ospf.netif.designated_router.id
+      syntax: IpAddressAsUnsigned32
+    jnxOspfv3IfBackupDesignatedRouter:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.14
+      name: ospf.netif.designated_router_backup.id
+      syntax: IpAddressAsUnsigned32
+    jnxOspfv3IfEvents:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.15
+      name: ospf.netif.state.chgs
+      syntax: Counter32
+    jnxOspfv3IfMulticastForwarding:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.17
+      name: ospf.netif.mcast.fwd
+      syntax: EnumInteger
+    jnxOspfv3IfDemand:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.18
+      name: ospf.netif.demand.state
+      syntax: TruthValue
+    jnxOspfv3IfMetricValue:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.19
+      name: ospf.netif.metric
+      syntax: Integer32
+    jnxOspfv3IfLinkScopeLsaCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.20
+      name: ospf.netif.lsdb.link_scope.lsas
+      syntax: Gauge32
+    jnxOspfv3IfLinkLsaCksumSum:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.21
+      name: ospf.netif.lsdb.link_scope.checksum
+      syntax: Integer32
+    jnxOspfv3IfDemandNbrProbe:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.22
+      name: ospf.netif.neighbor.probe
+      syntax: TruthValue
+    jnxOspfv3IfDemandNbrProbeRetxLimit:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.23
+      name: ospf.netif.neighbor.probe.retrans_limit
+      syntax: Unsigned32
+    jnxOspfv3IfDemandNbrProbeInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.7.1.24
+      name: ospf.netif.neighbor.probe_interval
+      syntax: Unsigned32
+
+OSPFV3-MIB-JUNIPER::jnxOspfv3VirtIfEntry:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3VirtIfEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.1
+      name: ospf.virt_netif.area.id # jnxOspfv3VirtIfAreaId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.2
+      name: ospf.virt_netif.neighbor.id # jnxOspfv3VirtIfNeighbor
+      syntax: Unsigned32
+  discovery_attribute: jnxOspfv3VirtIfIndex
+  attributes:
+    jnxOspfv3VirtIfIndex:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.3
+      name: ospf.virt_netif
+      syntax: InterfaceIndex
+    jnxOspfv3VirtIfInstId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.4
+      name: ospf.virt_netif.inst.id
+      syntax: Integer32
+    jnxOspfv3VirtIfTransitDelay:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.5
+      name: ospf.virt_netif.lsa.transit_delay
+      syntax: Integer32
+    jnxOspfv3VirtIfRetransInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.6
+      name: ospf.virt_netif.lsa.retrans_interval
+      syntax: Integer32
+    jnxOspfv3VirtIfHelloInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.7
+      name: ospf.virt_netif.hello_interval
+      syntax: Integer32
+    jnxOspfv3VirtIfRtrDeadInterval:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.8
+      name: ospf.virt_netif.router_dead_interval
+      syntax: Integer32
+    jnxOspfv3VirtIfState:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.9
+      name: ospf.virt_netif.state
+      syntax: EnumInteger
+    jnxOspfv3VirtIfEvents:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.10
+      name: ospf.virt_netif.state.chgs
+      syntax: Counter32
+    jnxOspfv3VirtIfLinkScopeLsaCount:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.12
+      name: ospf.virt_netif.lsdb.link_scope.lsas
+      syntax: Gauge32
+    jnxOspfv3VirtIfLinkLsaCksumSum:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.8.1.13
+      name: ospf.virt_netif.lsdb.link_scope.checksum
+      syntax: Integer32
+
+OSPFV3-MIB-JUNIPER::jnxOspfv3NbrEntry:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3NbrEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.1
+      name: ospf.neighbor.netif.index # jnxOspfv3NbrIfIndex
+      syntax: InterfaceIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.2
+      name: ospf.neighbor.netif.inst.id # jnxOspfv3NbrIfInstId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.3
+      name: ospf.neighbor.router.id # jnxOspfv3NbrRtrId
+      syntax: Unsigned32
+  discovery_attribute: jnxOspfv3NbrAddress
+  attributes:
+    jnxOspfv3NbrAddress:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.5
+      name: ospf.neighbor.router
+      syntax: IpAddress
+    jnxOspfv3NbrOptions:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.6
+      name: ospf.neighbor.options.bits
+      syntax: Integer32
+    jnxOspfv3NbrPriority:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.7
+      name: ospf.neighbor.designated_router.priority
+      syntax: Integer32
+    jnxOspfv3NbrState:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.8
+      name: ospf.neighbor.state
+      syntax: EnumInteger
+    jnxOspfv3NbrEvents:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.9
+      name: ospf.neighbor.state.changes
+      syntax: Counter32
+    jnxOspfv3NbrLsRetransQLen:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.10
+      name: ospf.neighbor.link_state_retrans_queue
+      syntax: Gauge32
+    jnxOspfv3NbrHelloSuppressed:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.11
+      name: ospf.neighbor.hello_suppress
+      syntax: TruthValue
+    jnxOspfv3NbrIfId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.12
+      name: ospf.neighbor.router.netif
+      syntax: InterfaceIndex
+    jnxOspfv3NbrRestartHelperStatus:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.13
+      name: ospf.neighbor.graceful_restart.helper.state
+      syntax: EnumInteger
+    jnxOspfv3NbrRestartHelperAge:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.14
+      name: ospf.neighbor.graceful_restart.helper.age
+      syntax: Integer32
+    jnxOspfv3NbrRestartHelperExitRc:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.9.1.15
+      name: ospf.neighbor.graceful_restart.helper.exit_reason
+      syntax: EnumInteger
+
+OSPFV3-MIB-JUNIPER::jnxOspfv3VirtNbrEntry:
+  mib: OSPFV3-MIB-JUNIPER
+  object: jnxOspfv3VirtNbrEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.1
+      name: ospf.virt_neighbor.area.id # ospfv3VirtNbrArea
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.2
+      name: ospf.virt_neighbor.router.id # ospfv3VirtNbrRtrId
+      syntax: Unsigned32
+  discovery_attribute: jnxOspfv3VirtNbrIfIndex
+  attributes:
+    jnxOspfv3VirtNbrIfIndex:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.3
+      name: ospf.virt_neighbor.netif
+      syntax: InterfaceIndex
+    jnxOspfv3VirtNbrIfInstId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.4
+      name: ospf.virt_neighbor.netif.inst.id
+      syntax: Integer32
+    jnxOspfv3VirtNbrAddress:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.6
+      name: ospf.virt_neighbor.router
+      syntax: IpAddress
+    jnxOspfv3VirtNbrOptions:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.7
+      name: ospf.virt_neighbor.options.bits
+      syntax: Integer32
+    jnxOspfv3VirtNbrState:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.8
+      name: ospf.virt_neighbor.state
+      syntax: EnumInteger
+    jnxOspfv3VirtNbrEvents:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.9
+      name: ospf.virt_neighbor.state.changes
+      syntax: Counter32
+    jnxOspfv3VirtNbrLsRetransQLen:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.10
+      name: ospf.virt_neighbor.link_state_retrans_queue
+      syntax: Gauge32
+    jnxOspfv3VirtNbrHelloSuppressed:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.11
+      name: ospf.virt_neighbor.hello_suppress
+      syntax: TruthValue
+    jnxOspfv3VirtNbrIfId:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.12
+      name: ospf.virt_neighbor.router.netif
+      syntax: InterfaceIndex
+    jnxOspfv3VirtNbrRestartHelperStatus:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.13
+      name: ospf.virt_neighbor.graceful_restart.helper.state
+      syntax: EnumInteger
+    jnxOspfv3VirtNbrRestartHelperAge:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.14
+      name: ospf.virt_neighbor.graceful_restart.helper.age
+      syntax: TicksSec
+    jnxOspfv3VirtNbrRestartHelperExitRc:
+      oid: .1.3.6.1.4.1.2636.5.4.1.1.11.1.15
+      name: ospf.virt_neighbor.graceful_restart.helper.exit_reason
+      syntax: EnumInteger
