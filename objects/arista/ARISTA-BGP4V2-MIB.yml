@@ -45,7 +45,7 @@ ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry:
       syntax: Unsigned32
     aristaBgp4V2PeerLocalIdentifier:
       oid: .1.3.6.1.4.1.30065.4.1.1.2.1.8
-      name: bgp.peer.local.router.ip.addr
+      name: bgp.peer.local.router.id
       syntax: IpAddressNoSuffix
     aristaBgp4V2PeerRemotePort:
       oid: .1.3.6.1.4.1.30065.4.1.1.2.1.9
@@ -57,7 +57,7 @@ ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry:
       syntax: Unsigned32
     aristaBgp4V2PeerRemoteIdentifier:
       oid: .1.3.6.1.4.1.30065.4.1.1.2.1.11
-      name: bgp.peer.remote.router.ip.addr
+      name: bgp.peer.remote.router.id
       syntax: IpAddressNoSuffix
     aristaBgp4V2PeerAdminStatus:
       oid: .1.3.6.1.4.1.30065.4.1.1.2.1.12
@@ -230,7 +230,7 @@ ARISTA-BGP4V2-MIB::aristaBgp4V2PrefixGaugesEntry:
     - type: Integer
       oid: .1.3.6.1.4.1.30065.4.1.1.8.1.2
       name: bgp.safi # aristaBgp4V2PrefixGaugesSafi
-      syntax: EnumInteger
+      syntax: IanaSafi
   discovery_attribute: aristaBgp4V2PrefixInPrefixes
   attributes:
     aristaBgp4V2PrefixInPrefixes:
@@ -261,7 +261,7 @@ ARISTA-BGP4V2-MIB::aristaBgp4V2NlriEntry:
     - type: Integer
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.3
       name: bgp.safi # aristaBgp4V2NlriSafi
-      syntax: EnumInteger
+      syntax: IanaSafi
     - type: Integer
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.4
       name: bgp.nlri.ip.subnet.type.id # aristaBgp4V2NlriPrefixType
@@ -298,63 +298,51 @@ ARISTA-BGP4V2-MIB::aristaBgp4V2NlriEntry:
       syntax: Unsigned32
     aristaBgp4V2NlriOrigin:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.9
-      name: bgp.nlri.origin
+      name: bgp.nlri.path_attr.origin
       syntax: EnumInteger
     aristaBgp4V2NlriNextHopAddr:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.11
-      name: bgp.nlri.next_hop.ip.addr
+      name: bgp.nlri.path_attr.next_hop.ip.addr
       syntax: IpAddressNoSuffix
     aristaBgp4V2NlriLinkLocalNextHopAddr:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.13
-      name: bgp.nlri.link_local.next_hop.ip.addr
+      name: bgp.nlri.path_attr.link_local.next_hop.ip.addr
       syntax: IpAddressNoSuffix
-    aristaBgp4V2NlriLocalPrefPresent:
-      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.14
-      name: bgp.nlri.update.local_pref
-      syntax: TruthValue
     aristaBgp4V2NlriLocalPref:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.15
-      name: bgp.nlri.local_pref
+      name: bgp.nlri.path_attr.local_pref
       syntax: Unsigned32
-    aristaBgp4V2NlriMedPresent:
-      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.16
-      name: bgp.nlri.update.med
-      syntax: TruthValue
     aristaBgp4V2NlriMed:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.17
-      name: bgp.nlri.med
+      name: bgp.nlri.path_attr.med
       syntax: Unsigned32
     aristaBgp4V2NlriAtomicAggregate:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.18
-      name: bgp.nlri.atomic_aggregate
-      syntax: TruthValue
-    aristaBgp4V2NlriAggregatorPresent:
-      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.19
-      name: bgp.nlri.update.aggregator
+      name: bgp.nlri.path_attr.atomic_aggregate
       syntax: TruthValue
     aristaBgp4V2NlriAggregatorAS:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.20
-      name: bgp.nlri.aggregator.as.asn
+      name: bgp.aggregator.as.asn
       syntax: Unsigned32
     aristaBgp4V2NlriAggregatorAddr:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.21
-      name: bgp.nlri.aggregator.ip.addr
+      name: bgp.aggregator.ip.addr
       syntax: IpAddressNoSuffix
     aristaBgp4V2NlriAsPathCalcLength:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.22
-      name: bgp.nlri.as_path.hop_count
+      name: bgp.as_path.hop_count
       syntax: Unsigned32
     aristaBgp4V2NlriAsPathString:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.23
-      name: bgp.nlri.as_path.path
+      name: bgp.as_path.path
       syntax: DisplayString # SnmpAdminString
     aristaBgp4V2NlriAsPath:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.24
-      name: bgp.nlri.as_path.raw
+      name: bgp.as_path.raw
       syntax: OctetString
     aristaBgp4V2NlriPathAttrUnknown:
       oid: .1.3.6.1.4.1.30065.4.1.1.9.1.25
-      name: bgp.nlri.as_path.attr_unk
+      name: bgp.as_path.attr_unk
       syntax: OctetString
 
 ARISTA-BGP4V2-MIB::aristaBgp4V2PrefixEvpnNlriGaugesEntry:

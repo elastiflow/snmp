@@ -1,0 +1,477 @@
+BGP4-V2-MIB-JUNIPER::jnxBgpM2BaseScalars:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2BaseScalars
+  discovery_attribute: jnxBgpM2AsSize
+  attributes:
+    jnxBgpM2LocalAs:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.5
+      name: bgp.local.as.asn
+      syntax: Unsigned32
+    jnxBgpM2LocalIdentifier:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.6
+      name: bgp.local.router.id
+      syntax: IpAddressNoSuffix
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2BaseScalarRouteReflectExts:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2BaseScalarRouteReflectExts
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2BaseScalars
+  discovery_attribute: jnxBgpM2RouteReflector
+  attributes:
+    jnxBgpM2RouteReflector:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.7.1.2796.1
+      name: bgp.route_reflect.support
+      syntax: TruthValue
+    jnxBgpM2ClusterId:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.7.1.2796.2
+      name: bgp.cluster.id
+      syntax: IpAddressNoSuffix
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2BaseScalarASConfedExts:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2BaseScalarASConfedExts
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2BaseScalars
+  discovery_attribute: jnxBgpM2ConfederationRouter
+  attributes:
+    jnxBgpM2ConfederationRouter:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.7.1.3065.1
+      name: bgp.as_confed
+      syntax: TruthValue
+    jnxBgpM2ConfederationId:
+      oid: .1.3.6.1.4.1.2636.5.1.1.1.7.1.3065.2
+      name: bgp.as_confed.as.asn
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.15
+      name: bgp.routing.inst
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.6
+      name: bgp.peer.local.ip.type.id # jnxBgpM2PeerLocalAddrType
+      syntax: Integer
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.7
+      name: bgp.peer.local.ip.addr # jnxBgpM2PeerLocalAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.10
+      name: bgp.peer.remote.ip.type.id # jnxBgpM2PeerRemoteAddrType
+      syntax: Integer
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.11
+      name: bgp.peer.remote.ip.addr # jnxBgpM2PeerRemoteAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: jnxBgpM2PeerIdentifier
+  attributes:
+    jnxBgpM2PeerIdentifier:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.1
+      name: bgp.peer.remote.router.id
+      syntax: IpAddressNoSuffix
+    jnxBgpM2PeerState:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.2
+      name: bgp.peer.state.oper
+      syntax: EnumInteger
+    jnxBgpM2PeerStatus:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.3
+      name: bgp.peer.state.admin
+      syntax: EnumInteger
+    jnxBgpM2PeerConfiguredVersion:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.4
+      name: bgp.peer.version.configured.ver
+      syntax: Unsigned32
+    jnxBgpM2PeerNegotiatedVersion:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.5
+      name: bgp.peer.version.negotiated.ver
+      syntax: Unsigned32
+    jnxBgpM2PeerLocalPort:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.8
+      name: bgp.peer.local.l4.port.id
+      syntax: Unsigned32
+    jnxBgpM2PeerLocalAs:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.9
+      name: bgp.peer.local.as.asn
+      syntax: Unsigned32
+    jnxBgpM2PeerRemotePort:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.12
+      name: bgp.peer.remote.l4.port.id
+      syntax: Unsigned32
+    jnxBgpM2PeerRemoteAs:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.13
+      name: bgp.peer.remote.as.asn
+      syntax: Unsigned32
+    jnxBgpM2PeerIndex:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.14
+      name: bgp.peer.index
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerErrorsEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerErrorsEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerLastErrorReceived
+  attributes:
+    jnxBgpM2PeerLastErrorReceived:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.1
+      name: bgp.peer.last_error.in
+      syntax: OctetString
+    jnxBgpM2PeerLastErrorSent:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.2
+      name: bgp.peer.last_error.out
+      syntax: OctetString
+    jnxBgpM2PeerLastErrorReceivedTime:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.3
+      name: bgp.peer.last_error.time.in
+      syntax: TimeTicks
+    jnxBgpM2PeerLastErrorSentTime:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.4
+      name: bgp.peer.last_error.time.out
+      syntax: TimeTicks
+    jnxBgpM2PeerLastErrorReceivedText:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.5
+      name: bgp.peer.last_error.text.in
+      syntax: DisplayString # SnmpAdminString
+    jnxBgpM2PeerLastErrorSentText:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.6
+      name: bgp.peer.last_error.text.out
+      syntax: DisplayString # SnmpAdminString
+    jnxBgpM2PeerLastErrorReceivedData:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.7
+      name: bgp.peer.last_error.data.in
+      syntax: OctetString
+    jnxBgpM2PeerLastErrorSentData:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.2.1.1.8
+      name: bgp.peer.last_error.data.out
+      syntax: OctetString
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerAuthEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerAuthEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerAuthSent
+  attributes:
+    jnxBgpM2PeerAuthSent:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.1
+      name: bgp.peer.auth.sent
+      syntax: TruthValue
+    jnxBgpM2PeerAuthSentCode:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.2
+      name: bgp.peer.auth.code.out
+      syntax: Unsigned32
+    jnxBgpM2PeerAuthSentValue:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.3
+      name: bgp.peer.auth.value.out
+      syntax: OctetString
+    jnxBgpM2PeerAuthRcvd:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.4
+      name: bgp.peer.auth.rcvd
+      syntax: TruthValue
+    jnxBgpM2PeerAuthRcvdCode:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.5
+      name: bgp.peer.auth.code.in
+      syntax: Unsigned32
+    jnxBgpM2PeerAuthRcvdValue:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.3.1.1.6
+      name: bgp.peer.auth.value.in
+      syntax: OctetString
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEventTimesEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerEventTimesEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerFsmEstablishedTime
+  attributes:
+    jnxBgpM2PeerFsmEstablishedTime:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.1.1.1
+      name: bgp.peer.fsm.established.duration
+      syntax: Gauge32
+    jnxBgpM2PeerInUpdatesElapsedTime:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.1.1.2
+      name: bgp.peer.last_update.elapsed
+      syntax: Gauge32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerConfiguredTimersEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerConfiguredTimersEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerConnectRetryInterval
+  attributes:
+    jnxBgpM2PeerConnectRetryInterval:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.2.1.1
+      name: bgp.peer.connect_retry.config.interval
+      syntax: Unsigned32
+    jnxBgpM2PeerHoldTimeConfigured:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.2.1.2
+      name: bgp.peer.hold_time.config.interval
+      syntax: Unsigned32
+    jnxBgpM2PeerKeepAliveConfigured:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.2.1.3
+      name: bgp.peer.keep_alive.config.interval
+      syntax: Unsigned32
+    jnxBgpM2PeerMinASOrigInterval:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.2.1.4
+      name: bgp.peer.min_as_origin.config.interval
+      syntax: Unsigned32
+    jnxBgpM2PeerMinRouteAdverInterval:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.2.1.5
+      name: bgp.peer.min_route_advert.config.interval
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerNegotiatedTimersEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerNegotiatedTimersEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerHoldTime
+  attributes:
+    jnxBgpM2PeerHoldTime:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.3.1.1
+      name: bgp.peer.hold_time.interval
+      syntax: Unsigned32
+    jnxBgpM2PeerKeepAlive:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.4.3.1.2
+      name: bgp.peer.keep_alive.interval
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerCountersEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerCountersEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerInUpdates
+  attributes:
+    jnxBgpM2PeerInUpdates:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.1.1.1
+      name: bgp.peer.msgs.update.in
+      syntax: Counter32
+    jnxBgpM2PeerOutUpdates:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.1.1.2
+      name: bgp.peer.msgs.update.out
+      syntax: Counter32
+    jnxBgpM2PeerInTotalMessages:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.1.1.3
+      name: bgp.peer.msgs.in
+      syntax: Counter32
+    jnxBgpM2PeerOutTotalMessages:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.1.1.4
+      name: bgp.peer.msgs.out
+      syntax: Counter32
+    jnxBgpM2PeerFsmEstablishedTrans:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.1.1.5
+      name: bgp.peer.fsm.established.transitions
+      syntax: Counter32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PrefixCountersEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PrefixCountersEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.14
+      name: bgp.peer.index # jnxBgpM2PeerIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.1
+      name: bgp.afi # jnxBgpM2PrefixCountersAfi
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.2
+      name: bgp.safi # jnxBgpM2PrefixCountersSafi
+      syntax: IanaSafi
+  discovery_attribute: jnxBgpM2PrefixInPrefixes
+  attributes:
+    jnxBgpM2PrefixInPrefixes:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.7
+      name: bgp.prefixes.in
+      syntax: Gauge32
+    jnxBgpM2PrefixInPrefixesAccepted:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.8
+      name: bgp.prefixes.accept.in
+      syntax: Gauge32
+    jnxBgpM2PrefixInPrefixesRejected:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.9
+      name: bgp.prefixes.reject.in
+      syntax: Gauge32
+    jnxBgpM2PrefixOutPrefixes:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.10
+      name: bgp.prefixes.out
+      syntax: Gauge32
+    jnxBgpM2PrefixInPrefixesActive:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.6.2.1.11
+      name: bgp.prefixes.active.in
+      syntax: Gauge32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerReflectorClientEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerReflectorClientEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerReflectorClient
+  attributes:
+    jnxBgpM2PeerReflectorClient:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.7.1.2796.1.1.1
+      name: bgp.peer.route_reflect.client
+      syntax: EnumInteger
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerConfedMemberEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PeerConfedMemberEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PeerEntry
+  discovery_attribute: jnxBgpM2PeerConfedMember
+  attributes:
+    jnxBgpM2PeerConfedMember:
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.7.1.3065.1.1.1
+      name: bgp.peer.as_confed.member
+      syntax: TruthValue
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2NlriEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2NlriEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.2.1.1.1.14
+      name: bgp.peer.index # jnxBgpM2PeerIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.2
+      name: bgp.afi # jnxBgpM2NlriAfi
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.3
+      name: bgp.safi # jnxBgpM2NlriSafi
+      syntax: IanaSafi
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.4
+      name: bgp.nlri.ip.subnet.prefix # jnxBgpM2NlriPrefix
+      syntax: IpAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.5
+      name: bgp.nlri.ip.subnet.mask_size # jnxBgpM2NlriPrefixLen
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.1
+      name: bgp.nlri.index # jnxBgpM2NlriIndex
+      syntax: Unsigned32
+  discovery_attribute: jnxBgpM2NlriBest
+  attributes:
+    jnxBgpM2NlriBest:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.6
+      name: bgp.nlri.best
+      syntax: TruthValue
+    jnxBgpM2NlriCalcLocalPref:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.7
+      name: bgp.nlri.local_pref_calc
+      syntax: Unsigned32
+    jnxBgpM2PathAttrIndex:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.8
+      tag: true
+      name: bgp.nlri.path_attr.index
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PathAttrEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.1.1.8
+      name: bgp.nlri.path_attr.index # jnxBgpM2PathAttrIndex
+      syntax: Unsigned32
+  discovery_attribute: jnxBgpM2PathAttrOrigin
+  attributes:
+    jnxBgpM2PathAttrOrigin:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.1
+      name: bgp.nlri.path_attr.origin
+      syntax: EnumInteger
+    jnxBgpM2PathAttrNextHop:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.3
+      name: bgp.nlri.path_attr.next_hop.ip.addr
+      syntax: IpAddressNoSuffix
+    jnxBgpM2PathAttrMed:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.5
+      name: bgp.nlri.path_attr.med
+      syntax: Unsigned32
+    jnxBgpM2PathAttrLocalPref:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.7
+      name: bgp.nlri.path_attr.local_pref
+      syntax: Unsigned32
+    jnxBgpM2PathAttrAtomicAggregate:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.8
+      name: bgp.nlri.path_attr.atomic_aggregate
+      syntax: TruthValue
+    jnxBgpM2PathAttrAggregatorAS:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.9
+      name: bgp.aggregator.as.asn
+      syntax: Unsigned32
+    jnxBgpM2PathAttrAggregatorAddr:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.10
+      name: bgp.aggregator.ip.addr
+      syntax: IpAddressNoSuffix
+    jnxBgpM2AsPathCalcLength:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.11
+      name: bgp.as_path.hop_count
+      syntax: Unsigned32
+    jnxBgpM2AsPathString:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.12
+      name: bgp.as_path.path
+      syntax: DisplayString # SnmpAdminString
+    jnxBgpM2AsPathIndex:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.4.1.13
+      name: bgp.as_path.index
+      syntax: Unsigned32
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2AsPath4byteEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2AsPath4byteEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+  discovery_attribute: jnxBgpM2AsPath4byteAggregatorAS
+  attributes:
+    jnxBgpM2AsPath4byteAggregatorAS:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.5.1.2
+      name: bgp.aggregator.as.asn
+      syntax: Unsigned32
+      overrides:
+        object: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+        attribute: jnxBgpM2PathAttrAggregatorAS
+    jnxBgpM2AsPath4byteCalcLength:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.5.1.3
+      name: bgp.as_path.hop_count
+      syntax: Unsigned32
+      overrides:
+        object: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+        attribute: jnxBgpM2AsPathCalcLength
+    jnxBgpM2AsPath4byteString:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.5.1.4
+      name: bgp.as_path.path
+      syntax: DisplayString # SnmpAdminString
+      overrides:
+        object: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+        attribute: jnxBgpM2AsPathString
+    jnxBgpM2AsPath4byteIndex:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.5.1.5
+      name: bgp.as_path.index
+      syntax: Unsigned32
+      overrides:
+        object: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+        attribute: jnxBgpM2AsPathIndex
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrOriginatorIdEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2PathAttrOriginatorIdEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+  discovery_attribute: jnxBgpM2PathAttrOriginatorId
+  attributes:
+    jnxBgpM2PathAttrOriginatorId:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.8.1.2796.1.1.1
+      name: bgp.nlri.path_attr.origin.id
+      syntax: IpAddressNoSuffix
+
+BGP4-V2-MIB-JUNIPER::jnxBgpM2LinkLocalNextHopEntry:
+  mib: BGP4-V2-MIB-JUNIPER
+  object: jnxBgpM2LinkLocalNextHopEntry
+  augments: BGP4-V2-MIB-JUNIPER::jnxBgpM2PathAttrEntry
+  discovery_attribute: jnxBgpM2LinkLocalNextHop
+  attributes:
+    jnxBgpM2LinkLocalNextHop:
+      oid: .1.3.6.1.4.1.2636.5.1.1.3.8.1.2545.1.2
+      name: bgp.nlri.path_attr.link_local.next_hop.ip.addr
+      syntax: IpAddressNoSuffix
