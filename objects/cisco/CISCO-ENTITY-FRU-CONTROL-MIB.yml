@@ -1,0 +1,436 @@
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyGroupEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFRUPowerSupplyGroupEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+  discovery_attribute: cefcPowerRedundancyMode
+  attributes:
+    cefcPowerRedundancyMode:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.1
+      name: cisco.power_supply.redundancy.admin.state
+      syntax: EnumInteger
+    cefcPowerUnits:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.2
+      name: cisco.power_supply.units
+      syntax: DisplayString
+    cefcTotalAvailableCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.3
+      name: cisco.power_supply.current.avail.amps
+      syntax: CurrentAmp
+    cefcTotalDrawnCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.4
+      name: cisco.power_supply.current.drawn.amps
+      syntax: CurrentAmp
+    cefcPowerRedundancyOperMode:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.5
+      name: cisco.power_supply.redundancy.oper.state
+      syntax: EnumInteger
+    cefcPowerNonRedundantReason:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.6
+      name: cisco.power_supply.non_redundant.reason
+      syntax: EnumInteger
+    cefcTotalDrawnInlineCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.1.1.7
+      name: cisco.power_supply.current.inline.amps
+      syntax: CurrentAmp
+    # Additional Attributes as Tags
+    entPhysicalDescr:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.2
+      tag: true
+      name: entity.phys.descr
+      syntax: DisplayString
+    entPhysicalClass:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.5
+      tag: true
+      name: entity.phys.class
+      syntax: EnumInteger
+    entPhysicalName:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.7
+      tag: true
+      name: entity.phys.name
+      syntax: DisplayString
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerStatusEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFRUPowerStatusEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyGroupEntry
+  discovery_attribute: cefcFRUPowerAdminStatus
+  attributes:
+    cefcFRUPowerAdminStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.2.1.1
+      name: cisco.fru.power.admin.state
+      syntax: EnumInteger
+    cefcFRUPowerOperStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.2.1.2
+      name: cisco.fru.power.oper.state
+      syntax: EnumInteger
+    cefcFRUCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.2.1.3
+      name: cisco.fru.current.amps
+      syntax: CurrentAmp
+    cefcFRURealTimeCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.2.1.5
+      name: cisco.fru.current.realtime.amps
+      syntax: CurrentAmp
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPower:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFRUPower
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyGroupEntry
+  discovery_attribute: cefcMaxDefaultInLinePower
+  attributes:
+    cefcMaxDefaultInLinePower:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.3
+      name: cisco.fru.power.inline.watts
+      syntax: PowerMilliWatt
+    cefcMaxDefaultHighInLinePower:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.5
+      name: cisco.fru.power.inline.watts
+      syntax: PowerMilliWatt
+      overrides:
+        object: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPower
+        attribute: cefcMaxDefaultInLinePower
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyValueEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFRUPowerSupplyValueEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyGroupEntry
+  discovery_attribute: cefcFRUTotalSystemCurrent
+  attributes:
+    cefcFRUTotalSystemCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.1
+      name: cisco.power_supply.current.system_max.amps
+      syntax: CurrentAmp
+    cefcFRUDrawnSystemCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.2
+      name: cisco.power_supply.current.system.amps
+      syntax: CurrentAmp
+    cefcFRUTotalInlineCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.3
+      name: cisco.power_supply.current.inline_max.amps
+      syntax: CurrentAmp
+    cefcFRUDrawnInlineCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.4
+      name: cisco.power_supply.current.inline.amps
+      syntax: CurrentAmp
+    cefcFRUActualInputCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.5
+      name: cisco.power_supply.current.input.in
+      syntax: CurrentAmp
+    cefcFRUActualOutputCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.1.4.1.6
+      name: cisco.power_supply.current.input.out
+      syntax: CurrentAmp
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcModuleEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+  discovery_attribute: cefcModuleAdminStatus
+  attributes:
+    cefcModuleAdminStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.1
+      name: cisco.module.state.admin
+      syntax: EnumInteger
+    cefcModuleOperStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.2
+      name: cisco.module.state.oper
+      syntax: EnumInteger
+    cefcModuleResetReason:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.3
+      name: cisco.module.reset_reason
+      syntax: EnumInteger
+    cefcModuleStatusLastChangeTime:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.4
+      name: cisco.module.state.last_chg
+      syntax: TimeStamp
+    cefcModuleLastClearConfigTime:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.5
+      name: cisco.module.config.last_clear
+      syntax: TimeStamp
+    cefcModuleResetReasonDescription:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.6
+      name: cisco.module.reset_reason.descr
+      syntax: DisplayString
+    cefcModuleStateChangeReasonDescr:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.7
+      name: cisco.module.state_chg_reason.descr
+      syntax: DisplayString
+    cefcModuleUpTime:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.8
+      name: cisco.module.uptime
+      syntax: TicksSec
+    cefcVmModuleOperStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.9
+      name: cisco.vm_module.state.oper
+      syntax: EnumInteger
+    cefcVmModuleStatusLastChangeTime:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.1.1.10
+      name: cisco.vm_module.state.last_chg
+      syntax: TimeStamp
+    # Additional Attributes as Tags
+    entPhysicalDescr:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.2
+      tag: true
+      name: entity.phys.descr
+      syntax: DisplayString
+    entPhysicalClass:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.5
+      tag: true
+      name: entity.phys.class
+      syntax: EnumInteger
+    entPhysicalName:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.7
+      tag: true
+      name: entity.phys.name
+      syntax: DisplayString
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcIntelliModuleEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcIntelliModuleEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleEntry
+  discovery_attribute: cefcIntelliModuleIPAddr
+  attributes:
+    cefcIntelliModuleIPAddr:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.2.1.2
+      name: cisco.intellimodule.ip.addr
+      syntax: IpAddressNoSuffix
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleLocalSwitchingEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcModuleLocalSwitchingEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleEntry
+  discovery_attribute: cefcModuleLocalSwitchingMode
+  attributes:
+    cefcModuleLocalSwitchingMode:
+      oid: .1.3.6.1.4.1.9.9.117.1.2.3.1.1
+      name: cisco.module.local_switching.mode
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanTrayStatusEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFanTrayStatusEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanEntry
+  discovery_attribute: cefcFanTrayOperStatus
+  attributes:
+    cefcFanTrayOperStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.4.1.1.1
+      name: fan.tray.state.oper
+      syntax: EnumInteger
+    cefcFanTrayDirection:
+      oid: .1.3.6.1.4.1.9.9.117.1.4.1.1.2
+      name: fan.tray.direction
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFanEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+  discovery_attribute: cefcFanSpeed
+  attributes:
+    cefcFanSpeed:
+      oid: .1.3.6.1.4.1.9.9.117.1.4.2.1.1
+      name: fan.speed.rpm
+      syntax: Unsigned32
+    cefcFanSpeedPercent:
+      oid: .1.3.6.1.4.1.9.9.117.1.4.2.1.2
+      name: fan.speed.pct
+      syntax: Percent100
+    # Additional Attributes as Tags
+    entPhysicalDescr:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.2
+      tag: true
+      name: entity.phys.descr
+      syntax: DisplayString
+    entPhysicalClass:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.5
+      tag: true
+      name: entity.phys.class
+      syntax: EnumInteger
+    entPhysicalName:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.7
+      tag: true
+      name: entity.phys.name
+      syntax: DisplayString
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcPhysicalEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcPhysicalEntry
+  augments: ENTITY-MIB::entPhysicalEntry
+  discovery_attribute: cefcPhysicalStatus
+  attributes:
+    cefcPhysicalStatus:
+      oid: .1.3.6.1.4.1.9.9.117.1.5.1.1.1
+      name: cisco.entity.phys.state
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcPowerSupplyInputEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcPowerSupplyInputEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.117.1.6.1.1.1
+      name: cisco.power_supply.input.index # cefcPowerSupplyInputIndex
+      syntax: Unsigned32
+  discovery_attribute: cefcPowerSupplyInputType
+  attributes:
+    cefcPowerSupplyInputType:
+      oid: .1.3.6.1.4.1.9.9.117.1.6.1.1.2
+      name: cisco.power_supply.input.type
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcPowerSupplyOutputEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcPowerSupplyOutputEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.117.1.6.2.1.1
+      name: cisco.power_supply.output.mode.index # cefcPSOutputModeIndex
+      syntax: Unsigned32
+  discovery_attribute: cefcPSOutputModeCurrent
+  attributes:
+    cefcPSOutputModeCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.6.2.1.2
+      name: cisco.power_supply.output.current.amps
+      syntax: Integer32
+    cefcPSOutputModeInOperation:
+      oid: .1.3.6.1.4.1.9.9.117.1.6.2.1.3
+      name: cisco.power_supply.output.oper.mode
+      syntax: TruthValue
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcChassisCoolingEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcChassisCoolingEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+  discovery_attribute: cefcChassisPerSlotCoolingCap
+  attributes:
+    cefcChassisPerSlotCoolingCap:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.1.1.1
+      name: cisco.chassis.slot.cooling.capacity.max
+      syntax: Unsigned32
+    cefcChassisPerSlotCoolingUnit:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.1.1.2
+      name: cisco.chassis.slot.cooling.capacity.unit
+      syntax: EnumInteger
+    # Additional Attributes as Tags
+    entPhysicalDescr:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.2
+      tag: true
+      name: entity.phys.descr
+      syntax: DisplayString
+    entPhysicalClass:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.5
+      tag: true
+      name: entity.phys.class
+      syntax: EnumInteger
+    entPhysicalName:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.7
+      tag: true
+      name: entity.phys.name
+      syntax: DisplayString
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanCoolingEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFanCoolingEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanEntry
+  discovery_attribute: cefcFanCoolingCapacity
+  attributes:
+    cefcFanCoolingCapacity:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.2.1.1
+      name: cisco.fan.cooling.capacity.max
+      syntax: Unsigned32
+    cefcFanCoolingCapacityUnit:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.2.1.2
+      name: cisco.fan.cooling.capacity.unit
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleCoolingEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcModuleCoolingEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleEntry
+  discovery_attribute: cefcModuleCooling
+  attributes:
+    cefcModuleCooling:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.3.1.1
+      name: cisco.module.cooling.meas.value
+      syntax: Unsigned32
+    cefcModuleCoolingUnit:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.3.1.2
+      name: cisco.module.cooling.unit
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcFanCoolingCapEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcFanCoolingCapEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: Integer32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.117.1.7.4.1.1
+      name: cisco.fan.cooling.index # cefcFanCoolingCapIndex
+      syntax: Unsigned32
+  discovery_attribute: cefcFanCoolingCapModeDescr
+  attributes:
+    cefcFanCoolingCapModeDescr:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.4.1.2
+      name: cisco.fan.cooling.mode.name
+      syntax: DisplayString # SnmpAdminString
+    cefcFanCoolingCapCapacity:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.4.1.3
+      name: cisco.fan.cooling.capacity.max
+      syntax: Unsigned32
+    cefcFanCoolingCapCurrent:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.4.1.4
+      name: cisco.fan.cooling.capacity.used
+      syntax: Integer32
+    cefcFanCoolingCapCapacityUnit:
+      oid: .1.3.6.1.4.1.9.9.117.1.7.4.1.5
+      name: cisco.fan.cooling.capacity.unit
+      syntax: EnumInteger
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcConnectorRatingEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcConnectorRatingEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcFRUPowerSupplyGroupEntry
+  discovery_attribute: cefcConnectorRating
+  attributes:
+    cefcConnectorRating:
+      oid: .1.3.6.1.4.1.9.9.117.1.8.1.1.1
+      name: cisco.fpu.connector.current.max
+      syntax: Integer32
+
+CISCO-ENTITY-FRU-CONTROL-MIB::cefcModulePowerConsumptionEntry:
+  mib: CISCO-ENTITY-FRU-CONTROL-MIB
+  object: cefcModulePowerConsumptionEntry
+  augments: CISCO-ENTITY-FRU-CONTROL-MIB::cefcModuleEntry
+  discovery_attribute: cefcModulePowerConsumption
+  attributes:
+    cefcModulePowerConsumption:
+      oid: .1.3.6.1.4.1.9.9.117.1.8.2.1.1
+      name: cisco.module.power.watts
+      syntax: Integer32
