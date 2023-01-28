@@ -1,0 +1,139 @@
+VRRPV3-MIB::vrrpv3OperationsEntry:
+  mib: VRRPV3-MIB
+  object: vrrpv3OperationsEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.2.1.207.1.1.1.1
+      name: vrrp.router.id # vrrpv3OperationsVrId
+      syntax: IntegerAsID
+    - type: Integer
+      oid: .1.3.6.1.2.1.207.1.1.1.2
+      name: vrrp.router.ip.addr.type.id # vrrpv3OperationsInetAddrType
+      syntax: IntegerAsID
+  discovery_attribute: vrrpv3OperationsVirtualMacAddr
+  attributes:
+    vrrpv3OperationsMasterIpAddr:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.3
+      name: vrrp.router.master
+      syntax: IpAddress
+    vrrpv3OperationsPrimaryIpAddr:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.4
+      name: vrrp.router.primary
+      syntax: IpAddress
+    vrrpv3OperationsVirtualMacAddr:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.5
+      name: vrrp.router.virt_mac
+      syntax: MacAddress
+    vrrpv3OperationsStatus:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.6
+      name: vrrp.router.state
+      syntax: EnumInteger
+    vrrpv3OperationsPriority:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.7
+      name: vrrp.router.priority
+      syntax: Unsigned32
+    vrrpv3OperationsAddrCount:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.8
+      name: vrrp.router.ipaddrs
+      syntax: Integer32
+    vrrpv3OperationsAdvInterval:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.9
+      name: vrrp.router.advert_interval
+      syntax: OpTicksCentiSec
+    vrrpv3OperationsPreemptMode:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.10
+      name: vrrp.router.preempt.mode
+      syntax: TruthValue
+    vrrpv3OperationsAcceptMode:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.11
+      name: vrrp.router.accept.mode
+      syntax: TruthValue
+    vrrpv3OperationsUpTime:
+      oid: .1.3.6.1.2.1.207.1.1.1.1.12
+      name: vrrp.router.uptime
+      syntax: TimeTicks
+
+VRRPV3-MIB::vrrpv3Statistics:
+  mib: VRRPV3-MIB
+  object: vrrpv3Statistics
+  discovery_attribute: vrrpv3RouterChecksumErrors
+  attributes:
+    vrrpv3RouterChecksumErrors:
+      oid: .1.3.6.1.2.1.207.1.2.1
+      name: vrrp.errors.checksum
+      syntax: Counter64
+    vrrpv3RouterVersionErrors:
+      oid: .1.3.6.1.2.1.207.1.2.2
+      name: vrrp.errors.version
+      syntax: Counter64
+    vrrpv3RouterVrIdErrors:
+      oid: .1.3.6.1.2.1.207.1.2.3
+      name: vrrp.errors.vrid
+      syntax: Counter64
+    vrrpv3GlobalStatisticsDiscontinuityTime:
+      oid: .1.3.6.1.2.1.207.1.2.4
+      name: vrrp.stats.discontinuity_time
+      syntax: TimeStamp
+
+VRRPV3-MIB::vrrpv3StatisticsEntry:
+  mib: VRRPV3-MIB
+  object: vrrpv3StatisticsEntry
+  augments: VRRPV3-MIB::vrrpv3OperationsEntry
+  discovery_attribute: vrrpv3StatisticsMasterTransitions
+  attributes:
+    vrrpv3StatisticsMasterTransitions:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.1
+      name: vrrp.router.master_transitions
+      syntax: Counter32
+    vrrpv3StatisticsNewMasterReason:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.2
+      name: vrrp.router.new_master.reason
+      syntax: EnumInteger
+    vrrpv3StatisticsRcvdAdvertisements:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.3
+      name: vrrp.router.adverts.in
+      syntax: Counter64
+    vrrpv3StatisticsAdvIntervalErrors:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.4
+      name: vrrp.router.errors.advert_interval
+      syntax: Counter64
+    vrrpv3StatisticsIpTtlErrors:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.5
+      name: vrrp.router.errors.ip_ttl
+      syntax: Counter64
+    vrrpv3StatisticsProtoErrReason:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.6
+      name: vrrp.router.proto_error.reason
+      syntax: EnumInteger
+    vrrpv3StatisticsRcvdPriZeroPackets:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.7
+      name: vrrp.router.packets.priority_zero.in
+      syntax: Counter64
+    vrrpv3StatisticsSentPriZeroPackets:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.8
+      name: vrrp.router.packets.priority_zero.out
+      syntax: Counter64
+    vrrpv3StatisticsRcvdInvalidTypePackets:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.9
+      name: vrrp.router.packets.invalid_type.in
+      syntax: Counter64
+    vrrpv3StatisticsAddressListErrors:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.10
+      name: vrrp.router.errors.addr_list
+      syntax: Counter64
+    vrrpv3StatisticsPacketLengthErrors:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.11
+      name: vrrp.router.errors.packet_size
+      syntax: Counter64
+    vrrpv3StatisticsRowDiscontinuityTime:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.12
+      name: vrrp.router.discontinuity_time
+      syntax: TimeStamp
+    vrrpv3StatisticsRefreshRate:
+      oid: .1.3.6.1.2.1.207.1.2.5.1.13
+      name: vrrp.router.refresh_interval
+      syntax: OpTicksMilliSec

@@ -1,0 +1,92 @@
+LLDP-MIB::lldpStatistics:
+  mib: LLDP-MIB
+  object: lldpStatistics
+  discovery_attribute: lldpStatsRemTablesLastChangeTime
+  attributes:
+    lldpStatsRemTablesLastChangeTime:
+      oid: .1.0.8802.1.1.2.1.2.1
+      name: lldp.msap.last_chg
+      syntax: TimeStamp
+    lldpStatsRemTablesInserts:
+      oid: .1.0.8802.1.1.2.1.2.2
+      name: lldp.msap.inserts
+      syntax: Gauge32
+    lldpStatsRemTablesDeletes:
+      oid: .1.0.8802.1.1.2.1.2.3
+      name: lldp.msap.deletes
+      syntax: Gauge32
+    lldpStatsRemTablesDrops:
+      oid: .1.0.8802.1.1.2.1.2.4
+      name: lldp.msap.drops
+      syntax: Gauge32
+    lldpStatsRemTablesAgeouts:
+      oid: .1.0.8802.1.1.2.1.2.5
+      name: lldp.msap.ageouts
+      syntax: Gauge32
+
+LLDP-MIB::lldpStatsTxPortEntry:
+  mib: LLDP-MIB
+  object: lldpStatsTxPortEntry
+  index:
+    - type: Integer32
+      oid: .1.0.8802.1.1.2.1.2.6.1.1
+      name: netif # lldpStatsTxPortNum
+      syntax: InterfaceIndex
+  discovery_attribute: lldpStatsTxPortFramesTotal
+  attributes:
+    lldpStatsTxPortFramesTotal:
+      oid: .1.0.8802.1.1.2.1.2.6.1.2
+      name: lldp.port.frames.out
+      syntax: Counter32
+    # Additional Attributes as Tags
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
+
+LLDP-MIB::lldpStatsRxPortEntry:
+  mib: LLDP-MIB
+  object: lldpStatsRxPortEntry
+  augments: LLDP-MIB::lldpStatsTxPortEntry
+  discovery_attribute: lldpStatsRxPortFramesDiscardedTotal
+  attributes:
+    lldpStatsRxPortFramesDiscardedTotal:
+      oid: .1.0.8802.1.1.2.1.2.7.1.2
+      name: lldp.port.frames.discard.in
+      syntax: Counter32
+    lldpStatsRxPortFramesErrors:
+      oid: .1.0.8802.1.1.2.1.2.7.1.3
+      name: lldp.port.frames.error.in
+      syntax: Counter32
+    lldpStatsRxPortFramesTotal:
+      oid: .1.0.8802.1.1.2.1.2.7.1.4
+      name: lldp.port.frames.in
+      syntax: Counter32
+    lldpStatsRxPortTLVsDiscardedTotal:
+      oid: .1.0.8802.1.1.2.1.2.7.1.5
+      name: lldp.port.tlvs.discard.in
+      syntax: Counter32
+    lldpStatsRxPortTLVsUnrecognizedTotal:
+      oid: .1.0.8802.1.1.2.1.2.7.1.6
+      name: lldp.port.tlvs.unrecognized.in
+      syntax: Counter32
+    lldpStatsRxPortAgeoutsTotal:
+      oid: .1.0.8802.1.1.2.1.2.7.1.7
+      name: lldp.port.ageouts
+      syntax: Gauge32

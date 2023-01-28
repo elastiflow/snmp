@@ -1,0 +1,377 @@
+ARISTA-BGP4V2-MIB::aristaBgp4V2DiscontinuityEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2DiscontinuityEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.1
+      name: bgp.peer.index # aristaBgp4V2PeerInstance
+      syntax: UnsignedAsID
+  discovery_attribute: aristaBgp4V2DiscontinuityTime
+  attributes:
+    aristaBgp4V2DiscontinuityTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.1.1.1
+      name: bgp.peer.discontinuity_time
+      syntax: TimeStamp
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.1
+      name: bgp.peer.index # aristaBgp4V2PeerInstance
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.4
+      name: bgp.peer.remote.ip.type.id # aristaBgp4V2PeerRemoteAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.5
+      name: bgp.peer.remote.ip.addr # aristaBgp4V2PeerRemoteAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: aristaBgp4V2PeerLocalAddr
+  attributes:
+    aristaBgp4V2PeerLocalAddr:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.3
+      name: bgp.peer.local.ip.addr
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2PeerLocalPort:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.6
+      name: bgp.peer.local.l4.port.id
+      syntax: Unsigned32
+    aristaBgp4V2PeerLocalAs:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.7
+      name: bgp.peer.local.as.asn
+      syntax: UnsignedAsID
+    aristaBgp4V2PeerLocalIdentifier:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.8
+      name: bgp.peer.local.router.id
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2PeerRemotePort:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.9
+      name: bgp.peer.remote.l4.port.id
+      syntax: Unsigned32
+    aristaBgp4V2PeerRemoteAs:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.10
+      name: bgp.peer.remote.as.asn
+      syntax: UnsignedAsID
+    aristaBgp4V2PeerRemoteIdentifier:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.11
+      name: bgp.peer.remote.router.id
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2PeerAdminStatus:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.12
+      name: bgp.peer.state.admin
+      syntax: EnumInteger
+    aristaBgp4V2PeerState:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.13
+      name: bgp.peer.state.oper
+      syntax: EnumInteger
+    aristaBgp4V2PeerDescription:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.14
+      name: bgp.peer.descr
+      syntax: DisplayString # SnmpAdminString
+    aristaBgp4V2PeerPrevState:
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.15
+      name: bgp.peer.state.prev
+      syntax: EnumInteger
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerErrorsEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerErrorsEntry
+  augments: ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry
+  discovery_attribute: aristaBgp4V2PeerLastErrorCodeReceived
+  attributes:
+    aristaBgp4V2PeerLastErrorCodeReceived:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.1
+      name: bgp.peer.last_error.code.in
+      syntax: Unsigned32
+    aristaBgp4V2PeerLastErrorSubCodeReceived:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.2
+      name: bgp.peer.last_error.subcode.in
+      syntax: Unsigned32
+    aristaBgp4V2PeerLastErrorReceivedTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.3
+      name: bgp.peer.last_error.time.in
+      syntax: TimeStamp
+    aristaBgp4V2PeerLastErrorReceivedText:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.4
+      name: bgp.peer.last_error.text.in
+      syntax: DisplayString # SnmpAdminString
+    aristaBgp4V2PeerLastErrorReceivedData:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.5
+      name: bgp.peer.last_error.data.in
+      syntax: OctetString
+    aristaBgp4V2PeerLastErrorCodeSent:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.6
+      name: bgp.peer.last_error.code.out
+      syntax: Unsigned32
+    aristaBgp4V2PeerLastErrorSubCodeSent:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.7
+      name: bgp.peer.last_error.subcode.out
+      syntax: Unsigned32
+    aristaBgp4V2PeerLastErrorSentTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.8
+      name: bgp.peer.last_error.time.out
+      syntax: TimeStamp
+    aristaBgp4V2PeerLastErrorSentText:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.9
+      name: bgp.peer.last_error.text.out
+      syntax: DisplayString # SnmpAdminString
+    aristaBgp4V2PeerLastErrorSentData:
+      oid: .1.3.6.1.4.1.30065.4.1.1.3.1.10
+      name: bgp.peer.last_error.data.out
+      syntax: OctetString
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEventTimesEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerEventTimesEntry
+  augments: ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry
+  discovery_attribute: aristaBgp4V2PeerFsmEstablishedTime
+  attributes:
+    aristaBgp4V2PeerFsmEstablishedTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.4.1.1
+      name: bgp.peer.fsm.established.duration
+      syntax: Gauge32
+    aristaBgp4V2PeerInUpdatesElapsedTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.4.1.2
+      name: bgp.peer.last_update.elapsed
+      syntax: Gauge32
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerConfiguredTimersEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerConfiguredTimersEntry
+  augments: ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry
+  discovery_attribute: aristaBgp4V2PeerConnectRetryInterval
+  attributes:
+    aristaBgp4V2PeerConnectRetryInterval:
+      oid: .1.3.6.1.4.1.30065.4.1.1.5.1.1
+      name: bgp.peer.connect_retry.config.interval
+      syntax: Unsigned32
+    aristaBgp4V2PeerHoldTimeConfigured:
+      oid: .1.3.6.1.4.1.30065.4.1.1.5.1.2
+      name: bgp.peer.hold_time.config.interval
+      syntax: Unsigned32
+    aristaBgp4V2PeerKeepAliveConfigured:
+      oid: .1.3.6.1.4.1.30065.4.1.1.5.1.3
+      name: bgp.peer.keep_alive.config.interval
+      syntax: Unsigned32
+    aristaBgp4V2PeerMinASOrigInterval:
+      oid: .1.3.6.1.4.1.30065.4.1.1.5.1.4
+      name: bgp.peer.min_as_origin.config.interval
+      syntax: Unsigned32
+    aristaBgp4V2PeerMinRouteAdverInterval:
+      oid: .1.3.6.1.4.1.30065.4.1.1.5.1.5
+      name: bgp.peer.min_route_advert.config.interval
+      syntax: Unsigned32
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerNegotiatedTimersEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerNegotiatedTimersEntry
+  augments: ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry
+  discovery_attribute: aristaBgp4V2PeerHoldTime
+  attributes:
+    aristaBgp4V2PeerHoldTime:
+      oid: .1.3.6.1.4.1.30065.4.1.1.6.1.1
+      name: bgp.peer.hold_time.interval
+      syntax: Unsigned32
+    aristaBgp4V2PeerKeepAlive:
+      oid: .1.3.6.1.4.1.30065.4.1.1.6.1.2
+      name: bgp.peer.keep_alive.interval
+      syntax: Unsigned32
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PeerCountersEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PeerCountersEntry
+  augments: ARISTA-BGP4V2-MIB::aristaBgp4V2PeerEntry
+  discovery_attribute: aristaBgp4V2PeerInUpdates
+  attributes:
+    aristaBgp4V2PeerInUpdates:
+      oid: .1.3.6.1.4.1.30065.4.1.1.7.1.1
+      name: bgp.peer.msgs.update.in
+      syntax: Counter32
+    aristaBgp4V2PeerOutUpdates:
+      oid: .1.3.6.1.4.1.30065.4.1.1.7.1.2
+      name: bgp.peer.msgs.update.out
+      syntax: Counter32
+    aristaBgp4V2PeerInTotalMessages:
+      oid: .1.3.6.1.4.1.30065.4.1.1.7.1.3
+      name: bgp.peer.msgs.in
+      syntax: Counter32
+    aristaBgp4V2PeerOutTotalMessages:
+      oid: .1.3.6.1.4.1.30065.4.1.1.7.1.4
+      name: bgp.peer.msgs.out
+      syntax: Counter32
+    aristaBgp4V2PeerFsmEstablishedTransitions:
+      oid: .1.3.6.1.4.1.30065.4.1.1.7.1.5
+      name: bgp.peer.fsm.established.transitions
+      syntax: Counter32
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PrefixGaugesEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PrefixGaugesEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.1
+      name: bgp.peer.index # aristaBgp4V2PeerInstance
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.4
+      name: bgp.peer.remote.ip.type.id # aristaBgp4V2PeerRemoteAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.5
+      name: bgp.peer.remote.ip.addr # aristaBgp4V2PeerRemoteAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.8.1.1
+      name: bgp.afi # aristaBgp4V2PrefixGaugesAfi
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.8.1.2
+      name: bgp.safi # aristaBgp4V2PrefixGaugesSafi
+      syntax: IanaSafi
+  discovery_attribute: aristaBgp4V2PrefixInPrefixes
+  attributes:
+    aristaBgp4V2PrefixInPrefixes:
+      oid: .1.3.6.1.4.1.30065.4.1.1.8.1.3
+      name: bgp.prefixes.in
+      syntax: Gauge32
+    aristaBgp4V2PrefixInPrefixesAccepted:
+      oid: .1.3.6.1.4.1.30065.4.1.1.8.1.4
+      name: bgp.prefixes.accept.in
+      syntax: Gauge32
+    aristaBgp4V2PrefixOutPrefixes:
+      oid: .1.3.6.1.4.1.30065.4.1.1.8.1.5
+      name: bgp.prefixes.out
+      syntax: Gauge32
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2NlriEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2NlriEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.1
+      name: bgp.peer.index # aristaBgp4V2PeerInstance
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.2
+      name: bgp.afi # aristaBgp4V2NlriAfi
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.3
+      name: bgp.safi # aristaBgp4V2NlriSafi
+      syntax: IanaSafi
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.4
+      name: bgp.nlri.ip.subnet.type.id # aristaBgp4V2NlriPrefixType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.5
+      name: bgp.nlri.ip.subnet.prefix # aristaBgp4V2NlriPrefix
+      syntax: IpAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.6
+      name: bgp.nlri.ip.subnet.mask_size # aristaBgp4V2NlriPrefixLen
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.4
+      name: bgp.peer.remote.ip.type.id # aristaBgp4V2PeerRemoteAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.5
+      name: bgp.peer.remote.ip.addr # aristaBgp4V2PeerRemoteAddr
+      syntax: IpAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.1
+      name: bgp.nlri.index # aristaBgp4V2NlriIndex
+      syntax: UnsignedAsID
+  discovery_attribute: aristaBgp4V2NlriOrigin
+  attributes:
+    aristaBgp4V2NlriBest:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.7
+      name: bgp.nlri.best
+      syntax: TruthValue
+    aristaBgp4V2NlriCalcLocalPref:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.8
+      name: bgp.nlri.local_pref_calc
+      syntax: Unsigned32
+    aristaBgp4V2NlriOrigin:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.9
+      name: bgp.nlri.path_attr.origin.type
+      syntax: EnumInteger
+    aristaBgp4V2NlriNextHopAddr:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.11
+      name: bgp.nlri.path_attr.next_hop.ip.addr
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2NlriLinkLocalNextHopAddr:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.13
+      name: bgp.nlri.path_attr.link_local.next_hop.ip.addr
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2NlriLocalPref:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.15
+      name: bgp.nlri.path_attr.local_pref
+      syntax: Unsigned32
+    aristaBgp4V2NlriMed:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.17
+      name: bgp.nlri.path_attr.med
+      syntax: Unsigned32
+    aristaBgp4V2NlriAtomicAggregate:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.18
+      name: bgp.nlri.path_attr.atomic_aggregate
+      syntax: TruthValue
+    aristaBgp4V2NlriAggregatorAS:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.20
+      name: bgp.aggregator.as.asn
+      syntax: UnsignedAsID
+    aristaBgp4V2NlriAggregatorAddr:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.21
+      name: bgp.aggregator.ip.addr
+      syntax: IpAddressNoSuffix
+    aristaBgp4V2NlriAsPathCalcLength:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.22
+      name: bgp.as_path.hop_count
+      syntax: Unsigned32
+    aristaBgp4V2NlriAsPathString:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.23
+      name: bgp.as_path.path
+      syntax: DisplayString # SnmpAdminString
+    aristaBgp4V2NlriAsPath:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.24
+      name: bgp.as_path.raw
+      syntax: OctetString
+    aristaBgp4V2NlriPathAttrUnknown:
+      oid: .1.3.6.1.4.1.30065.4.1.1.9.1.25
+      name: bgp.as_path.attr_unk
+      syntax: OctetString
+
+ARISTA-BGP4V2-MIB::aristaBgp4V2PrefixEvpnNlriGaugesEntry:
+  mib: ARISTA-BGP4V2-MIB
+  object: aristaBgp4V2PrefixEvpnNlriGaugesEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.1
+      name: bgp.peer.index # aristaBgp4V2PeerInstance
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.4
+      name: bgp.peer.remote.ip.type.id # aristaBgp4V2PeerRemoteAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.30065.4.1.1.2.1.5
+      name: bgp.peer.remote.ip.addr # aristaBgp4V2PeerRemoteAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.4.1.1.11.1.1
+      name: bgp.evpn_nlri.type # aristaBgp4V2PrefixGaugesNlri
+      syntax: EnumInteger
+  discovery_attribute: aristaBgp4V2PrefixNlriInPrefixes
+  attributes:
+    aristaBgp4V2PrefixNlriInPrefixes:
+      oid: .1.3.6.1.4.1.30065.4.1.1.11.1.2
+      name: bgp.evpn_nlri.prefixes.in
+      syntax: Gauge32
+    aristaBgp4V2PrefixNlriInPrefixesAccepted:
+      oid: .1.3.6.1.4.1.30065.4.1.1.11.1.3
+      name: bgp.evpn_nlri.prefixes.accept.in
+      syntax: Gauge32

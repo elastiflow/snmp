@@ -1,0 +1,57 @@
+UCD-DISKIO-MIB::diskIOEntry:
+  mib: UCD-DISKIO-MIB
+  object: diskIOEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.1
+      name: disk.index # diskIOIndex
+      syntax: IntegerAsID
+  discovery_attribute: diskIODevice
+  attributes:
+    diskIODevice:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.2
+      tag: true
+      name: disk.name
+      syntax: DisplayString
+    diskIONRead:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.3
+      name: disk.io.read.bytes
+      syntax: BytesB
+    diskIONWritten:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.4
+      name: disk.io.write.bytes
+      syntax: BytesB
+    diskIOReads:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.5
+      name: disk.io.read.ops
+      syntax: Counter32
+    diskIOWrites:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.6
+      name: disk.io.write.ops
+      syntax: Counter32
+    diskIOLA1:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.9
+      name: disk.io.load.1min_avg.pct
+      syntax: Percent100
+    diskIOLA5:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.10
+      name: disk.io.load.5min_avg.pct
+      syntax: Percent100
+    diskIOLA15:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.11
+      name: disk.io.load.15min_avg.pct
+      syntax: Percent100
+    diskIONReadX:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.12
+      name: disk.io.read.bytes
+      syntax: BytesB
+      overrides:
+        object: UCD-DISKIO-MIB::diskIOEntry
+        attribute: diskIONRead
+    diskIONWrittenX:
+      oid: .1.3.6.1.4.1.2021.13.15.1.1.13
+      name: disk.io.write.bytes
+      syntax: BytesB
+      overrides:
+        object: UCD-DISKIO-MIB::diskIOEntry
+        attribute: diskIONWritten

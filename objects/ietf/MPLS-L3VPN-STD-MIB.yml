@@ -1,0 +1,180 @@
+MPLS-L3VPN-STD-MIB::mplsL3VpnScalars:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnScalars
+  discovery_attribute: mplsL3VpnConfiguredVrfs
+  attributes:
+    mplsL3VpnConfiguredVrfs:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.1
+      name: mpls.l3vpn.vrfs.config
+      syntax: Unsigned32
+    mplsL3VpnActiveVrfs:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.2
+      name: mpls.l3vpn.vrfs.active
+      syntax: Gauge32
+    mplsL3VpnConnectedInterfaces:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.3
+      name: mpls.l3vpn.netifs.connected
+      syntax: Gauge32
+    mplsL3VpnVrfConfMaxPossRts:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.5
+      name: mpls.l3vpn.vrf.max_routes_thresh
+      syntax: Unsigned32
+    mplsL3VpnVrfConfRteMxThrshTime:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.6
+      name: mpls.l3vpn.vrf.max_routes_thresh_interval
+      syntax: Unsigned32
+    mplsL3VpnIllLblRcvThrsh:
+      oid: .1.3.6.1.2.1.10.166.11.1.1.7
+      name: mpls.l3vpn.illegal_label_thresh
+      syntax: Unsigned32
+
+MPLS-L3VPN-STD-MIB::mplsL3VpnIfConfEntry:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnIfConfEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.1
+      name: mpls.l3vpn.vrf.name # MplsL3VpnName
+      syntax: DisplayString
+    - type: Integer32
+      oid: .1.3.6.1.2.1.10.166.11.1.2.1.1.1
+      name: netif # mplsL3VpnIfConfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: mplsL3VpnIfVpnClassification
+  attributes:
+    mplsL3VpnIfVpnClassification:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.1.1.2
+      name: mpls.l3vpn.netif.vpn.class
+      syntax: EnumInteger
+    mplsL3VpnIfVpnRouteDistProtocol:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.1.1.3
+      name: mpls.l3vpn.netif.vpn.route_distrib.proto
+      syntax: EnumBitmap
+
+MPLS-L3VPN-STD-MIB::mplsL3VpnVrfEntry:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnVrfEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.1
+      name: mpls.l3vpn.vrf.name # MplsL3VpnName
+      syntax: DisplayString
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.2
+      name: mpls.l3vpn.vrf.vpn.id # mplsL3VpnVrfVpnId
+      syntax: OctetString
+  discovery_attribute: mplsL3VpnVrfDescription
+  attributes:
+    mplsL3VpnVrfDescription:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.3
+      name: mpls.l3vpn.vrf.descr
+      syntax: DisplayString
+    mplsL3VpnVrfRD:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.4
+      name: mpls.l3vpn.vrf.route.distinguisher
+      syntax: OctetString
+    mplsL3VpnVrfCreationTime:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.5
+      name: mpls.l3vpn.vrf.create.sysuptime
+      syntax: TimeStamp
+    mplsL3VpnVrfOperStatus:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.6
+      name: mpls.l3vpn.vrf.state.oper
+      syntax: EnumInteger
+    mplsL3VpnVrfActiveInterfaces:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.7
+      name: mpls.l3vpn.vrf.netifs.active
+      syntax: Gauge32
+    mplsL3VpnVrfAssociatedInterfaces:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.8
+      name: mpls.l3vpn.vrf.netifs.assoc
+      syntax: Unsigned32
+    mplsL3VpnVrfConfMidRteThresh:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.9
+      name: mpls.l3vpn.vrf.mid_routes_thresh
+      syntax: Unsigned32
+    mplsL3VpnVrfConfHighRteThresh:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.10
+      name: mpls.l3vpn.vrf.high_routes_thresh
+      syntax: Unsigned32
+    mplsL3VpnVrfConfMaxRoutes:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.11
+      name: mpls.l3vpn.vrf.max_routes_thresh
+      syntax: Unsigned32
+    mplsL3VpnVrfConfLastChanged:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.12
+      name: mpls.l3vpn.vrf.last_chg
+      syntax: TimeStamp
+    mplsL3VpnVrfConfAdminStatus:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.14
+      name: mpls.l3vpn.vrf.state.admin
+      syntax: EnumInteger
+
+MPLS-L3VPN-STD-MIB::mplsL3VpnVrfRTEntry:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnVrfRTEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.11.1.2.2.1.1
+      name: mpls.l3vpn.vrf.name # MplsL3VpnName
+      syntax: DisplayString
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.11.1.2.3.1.2
+      name: mpls.l3vpn.vrf.route_target.index # mplsL3VpnVrfRTIndex
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.2.1.10.166.11.1.2.3.1.3
+      name: mpls.l3vpn.vrf.route_target.type # mplsL3VpnVrfRTType
+      syntax: EnumInteger
+  discovery_attribute: mplsL3VpnVrfRT
+  attributes:
+    mplsL3VpnVrfRT:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.3.1.4
+      name: mpls.l3vpn.vrf.route_target.distinguisher
+      syntax: OctetString
+    mplsL3VpnVrfRTDescr:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.3.1.5
+      name: mpls.l3vpn.vrf.route_target.descr
+      syntax: DisplayString
+
+MPLS-L3VPN-STD-MIB::mplsL3VpnVrfSecEntry:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnVrfSecEntry
+  augments: MPLS-L3VPN-STD-MIB::mplsL3VpnVrfEntry
+  discovery_attribute: mplsL3VpnVrfSecIllegalLblVltns
+  attributes:
+    mplsL3VpnVrfSecIllegalLblVltns:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.6.1.1
+      name: mpls.l3vpn.vrf.sec.labels.illegal
+      syntax: Counter32
+    mplsL3VpnVrfSecDiscontinuityTime:
+      oid: .1.3.6.1.2.1.10.166.11.1.2.6.1.2
+      name: mpls.l3vpn.vrf.sec.discontinuity_time
+      syntax: TimeStamp
+
+MPLS-L3VPN-STD-MIB::mplsL3VpnVrfPerfEntry:
+  mib: MPLS-L3VPN-STD-MIB
+  object: mplsL3VpnVrfPerfEntry
+  augments: MPLS-L3VPN-STD-MIB::mplsL3VpnVrfEntry
+  discovery_attribute: mplsL3VpnVrfPerfRoutesAdded
+  attributes:
+    mplsL3VpnVrfPerfRoutesAdded:
+      oid: .1.3.6.1.2.1.10.166.11.1.3.1.1.1
+      name: mpls.l3vpn.vrf.routes.add
+      syntax: Counter32
+    mplsL3VpnVrfPerfRoutesDeleted:
+      oid: .1.3.6.1.2.1.10.166.11.1.3.1.1.2
+      name: mpls.l3vpn.vrf.routes.delete
+      syntax: Counter32
+    mplsL3VpnVrfPerfCurrNumRoutes:
+      oid: .1.3.6.1.2.1.10.166.11.1.3.1.1.3
+      name: mpls.l3vpn.vrf.routes.current
+      syntax: Gauge32
+    mplsL3VpnVrfPerfRoutesDropped:
+      oid: .1.3.6.1.2.1.10.166.11.1.3.1.1.4
+      name: mpls.l3vpn.vrf.routes.drop
+      syntax: Counter32
+    mplsL3VpnVrfPerfDiscTime:
+      oid: .1.3.6.1.2.1.10.166.11.1.3.1.1.5
+      name: mpls.l3vpn.vrf.discontinuity_time
+      syntax: TimeStamp

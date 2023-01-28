@@ -1,0 +1,149 @@
+VRRP-MIB::vrrpOperations:
+  mib: VRRP-MIB
+  object: vrrpOperations
+  discovery_attribute: vrrpNodeVersion
+  attributes:
+    vrrpNodeVersion:
+      oid: .1.3.6.1.2.1.68.1.1
+      name: vrrp.version.ver
+      syntax: IntegerAsID
+
+VRRP-MIB::vrrpOperEntry:
+  mib: VRRP-MIB
+  object: vrrpOperEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.2.1.68.1.3.1.1
+      name: vrrp.router.id # vrrpOperVrId
+      syntax: IntegerAsID
+  discovery_attribute: vrrpOperVirtualMacAddr
+  attributes:
+    vrrpOperVirtualMacAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.2
+      name: vrrp.router.virt_mac
+      syntax: MacAddress
+    vrrpOperState:
+      oid: .1.3.6.1.2.1.68.1.3.1.3
+      name: vrrp.router.state
+      syntax: EnumInteger
+    vrrpOperAdminState:
+      oid: .1.3.6.1.2.1.68.1.3.1.4
+      name: vrrp.router.state.admin
+      syntax: EnumInteger
+    vrrpOperPriority:
+      oid: .1.3.6.1.2.1.68.1.3.1.5
+      name: vrrp.router.priority
+      syntax: Unsigned32
+    vrrpOperIpAddrCount:
+      oid: .1.3.6.1.2.1.68.1.3.1.6
+      name: vrrp.router.ipaddrs
+      syntax: Integer32
+    vrrpOperMasterIpAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.7
+      name: vrrp.router.master
+      syntax: IpAddress
+    vrrpOperPrimaryIpAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.8
+      name: vrrp.router.primary
+      syntax: IpAddress
+    vrrpOperAuthType:
+      oid: .1.3.6.1.2.1.68.1.3.1.9
+      name: vrrp.router.auth.type
+      syntax: EnumInteger
+    vrrpOperAuthKey:
+      oid: .1.3.6.1.2.1.68.1.3.1.10
+      name: vrrp.router.auth.key
+      syntax: OctetString
+    vrrpOperAdvertisementInterval:
+      oid: .1.3.6.1.2.1.68.1.3.1.11
+      name: vrrp.router.advert_interval
+      syntax: OpTicksCentiSec
+    vrrpOperPreemptMode:
+      oid: .1.3.6.1.2.1.68.1.3.1.12
+      name: vrrp.router.preempt.mode
+      syntax: TruthValue
+    vrrpOperVirtualRouterUpTime:
+      oid: .1.3.6.1.2.1.68.1.3.1.13
+      name: vrrp.router.sysuptime
+      syntax: TimeStamp
+    vrrpOperProtocol:
+      oid: .1.3.6.1.2.1.68.1.3.1.14
+      name: vrrp.router.proto
+      syntax: EnumInteger
+
+VRRP-MIB::vrrpStatistics:
+  mib: VRRP-MIB
+  object: vrrpStatistics
+  discovery_attribute: vrrpRouterChecksumErrors
+  attributes:
+    vrrpRouterChecksumErrors:
+      oid: .1.3.6.1.2.1.68.2.1
+      name: vrrp.errors.checksum
+      syntax: Counter32
+    vrrpRouterVersionErrors:
+      oid: .1.3.6.1.2.1.68.2.2
+      name: vrrp.errors.version
+      syntax: Counter32
+    vrrpRouterVrIdErrors:
+      oid: .1.3.6.1.2.1.68.2.3
+      name: vrrp.errors.vrid
+      syntax: Counter32
+
+VRRP-MIB::vrrpRouterStatsEntry:
+  mib: VRRP-MIB
+  object: vrrpRouterStatsEntry
+  augments: VRRP-MIB::vrrpOperEntry
+  discovery_attribute: vrrpStatsBecomeMaster
+  attributes:
+    vrrpStatsBecomeMaster:
+      oid: .1.3.6.1.2.1.68.2.4.1.1
+      name: vrrp.router.master_transitions
+      syntax: Counter32
+    vrrpStatsAdvertiseRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.2
+      name: vrrp.router.adverts.in
+      syntax: Counter32
+    vrrpStatsAdvertiseIntervalErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.3
+      name: vrrp.router.errors.advert_interval
+      syntax: Counter32
+    vrrpStatsAuthFailures:
+      oid: .1.3.6.1.2.1.68.2.4.1.4
+      name: vrrp.router.auth.fails
+      syntax: Counter32
+    vrrpStatsIpTtlErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.5
+      name: vrrp.router.errors.ip_ttl
+      syntax: Counter32
+    vrrpStatsPriorityZeroPktsRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.6
+      name: vrrp.router.packets.priority_zero.in
+      syntax: Counter32
+    vrrpStatsPriorityZeroPktsSent:
+      oid: .1.3.6.1.2.1.68.2.4.1.7
+      name: vrrp.router.packets.priority_zero.out
+      syntax: Counter32
+    vrrpStatsInvalidTypePktsRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.8
+      name: vrrp.router.packets.invalid_type.in
+      syntax: Counter32
+    vrrpStatsAddressListErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.9
+      name: vrrp.router.errors.addr_list
+      syntax: Counter32
+    vrrpStatsInvalidAuthType:
+      oid: .1.3.6.1.2.1.68.2.4.1.10
+      name: vrrp.router.auth.type_invalids
+      syntax: Counter32
+    vrrpStatsAuthTypeMismatch:
+      oid: .1.3.6.1.2.1.68.2.4.1.11
+      name: vrrp.router.auth.type_mismatches
+      syntax: Counter32
+    vrrpStatsPacketLengthErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.12
+      name: vrrp.router.errors.packet_size
+      syntax: Counter32

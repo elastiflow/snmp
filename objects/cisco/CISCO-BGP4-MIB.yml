@@ -1,0 +1,464 @@
+CISCO-BGP4-MIB::cbgpGlobal:
+  mib: CISCO-BGP4-MIB
+  object: cbgpGlobal
+  discovery_attribute: cbgpLocalAs
+  attributes:
+    cbgpLocalAs:
+      oid: .1.3.6.1.4.1.9.9.187.1.3.2
+      name: bgp.local.as.asn
+      syntax: UnsignedAsID
+
+CISCO-BGP4-MIB::cbgpRouteEntry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpRouteEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.1
+      name: bgp.afi # cbgpRouteAfi
+      syntax: InetAddressType
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.2
+      name: bgp.safi # cbgpRouteSafi
+      syntax: IanaSafi
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.3
+      name: bgp.peer.type # cbgpRoutePeerType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.4
+      name: bgp.peer.remote.ip.addr # cbgpRoutePeer
+      syntax: IpAddressNoSuffix
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.5
+      name: bgp.nlri.ip.subnet.prefix # cbgpRouteAddrPrefix
+      syntax: IpAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.6
+      name: bgp.nlri.ip.subnet.mask_size # cbgpRouteAddrPrefixLen
+      syntax: Unsigned32
+  discovery_attribute: cbgpRouteOrigin
+  attributes:
+    cbgpRouteOrigin:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.7
+      name: bgp.nlri.path_attr.origin.type
+      syntax: EnumInteger
+    cbgpRouteASPathSegment:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.8
+      name: bgp.as_path.raw
+      syntax: OctetString
+    cbgpRouteNextHop:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.9
+      name: bgp.nlri.path_attr.next_hop.ip.addr
+      syntax: IpAddressNoSuffix
+    cbgpRouteMultiExitDisc:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.11
+      name: bgp.nlri.path_attr.med
+      syntax: Unsigned32
+    cbgpRouteLocalPref:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.13
+      name: bgp.nlri.path_attr.local_pref
+      syntax: Unsigned32
+    cbgpRouteAtomicAggregate:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.14
+      name: bgp.nlri.path_attr.atomic_aggregate
+      syntax: EnumInteger
+    cbgpRouteAggregatorAS:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.15
+      name: bgp.aggregator.as.asn
+      syntax: UnsignedAsID
+    cbgpRouteAggregatorAddr:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.17
+      name: bgp.aggregator.ip.addr
+      syntax: IpAddressNoSuffix
+    cbgpRouteBest:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.18
+      name: bgp.nlri.best
+      syntax: TruthValue
+    cbgpRouteUnknownAttr:
+      oid: .1.3.6.1.4.1.9.9.187.1.1.1.1.19
+      name: bgp.as_path.attr_unk
+      syntax: OctetString
+
+CISCO-BGP4-MIB::cbgpPeerEntry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpPeerEntry
+  augments: BGP4-MIB::bgpPeerEntry
+  discovery_attribute: cbgpPeerPrefixAccepted
+  attributes:
+    cbgpPeerPrefixAccepted:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.1
+      name: bgp.peer.prefixes.accept
+      syntax: Counter32
+    cbgpPeerPrefixDenied:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.2
+      name: bgp.peer.prefixes.deny
+      syntax: Counter32
+    cbgpPeerPrefixLimit:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.3
+      name: bgp.peer.prefixes.max
+      syntax: Unsigned32
+    cbgpPeerPrefixAdvertised:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.4
+      name: bgp.peer.prefixes.advert
+      syntax: Counter32
+    cbgpPeerPrefixSuppressed:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.5
+      name: bgp.peer.prefixes.suppress
+      syntax: Counter32
+    cbgpPeerPrefixWithdrawn:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.6
+      name: bgp.peer.prefixes.withdraw
+      syntax: Counter32
+    cbgpPeerLastErrorTxt:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.7
+      name: bgp.peer.last_error.msg
+      syntax: DisplayString # SnmpAdminString
+    cbgpPeerPrevState:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.1.1.8
+      name: bgp.peer.state.prev
+      syntax: EnumInteger
+
+CISCO-BGP4-MIB::cbgpPeerAddrFamilyPrefixEntry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpPeerAddrFamilyPrefixEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.15.3.1.7
+      name: bgp.peer.remote.ip.addr # bgpPeerRemoteAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.3.1.1
+      name: bgp.afi # cbgpPeerAddrFamilyAfi
+      syntax: InetAddressType
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.3.1.2
+      name: bgp.safi # cbgpPeerAddrFamilySafi
+      syntax: IanaSafi
+  discovery_attribute: cbgpPeerAcceptedPrefixes
+  attributes:
+    cbgpPeerAcceptedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.1
+      name: bgp.peer.prefixes.accept
+      syntax: Counter32
+    cbgpPeerDeniedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.2
+      name: bgp.peer.prefixes.deny
+      syntax: Gauge32
+    cbgpPeerPrefixAdminLimit:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.3
+      name: bgp.peer.prefixes.max
+      syntax: Unsigned32
+    cbgpPeerAdvertisedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.6
+      name: bgp.peer.prefixes.advert
+      syntax: Gauge32
+    cbgpPeerSuppressedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.7
+      name: bgp.peer.prefixes.suppress
+      syntax: Gauge32
+    cbgpPeerWithdrawnPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.4.1.8
+      name: bgp.peer.prefixes.withdraw
+      syntax: Gauge32
+
+CISCO-BGP4-MIB::cbgpPeer2Entry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpPeer2Entry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.1
+      name: bgp.peer.remote.ip.type.id # cbgpPeer2Type
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.2
+      name: bgp.peer.remote.ip.addr # cbgpPeer2RemoteAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: cbgpPeer2State
+  attributes:
+    cbgpPeer2State:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.3
+      name: bgp.peer.state.oper
+      syntax: EnumInteger
+    cbgpPeer2AdminStatus:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.4
+      name: bgp.peer.state.admin
+      syntax: EnumInteger
+    cbgpPeer2NegotiatedVersion:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.5
+      name: bgp.peer.version.negotiated.ver
+      syntax: UnsignedAsID
+    cbgpPeer2LocalAddr:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.6
+      name: bgp.peer.local.ip.addr
+      syntax: IpAddressNoSuffix
+    cbgpPeer2LocalPort:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.7
+      name: bgp.peer.local.l4.port.id
+      syntax: Unsigned32
+    cbgpPeer2LocalAs:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.8
+      name: bgp.peer.local.as.asn
+      syntax: UnsignedAsID
+    cbgpPeer2LocalIdentifier:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.9
+      name: bgp.peer.local.router.id
+      syntax: IpAddressNoSuffix
+    cbgpPeer2RemotePort:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.10
+      name: bgp.peer.remote.l4.port.id
+      syntax: Unsigned32
+    cbgpPeer2RemoteAs:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.11
+      name: bgp.peer.remote.as.asn
+      syntax: UnsignedAsID
+    cbgpPeer2RemoteIdentifier:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.12
+      name: bgp.peer.remote.router.id
+      syntax: IpAddressNoSuffix
+    cbgpPeer2InUpdates:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.13
+      name: bgp.peer.msgs.update.in
+      syntax: Counter32
+    cbgpPeer2OutUpdates:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.14
+      name: bgp.peer.msgs.update.out
+      syntax: Counter32
+    cbgpPeer2InTotalMessages:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.15
+      name: bgp.peer.msgs.in
+      syntax: Counter32
+    cbgpPeer2OutTotalMessages:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.16
+      name: bgp.peer.msgs.out
+      syntax: Counter32
+    cbgpPeer2LastError:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.17
+      name: bgp.peer.last_error.in
+      syntax: OctetString
+    cbgpPeer2FsmEstablishedTransitions:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.18
+      name: bgp.peer.fsm.established.transitions
+      syntax: Counter32
+    cbgpPeer2FsmEstablishedTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.19
+      name: bgp.peer.fsm.established.duration
+      syntax: Gauge32
+    cbgpPeer2ConnectRetryInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.20
+      name: bgp.peer.connect_retry.config.interval
+      syntax: Unsigned32
+    cbgpPeer2HoldTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.21
+      name: bgp.peer.hold_time.interval
+      syntax: Unsigned32
+    cbgpPeer2KeepAlive:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.22
+      name: bgp.peer.keep_alive.interval
+      syntax: Unsigned32
+    cbgpPeer2HoldTimeConfigured:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.23
+      name: bgp.peer.hold_time.config.interval
+      syntax: Unsigned32
+    cbgpPeer2KeepAliveConfigured:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.24
+      name: bgp.peer.keep_alive.config.interval
+      syntax: Unsigned32
+    cbgpPeer2MinASOriginationInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.25
+      name: bgp.peer.min_as_origin.config.interval
+      syntax: Unsigned32
+    cbgpPeer2MinRouteAdvertisementInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.26
+      name: bgp.peer.min_route_advert.config.interval
+      syntax: Unsigned32
+    cbgpPeer2InUpdateElapsedTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.27
+      name: bgp.peer.last_update.elapsed
+      syntax: Gauge32
+    cbgpPeer2LastErrorTxt:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.28
+      name: bgp.peer.last_error.msg
+      syntax: DisplayString # SnmpAdminString
+    cbgpPeer2PrevState:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.29
+      name: bgp.peer.state.prev
+      syntax: EnumInteger
+
+CISCO-BGP4-MIB::cbgpPeer2AddrFamilyPrefixEntry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpPeer2AddrFamilyPrefixEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.1
+      name: bgp.peer.remote.ip.type.id # cbgpPeer2Type
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.187.1.2.5.1.2
+      name: bgp.peer.remote.ip.addr # cbgpPeer2RemoteAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.7.1.1
+      name: bgp.afi # cbgpPeer2AddrFamilyAfi
+      syntax: InetAddressType
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.7.1.2
+      name: bgp.safi # cbgpPeer2AddrFamilySafi
+      syntax: IanaSafi
+  discovery_attribute: cbgpPeer2AcceptedPrefixes
+  attributes:
+    cbgpPeer2AcceptedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.1
+      name: bgp.peer.prefixes.accept
+      syntax: Counter32
+    cbgpPeer2DeniedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.2
+      name: bgp.peer.prefixes.deny
+      syntax: Gauge32
+    cbgpPeer2PrefixAdminLimit:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.3
+      name: bgp.peer.prefixes.max
+      syntax: Unsigned32
+    cbgpPeer2AdvertisedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.6
+      name: bgp.peer.prefixes.advert
+      syntax: Gauge32
+    cbgpPeer2SuppressedPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.7
+      name: bgp.peer.prefixes.suppress
+      syntax: Gauge32
+    cbgpPeer2WithdrawnPrefixes:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.8.1.8
+      name: bgp.peer.prefixes.withdraw
+      syntax: Gauge32
+
+CISCO-BGP4-MIB::cbgpPeer3Entry:
+  mib: CISCO-BGP4-MIB
+  object: cbgpPeer3Entry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.1
+      name: bgp.peer.vrf.id # cbgpPeer3VrfId
+      syntax: UnsignedAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.2
+      name: bgp.peer.remote.ip.type.id # cbgpPeer3Type
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.3
+      name: bgp.peer.remote.ip.addr # cbgpPeer3RemoteAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: cbgpPeer3State
+  attributes:
+    cbgpPeer3VrfName:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.4
+      tag: true
+      name: bgp.peer.vrf.name
+      syntax: DisplayString # SnmpAdminString
+    cbgpPeer3State:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.5
+      name: bgp.peer.state.oper
+      syntax: EnumInteger
+    cbgpPeer3AdminStatus:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.6
+      name: bgp.peer.state.admin
+      syntax: EnumInteger
+    cbgpPeer3NegotiatedVersion:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.7
+      name: bgp.peer.version.negotiated.ver
+      syntax: UnsignedAsID
+    cbgpPeer3LocalAddr:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.8
+      name: bgp.peer.local.ip.addr
+      syntax: IpAddressNoSuffix
+    cbgpPeer3LocalPort:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.9
+      name: bgp.peer.local.l4.port.id
+      syntax: Unsigned32
+    cbgpPeer3LocalAs:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.10
+      name: bgp.peer.local.as.asn
+      syntax: UnsignedAsID
+    cbgpPeer3LocalIdentifier:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.11
+      name: bgp.peer.local.router.id
+      syntax: IpAddressNoSuffix
+    cbgpPeer3RemotePort:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.12
+      name: bgp.peer.remote.l4.port.id
+      syntax: Unsigned32
+    cbgpPeer3RemoteAs:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.13
+      name: bgp.peer.remote.as.asn
+      syntax: UnsignedAsID
+    cbgpPeer3RemoteIdentifier:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.14
+      name: bgp.peer.remote.router.id
+      syntax: IpAddressNoSuffix
+    cbgpPeer3InUpdates:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.15
+      name: bgp.peer.msgs.update.in
+      syntax: Counter32
+    cbgpPeer3OutUpdates:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.16
+      name: bgp.peer.msgs.update.out
+      syntax: Counter32
+    cbgpPeer3InTotalMessages:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.17
+      name: bgp.peer.msgs.in
+      syntax: Counter32
+    cbgpPeer3OutTotalMessages:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.18
+      name: bgp.peer.msgs.out
+      syntax: Counter32
+    cbgpPeer3LastError:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.19
+      name: bgp.peer.last_error.in
+      syntax: OctetString
+    cbgpPeer3FsmEstablishedTransitions:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.20
+      name: bgp.peer.fsm.established.transitions
+      syntax: Counter32
+    cbgpPeer3FsmEstablishedTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.21
+      name: bgp.peer.fsm.established.duration
+      syntax: Gauge32
+    cbgpPeer3ConnectRetryInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.22
+      name: bgp.peer.connect_retry.config.interval
+      syntax: Unsigned32
+    cbgpPeer3HoldTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.23
+      name: bgp.peer.hold_time.interval
+      syntax: Unsigned32
+    cbgpPeer3KeepAlive:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.24
+      name: bgp.peer.keep_alive.interval
+      syntax: Unsigned32
+    cbgpPeer3HoldTimeConfigured:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.25
+      name: bgp.peer.hold_time.config.interval
+      syntax: Unsigned32
+    cbgpPeer3KeepAliveConfigured:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.26
+      name: bgp.peer.keep_alive.config.interval
+      syntax: Unsigned32
+    cbgpPeer3MinASOriginationInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.27
+      name: bgp.peer.min_as_origin.config.interval
+      syntax: Unsigned32
+    cbgpPeer3MinRouteAdvertisementInterval:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.28
+      name: bgp.peer.min_route_advert.config.interval
+      syntax: Unsigned32
+    cbgpPeer3InUpdateElapsedTime:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.29
+      name: bgp.peer.last_update.elapsed
+      syntax: Gauge32
+    cbgpPeer3LastErrorTxt:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.30
+      name: bgp.peer.last_error.msg
+      syntax: DisplayString # SnmpAdminString
+    cbgpPeer3PrevState:
+      oid: .1.3.6.1.4.1.9.9.187.1.2.9.1.31
+      name: bgp.peer.state.prev
+      syntax: EnumInteger

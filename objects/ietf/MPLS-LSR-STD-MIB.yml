@@ -1,0 +1,290 @@
+MPLS-LSR-STD-MIB::mplsInterfaceEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsInterfaceEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.1
+      name: netif
+      syntax: InterfaceIndexOrZero
+  discovery_attribute: mplsInterfaceLabelMinIn
+  attributes:
+    mplsInterfaceLabelMinIn:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.2
+      name: mpls.netif.label.min.in
+      syntax: Unsigned32
+    mplsInterfaceLabelMaxIn:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.3
+      name: mpls.netif.label.max.in
+      syntax: Unsigned32
+    mplsInterfaceLabelMinOut:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.4
+      name: mpls.netif.label.min.out
+      syntax: Unsigned32
+    mplsInterfaceLabelMaxOut:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.5
+      name: mpls.netif.label.max.out
+      syntax: Unsigned32
+    mplsInterfaceTotalBandwidth:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.6
+      name: mpls.netif.bandwidth.bw
+      syntax: BandwidthKBits
+    mplsInterfaceAvailableBandwidth:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.7
+      name: mpls.netif.bandwidth.avail
+      syntax: BandwidthKBits
+    mplsInterfaceLabelParticipationType:
+      oid: .1.3.6.1.2.1.10.166.2.1.1.1.8
+      name: mpls.netif.label.participation_type
+      syntax: EnumBitmap
+
+MPLS-LSR-STD-MIB::mplsInterfacePerfEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsInterfacePerfEntry
+  augments: MPLS-LSR-STD-MIB::mplsInterfaceEntry
+  discovery_attribute: mplsInterfacePerfInLabelsInUse
+  attributes:
+    mplsInterfacePerfInLabelsInUse:
+      oid: .1.3.6.1.2.1.10.166.2.1.2.1.1
+      name: mpls.netif.labels.in_use.in
+      syntax: Gauge32
+    mplsInterfacePerfInLabelLookupFailures:
+      oid: .1.3.6.1.2.1.10.166.2.1.2.1.2
+      name: mpls.netif.labels.lookup_fail.in
+      syntax: Counter32
+    mplsInterfacePerfOutLabelsInUse:
+      oid: .1.3.6.1.2.1.10.166.2.1.2.1.3
+      name: mpls.netif.labels.in_use.out
+      syntax: Gauge32
+    mplsInterfacePerfOutFragmentedPkts:
+      oid: .1.3.6.1.2.1.10.166.2.1.2.1.4
+      name: mpls.netif.packets.frag.out
+      syntax: Counter32
+
+MPLS-LSR-STD-MIB::mplsLsrObjects:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsLsrObjects
+  discovery_attribute: mplsMaxLabelStackDepth
+  attributes:
+    mplsMaxLabelStackDepth:
+      oid: .1.3.6.1.2.1.10.166.2.1.11
+      name: mpls.lsr.label_stack.max_depth
+      syntax: Unsigned32
+
+MPLS-LSR-STD-MIB::mplsInSegmentEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsInSegmentEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.1
+      name: mpls.segment.ingress.index # mplsInSegmentIndex
+      syntax: OctetString
+  discovery_attribute: mplsInSegmentInterface
+  attributes:
+    mplsInSegmentInterface:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.2
+      tag: true
+      name: netif
+      syntax: InterfaceIndexOrZero
+    mplsInSegmentLabel:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.3
+      name: mpls.segment.ingress.label
+      syntax: Unsigned32
+    mplsInSegmentLabelPtr:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.4
+      name: mpls.segment.ingress.label_pointer
+      syntax: RowPointer
+    mplsInSegmentNPop:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.5
+      name: mpls.segment.ingress.labels_pop
+      syntax: Integer32
+    mplsInSegmentAddrFamily:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.6
+      name: mpls.segment.ingress.addr_family
+      syntax: EnumInteger
+    mplsInSegmentXCIndex:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.7
+      name: mpls.segment.ingress.cross_connect.index
+      syntax: OctetString
+    mplsInSegmentOwner:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.8
+      name: mpls.segment.ingress.owner
+      syntax: EnumInteger
+    mplsInSegmentTrafficParamPtr:
+      oid: .1.3.6.1.2.1.10.166.2.1.4.1.9
+      name: mpls.segment.ingress.traffic_param_pointer
+      syntax: RowPointer
+
+MPLS-LSR-STD-MIB::mplsInSegmentPerfEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsInSegmentPerfEntry
+  augments: MPLS-LSR-STD-MIB::mplsInSegmentEntry
+  discovery_attribute: mplsInSegmentPerfOctets
+  attributes:
+    mplsInSegmentPerfOctets:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.1
+      name: mpls.segment.ingress.bytes
+      syntax: Counter32
+    mplsInSegmentPerfPackets:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.2
+      name: mpls.segment.ingress.packets
+      syntax: Counter32
+    mplsInSegmentPerfErrors:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.3
+      name: mpls.segment.ingress.errors
+      syntax: Counter32
+    mplsInSegmentPerfDiscards:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.4
+      name: mpls.segment.ingress.discards
+      syntax: Counter32
+    mplsInSegmentPerfHCOctets:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.5
+      name: mpls.segment.ingress.bytes
+      syntax: Counter64
+      overrides:
+        object: MPLS-LSR-STD-MIB::mplsInSegmentPerfEntry
+        attribute: mplsInSegmentPerfOctets
+    mplsInSegmentPerfDiscontinuityTime:
+      oid: .1.3.6.1.2.1.10.166.2.1.5.1.6
+      name: mpls.segment.ingress.discontinuity_time
+      syntax: TimeStamp
+
+MPLS-LSR-STD-MIB::mplsOutSegmentEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsOutSegmentEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.1
+      name: mpls.segment.egress.index
+      syntax: OctetString
+  discovery_attribute: mplsOutSegmentInterface
+  attributes:
+    mplsOutSegmentInterface:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.2
+      tag: true
+      name: netif
+      syntax: InterfaceIndexOrZero
+    mplsOutSegmentPushTopLabel:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.3
+      name: mpls.segment.egress.top_label_push
+      syntax: TruthValue
+    mplsOutSegmentTopLabel:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.4
+      name: mpls.segment.egress.top_label
+      syntax: Unsigned32
+    mplsOutSegmentTopLabelPtr:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.5
+      name: mpls.segment.egress.top_label_pointer
+      syntax: RowPointer
+    mplsOutSegmentNextHopAddr:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.7
+      name: mpls.segment.egress.next_hop
+      syntax: IpAddress
+    mplsOutSegmentXCIndex:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.8
+      name: mpls.segment.egress.cross_connect.index
+      syntax: OctetString
+    mplsOutSegmentOwner:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.9
+      name: mpls.segment.egress.owner
+      syntax: EnumInteger
+    mplsOutSegmentTrafficParamPtr:
+      oid: .1.3.6.1.2.1.10.166.2.1.7.1.10
+      name: mpls.segment.egress.traffic_param_pointer
+      syntax: RowPointer
+
+MPLS-LSR-STD-MIB::mplsOutSegmentPerfEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsOutSegmentPerfEntry
+  augments: MPLS-LSR-STD-MIB::mplsOutSegmentEntry
+  discovery_attribute: mplsOutSegmentPerfOctets
+  attributes:
+    mplsOutSegmentPerfOctets:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.1
+      name: mpls.segment.egress.bytes
+      syntax: Counter32
+    mplsOutSegmentPerfPackets:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.2
+      name: mpls.segment.egress.packets
+      syntax: Counter32
+    mplsOutSegmentPerfErrors:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.3
+      name: mpls.segment.egress.errors
+      syntax: Counter32
+    mplsOutSegmentPerfDiscards:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.4
+      name: mpls.segment.egress.discards
+      syntax: Counter32
+    mplsOutSegmentPerfHCOctets:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.5
+      name: mpls.segment.egress.bytes
+      syntax: Counter64
+      overrides:
+        object: MPLS-LSR-STD-MIB::mplsOutSegmentPerfEntry
+        attribute: mplsOutSegmentPerfOctets
+    mplsOutSegmentPerfDiscontinuityTime:
+      oid: .1.3.6.1.2.1.10.166.2.1.8.1.6
+      name: mpls.segment.egress.discontinuity_time
+      syntax: TimeStamp
+
+MPLS-LSR-STD-MIB::mplsXCEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsXCEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.1
+      name: mpls.cross_connect.index # mplsXCIndex
+      syntax: OctetString
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.2
+      name: mpls.cross_connect.segment.ingress.index # mplsXCInSegmentIndex
+      syntax: OctetString
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.3
+      name: mpls.cross_connect.segment.egress.index # mplsXCOutSegmentIndex
+      syntax: OctetString
+  discovery_attribute: mplsXCLspId
+  attributes:
+    mplsXCLspId:
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.4
+      tag: true
+      name: mpls.cross_connect.lsp.id
+      syntax: OctetString
+    mplsXCLabelStackIndex:
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.5
+      name: mpls.cross_connect.label_stack.index
+      syntax: OctetString
+    mplsXCOwner:
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.6
+      name: mpls.cross_connect.owner
+      syntax: EnumInteger
+    mplsXCAdminStatus:
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.9
+      name: mpls.cross_connect.state.admin
+      syntax: EnumInteger
+    mplsXCOperStatus:
+      oid: .1.3.6.1.2.1.10.166.2.1.10.1.10
+      name: mpls.cross_connect.state.oper
+      syntax: EnumInteger
+
+MPLS-LSR-STD-MIB::mplsLabelStackEntry:
+  mib: MPLS-LSR-STD-MIB
+  object: mplsLabelStackEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.2.1.10.166.2.1.13.1.1
+      name: mpls.label_stack.index # mplsLabelStackIndex
+      syntax: OctetString
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.166.2.1.13.1.2
+      name: mpls.label_stack.label.index # mplsLabelStackLabelIndex
+      syntax: UnsignedAsID
+  discovery_attribute: mplsLabelStackLabel
+  attributes:
+    mplsLabelStackLabel:
+      oid: .1.3.6.1.2.1.10.166.2.1.13.1.3
+      name: mpls.label_stack.label
+      syntax: Unsigned32
+    mplsLabelStackLabelPtr:
+      oid: .1.3.6.1.2.1.10.166.2.1.13.1.4
+      name: mpls.label_stack.label_pointer
+      syntax: RowPointer

@@ -1,0 +1,54 @@
+CISCO-MEMORY-POOL-MIB::ciscoMemoryPoolEntry:
+  mib: CISCO-MEMORY-POOL-MIB
+  object: ciscoMemoryPoolEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.2
+      name: cisco.mem_pool.type # ciscoMemoryPoolType
+      syntax: EnumInteger
+  discovery_attribute: ciscoMemoryPoolName
+  attributes:
+    ciscoMemoryPoolName:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.2
+      tag: true
+      name: cisco.mem_pool.name
+      syntax: DisplayString
+    ciscoMemoryPoolAlternate:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.3
+      name: cisco.mem_pool.alt.type
+      syntax: Integer32
+    ciscoMemoryPoolValid:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.4
+      name: cisco.mem_pool.valid
+      syntax: TruthValue
+    ciscoMemoryPoolUsed:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.5
+      name: mem.used.bytes
+      syntax: BytesB
+    ciscoMemoryPoolFree:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.6
+      name: mem.free.bytes
+      syntax: BytesB
+    ciscoMemoryPoolLargestFree:
+      oid: .1.3.6.1.4.1.9.9.48.1.1.1.7
+      name: mem.free.bytes_cont
+      syntax: BytesB
+
+CISCO-MEMORY-POOL-MIB::ciscoMemoryPoolUtilizationEntry:
+  mib: CISCO-MEMORY-POOL-MIB
+  object: ciscoMemoryPoolUtilizationEntry
+  augments: CISCO-MEMORY-POOL-MIB::ciscoMemoryPoolEntry
+  discovery_attribute: ciscoMemoryPoolUtilization1Min
+  attributes:
+    ciscoMemoryPoolUtilization1Min:
+      oid: .1.3.6.1.4.1.9.9.48.1.2.1.1
+      name: mem.util.pct
+      syntax: Percent100
+    ciscoMemoryPoolUtilization5Min:
+      oid: .1.3.6.1.4.1.9.9.48.1.2.1.2
+      name: mem.util.5min.pct
+      syntax: Percent100
+    ciscoMemoryPoolUtilization10Min:
+      oid: .1.3.6.1.4.1.9.9.48.1.2.1.3
+      name: mem.util.10min.pct
+      syntax: Percent100

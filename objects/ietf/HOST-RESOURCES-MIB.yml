@@ -42,35 +42,35 @@ HOST-RESOURCES-MIB::hrStorageEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.2.1.25.2.3.1.1
-      name: storage.index # hrStorageIndex
-      syntax: Integer32
+      name: disk.index # hrStorageIndex
+      syntax: IntegerAsID
   discovery_attribute: hrStorageType
   attributes:
     hrStorageType:
       oid: .1.3.6.1.2.1.25.2.3.1.2
       tag: true
-      name: storage.type
+      name: disk.type
       syntax: EnumObjectIdentifier
     hrStorageDescr:
       oid: .1.3.6.1.2.1.25.2.3.1.3
       tag: true
-      name: storage.name
+      name: disk.name
       syntax: DisplayString
     hrStorageAllocationUnits:
       oid: .1.3.6.1.2.1.25.2.3.1.4
-      name: storage.alloc_unit.size
+      name: disk.alloc_unit.size
       syntax: Integer32
     hrStorageSize:
       oid: .1.3.6.1.2.1.25.2.3.1.5
-      name: storage.alloc_unit.total
+      name: disk.alloc_unit.total
       syntax: Integer32
     hrStorageUsed:
       oid: .1.3.6.1.2.1.25.2.3.1.6
-      name: storage.alloc_unit.used
+      name: disk.alloc_unit.used
       syntax: Integer32
     hrStorageAllocationFailures:
       oid: .1.3.6.1.2.1.25.2.3.1.7
-      name: storage.alloc.fails
+      name: disk.alloc.fails
       syntax: Counter32
 
 HOST-RESOURCES-MIB::hrDeviceEntry:
@@ -80,7 +80,7 @@ HOST-RESOURCES-MIB::hrDeviceEntry:
     - type: Integer32
       oid: .1.3.6.1.2.1.25.3.2.1.1
       name: device.index # hrDeviceIndex
-      syntax: Integer32
+      syntax: IntegerAsID
   discovery_attribute: hrDeviceType
   attributes:
     hrDeviceType:
@@ -96,8 +96,8 @@ HOST-RESOURCES-MIB::hrDeviceEntry:
     hrDeviceID:
       oid: .1.3.6.1.2.1.25.3.2.1.4
       tag: true
-      name: device.product.oid
-      syntax: ObjectIdentifier
+      name: device.product
+      syntax: EnumObjectIdentifier
     hrDeviceStatus:
       oid: .1.3.6.1.2.1.25.3.2.1.5
       name: device.state
@@ -114,7 +114,7 @@ HOST-RESOURCES-MIB::hrProcessorEntry:
     - type: Integer32
       oid: .1.3.6.1.2.1.25.3.2.1.1
       name: device.index # hrDeviceIndex
-      syntax: Integer32
+      syntax: IntegerAsID
   # augments: HOST-RESOURCES-MIB::hrDeviceEntry
   discovery_attribute: hrProcessorLoad
   attributes:
@@ -130,7 +130,7 @@ HOST-RESOURCES-MIB::hrPrinterEntry:
     - type: Integer32
       oid: .1.3.6.1.2.1.25.3.2.1.1
       name: device.index # hrDeviceIndex
-      syntax: Integer32
+      syntax: IntegerAsID
   # augments: HOST-RESOURCES-MIB::hrDeviceEntry
   discovery_attribute: hrPrinterStatus
   attributes:

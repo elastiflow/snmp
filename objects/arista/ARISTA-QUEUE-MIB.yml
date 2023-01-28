@@ -1,0 +1,69 @@
+ARISTA-QUEUE-MIB::aristaIngressQueueEntry:
+  mib: ARISTA-QUEUE-MIB
+  object: aristaIngressQueueEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.30065.3.6.1.1.1.1
+      name: netif # aristaIngressIfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.30065.3.6.1.1.1.2
+      name: qos.queue.in # aristaIngressQueueIndex
+      syntax: IntegerAsID
+  discovery_attribute: aristaIngressQueuePktsDropped
+  attributes:
+    aristaIngressQueuePktsDropped:
+      oid: .1.3.6.1.4.1.30065.3.6.1.1.1.3
+      name: qos.packets.drop.in
+      syntax: Counter64
+    aristaIngressQueueBytesDropped:
+      oid: .1.3.6.1.4.1.30065.3.6.1.1.1.4
+      name: qos.bytes.drop.in
+      syntax: Counter64
+
+ARISTA-QUEUE-MIB::aristaEgressQueueEntry:
+  mib: ARISTA-QUEUE-MIB
+  object: aristaEgressQueueEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.1
+      name: netif # aristaEgressIfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.2
+      name: qos.queue.out # aristaEgressQueueIndex
+      syntax: IntegerAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.3
+      name: arista.qos.queue.egress.packet_type # aristaEgressPacketType
+      syntax: EnumInteger
+  discovery_attribute: aristaEgressQueuePkts
+  attributes:
+    aristaEgressQueuePkts:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.4
+      name: qos.packets.queued.out
+      syntax: Counter64
+    aristaEgressQueueBytes:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.5
+      name: qos.bytes.queued.out
+      syntax: Counter64
+    aristaEgressQueuePktsDropped:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.6
+      name: qos.packets.drop.out
+      syntax: Counter64
+    aristaEgressQueueBytesDropped:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.7
+      name: qos.bytes.drop.out
+      syntax: Counter64
+    aristaEgressQueuePktsDroppedQFull:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.8
+      name: qos.packets.drop.queue_full.out
+      syntax: Counter64
+    aristaEgressQueuePktsDroppedNoBuffer:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.9
+      name: qos.packets.drop.no_buffer.out
+      syntax: Counter64
+    aristaEgressQueueDropPrec:
+      oid: .1.3.6.1.4.1.30065.3.6.1.2.1.10
+      name: qos.drop.prec.out
+      syntax: EnumInteger

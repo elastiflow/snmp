@@ -1,0 +1,102 @@
+RIPv2-MIB::rip2Globals:
+  mib: RIPv2-MIB
+  object: rip2Globals
+  discovery_attribute: rip2GlobalRouteChanges
+  attributes:
+    rip2GlobalRouteChanges:
+      oid: .1.3.6.1.2.1.23.1.1
+      name: rip.route_chgs
+      syntax: Counter32
+    rip2GlobalQueries:
+      oid: .1.3.6.1.2.1.23.1.2
+      name: rip.queries
+      syntax: Counter32
+
+RIPv2-MIB::rip2IfStatEntry:
+  mib: RIPv2-MIB
+  object: rip2IfStatEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.23.2.1.1
+      name: netif # rip2IfStatAddress
+      syntax: IpAddress
+  discovery_attribute: rip2IfStatRcvBadPackets
+  attributes:
+    rip2IfStatRcvBadPackets:
+      oid: .1.3.6.1.2.1.23.2.1.2
+      name: rip.netif.packets.bad.in
+      syntax: Counter32
+    rip2IfStatRcvBadRoutes:
+      oid: .1.3.6.1.2.1.23.2.1.3
+      name: rip.netif.routes.bad.in
+      syntax: Counter32
+    rip2IfStatSentUpdates:
+      oid: .1.3.6.1.2.1.23.2.1.4
+      name: rip.netif.updates.out
+      syntax: Counter32
+
+RIPv2-MIB::rip2IfConfEntry:
+  mib: RIPv2-MIB
+  object: rip2IfConfEntry
+  augments: RIPv2-MIB::rip2IfStatEntry
+  discovery_attribute: rip2IfConfAuthType
+  attributes:
+    rip2IfConfDomain:
+      oid: .1.3.6.1.2.1.23.3.1.2
+      name: rip.netif.domain
+      syntax: OctetString
+    rip2IfConfAuthType:
+      oid: .1.3.6.1.2.1.23.3.1.3
+      name: rip.netif.auth.type
+      syntax: EnumInteger
+    rip2IfConfAuthKey:
+      oid: .1.3.6.1.2.1.23.3.1.4
+      name: rip.netif.auth.key
+      syntax: OctetString
+    rip2IfConfSend:
+      oid: .1.3.6.1.2.1.23.3.1.5
+      name: rip.netif.send.proto
+      syntax: EnumInteger
+    rip2IfConfReceive:
+      oid: .1.3.6.1.2.1.23.3.1.6
+      name: rip.netif.rcv.proto
+      syntax: EnumInteger
+    rip2IfConfDefaultMetric:
+      oid: .1.3.6.1.2.1.23.3.1.7
+      name: rip.netif.default_metric
+      syntax: Integer
+    rip2IfConfSrcAddress:
+      oid: .1.3.6.1.2.1.23.3.1.9
+      name: rip.netif.src
+      syntax: IpAddress
+
+RIPv2-MIB::rip2PeerEntry:
+  mib: RIPv2-MIB
+  object: rip2PeerEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.23.4.1.1
+      name: rip.peer # rip2PeerAddress
+      syntax: IpAddress
+    - type: OctetString
+      oid: .1.3.6.1.2.1.23.4.1.2
+      name: rip.peer.domain # rip2PeerDomain
+      syntax: OctetString
+  discovery_attribute: rip2PeerLastUpdate
+  attributes:
+    rip2PeerLastUpdate:
+      oid: .1.3.6.1.2.1.23.4.1.3
+      name: rip.peer.last_update
+      syntax: TimeTicks
+    rip2PeerVersion:
+      oid: .1.3.6.1.2.1.23.4.1.4
+      name: rip.peer.version.ver
+      syntax: IntegerAsID
+    rip2PeerRcvBadPackets:
+      oid: .1.3.6.1.2.1.23.4.1.5
+      name: rip.peer.packets.bad.in
+      syntax: Counter32
+    rip2PeerRcvBadRoutes:
+      oid: .1.3.6.1.2.1.23.4.1.6
+      name: rip.peer.routes.bad.in
+      syntax: Counter32

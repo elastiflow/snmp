@@ -1,0 +1,244 @@
+CISCO-OSPF-MIB::cospfGeneralGroup:
+  mib: CISCO-OSPF-MIB
+  object: cospfGeneralGroup
+  augments: OSPF-MIB::ospfGeneralGroup
+  discovery_attribute: cospfRFC1583Compatibility
+  attributes:
+    cospfRFC1583Compatibility:
+      oid: .1.3.6.1.4.1.9.10.99.1.1
+      name: ospf.rfc1583_compat.support
+      syntax: TruthValue
+      overrides:
+        object: OSPF-MIB::ospfGeneralGroup
+        attribute: ospfRFC1583Compatibility
+    cospfOpaqueLsaSupport:
+      oid: .1.3.6.1.4.1.9.10.99.1.2
+      name: ospf.opaque_lsa.support
+      syntax: TruthValue
+      overrides:
+        object: OSPF-MIB::ospfGeneralGroup
+        attribute: ospfOpaqueLsaSupport
+    cospfTrafficEngineeringSupport:
+      oid: .1.3.6.1.4.1.9.10.99.1.3
+      name: ospf.te.support
+      syntax: TruthValue
+    cospfOpaqueASLsaCount:
+      oid: .1.3.6.1.4.1.9.10.99.1.4
+      name: ospf.lsdb.opaque_as_scope.lsas
+      syntax: Gauge32
+    cospfOpaqueASLsaCksumSum:
+      oid: .1.3.6.1.4.1.9.10.99.1.5
+      name: ospf.lsdb.opaque_as_scope.checksum
+      syntax: Unsigned32
+
+CISCO-OSPF-MIB::cospfAreaEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfAreaEntry
+  augments: OSPF-MIB::ospfAreaEntry
+  discovery_attribute: cospfOpaqueAreaLsaCount
+  attributes:
+    cospfOpaqueAreaLsaCount:
+      oid: .1.3.6.1.4.1.9.10.99.2.1.1
+      name: ospf.area.lsdb.opaque_area_scope.lsas
+      syntax: Gauge32
+    cospfOpaqueAreaLsaCksumSum:
+      oid: .1.3.6.1.4.1.9.10.99.2.1.2
+      name: ospf.area.lsdb.opaque_area_scope.checksum
+      syntax: Unsigned32
+    cospfAreaNssaTranslatorRole:
+      oid: .1.3.6.1.4.1.9.10.99.2.1.3
+      name: ospf.area.nssa_translator.role
+      syntax: EnumInteger
+      overrides:
+        object: OSPF-MIB::ospfAreaEntry
+        attribute: ospfAreaNssaTranslatorRole
+    cospfAreaNssaTranslatorState:
+      oid: .1.3.6.1.4.1.9.10.99.2.1.4
+      name: ospf.area.nssa_translator.state
+      syntax: EnumInteger
+      overrides:
+        object: OSPF-MIB::ospfAreaEntry
+        attribute: ospfAreaNssaTranslatorState
+    cospfAreaNssaTranslatorEvents:
+      oid: .1.3.6.1.4.1.9.10.99.2.1.5
+      name: ospf.area.nssa_translator.events
+      syntax: Counter32
+      overrides:
+        object: OSPF-MIB::ospfAreaEntry
+        attribute: ospfAreaNssaTranslatorEvents
+
+CISCO-OSPF-MIB::cospfIfEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfIfEntry
+  augments: OSPF-MIB::ospfIfEntry
+  discovery_attribute: cospfIfLsaCount
+  attributes:
+    cospfIfLsaCount:
+      oid: .1.3.6.1.4.1.9.10.99.4.1.1
+      name: ospf.netif.lsdb.link_local.lsas
+      syntax: Gauge32
+    cospfIfLsaCksumSum:
+      oid: .1.3.6.1.4.1.9.10.99.4.1.2
+      name: ospf.netif.lsdb.link_local.checksum
+      syntax: Unsigned32
+
+CISCO-OSPF-MIB::cospfVirtIfEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfVirtIfEntry
+  augments: OSPF-MIB::ospfVirtIfEntry
+  discovery_attribute: cospfVirtIfLsaCount
+  attributes:
+    cospfVirtIfLsaCount:
+      oid: .1.3.6.1.4.1.9.10.99.5.1.1
+      name: ospf.virt_netif.lsdb.link_local.lsas
+      syntax: Gauge32
+    cospfVirtIfLsaCksumSum:
+      oid: .1.3.6.1.4.1.9.10.99.5.1.2
+      name: ospf.virt_netif.lsdb.link_local.checksum
+      syntax: Unsigned32
+
+CISCO-OSPF-MIB::cospfShamLinkEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfShamLinkEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.99.6.1.1
+      name: ospf.sham_link.area.id # cospfShamLinkAreaId
+      syntax: IpAddressAsID # AreaID
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.99.6.1.2
+      name: ospf.sham_link.local.ip.addr # cospfShamLinkLocalIpAddress
+      syntax: IpAddressNoSuffix
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.99.6.1.3
+      name: ospf.sham_link.neighbor.id # cospfShamLinkNeighborId
+      syntax: IpAddressAsID
+  discovery_attribute: cospfShamLinkRetransInterval
+  attributes:
+    cospfShamLinkRetransInterval:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.4
+      name: ospf.sham_link.retrans_interval
+      syntax: Unsigned32
+    cospfShamLinkHelloInterval:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.5
+      name: ospf.sham_link.hello_interval
+      syntax: Unsigned32
+    cospfShamLinkRtrDeadInterval:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.6
+      name: ospf.sham_link.router_dead_interval
+      syntax: Unsigned32
+    cospfShamLinkState:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.7
+      name: ospf.sham_link.state
+      syntax: EnumInteger
+    cospfShamLinkEvents:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.8
+      name: ospf.sham_link.events
+      syntax: Counter32
+    cospfShamLinkMetric:
+      oid: .1.3.6.1.4.1.9.10.99.6.1.9
+      name: ospf.sham_link.metric
+      syntax: Unsigned32
+
+CISCO-OSPF-MIB::cospfShamLinkNbrEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfShamLinkNbrEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.99.11.1.2
+      name: ospf.sham_link.local.ip.type.id # cospfShamLinksLocalIpAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.10.99.11.1.3
+      name: ospf.sham_link.local.ip.addr # cospfShamLinksLocalIpAddr
+      syntax: IpAddressNoSuffix
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.99.10.1.1
+      name: ospf.sham_link.neighbor.area.id # cospfShamLinkNbrArea
+      syntax: IpAddressAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.99.10.1.2
+      name: ospf.sham_link.neighbor.ip.type.id # cospfShamLinkNbrIpAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.10.99.10.1.3
+      name: ospf.sham_link.neighbor.ip.addr # cospfShamLinkNbrIpAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: cospfShamLinkNbrRtrId
+  attributes:
+    cospfShamLinkNbrRtrId:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.4
+      tag: true
+      name: ospf.sham_link.neighbor.router.id
+      syntax: IpAddressAsID
+    cospfShamLinkNbrOptions:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.5
+      name: ospf.sham_link.neighbor.option.bits
+      syntax: Integer32
+    cospfShamLinkNbrState:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.6
+      name: ospf.sham_link.neighbor.state
+      syntax: EnumInteger
+    cospfShamLinkNbrEvents:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.7
+      name: ospf.sham_link.neighbor.events
+      syntax: Counter32
+    cospfShamLinkNbrLsRetransQLen:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.8
+      name: ospf.sham_link.neighbor.link_state_retrans_queue
+      syntax: Gauge32
+    cospfShamLinkNbrHelloSuppressed:
+      oid: .1.3.6.1.4.1.9.10.99.10.1.9
+      name: ospf.sham_link.neighbor.hello_suppress
+      syntax: TruthValue
+
+CISCO-OSPF-MIB::cospfShamLinksEntry:
+  mib: CISCO-OSPF-MIB
+  object: cospfShamLinksEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.99.11.1.1
+      name: ospf.sham_link.area.id # cospfShamLinksAreaId
+      syntax: IpAddressAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.99.11.1.2
+      name: ospf.sham_link.local.ip.type.id # cospfShamLinksLocalIpAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.10.99.11.1.3
+      name: ospf.sham_link.local.ip.addr # cospfShamLinksLocalIpAddr
+      syntax: IpAddressNoSuffix
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.99.11.1.4
+      name: ospf.sham_link.remote.ip.type.id # cospfShamLinksRemoteIpAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.10.99.11.1.5
+      name: ospf.sham_link.remote.ip.addr # cospfShamLinksRemoteIpAddr
+      syntax: IpAddressNoSuffix
+  discovery_attribute: cospfShamLinksRetransInterval
+  attributes:
+    cospfShamLinksRetransInterval:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.6
+      name: ospf.sham_link.retrans_interval
+      syntax: Unsigned32
+    cospfShamLinksHelloInterval:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.7
+      name: ospf.sham_link.hello_interval
+      syntax: Unsigned32
+    cospfShamLinksRtrDeadInterval:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.8
+      name: ospf.sham_link.router_dead_interval
+      syntax: Unsigned32
+    cospfShamLinksState:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.9
+      name: ospf.sham_link.state
+      syntax: EnumInteger
+    cospfShamLinksEvents:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.10
+      name: ospf.sham_link.events
+      syntax: Counter32
+    cospfShamLinksMetric:
+      oid: .1.3.6.1.4.1.9.10.99.11.1.11
+      name: ospf.sham_link.metric
+      syntax: Unsigned32

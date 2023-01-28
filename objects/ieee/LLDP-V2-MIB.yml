@@ -1,0 +1,79 @@
+LLDP-V2-MIB::lldpV2Statistics:
+  mib: LLDP-V2-MIB
+  object: lldpV2Statistics
+  discovery_attribute: lldpV2StatsRemTablesLastChangeTime
+  attributes:
+    lldpV2StatsRemTablesLastChangeTime:
+      oid: .1.3.111.2.802.1.1.13.1.2.1
+      name: lldp.msap.last_chg
+      syntax: TimeStamp
+    lldpV2StatsRemTablesInserts:
+      oid: .1.3.111.2.802.1.1.13.1.2.2
+      name: lldp.msap.inserts
+      syntax: Gauge32
+    lldpV2StatsRemTablesDeletes:
+      oid: .1.3.111.2.802.1.1.13.1.2.3
+      name: lldp.msap.deletes
+      syntax: Gauge32
+    lldpV2StatsRemTablesDrops:
+      oid: .1.3.111.2.802.1.1.13.1.2.4
+      name: lldp.msap.drops
+      syntax: Gauge32
+    lldpV2StatsRemTablesAgeouts:
+      oid: .1.3.111.2.802.1.1.13.1.2.5
+      name: lldp.msap.ageouts
+      syntax: Gauge32
+
+LLDP-V2-MIB::lldpV2StatsTxPortEntry:
+  mib: LLDP-V2-MIB
+  object: lldpV2StatsTxPortEntry
+  index:
+    - type: Integer32
+      oid: .1.3.111.2.802.1.1.13.1.2.6.1.1
+      name: netif # lldpV2StatsTxIfIndex
+      syntax: InterfaceIndex
+    - type: Unsigned32
+      oid: .1.3.111.2.802.1.1.13.1.2.6.1.2
+      name: lldp.port.mac.index # lldpV2StatsTxDestMACAddress
+      syntax: UnsignedAsID
+  discovery_attribute: lldpV2StatsTxPortFramesTotal
+  attributes:
+    lldpV2StatsTxPortFramesTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.6.1.3
+      name: lldp.port.frames.out
+      syntax: Counter32
+    lldpV2StatsTxLLDPDULengthErrors:
+      oid: .1.3.111.2.802.1.1.13.1.2.6.1.4
+      name: lldp.port.frames.error.pdu_size.out
+      syntax: Counter32
+
+LLDP-V2-MIB::lldpV2StatsRxPortEntry:
+  mib: LLDP-V2-MIB
+  object: lldpV2StatsRxPortEntry
+  augments: LLDP-V2-MIB::lldpV2StatsTxPortEntry
+  discovery_attribute: lldpV2StatsRxPortFramesDiscardedTotal
+  attributes:
+    lldpV2StatsRxPortFramesDiscardedTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.3
+      name: lldp.port.frames.discard.in
+      syntax: Counter32
+    lldpV2StatsRxPortFramesErrors:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.4
+      name: lldp.port.frames.error.in
+      syntax: Counter32
+    lldpV2StatsRxPortFramesTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.5
+      name: lldp.port.frames.in
+      syntax: Counter32
+    lldpV2StatsRxPortTLVsDiscardedTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.6
+      name: lldp.port.tlvs.discard.in
+      syntax: Counter32
+    lldpV2StatsRxPortTLVsUnrecognizedTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.7
+      name: lldp.port.tlvs.unrecognized.in
+      syntax: Counter32
+    lldpV2StatsRxPortAgeoutsTotal:
+      oid: .1.3.111.2.802.1.1.13.1.2.7.1.8
+      name: lldp.port.ageouts
+      syntax: Gauge32

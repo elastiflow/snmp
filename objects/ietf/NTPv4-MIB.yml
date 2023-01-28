@@ -1,0 +1,200 @@
+NTPv4-MIB::ntpEntInfo:
+  mib: NTPv4-MIB
+  object: ntpEntInfo
+  discovery_attribute: ntpEntSoftwareName
+  attributes:
+    ntpEntSoftwareName:
+      oid: .1.3.6.1.2.1.197.1.1.1
+      name: ntp.app.name
+      syntax: DisplayString # Utf8String
+    ntpEntSoftwareVersion:
+      oid: .1.3.6.1.2.1.197.1.1.2
+      name: ntp.app.version.ver
+      syntax: DisplayString # Utf8String
+    ntpEntSoftwareVendor:
+      oid: .1.3.6.1.2.1.197.1.1.3
+      name: ntp.app.vendor.name
+      syntax: DisplayString # Utf8String
+    ntpEntSystemType:
+      oid: .1.3.6.1.2.1.197.1.1.4
+      name: ntp.system.type.name
+      syntax: DisplayString # Utf8String
+    ntpEntTimeResolution:
+      oid: .1.3.6.1.2.1.197.1.1.5
+      name: ntp.time.resolution
+      syntax: Unsigned32
+    ntpEntTimePrecision:
+      oid: .1.3.6.1.2.1.197.1.1.6
+      name: ntp.time.precision
+      syntax: Integer32
+    ntpEntTimeDistance:
+      oid: .1.3.6.1.2.1.197.1.1.7
+      name: ntp.time.distance
+      syntax: DisplayString
+
+NTPv4-MIB::ntpEntStatus:
+  mib: NTPv4-MIB
+  object: ntpEntStatus
+  augments: NTPv4-MIB::ntpEntInfo
+  discovery_attribute: ntpEntStatusCurrentMode
+  attributes:
+    ntpEntStatusCurrentMode:
+      oid: .1.3.6.1.2.1.197.1.2.1
+      name: ntp.mode
+      syntax: EnumInteger
+    ntpEntStatusStratum:
+      oid: .1.3.6.1.2.1.197.1.2.2
+      name: ntp.stratum
+      syntax: Unsigned32
+    ntpEntStatusActiveRefSourceId:
+      oid: .1.3.6.1.2.1.197.1.2.3
+      name: ntp.reference.active.id
+      syntax: UnsignedAsID
+    ntpEntStatusActiveRefSourceName:
+      oid: .1.3.6.1.2.1.197.1.2.4
+      name: ntp.reference.active.name
+      syntax: DisplayString # Utf8String
+    ntpEntStatusActiveOffset:
+      oid: .1.3.6.1.2.1.197.1.2.5
+      name: ntp.reference.active.offset
+      syntax: DisplayString
+    ntpEntStatusNumberOfRefSources:
+      oid: .1.3.6.1.2.1.197.1.2.6
+      name: ntp.references
+      syntax: Unsigned32
+    ntpEntStatusDispersion:
+      oid: .1.3.6.1.2.1.197.1.2.7
+      name: ntp.dispersion
+      syntax: DisplayString
+    ntpEntStatusEntityUptime:
+      oid: .1.3.6.1.2.1.197.1.2.8
+      name: ntp.uptime
+      syntax: TimeTicks
+    ntpEntStatusDateTime:
+      oid: .1.3.6.1.2.1.197.1.2.9
+      name: ntp.date_time
+      syntax: OctetString # TO-DO: add support for NtpDateTime
+    ntpEntStatusLeapSecond:
+      oid: .1.3.6.1.2.1.197.1.2.10
+      name: ntp.leap_second.next
+      syntax: OctetString # TO-DO: add support for NtpDateTime
+    ntpEntStatusLeapSecDirection:
+      oid: .1.3.6.1.2.1.197.1.2.11
+      name: ntp.leap_second.direction
+      syntax: Integer32
+    ntpEntStatusInPkts:
+      oid: .1.3.6.1.2.1.197.1.2.12
+      name: ntp.packets.in
+      syntax: Counter32
+    ntpEntStatusOutPkts:
+      oid: .1.3.6.1.2.1.197.1.2.13
+      name: ntp.packets.out
+      syntax: Counter32
+    ntpEntStatusBadVersion:
+      oid: .1.3.6.1.2.1.197.1.2.14
+      name: ntp.msgs.bad_version
+      syntax: Counter32
+    ntpEntStatusProtocolError:
+      oid: .1.3.6.1.2.1.197.1.2.15
+      name: ntp.msgs.proto_error
+      syntax: Counter32
+    ntpEntStatusNotifications:
+      oid: .1.3.6.1.2.1.197.1.2.16
+      name: ntp.notifs.out
+      syntax: Counter32
+
+NTPv4-MIB::ntpEntStatPktModeEntry:
+  mib: NTPv4-MIB
+  object: ntpEntStatPktModeEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.197.1.2.17.1.1
+      name: ntp.mode # ntpEntStatPktMode
+      syntax: EnumInteger
+  discovery_attribute: ntpEntStatPktSent
+  attributes:
+    ntpEntStatPktSent:
+      oid: .1.3.6.1.2.1.197.1.2.17.1.2
+      name: ntp.packets.out
+      syntax: Counter32
+    ntpEntStatPktReceived:
+      oid: .1.3.6.1.2.1.197.1.2.17.1.3
+      name: ntp.packets.in
+      syntax: Counter32
+
+NTPv4-MIB::ntpAssociationEntry:
+  mib: NTPv4-MIB
+  object: ntpAssociationEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.197.1.3.1.1.1
+      name: ntp.assoc.id # ntpAssocId
+      syntax: UnsignedAsID
+  discovery_attribute: ntpAssocName
+  attributes:
+    ntpAssocName:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.2
+      name: ntp.assoc.name
+      syntax: DisplayString # Utf8String
+    ntpAssocRefId:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.3
+      name: ntp.assoc.ref_clock.driver.id
+      syntax: DisplayString
+    ntpAssocAddress:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.5
+      name: ntp.assoc
+      syntax: IpAddress
+    ntpAssocOffset:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.6
+      name: ntp.assoc.offset
+      syntax: DisplayString
+    ntpAssocStratum:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.7
+      name: ntp.assoc.stratum
+      syntax: Unsigned32
+    ntpAssocStatusJitter:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.8
+      name: ntp.assoc.jitter
+      syntax: DisplayString
+    ntpAssocStatusDelay:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.9
+      name: ntp.assoc.delay
+      syntax: DisplayString
+    ntpAssocStatusDispersion:
+      oid: .1.3.6.1.2.1.197.1.3.1.1.10
+      name: ntp.assoc.dispersion
+      syntax: DisplayString
+
+NTPv4-MIB::ntpAssociationStatisticsEntry:
+  mib: NTPv4-MIB
+  object: ntpAssociationStatisticsEntry
+  augments: NTPv4-MIB::ntpAssociationEntry
+  discovery_attribute: ntpAssocStatInPkts
+  attributes:
+    ntpAssocStatInPkts:
+      oid: .1.3.6.1.2.1.197.1.3.2.1.1
+      name: ntp.assoc.packets.in
+      syntax: Counter32
+    ntpAssocStatOutPkts:
+      oid: .1.3.6.1.2.1.197.1.3.2.1.2
+      name: ntp.assoc.packets.out
+      syntax: Counter32
+    ntpAssocStatProtocolError:
+      oid: .1.3.6.1.2.1.197.1.3.2.1.3
+      name: ntp.assoc.msgs.proto_error
+      syntax: Counter32
+
+NTPv4-MIB::ntpEntControl:
+  mib: NTPv4-MIB
+  object: ntpEntControl
+  augments: NTPv4-MIB::ntpEntInfo
+  discovery_attribute: ntpEntHeartbeatInterval
+  attributes:
+    ntpEntHeartbeatInterval:
+      oid: .1.3.6.1.2.1.197.1.4.1
+      name: ntp.heartbeat_interval
+      syntax: Unsigned32
+    ntpEntNotifBits:
+      oid: .1.3.6.1.2.1.197.1.4.2
+      name: ntp.NotifBits
+      syntax: EnumBitmap

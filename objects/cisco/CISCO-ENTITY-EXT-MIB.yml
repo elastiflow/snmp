@@ -1,0 +1,105 @@
+CISCO-ENTITY-EXT-MIB::ceExtPhysicalProcessorEntry:
+  mib: CISCO-ENTITY-EXT-MIB
+  object: ceExtPhysicalProcessorEntry
+  augments: ENTITY-MIB::entPhysicalEntry
+  discovery_attribute: ceExtProcessorRam
+  attributes:
+    ceExtProcessorRam:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.1
+      name: processor.mem.total.bytes
+      syntax: BytesB
+    ceExtNVRAMSize:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.2
+      name: nvram.total.bytes
+      syntax: BytesB
+    ceExtNVRAMUsed:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.3
+      name: nvram.used.bytes
+      syntax: BytesB
+    # ceExtProcessorRamOverflow:
+    #   oid: .1.3.6.1.4.1.9.9.195.1.1.1.4
+    #   name: processor.mem.total.bytes
+    #   syntax: BytesB
+    ceExtHCProcessorRam:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.5
+      name: processor.mem.total.bytes
+      syntax: BytesB
+      overrides:
+        object: CISCO-ENTITY-EXT-MIB::ceExtPhysicalProcessorEntry
+        attribute: ceExtProcessorRam
+    # ceExtNVRAMSizeOverflow:
+    #   oid: .1.3.6.1.4.1.9.9.195.1.1.1.6
+    #   name: nvram.total.bytes
+    #   syntax: BytesB
+    ceExtHCNVRAMSize:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.7
+      name: nvram.total.bytes
+      syntax: BytesB
+      overrides:
+        object: CISCO-ENTITY-EXT-MIB::ceExtPhysicalProcessorEntry
+        attribute: ceExtNVRAMSize
+    # ceExtNVRAMUsedOverflow:
+    #   oid: .1.3.6.1.4.1.9.9.195.1.1.1.8
+    #   name: nvram.used.bytes
+    #   syntax: BytesB
+    ceExtHCNVRAMUsed:
+      oid: .1.3.6.1.4.1.9.9.195.1.1.1.9
+      name: nvram.used.bytes
+      syntax: BytesB
+      overrides:
+        object: CISCO-ENTITY-EXT-MIB::ceExtPhysicalProcessorEntry
+        attribute: ceExtNVRAMUsed
+
+CISCO-ENTITY-EXT-MIB::ceExtEntityLEDEntry:
+  mib: CISCO-ENTITY-EXT-MIB
+  object: ceExtEntityLEDEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.195.1.3.1.2
+      name: cisco.led.color # ceExtEntityLEDType
+      syntax: EnumInteger
+  discovery_attribute: ceExtEntityLEDColor
+  attributes:
+    ceExtEntityLEDColor:
+      oid: .1.3.6.1.4.1.9.9.195.1.3.1.2
+      name: cisco.led.color
+      syntax: EnumInteger
+
+CISCO-ENTITY-EXT-MIB::ceExtEntPhysicalEntry:
+  mib: CISCO-ENTITY-EXT-MIB
+  object: ceExtEntPhysicalEntry
+  augments: ENTITY-MIB::entPhysicalEntry
+  discovery_attribute: ceEntPhysicalSecondSerialNum
+  attributes:
+    ceEntPhysicalSecondSerialNum:
+      oid: .1.3.6.1.4.1.9.9.195.1.4.1.1
+      tag: true
+      name: cisco.entity.phys.serial_no_2
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-ENTITY-EXT-MIB::ceExtUSBModemEntry:
+  mib: CISCO-ENTITY-EXT-MIB
+  object: ceExtUSBModemEntry
+  augments: ENTITY-MIB::entPhysicalEntry
+  discovery_attribute: ceExtUSBModemIMEI
+  attributes:
+    ceExtUSBModemIMEI:
+      oid: .1.3.6.1.4.1.9.9.195.1.6.1.1
+      name: cisco.usb_modem.imei
+      syntax: DisplayString # SnmpAdminString
+    ceExtUSBModemIMSI:
+      oid: .1.3.6.1.4.1.9.9.195.1.6.1.2
+      name: cisco.usb_modem.imsi
+      syntax: DisplayString # SnmpAdminString
+    ceExtUSBModemServiceProvider:
+      oid: .1.3.6.1.4.1.9.9.195.1.6.1.3
+      name: cisco.usb_modem.carrier.name
+      syntax: DisplayString # SnmpAdminString
+    ceExtUSBModemSignalStrength:
+      oid: .1.3.6.1.4.1.9.9.195.1.6.1.4
+      name: cisco.usb_modem.signal_strength
+      syntax: DisplayString # SnmpAdminString

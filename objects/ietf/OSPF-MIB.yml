@@ -5,8 +5,9 @@ OSPF-MIB::ospfGeneralGroup:
   attributes:
     ospfRouterId:
       oid: .1.3.6.1.2.1.14.1.1
+      tag: true
       name: ospf.router.id
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
     ospfAdminStat:
       oid: .1.3.6.1.2.1.14.1.2
       name: ospf.state.admin
@@ -14,7 +15,8 @@ OSPF-MIB::ospfGeneralGroup:
     ospfVersionNumber:
       oid: .1.3.6.1.2.1.14.1.3
       name: ospf.version.ver
-      syntax: Integer
+      tag: true
+      syntax: IntegerAsID
     ospfAreaBdrRtrStatus:
       oid: .1.3.6.1.2.1.14.1.4
       name: ospf.area_border_router
@@ -30,7 +32,7 @@ OSPF-MIB::ospfGeneralGroup:
     ospfExternLsaCksumSum:
       oid: .1.3.6.1.2.1.14.1.7
       name: ospf.lsdb.as_extern.checksum
-      syntax: Integer32
+      syntax: Unsigned32
     ospfTOSSupport:
       oid: .1.3.6.1.2.1.14.1.8
       name: ospf.tos.support
@@ -54,7 +56,7 @@ OSPF-MIB::ospfGeneralGroup:
     ospfExitOverflowInterval:
       oid: .1.3.6.1.2.1.14.1.13
       name: ospf.lsdb.as_extern.overflow_interval
-      syntax: Integer32 # PositiveInteger
+      syntax: Unsigned32 # PositiveInteger
     ospfDemandExtensions:
       oid: .1.3.6.1.2.1.14.1.14
       name: ospf.demand.support
@@ -78,7 +80,7 @@ OSPF-MIB::ospfGeneralGroup:
     ospfRestartInterval:
       oid: .1.3.6.1.2.1.14.1.19
       name: ospf.graceful_restart.interval
-      syntax: Integer32
+      syntax: Unsigned32
     ospfRestartStrictLsaChecking:
       oid: .1.3.6.1.2.1.14.1.20
       name: ospf.graceful_restart.strict_check
@@ -123,7 +125,7 @@ OSPF-MIB::ospfAreaEntry:
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.2.1.1
       name: ospf.area.id # ospfAreaId
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
   discovery_attribute: ospfAuthType
   attributes:
     ospfAuthType:
@@ -153,7 +155,7 @@ OSPF-MIB::ospfAreaEntry:
     ospfAreaLsaCksumSum:
       oid: .1.3.6.1.2.1.14.2.1.8
       name: ospf.area.lsdb.area_scope.checksum
-      syntax: Integer32
+      syntax: Unsigned32
     ospfAreaSummary:
       oid: .1.3.6.1.2.1.14.2.1.9
       name: ospf.area.summary_lsa.state
@@ -169,7 +171,7 @@ OSPF-MIB::ospfAreaEntry:
     ospfAreaNssaTranslatorStabilityInterval:
       oid: .1.3.6.1.2.1.14.2.1.13
       name: ospf.area.nssa_translator.stability_interval
-      syntax: Integer32 # PositiveInteger
+      syntax: Unsigned32 # PositiveInteger
     ospfAreaNssaTranslatorEvents:
       oid: .1.3.6.1.2.1.14.2.1.14
       name: ospf.area.nssa_translator.events
@@ -182,7 +184,7 @@ OSPF-MIB::ospfStubAreaEntry:
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.3.1.1
       name: ospf.stub.area.id # ospfStubAreaId
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
     - type: Integer32
       oid: .1.3.6.1.2.1.14.3.1.2
       name: ospf.stub.tos.bits # ospfStubTOS
@@ -192,7 +194,7 @@ OSPF-MIB::ospfStubAreaEntry:
     ospfStubMetric:
       oid: .1.3.6.1.2.1.14.3.1.3
       name: ospf.stub.metric.value
-      syntax: Integer32 # BigMetric
+      syntax: Unsigned32 # BigMetric
     ospfStubMetricType:
       oid: .1.3.6.1.2.1.14.3.1.5
       name: ospf.stub.metric.type
@@ -205,7 +207,7 @@ OSPF-MIB::ospfStubAreaEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.4.1.1
 #       name: ospf.lsdb.lsa.area.id # ospfLsdbAreaId
-#       syntax: IpAddressNoSuffix # AreaID
+#       syntax: IpAddressAsID # AreaID
 #     - type: Integer
 #       oid: .1.3.6.1.2.1.14.4.1.2
 #       name: ospf.lsdb.lsa.type # ospfLsdbType
@@ -213,11 +215,11 @@ OSPF-MIB::ospfStubAreaEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.4.1.3
 #       name: ospf.lsdb.lsa.lsid # ospfLsdbLsid
-#       syntax: IpAddressNoSuffix
+#       syntax: IpAddressAsID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.4.1.4
 #       name: ospf.lsdb.lsa.router.id # ospfLsdbRouterId
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #   discovery_attribute: ospfLsdbSequence
 #   attributes:
 #     ospfLsdbSequence:
@@ -227,11 +229,11 @@ OSPF-MIB::ospfStubAreaEntry:
 #     ospfLsdbAge:
 #       oid: .1.3.6.1.2.1.14.4.1.6
 #       name: ospf.lsdb.lsa.age
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfLsdbChecksum:
 #       oid: .1.3.6.1.2.1.14.4.1.7
 #       name: ospf.lsdb.lsa.checksum
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfLsdbAdvertisement:
 #       oid: .1.3.6.1.2.1.14.4.1.8
 #       name: ospf.lsdb.lsa.advert
@@ -253,10 +255,12 @@ OSPF-MIB::ospfIfEntry:
   attributes:
     ospfIfAreaId:
       oid: .1.3.6.1.2.1.14.7.1.3
+      tag: true
       name: ospf.netif.area.id
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
     ospfIfType:
       oid: .1.3.6.1.2.1.14.7.1.4
+      tag: true
       name: ospf.netif.type
       syntax: EnumInteger
     ospfIfAdminStat:
@@ -270,23 +274,23 @@ OSPF-MIB::ospfIfEntry:
     ospfIfTransitDelay:
       oid: .1.3.6.1.2.1.14.7.1.7
       name: ospf.netif.lsa.transit_delay
-      syntax: Integer32 # UpToMaxAge
+      syntax: Unsigned32 # UpToMaxAge
     ospfIfRetransInterval:
       oid: .1.3.6.1.2.1.14.7.1.8
       name: ospf.netif.lsa.retrans_interval
-      syntax: Integer32 # UpToMaxAge
+      syntax: Unsigned32 # UpToMaxAge
     ospfIfHelloInterval:
       oid: .1.3.6.1.2.1.14.7.1.9
       name: ospf.netif.hello_interval
-      syntax: Integer32 # HelloRange
+      syntax: Unsigned32 # HelloRange
     ospfIfRtrDeadInterval:
       oid: .1.3.6.1.2.1.14.7.1.10
       name: ospf.netif.router_dead_interval
-      syntax: Integer32 # PositiveInteger
+      syntax: Unsigned32 # PositiveInteger
     ospfIfPollInterval:
       oid: .1.3.6.1.2.1.14.7.1.11
       name: ospf.netif.poll_interval
-      syntax: Integer32 # PositiveInteger
+      syntax: Unsigned32 # PositiveInteger
     ospfIfState:
       oid: .1.3.6.1.2.1.14.7.1.12
       name: ospf.netif.state
@@ -294,11 +298,11 @@ OSPF-MIB::ospfIfEntry:
     ospfIfDesignatedRouter:
       oid: .1.3.6.1.2.1.14.7.1.13
       name: ospf.netif.designated_router.id
-      syntax: IpAddressNoSuffix
+      syntax: IpAddressAsID
     ospfIfBackupDesignatedRouter:
       oid: .1.3.6.1.2.1.14.7.1.14
       name: ospf.netif.designated_router_backup.id
-      syntax: IpAddressNoSuffix
+      syntax: IpAddressAsID
     ospfIfEvents:
       oid: .1.3.6.1.2.1.14.7.1.15
       name: ospf.netif.state.changes
@@ -330,11 +334,11 @@ OSPF-MIB::ospfIfEntry:
     ospfIfDesignatedRouterId:
       oid: .1.3.6.1.2.1.14.7.1.23
       name: ospf.netif.designated_router.id
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
     ospfIfBackupDesignatedRouterId:
       oid: .1.3.6.1.2.1.14.7.1.24
       name: ospf.netif.designated_router_backup.id
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
 
 OSPF-MIB::ospfVirtIfEntry:
   mib: OSPF-MIB
@@ -343,29 +347,29 @@ OSPF-MIB::ospfVirtIfEntry:
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.9.1.1
       name: ospf.virt_netif.area.id # ospfVirtIfAreaId
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.9.1.2
       name: ospf.virt_netif.neighbor.id # ospfVirtIfNeighbor
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
   discovery_attribute: ospfVirtIfTransitDelay
   attributes:
     ospfVirtIfTransitDelay:
       oid: .1.3.6.1.2.1.14.9.1.3
       name: ospf.virt_netif.lsa.transit_delay
-      syntax: Integer32 # UpToMaxAge
+      syntax: TicksSec # UpToMaxAge
     ospfVirtIfRetransInterval:
       oid: .1.3.6.1.2.1.14.9.1.4
       name: ospf.virt_netif.lsa.retrans_interval
-      syntax: Integer32 # UpToMaxAge
+      syntax: TicksSec # UpToMaxAge
     ospfVirtIfHelloInterval:
       oid: .1.3.6.1.2.1.14.9.1.5
       name: ospf.virt_netif.hello_interval
-      syntax: Integer32 # HelloRange
+      syntax: TicksSec # HelloRange
     ospfVirtIfRtrDeadInterval:
       oid: .1.3.6.1.2.1.14.9.1.6
       name: ospf.virt_netif.router_dead_interval
-      syntax: Integer32 # PositiveInteger
+      syntax: TicksSec # PositiveInteger
     ospfVirtIfState:
       oid: .1.3.6.1.2.1.14.9.1.7
       name: ospf.virt_netif.state
@@ -407,8 +411,9 @@ OSPF-MIB::ospfNbrEntry:
   attributes:
     ospfNbrRtrId:
       oid: .1.3.6.1.2.1.14.10.1.3
+      tag: true
       name: ospf.neighbor.router.id
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
     ospfNbrOptions:
       oid: .1.3.6.1.2.1.14.10.1.4
       name: ospf.neighbor.options.bits
@@ -457,15 +462,16 @@ OSPF-MIB::ospfVirtNbrEntry:
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.11.1.1
       name: ospf.virt_neighbor.area.id # ospfVirtNbrArea
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.11.1.2
       name: ospf.virt_neighbor.router.id # ospfVirtNbrRtrId
-      syntax: IpAddressNoSuffix # RouterID
+      syntax: IpAddressAsID # RouterID
   discovery_attribute: ospfVirtNbrIpAddr
   attributes:
     ospfVirtNbrIpAddr:
       oid: .1.3.6.1.2.1.14.11.1.3
+      tag: true
       name: ospf.virt_neighbor.router
       syntax: IpAddress
     ospfVirtNbrOptions:
@@ -512,11 +518,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.12.1.2
 #       name: ospf.lsdb.as_extern.lsa.lsid # ospfExtLsdbLsid
-#       syntax: IpAddressNoSuffix
+#       syntax: IpAddressAsID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.12.1.3
 #       name: ospf.lsdb.as_extern.lsa.router.id # ospfExtLsdbRouterId
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #   discovery_attribute: ospfExtLsdbSequence
 #   attributes:
 #     ospfExtLsdbSequence:
@@ -526,11 +532,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     ospfExtLsdbAge:
 #       oid: .1.3.6.1.2.1.14.12.1.5
 #       name: ospf.lsdb.as_extern.lsa.age
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfExtLsdbChecksum:
 #       oid: .1.3.6.1.2.1.14.12.1.6
 #       name: ospf.lsdb.as_extern.lsa.checksum
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfExtLsdbAdvertisement:
 #       oid: .1.3.6.1.2.1.14.12.1.7
 #       name: ospf.lsdb.as_extern.lsa.advert
@@ -555,11 +561,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.17.1.4
 #       name: ospf.lsdb.link_local.lsa.lsid # ospfLocalLsdbLsid
-#       syntax: IpAddressNoSuffix
+#       syntax: IpAddressAsID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.17.1.5
 #       name: ospf.lsdb.link_local.lsa.router.id # ospfLocalLsdbRouterId
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #   discovery_attribute: ospfLocalLsdbSequence
 #   attributes:
 #     ospfLocalLsdbSequence:
@@ -569,11 +575,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     ospfLocalLsdbAge:
 #       oid: .1.3.6.1.2.1.14.17.1.7
 #       name: ospf.lsdb.link_local.lsa.age
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfLocalLsdbChecksum:
 #       oid: .1.3.6.1.2.1.14.17.1.8
 #       name: ospf.lsdb.link_local.lsa.checksum
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfLocalLsdbAdvertisement:
 #       oid: .1.3.6.1.2.1.14.17.1.9
 #       name: ospf.lsdb.link_local.lsa.advert
@@ -586,11 +592,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.18.1.1
 #       name: ospf.lsdb.virt_link_local.lsa.transit_area.id # ospfVirtLocalLsdbTransitArea
-#       syntax: IpAddressNoSuffix # AreaID
+#       syntax: IpAddressAsID # AreaID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.18.1.2
 #       name: ospf.lsdb.virt_link_local.lsa.neigbor.router.id # ospfVirtLocalLsdbNeighbor
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #     - type: Integer
 #       oid: .1.3.6.1.2.1.14.18.1.3
 #       name: ospf.lsdb.virt_link_local.lsa.type # ospfVirtLocalLsdbType
@@ -598,11 +604,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.18.1.4
 #       name: ospf.lsdb.virt_link_local.lsa.lsid # ospfVirtLocalLsdbLsid
-#       syntax: IpAddressNoSuffix
+#       syntax: IpAddressAsID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.18.1.5
 #       name: ospf.lsdb.virt_link_local.lsa.router.id # ospfVirtLocalLsdbRouterId
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #   discovery_attribute: ospfVirtLocalLsdbSequence
 #   attributes:
 #     ospfVirtLocalLsdbSequence:
@@ -612,11 +618,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     ospfVirtLocalLsdbAge:
 #       oid: .1.3.6.1.2.1.14.18.1.7
 #       name: ospf.lsdb.virt_link_local.lsa.age
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfVirtLocalLsdbChecksum:
 #       oid: .1.3.6.1.2.1.14.18.1.8
 #       name: ospf.lsdb.virt_link_local.lsa.checksum
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfVirtLocalLsdbAdvertisement:
 #       oid: .1.3.6.1.2.1.14.18.1.9
 #       name: ospf.lsdb.virt_link_local.lsa.advert
@@ -633,11 +639,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.19.1.2
 #       name: ospf.lsdb.as_scope.lsa.lsid # ospfAsLsdbLsid
-#       syntax: IpAddressNoSuffix
+#       syntax: IpAddressAsID
 #     - type: IpAddress
 #       oid: .1.3.6.1.2.1.14.19.1.3
 #       name: ospf.lsdb.as_scope.lsa.router.id # ospfAsLsdbRouterId
-#       syntax: IpAddressNoSuffix # RouterID
+#       syntax: IpAddressAsID # RouterID
 #   discovery_attribute: ospfAsLsdbSequence
 #   attributes:
 #     ospfAsLsdbSequence:
@@ -647,11 +653,11 @@ OSPF-MIB::ospfVirtNbrEntry:
 #     ospfAsLsdbAge:
 #       oid: .1.3.6.1.2.1.14.19.1.5
 #       name: ospf.lsdb.as_scope.lsa.age
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfAsLsdbChecksum:
 #       oid: .1.3.6.1.2.1.14.19.1.6
 #       name: ospf.lsdb.as_scope.lsa.checksum
-#       syntax: Integer32
+#       syntax: Unsigned32
 #     ospfAsLsdbAdvertisement:
 #       oid: .1.3.6.1.2.1.14.19.1.7
 #       name: ospf.lsdb.as_scope.lsa.advert
@@ -664,7 +670,7 @@ OSPF-MIB::ospfAreaLsaCountEntry:
     - type: IpAddress
       oid: .1.3.6.1.2.1.14.20.1.1
       name: ospf.area.id # ospfAreaLsaCountAreaId
-      syntax: IpAddressNoSuffix # AreaID
+      syntax: IpAddressAsID # AreaID
     - type: Integer
       oid: .1.3.6.1.2.1.14.20.1.2
       name: ospf.area.lsa.type # ospfAreaLsaCountLsaType
