@@ -37,11 +37,11 @@ IEEE8023-LAG-MIB::dot3adAggEntry:
       syntax: TruthValue
     dot3adAggActorAdminKey:
       oid: .1.2.840.10006.300.43.1.1.1.1.6
-      name: netif.lag.actor.key.admin
+      name: netif.lag.actor.admin.key
       syntax: Integer32
     dot3adAggActorOperKey:
       oid: .1.2.840.10006.300.43.1.1.1.1.7
-      name: netif.lag.actor.key.oper
+      name: netif.lag.actor.key
       syntax: Integer32
     dot3adAggPartnerSystemID:
       oid: .1.2.840.10006.300.43.1.1.1.1.8
@@ -53,12 +53,33 @@ IEEE8023-LAG-MIB::dot3adAggEntry:
       syntax: Integer32
     dot3adAggPartnerOperKey:
       oid: .1.2.840.10006.300.43.1.1.1.1.10
-      name: netif.lag.partner.key.oper
+      name: netif.lag.partner.key
       syntax: Integer32
     dot3adAggCollectorMaxDelay:
       oid: .1.2.840.10006.300.43.1.1.1.1.11
       name: netif.lag.collect.delay_max
       syntax: OpTicksTenMicroSec
+    # Additional Attributes as Tags
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
 
 IEEE8023-LAG-MIB::dot3adAggPortListEntry:
   mib: IEEE8023-LAG-MIB
@@ -201,35 +222,35 @@ IEEE8023-LAG-MIB::dot3adAggPortEntry:
       syntax: MacAddressNoSuffix
     dot3adAggPortActorAdminKey:
       oid: .1.2.840.10006.300.43.1.2.1.1.4
-      name: netif.lag.port.actor.key.admin
+      name: netif.lag.port.actor.admin.key
       syntax: Integer32
     dot3adAggPortActorOperKey:
       oid: .1.2.840.10006.300.43.1.2.1.1.5
-      name: netif.lag.port.actor.key.oper
+      name: netif.lag.port.actor.key
       syntax: Integer32
     dot3adAggPortPartnerAdminSystemPriority:
       oid: .1.2.840.10006.300.43.1.2.1.1.6
-      name: netif.lag.port.partner.system.priority.admin
+      name: netif.lag.port.partner.admin.system.priority
       syntax: Integer32
     dot3adAggPortPartnerOperSystemPriority:
       oid: .1.2.840.10006.300.43.1.2.1.1.7
-      name: netif.lag.port.partner.system.priority.oper
+      name: netif.lag.port.partner.system.priority
       syntax: Integer32
     dot3adAggPortPartnerAdminSystemID:
       oid: .1.2.840.10006.300.43.1.2.1.1.8
-      name: netif.lag.port.partner.system.id.admin
+      name: netif.lag.port.partner.admin.system.id
       syntax: MacAddressNoSuffix
     dot3adAggPortPartnerOperSystemID:
       oid: .1.2.840.10006.300.43.1.2.1.1.9
-      name: netif.lag.port.partner.system.id.oper
+      name: netif.lag.port.partner.system.id
       syntax: MacAddressNoSuffix
     dot3adAggPortPartnerAdminKey:
       oid: .1.2.840.10006.300.43.1.2.1.1.10
-      name: netif.lag.port.partner.key.admin
+      name: netif.lag.port.partner.admin.key
       syntax: Integer32
     dot3adAggPortPartnerOperKey:
       oid: .1.2.840.10006.300.43.1.2.1.1.11
-      name: netif.lag.port.partner.key.oper
+      name: netif.lag.port.partner.key
       syntax: Integer32
     dot3adAggPortSelectedAggID:
       oid: .1.2.840.10006.300.43.1.2.1.1.12
@@ -249,40 +270,61 @@ IEEE8023-LAG-MIB::dot3adAggPortEntry:
       syntax: Integer32
     dot3adAggPortPartnerAdminPort:
       oid: .1.2.840.10006.300.43.1.2.1.1.16
-      name: netif.lag.port.partner.port.admin
+      name: netif.lag.port.partner.admin.port.id
       syntax: Integer32
     dot3adAggPortPartnerOperPort:
       oid: .1.2.840.10006.300.43.1.2.1.1.17
-      name: netif.lag.port.partner.port.oper
+      name: netif.lag.port.partner.port.id
       syntax: Integer32
     dot3adAggPortPartnerAdminPortPriority:
       oid: .1.2.840.10006.300.43.1.2.1.1.18
-      name: netif.lag.port.partner.port.priority.admin
+      name: netif.lag.port.partner.admin.port.priority
       syntax: Integer32
     dot3adAggPortPartnerOperPortPriority:
       oid: .1.2.840.10006.300.43.1.2.1.1.19
-      name: netif.lag.port.partner.port.priority.oper
+      name: netif.lag.port.partner.port.priority
       syntax: Integer32
     dot3adAggPortActorAdminState:
       oid: .1.2.840.10006.300.43.1.2.1.1.20
-      name: netif.lag.port.actor.state.admin
+      name: netif.lag.port.actor.admin.state
       syntax: EnumBitmap
     dot3adAggPortActorOperState:
       oid: .1.2.840.10006.300.43.1.2.1.1.21
-      name: netif.lag.port.actor.state.oper
+      name: netif.lag.port.actor.state
       syntax: EnumBitmap
     dot3adAggPortPartnerAdminState:
       oid: .1.2.840.10006.300.43.1.2.1.1.22
-      name: netif.lag.port.partner.state.admin
+      name: netif.lag.port.partner.admin.state
       syntax: EnumBitmap
     dot3adAggPortPartnerOperState:
       oid: .1.2.840.10006.300.43.1.2.1.1.23
-      name: netif.lag.port.partner.state.oper
+      name: netif.lag.port.partner.state
       syntax: EnumBitmap
     dot3adAggPortAggregateOrIndividual:
       oid: .1.2.840.10006.300.43.1.2.1.1.24
       name: netif.lag.port.aggregate
       syntax: TruthValue
+    # Additional Attributes as Tags
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
 
 IEEE8023-LAG-MIB::dot3adAggPortStatsEntry:
   mib: IEEE8023-LAG-MIB
