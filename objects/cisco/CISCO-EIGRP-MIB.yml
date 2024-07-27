@@ -4,14 +4,14 @@ CISCO-EIGRP-MIB::cEigrpVpnEntry:
   index:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.1
-      name: cisco.cEigrpVpnId  # cEigrpVpnId
-      syntax: Unsigned32
+      name: cisco.cEigrpVpnId
+      syntax: UnsignedAsID
   discovery_attribute: cEigrpVpnName
   attributes:
     cEigrpVpnName:
       oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.2
       name: cisco.cEigrpVpnName
-      syntax: DisplayString
+      syntax: DisplayString # SnmpAdminString
 
 CISCO-EIGRP-MIB::cEigrpTraffStatsEntry:
   mib: CISCO-EIGRP-MIB
@@ -19,25 +19,17 @@ CISCO-EIGRP-MIB::cEigrpTraffStatsEntry:
   index:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.1
-      name: cisco.cEigrpVpnId # cEigrpVpnId
-      syntax: Unsigned32
-    - type: Integer
-      oid: .1.2.3.4.5.6.7.8.9.10.11
-      name: DUMMY_VALUE
-      syntax: skip
+      name: cisco.cEigrpVpnId
+      syntax: UnsignedAsID
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.1
-      name: cisco.cEigrpAsNumber # cEigrpAsNumber
+      name: cisco.cEigrpAsNumber
       syntax: Unsigned32
-    - type: Integer
-      oid: .1.3.6.1.2.1.2.2.1.1
-      name: netif
-      syntax: InterfaceIndex
-  discovery_attribute: cEigrpNbrCount 
+  discovery_attribute: cEigrpNbrCount
   attributes:
     cEigrpNbrCount:
       oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.2
-      name: cisco.cEigrpNbrCount 
+      name: cisco.cEigrpNbrCount
       syntax: Unsigned32
     cEigrpHellosSent:
       oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.3
@@ -95,10 +87,6 @@ CISCO-EIGRP-MIB::cEigrpTraffStatsEntry:
       oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.16
       name: cisco.cEigrpSiaQueriesRcvd
       syntax: Counter32
-    cEigrpAsRouterIdType:
-      oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.17
-      name: cisco.cEigrpAsRouterIdType
-      syntax: InetAddressType
     cEigrpAsRouterId:
       oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.18
       name: cisco.cEigrpAsRouterId
@@ -128,15 +116,23 @@ CISCO-EIGRP-MIB::cEigrpTopoEntry:
   mib: CISCO-EIGRP-MIB
   object: cEigrpTopoEntry
   index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.1
+      name: cisco.cEigrpVpnId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.1
+      name: cisco.cEigrpAsNumber
+      syntax: Unsigned32
     - type: Integer
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.1
       name: cisco.cEigrpDestNetType # cEigrpDestNetType
-      syntax: InetAddressType
-    - type: Integer
+      syntax: skip
+    - type: OctetString
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.2
       name: cisco.cEigrpDestNet # cEigrpDestNet
       syntax: IpAddressNoSuffix
-    - type: Integer
+    - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.4
       name: cisco.cEigrpDestNetPrefixLen # cEigrpDestNetPrefixLen
       syntax: Unsigned32
@@ -161,19 +157,11 @@ CISCO-EIGRP-MIB::cEigrpTopoEntry:
     cEigrpRouteOriginType:
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.9
       name: cisco.cEigrpRouteOriginType
-      syntax: DisplayString
-    cEigrpRouteOriginAddrType:
-      oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.10
-      name: cisco.cEigrpRouteOriginAddrType
-      syntax: InetAddressType
+      syntax: DisplayString # SnmpAdminString
     cEigrpRouteOriginAddr:
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.11
       name: cisco.cEigrpRouteOriginAddr
       syntax: IpAddressNoSuffix
-    cEigrpNextHopAddressType:
-      oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.12
-      name: cisco.cEigrpNextHopAddressType
-      syntax: InetAddressType
     cEigrpNextHopAddress:
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.13
       name: cisco.cEigrpNextHopAddress
@@ -181,7 +169,7 @@ CISCO-EIGRP-MIB::cEigrpTopoEntry:
     cEigrpNextHopInterface:
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.14
       name: cisco.cEigrpNextHopInterface
-      syntax: DisplayString
+      syntax: DisplayString # SnmpAdminString
     cEigrpDistance:
       oid: .1.3.6.1.4.1.9.9.449.1.3.1.1.15
       name: cisco.cEigrpDistance
@@ -207,20 +195,24 @@ CISCO-EIGRP-MIB::cEigrpPeerEntry:
   mib: CISCO-EIGRP-MIB
   object: cEigrpPeerEntry
   index:
-    - type: Integer
-      oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.1
-      name: cisco.cEigrpHandle # cEigrpHandle
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.1
+      name: cisco.cEigrpVpnId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.1
+      name: cisco.cEigrpAsNumber
       syntax: Unsigned32
-  discovery_attribute: cEigrpPeerAddrType
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.1
+      name: cisco.cEigrpHandle
+      syntax: Unsigned32
+  discovery_attribute: cEigrpPeerAddr
   attributes:
-    cEigrpPeerAddrType:
-      oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.2
-      name: cisco.cEigrpPeerAddrType
-      syntax: InetAddressType
     cEigrpPeerAddr:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.3
       name: cisco.cEigrpPeerAddr
-      syntax: IpAddress
+      syntax: IpAddressNoSuffix
     cEigrpPeerIfIndex:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.4
       name: cisco.cEigrpPeerIfIndex
@@ -228,7 +220,7 @@ CISCO-EIGRP-MIB::cEigrpPeerEntry:
     cEigrpHoldTime:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.5
       name: cisco.cEigrpHoldTime
-      syntax: Unsigned32
+      syntax: TicksSec
     cEigrpUpTime:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.6
       name: cisco.cEigrpUpTime
@@ -236,11 +228,11 @@ CISCO-EIGRP-MIB::cEigrpPeerEntry:
     cEigrpSrtt:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.7
       name: cisco.cEigrpSrtt
-      syntax: Unsigned32
+      syntax: TicksMilliSec
     cEigrpRto:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.8
       name: cisco.cEigrpRto
-      syntax: Unsigned32
+      syntax: TicksMilliSec
     cEigrpPktsEnqueued:
       oid: .1.3.6.1.4.1.9.9.449.1.4.1.1.9
       name: cisco.cEigrpPktsEnqueued
@@ -265,6 +257,19 @@ CISCO-EIGRP-MIB::cEigrpPeerEntry:
 CISCO-EIGRP-MIB::cEigrpInterfaceEntry:
   mib: CISCO-EIGRP-MIB
   object: cEigrpInterfaceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.1.1.1.1
+      name: cisco.cEigrpVpnId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.449.1.2.1.1.1
+      name: cisco.cEigrpAsNumber
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
   discovery_attribute: cEigrpPeerCount
   attributes:
     cEigrpPeerCount:
@@ -286,15 +291,15 @@ CISCO-EIGRP-MIB::cEigrpInterfaceEntry:
     cEigrpPacingReliable:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.7
       name: cisco.cEigrpPacingReliable
-      syntax: Unsigned32
+      syntax: TicksMilliSec
     cEigrpPacingUnreliable:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.8
       name: cisco.cEigrpPacingUnreliable
-      syntax: Unsigned32
+      syntax: TicksMilliSec
     cEigrpMFlowTimer:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.9
       name: cisco.cEigrpMFlowTimer
-      syntax: Unsigned32
+      syntax: TicksMilliSec
     cEigrpPendingRoutes:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.10
       name: cisco.cEigrpPendingRoutes
@@ -302,7 +307,7 @@ CISCO-EIGRP-MIB::cEigrpInterfaceEntry:
     cEigrpHelloInterval:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.11
       name: cisco.cEigrpHelloInterval
-      syntax: Unsigned32
+      syntax: TicksSec
     cEigrpXmitNextSerial:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.12
       name: cisco.cEigrpXmitNextSerial
@@ -346,9 +351,8 @@ CISCO-EIGRP-MIB::cEigrpInterfaceEntry:
     cEigrpAuthMode:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.22
       name: cisco.cEigrpAuthMode
-      syntax: Integer
+      syntax: EnumInteger
     cEigrpAuthKeyChain:
       oid: .1.3.6.1.4.1.9.9.449.1.5.1.1.23
       name: cisco.cEigrpAuthKeyChain
-      syntax: DisplayString
-
+      syntax: DisplayString # SnmpAdminString
