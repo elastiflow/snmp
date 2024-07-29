@@ -1,0 +1,287 @@
+CISCO-SWITCH-MULTICAST-MIB::cswmGlobal:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmGlobal
+  discovery_attribute: cswmMvpnHwSwitchingStatus
+  attributes:
+    cswmMvpnHwSwitchingStatus:
+      oid: .1.3.6.1.4.1.9.9.504.1.1.1
+      name: cisco.cswmMvpnHwSwitchingStatus
+      syntax: EnumInteger
+    cswmVrfLiteStatus:
+      oid: .1.3.6.1.4.1.9.9.504.1.1.2
+      name: cisco.cswmVrfLiteStatus
+      syntax: EnumInteger
+    cswmMRouteConsistCheck:
+      oid: .1.3.6.1.4.1.9.9.504.1.1.3
+      name: cisco.cswmMRouteConsistCheck
+      syntax: EnumInteger
+    cswmProcessorConsistCheck:
+      oid: .1.3.6.1.4.1.9.9.504.1.1.4
+      name: cisco.cswmProcessorConsistCheck
+      syntax: EnumInteger
+
+CISCO-SWITCH-MULTICAST-MIB::cswmReplCapabilityEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmReplCapabilityEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.504.1.2.2.1.1
+      name: cisco.cswmReplConfigAddrType
+      syntax: InetAddressType
+  discovery_attribute: cswmReplCapability
+  attributes:
+    cswmReplCapability:
+      oid: .1.3.6.1.4.1.9.9.504.1.2.1.1.1
+      name: cisco.cswmReplCapability
+      syntax: EnumBitmap
+
+CISCO-SWITCH-MULTICAST-MIB::cswmReplConfigEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmReplConfigEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.504.1.2.2.1.1
+      name: cisco.cswmReplConfigAddrType
+      syntax: InetAddressType
+  discovery_attribute: cswmReplConfigCurMode
+  attributes:
+    cswmReplConfigCurMode:
+      oid: .1.3.6.1.4.1.9.9.504.1.2.2.1.2
+      name: cisco.cswmReplConfigCurMode
+      syntax: EnumInteger
+    cswmReplConfigAutoDetect:
+      oid: .1.3.6.1.4.1.9.9.504.1.2.2.1.3
+      name: cisco.cswmReplConfigAutoDetect
+      syntax: EnumInteger
+
+CISCO-SWITCH-MULTICAST-MIB::cswmReplication:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmReplication
+  augments: CISCO-SWITCH-MULTICAST-MIB::cswmGlobal
+  discovery_attribute: cswmGlobalReplcationMode
+  attributes:
+    cswmGlobalReplcationMode:
+      oid: .1.3.6.1.4.1.9.9.504.1.2.3
+      name: cisco.cswmGlobalReplcationMode
+      syntax: EnumInteger
+
+CISCO-SWITCH-MULTICAST-MIB::cswmMvrfStatsEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmMvrfStatsEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.504.1.3.1.1.1
+      name: cisco.cswmMvrfName
+      syntax: DisplayString
+  discovery_attribute: cswmMvrfTotalFlows
+  attributes:
+    cswmMvrfTotalFlows:
+      oid: .1.3.6.1.4.1.9.9.504.1.3.1.1.2
+      name: cisco.cswmMvrfTotalFlows
+      syntax: Gauge32
+    cswmMvrfPartialFlows:
+      oid: .1.3.6.1.4.1.9.9.504.1.3.1.1.3
+      name: cisco.cswmMvrfPartialFlows
+      syntax: Gauge32
+    cswmMvrfRpfMfdFlows:
+      oid: .1.3.6.1.4.1.9.9.504.1.3.1.1.4
+      name: cisco.cswmMvrfRpfMfdFlows
+      syntax: Gauge32
+
+CISCO-SWITCH-MULTICAST-MIB::cswmBiDirPimDfStats:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmBiDirPimDfStats
+  discovery_attribute: cswmBiDirPimDfUsed
+  attributes:
+    cswmBiDirPimDfUsed:
+      oid: .1.3.6.1.4.1.9.9.504.1.4.1
+      name: cisco.cswmBiDirPimDfUsed
+      syntax: Unsigned32
+    cswmBiDirPimDfTotal:
+      oid: .1.3.6.1.4.1.9.9.504.1.4.2
+      name: cisco.cswmBiDirPimDfTotal
+      syntax: Unsigned32
+
+CISCO-SWITCH-MULTICAST-MIB::cswmMvrfBiDirPimDfUsageEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmMvrfBiDirPimDfUsageEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.504.1.3.1.1.1
+      name: cisco.cswmMvrfName
+      syntax: DisplayString
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.504.1.4.3.1.1
+      name: cisco.cswmMvrfBiDirPimDfAddrType
+      syntax: InetAddressType
+  discovery_attribute: cswmMvrfBiDirPimDfUsed
+  attributes:
+    cswmMvrfBiDirPimDfUsed:
+      oid: .1.3.6.1.4.1.9.9.504.1.4.3.1.2
+      name: cisco.cswmMvrfBiDirPimDfUsed
+      syntax: Unsigned32
+    cswmMvrfBiDirPimDfTotal:
+      oid: .1.3.6.1.4.1.9.9.504.1.4.3.1.3
+      name: cisco.cswmMvrfBiDirPimDfTotal
+      syntax: Unsigned32
+
+CISCO-SWITCH-MULTICAST-MIB::cswmLtlStats:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmLtlStats
+  discovery_attribute: cswmLtlUsed
+  attributes:
+    cswmLtlUsed:
+      oid: .1.3.6.1.4.1.9.9.504.1.5.1
+      name: cisco.cswmLtlUsed
+      syntax: Unsigned32
+    cswmLtlTotal:
+      oid: .1.3.6.1.4.1.9.9.504.1.5.2
+      name: cisco.cswmLtlTotal
+      syntax: Unsigned32
+
+CISCO-SWITCH-MULTICAST-MIB::cswmForwardingEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmForwardingEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.504.1.6.1.1.1
+      name: netif # cswmInterfaceIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.504.1.6.1.1.2
+      name: cisco.cswmForwardingAddrType
+      syntax: InetAddressType
+  discovery_attribute: cswmForwardingEnabled
+  attributes:
+    cswmForwardingEnabled:
+      oid: .1.3.6.1.4.1.9.9.504.1.6.1.1.3
+      name: cisco.cswmForwardingEnabled
+      syntax: EnumInteger
+
+CISCO-SWITCH-MULTICAST-MIB::cswmFlowQueryResult:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmFlowQueryResult
+  discovery_attribute: cswmFlowMaxQueries
+  attributes:
+    cswmFlowMaxQueries:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.1
+      name: cisco.cswmFlowMaxQueries
+      syntax: Unsigned32
+
+CISCO-SWITCH-MULTICAST-MIB::cswmFlowQueryEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmFlowQueryEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.2
+      name: cisco.cswmFlowQueryIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cswmFlowQueryMask
+  attributes:
+    cswmFlowQueryMask:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.2
+      name: cisco.cswmFlowQueryMask
+      syntax: EnumBitmap
+    cswmFlowQueryMvrf:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.3
+      name: cisco.cswmFlowQueryMvrf
+      syntax: DisplayString
+    cswmFlowQuerySource:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.5
+      name: cisco.cswmFlowQuerySource
+      syntax: IpAddressNoSuffix
+    cswmFlowQueryGroup:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.6
+      name: cisco.cswmFlowQueryGroup
+      syntax: IpAddressNoSuffix
+    cswmFlowQueryGroupMask:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.7
+      name: cisco.cswmFlowQueryGroupMask
+      syntax: Unsigned32
+    cswmFlowQueryType:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.8
+      name: cisco.cswmFlowQueryType
+      syntax: EnumBitmap
+    cswmFlowQueryEntityIndex:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.9
+      name: cisco.cswmFlowQueryEntityIndex
+      syntax: Integer32
+    cswmFlowQuerySkipNFlows:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.10
+      name: cisco.cswmFlowQuerySkipNFlows
+      syntax: Integer32
+    cswmFlowQueryTotalFlows:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.11
+      name: cisco.cswmFlowQueryTotalFlows
+      syntax: Integer32
+    cswmFlowMcastQueryRows:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.12
+      name: cisco.cswmFlowMcastQueryRows
+      syntax: Integer32
+    cswmFlowMcastQueryMoreRows:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.13
+      name: cisco.cswmFlowMcastQueryMoreRows
+      syntax: TruthValue
+    cswmFlowQueryOwner:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.14
+      name: cisco.cswmFlowQueryOwner
+      syntax: DisplayString
+    cswmFlowQueryCreateTime:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.15
+      name: cisco.cswmFlowQueryCreateTime
+      syntax: TimeStamp
+    cswmFlowQueryStorage:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.16
+      name: cisco.cswmFlowQueryStorage
+      syntax: EnumInteger
+
+CISCO-SWITCH-MULTICAST-MIB::cswmFlowResultEntry:
+  mib: CISCO-SWITCH-MULTICAST-MIB
+  object: cswmFlowResultEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.504.1.7.2.1.2
+      name: cisco.cswmFlowQueryIndex
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.1
+      name: cisco.cswmFlowResultIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cswmFlowResultMvrf
+  attributes:
+    cswmFlowResultMvrf:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.2
+      name: cisco.cswmFlowResultMvrf
+      syntax: DisplayString
+    cswmFlowResultGroup:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.4
+      name: cisco.cswmFlowResultGroup
+      syntax: IpAddressNoSuffix
+    cswmFlowResultGroupMask:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.5
+      name: cisco.cswmFlowResultGroupMask
+      syntax: Unsigned32
+    cswmFlowResultSource:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.6
+      name: cisco.cswmFlowResultSource
+      syntax: IpAddressNoSuffix
+    cswmFlowResultFlags:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.7
+      name: cisco.cswmFlowResultFlags
+      syntax: EnumBitmap
+    cswmFlowResultRpfInterface:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.8
+      name: netif # cswmFlowResultRpfInterface
+      syntax: InterfaceIndexOrZero
+    cswmFlowResultPackets:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.11
+      name: cisco.cswmFlowResultPackets
+      syntax: Counter64
+    cswmFlowResultOctets:
+      oid: .1.3.6.1.4.1.9.9.504.1.7.3.1.12
+      name: cisco.cswmFlowResultOctets
+      syntax: BytesB
