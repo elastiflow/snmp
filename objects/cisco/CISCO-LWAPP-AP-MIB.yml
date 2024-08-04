@@ -5,25 +5,26 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
-  discovery_attribute: cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApMaxNumberOfDot11Slots
   attributes:
     cLApIfMacAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
       name: cisco.cLApIfMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApMaxNumberOfDot11Slots:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.3
       name: cisco.cLApMaxNumberOfDot11Slots
       syntax: Unsigned32
-    cLApEntPhysicalIndex:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
-      name: cisco.cLApEntPhysicalIndex
-      syntax: Integer32
-    cLApName:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
-      name: cisco.cLApName
-      syntax: DisplayString #SnmpAdminString
     cLApUpTime:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.6
       name: cisco.cLApUpTime
@@ -40,46 +41,154 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.9
       name: cisco.cLApMaxNumberOfEthernetSlots
       syntax: Unsigned32
-    cLApPrimaryControllerAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.10
-      name: cisco.cLApPrimaryControllerAddressType
-      syntax: InetAddressType #InetAddressType
     cLApPrimaryControllerAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.11
       name: cisco.cLApPrimaryControllerAddress
       syntax: IpAddressNoSuffix
-    cLApSecondaryControllerAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.12
-      name: cisco.cLApSecondaryControllerAddressType
-      syntax: InetAddressType #InetAddressType
     cLApSecondaryControllerAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.13
       name: cisco.cLApSecondaryControllerAddress
-      syntax: IpAddressNoSuffix #InetAddress
-    cLApTertiaryControllerAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.14
-      name: cisco.cLApTertiaryControllerAddressType
-      syntax: InetAddressType #InetAddressType
+      syntax: IpAddressNoSuffix
     cLApTertiaryControllerAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.15
       name: cisco.cLApTertiaryControllerAddress
-      syntax: IpAddressNoSuffix #InetAddress
+      syntax: IpAddressNoSuffix
     cLApLastRebootReason:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.16
       name: cisco.cLApLastRebootReason
       syntax: EnumInteger
-    cLApEncryptionEnable:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.18
-      name: cisco.cLApEncryptionEnable
-      syntax: TruthValue
     cLApFailoverPriority:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.19
       name: cisco.cLApFailoverPriority
       syntax: EnumInteger
-    cLApPowerStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.20
-      name: cisco.cLApPowerStatus
+    cLApMonitorModeOptimization:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.28
+      name: cisco.cLApMonitorModeOptimization
       syntax: EnumInteger
+    cLApDomainName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.29
+      name: cisco.cLApDomainName
+      syntax: DisplayString
+    cLApNameServerAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.31
+      name: cisco.cLApNameServerAddress
+      syntax: IpAddressNoSuffix
+    cLApTcpMss:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.35
+      name: cisco.cLApTcpMss
+      syntax: Integer32
+    cLApNsiKey:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.37
+      name: cisco.cLApNsiKey
+      syntax: DisplayString
+    cLApPortNumber:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.39
+      name: cisco.cLApPortNumber
+      syntax: Unsigned32
+    cLApTrunkVlan:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.47
+      name: cisco.cLApTrunkVlan
+      syntax: Unsigned32
+    cLApTrunkVlanStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.48
+      name: cisco.cLApTrunkVlanStatus
+      syntax: TruthValue
+    cLApLocation:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.49
+      name: cisco.cLApLocation
+      syntax: DisplayString
+    cLApSubMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.50
+      name: cisco.cLApSubMode
+      syntax: EnumInteger
+    cLApFloorLabel:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.65
+      name: cisco.cLApFloorLabel
+      syntax: Counter64
+    cLApSysNetId:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.74
+      name: cisco.cLApSysNetId
+      syntax: DisplayString
+    cLApAntennaBandMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.76
+      name: cisco.cLApAntennaBandMode
+      syntax: EnumInteger
+    cLApModuleInserted:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.80
+      name: cisco.cLApModuleInserted
+      syntax: DisplayString
+    cLApEnableModule:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.81
+      name: cisco.cLApEnableModule
+      syntax: TruthValue
+    cLApIsUniversal:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.82
+      name: cisco.cLApIsUniversal
+      syntax: TruthValue
+    cLApUniversalPrimeStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.83
+      name: cisco.cLApUniversalPrimeStatus
+      syntax: DisplayString
+    cLApBleFWDownloadStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.85
+      name: cisco.cLApBleFWDownloadStatus
+      syntax: TruthValue
+    cLApDot11XorDartConnectorStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.86
+      name: cisco.cLApDot11XorDartConnectorStatus
+      syntax: DisplayString
+    cLApModeClear:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.103
+      name: cisco.cLApModeClear
+      syntax: TruthValue
+    cLApSiteTagName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.104
+      name: cisco.cLApSiteTagName
+      syntax: DisplayString
+    cLApRfTagName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.105
+      name: cisco.cLApRfTagName
+      syntax: DisplayString
+    cLApPolicyTagName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.106
+      name: cisco.cLApPolicyTagName
+      syntax: DisplayString
+    cLApTagSource:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.107
+      name: cisco.cLApTagSource
+      syntax: EnumInteger
+    cLApFilterName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.118
+      name: cisco.cLApFilterName
+      syntax: DisplayString
+
+CISCO-LWAPP-AP-MIB::cLApEntrySTATE:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntrySTATE
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApEncryptionEnable
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLApEncryptionEnable:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.18
+      name: cisco.cLApEncryptionEnable
+      syntax: TruthValue
     cLApTelnetEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.21
       name: cisco.cLApTelnetEnable
@@ -92,38 +201,10 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.23
       name: cisco.cLApPreStdStateEnabled
       syntax: TruthValue
-    cLApPwrInjectorStateEnabled:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.24
-      name: cisco.cLApPwrInjectorStateEnabled
-      syntax: TruthValue
-    cLApPwrInjectorSelection:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.25
-      name: cisco.cLApPwrInjectorSelection
-      syntax: EnumInteger
-    cLApPwrInjectorSwMacAddr:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.26
-      name: cisco.cLApPwrInjectorSwMacAddr
-      syntax: MacAddress
     cLApWipsEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.27
       name: cisco.cLApWipsEnable
       syntax: TruthValue
-    cLApMonitorModeOptimization:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.28
-      name: cisco.cLApMonitorModeOptimization
-      syntax: EnumInteger
-    cLApDomainName:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.29
-      name: cisco.cLApDomainName
-      syntax: DisplayString #SnmpAdminString
-    cLApNameServerAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.30
-      name: cisco.cLApNameServerAddressType
-      syntax: InetAddressType
-    cLApNameServerAddress:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.31
-      name: cisco.cLApNameServerAddress
-      syntax: IpAddressNoSuffix #InetAddress
     cLApAMSDUEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.32
       name: cisco.cLApAMSDUEnable
@@ -136,26 +217,102 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.34
       name: cisco.cLApRogueDetectionEnabled
       syntax: TruthValue
-    cLApTcpMss:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.35
-      name: cisco.cLApTcpMss
-      syntax: Integer
     cLApDataEncryptionStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.36
       name: cisco.cLApDataEncryptionStatus
       syntax: TruthValue
-    cLApNsiKey:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.37
-      name: cisco.cLApNsiKey
-      syntax: DisplayString
     cLApAdminStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.38
       name: cisco.cLApAdminStatus
       syntax: TruthValue
-    cLApPortNumber:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.39
-      name: cisco.cLApPortNumber
-      syntax: Unsigned32
+    cLApLEDState:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.46
+      name: cisco.cLApLEDState
+      syntax: TruthValue
+    cLApRealTimeStatsModeEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.53
+      name: cisco.cLApRealTimeStatsModeEnabled
+      syntax: TruthValue
+    cLAdjChannelRogueEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.69
+      name: cisco.cLAdjChannelRogueEnabled
+      syntax: TruthValue
+    cLApIsMaster:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.84
+      name: cisco.cLApIsMaster
+      syntax: TruthValue
+    cLApLagConfigStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.116
+      name: cisco.cLApLagConfigStatus
+      syntax: TruthValue
+    cLApMonitorModeOptStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.117
+      name: cisco.cLApMonitorModeOptStatus
+      syntax: TruthValue
+
+CISCO-LWAPP-AP-MIB::cLApEntryPOWER:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryPOWER
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApPowerStatus
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLApPowerStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.20
+      name: cisco.cLApPowerStatus
+      syntax: EnumInteger
+    cLApPwrInjectorStateEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.24
+      name: cisco.cLApPwrInjectorStateEnabled
+      syntax: TruthValue
+    cLApPwrInjectorSelection:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.25
+      name: cisco.cLApPwrInjectorSelection
+      syntax: EnumInteger
+    cLApPwrInjectorSwMacAddr:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.26
+      name: cisco.cLApPwrInjectorSwMacAddr
+      syntax: MacAddressNoSuffix
+
+CISCO-LWAPP-AP-MIB::cLApEntrySTATS:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntrySTATS
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApRetransmitCount
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApRetransmitCount:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.40
       name: cisco.cLApRetransmitCount
@@ -164,42 +321,6 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.41
       name: cisco.cLApRetransmitTimeout
       syntax: Unsigned32
-    cLApVenueConfigVenueGroup:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.42
-      name: cisco.cLApVenueConfigVenueGroup
-      syntax: EnumInteger
-    cLApVenueConfigVenueType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.43
-      name: cisco.cLApVenueConfigVenueType
-      syntax: EnumInteger
-    cLApVenueConfigVenueName:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.44
-      name: cisco.cLApVenueConfigVenueName
-      syntax: DisplayString #SnmpAdminString
-    cLApVenueConfigLanguage:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.45
-      name: cisco.cLApVenueConfigLanguage
-      syntax: DisplayString #SnmpAdminString
-    cLApLEDState:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.46
-      name: cisco.cLApLEDState
-      syntax: TruthValue
-    cLApTrunkVlan:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.47
-      name: cisco.cLApTrunkVlan
-      syntax: Unsigned32
-    cLApTrunkVlanStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.48
-      name: cisco.cLApTrunkVlanStatus
-      syntax: TruthValue
-    cLApLocation:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.49
-      name: cisco.cLApLocation
-      syntax: DisplayString #SnmpAdminString
-    cLApSubMode:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.50
-      name: cisco.cLApSubMode
-      syntax: EnumInteger
     cLApAssocCount:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.51
       name: cisco.cLApAssocCount
@@ -208,10 +329,6 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.52
       name: cisco.cLApAssocFailResourceCount
       syntax: Unsigned32
-    cLApRealTimeStatsModeEnabled:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.53
-      name: cisco.cLApRealTimeStatsModeEnabled
-      syntax: TruthValue
     cLApAssociatedClientCount:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.54
       name: cisco.cLApAssociatedClientCount
@@ -219,47 +336,19 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
     cLApMemoryCurrentUsage:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.55
       name: cisco.cLApMemoryCurrentUsage
-      syntax: Unsigned32
+      syntax: Percent100
     cLApMemoryAverageUsage:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.56
       name: cisco.cLApMemoryAverageUsage
-      syntax: Unsigned32
+      syntax: Percent100
     cLApCpuCurrentUsage:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.57
       name: cisco.cLApCpuCurrentUsage
-      syntax: Unsigned32
+      syntax: Percent100
     cLApCpuAverageUsage:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.58
       name: cisco.cLApCpuAverageUsage
-      syntax: Unsigned32
-    cLApUpgradeFromVersion:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.59
-      name: cisco.cLApUpgradeFromVersion
-      syntax: DisplayString
-    cLApUpgradeToVersion:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.60
-      name: cisco.cLApUpgradeToVersion
-      syntax: DisplayString
-    cLApUpgradeFailureCause:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.61
-      name: cisco.cLApUpgradeFailureCause
-      syntax: DisplayString
-    cLApMaxClientLimitNumberTrap:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.62
-      name: cisco.cLApMaxClientLimitNumberTrap
-      syntax: Unsigned32
-    cLApMaxClientLimitCause:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.63
-      name: cisco.cLApMaxClientLimitCause
-      syntax: DisplayString
-    cLApMaxClientLimitSet:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.64
-      name: cisco.cLApMaxClientLimitSet
-      syntax: TruthValue
-    cLApFloorLabel:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.65
-      name: cisco.cLApFloorLabel
-      syntax: Unsigned32 
+      syntax: Percent100
     cLApConnectCount:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.66
       name: cisco.cLApConnectCount
@@ -288,22 +377,14 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.73
       name: cisco.cLApAssocFailCountForRssiLow
       syntax: Unsigned32
-    cLApSysNetId:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.74
-      name: cisco.cLApSysNetId
-      syntax: DisplayString #SnmpAdminString
     cLApAssocFailTimes:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.75
       name: cisco.cLApAssocFailTimes
       syntax: Counter32
-    cLApAntennaBandMode:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.76
-      name: cisco.cLApAntennaBandMode
-      syntax: EnumInteger
     cLApHeartBeatRspAvgTime:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.77
       name: cisco.cLApHeartBeatRspAvgTime
-      syntax: Integer
+      syntax: TicksMilliSec
     cLApEchoRequestCount:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.78
       name: cisco.cLApEchoRequestCount
@@ -312,38 +393,74 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.79
       name: cisco.cLApEchoResponseLossCount
       syntax: Counter32
-    cLApModuleInserted:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.80
-      name: cisco.cLApModuleInserted
+
+CISCO-LWAPP-AP-MIB::cLApEntryVENUE:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryVENUE
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApVenueConfigVenueGroup
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
       syntax: DisplayString
-    cLApEnableModule:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.81
-      name: cisco.cLApEnableModule
-      syntax: TruthValue
-    cLApIsUniversal:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.82
-      name: cisco.cLApIsUniversal
-      syntax: TruthValue
-    cLApUniversalPrimeStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.83
-      name: cisco.cLApUniversalPrimeStatus
+
+    cLApVenueConfigVenueGroup:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.42
+      name: cisco.cLApVenueConfigVenueGroup
+      syntax: EnumInteger
+    cLApVenueConfigVenueType:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.43
+      name: cisco.cLApVenueConfigVenueType
+      syntax: EnumInteger
+    cLApVenueConfigVenueName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.44
+      name: cisco.cLApVenueConfigVenueName
       syntax: DisplayString
-    cLApIsMaster:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.84
-      name: cisco.cLApIsMaster
-      syntax: TruthValue
-    cLApBleFWDownloadStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.85
-      name: cisco.cLApBleFWDownloadStatus
-      syntax: TruthValue
-    cLApDot11XorDartConnectorStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.86
-      name: cisco.cLApDot11XorDartConnectorStatus
+    cLApVenueConfigLanguage:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.45
+      name: cisco.cLApVenueConfigLanguage
       syntax: DisplayString
+
+CISCO-LWAPP-AP-MIB::cLApEntryCTS:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryCTS
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApCtsSxpDefaultPassword
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApCtsSxpDefaultPassword:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.87
       name: cisco.cLApCtsSxpDefaultPassword
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCtsSxpState:
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.88
       name: cisco.cLApCtsSxpState
@@ -389,24 +506,152 @@ CISCO-LWAPP-AP-MIB::cLApEntry:
       name: cisco.cLApCtsOverrideStatus
       syntax: TruthValue
 
+CISCO-LWAPP-AP-MIB::cLApEntryUSB:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryUSB
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApUsbModuleName
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLApUsbModuleName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.108
+      name: cisco.cLApUsbModuleName
+      syntax: DisplayString
+    cLApUsbModuleState:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.109
+      name: cisco.cLApUsbModuleState
+      syntax: DisplayString
+    cLApUsbModuleProductId:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.110
+      name: cisco.cLApUsbModuleProductId
+      syntax: DisplayString
+    cLApUsbDescription:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.111
+      name: cisco.cLApUsbDescription
+      syntax: DisplayString
+    cLApUsbStateInfo:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.112
+      name: cisco.cLApUsbStateInfo
+      syntax: TruthValue
+    cLApUsbOverride:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.113
+      name: cisco.cLApUsbOverride
+      syntax: TruthValue
+    cLApUsbSerialNumber:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.114
+      name: cisco.cLApUsbSerialNumber
+      syntax: DisplayString
+    cLApUsbMaxPower:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.115
+      name: cisco.cLApUsbMaxPower
+      syntax: Unsigned32
+
+CISCO-LWAPP-AP-MIB::cLApEntryUPGRADE:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryUPGRADE
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApUpgradeFromVersion
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLApUpgradeFromVersion:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.59
+      name: cisco.cLApUpgradeFromVersion
+      syntax: DisplayString
+    cLApUpgradeToVersion:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.60
+      name: cisco.cLApUpgradeToVersion
+      syntax: DisplayString
+    cLApUpgradeFailureCause:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.61
+      name: cisco.cLApUpgradeFailureCause
+      syntax: DisplayString
+
+CISCO-LWAPP-AP-MIB::cLApEntryCLIENTLIMIT:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLApEntryCLIENTLIMIT
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLApMaxClientLimitNumberTrap
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLApMaxClientLimitNumberTrap:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.62
+      name: cisco.cLApMaxClientLimitNumberTrap
+      syntax: Unsigned32
+    cLApMaxClientLimitCause:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.63
+      name: cisco.cLApMaxClientLimitCause
+      syntax: DisplayString
+    cLApMaxClientLimitSet:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.64
+      name: cisco.cLApMaxClientLimitSet
+      syntax: TruthValue
+
 CISCO-LWAPP-AP-MIB::cLApIfSmtParamEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApIfSmtParamEntry
   index:
-    - type: OctetString
+    - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress # cLApSysMacAddress
-      syntax: MacAddress
-    - type: Integer
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
-      name: cisco.cLApDot11IfSlotId # cLApDot11IfSlotId
-      syntax: Unsigned32
+      name: cisco.cLApDot11IfSlotId
+      syntax: UnsignedAsID
   discovery_attribute: cLApIfSmtDot11Bssid
   attributes:
     cLApIfSmtDot11Bssid:
       oid: .1.3.6.1.4.1.9.9.513.1.1.2.1.1
-      name: cisco.cLApIfSmtDot11Bssid # cLApIfSmtDot11Bssid
-      syntax: MacAddress
+      name: cisco.cLApIfSmtDot11Bssid
+      syntax: MacAddressNoSuffix
 
 CISCO-LWAPP-AP-MIB::cLApCountryEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -415,9 +660,22 @@ CISCO-LWAPP-AP-MIB::cLApCountryEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApCountryCode
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApCountryCode:
       oid: .1.3.6.1.4.1.9.9.513.1.1.3.1.1
       name: cisco.cLApCountryCode
@@ -427,6 +685,32 @@ CISCO-LWAPP-AP-MIB::cLApCountryEntry:
       name: cisco.cLApCountryAllowed
       syntax: DisplayString
 
+CISCO-LWAPP-AP-MIB::ciscoLwappAp:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappAp
+  discovery_attribute: ciscoLwappApIfRegulatoryDomainMismatchNotifEnabled
+  attributes:
+    ciscoLwappApIfRegulatoryDomainMismatchNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.4
+      name: cisco.ciscoLwappApIfRegulatoryDomainMismatchNotifEnabled
+      syntax: TruthValue
+    ciscoLwappApCrashEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.5
+      name: cisco.ciscoLwappApCrashEnabled
+      syntax: TruthValue
+    ciscoLwappApUnsupportedEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.6
+      name: cisco.ciscoLwappApUnsupportedEnabled
+      syntax: TruthValue
+    ciscoLwappApAssociatedEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.7
+      name: cisco.ciscoLwappApAssociatedEnabled
+      syntax: TruthValue
+    ciscoLwappXorRadioRoleChangeEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.13
+      name: cisco.ciscoLwappXorRadioRoleChangeEnabled
+      syntax: TruthValue
+
 CISCO-LWAPP-AP-MIB::cLApCrashInfoEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApCrashInfoEntry
@@ -434,13 +718,26 @@ CISCO-LWAPP-AP-MIB::cLApCrashInfoEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApCrashFileName
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApCrashFileName:
       oid: .1.3.6.1.4.1.9.9.513.1.1.8.1.1
       name: cisco.cLApCrashFileName
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCrashFileSize:
       oid: .1.3.6.1.4.1.9.9.513.1.1.8.1.2
       name: cisco.cLApCrashFileSize
@@ -453,33 +750,29 @@ CISCO-LWAPP-AP-MIB::cLApCrashInfoEntry:
 CISCO-LWAPP-AP-MIB::cLApSysInfoEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApSysInfoEntry
-  index:
-    - type: MacAddress
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+  augments: CISCO-LWAPP-AP-MIB::cLApEntrySTATS
   discovery_attribute: cLApSysMemType
   attributes:
     cLApSysMemType:
       oid: .1.3.6.1.4.1.9.9.513.1.1.9.1.1
       name: cisco.cLApSysMemType
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApSysMemSize:
       oid: .1.3.6.1.4.1.9.9.513.1.1.9.1.2
       name: cisco.cLApSysMemSize
-      syntax: Unsigned32
+      syntax: BytesKB
     cLApSysFlashSize:
       oid: .1.3.6.1.4.1.9.9.513.1.1.9.1.3
       name: cisco.cLApSysFlashSize
-      syntax: Unsigned32
+      syntax: BytesKB
     cLApSysCpuType:
       oid: .1.3.6.1.4.1.9.9.513.1.1.9.1.4
       name: cisco.cLApSysCpuType
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApSysFlashType:
       oid: .1.3.6.1.4.1.9.9.513.1.1.9.1.5
       name: cisco.cLApSysFlashType
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
 
 CISCO-LWAPP-AP-MIB::cLApExtEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -488,9 +781,22 @@ CISCO-LWAPP-AP-MIB::cLApExtEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApLEDFlashStatus
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApLEDFlashStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.1
       name: cisco.cLApLEDFlashStatus
@@ -498,47 +804,31 @@ CISCO-LWAPP-AP-MIB::cLApExtEntry:
     cLApLEDFlashDuration:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.2
       name: cisco.cLApLEDFlashDuration
-      syntax: Unsigned32
-    cLApInetAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.3
-      name: cisco.cLApInetAddressType
-      syntax: InetAddressType #InetAddressType
+      syntax: TicksSec
     cLApInetAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.4
       name: cisco.cLApInetAddress
-      syntax: IpAddressNoSuffix #InetAddress
+      syntax: IpAddressNoSuffix
     cLApStaticIpv6AddressEnabled:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.5
       name: cisco.cLApStaticIpv6AddressEnabled
       syntax: TruthValue
-    cLApStaticIpv6InetAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.6
-      name: cisco.cLApStaticIpv6InetAddressType
-      syntax: InetAddressType #InetAddressType
     cLApStaticIpv6InetAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.7
       name: cisco.cLApStaticIpv6InetAddress
-      syntax: IpAddressNoSuffix #InetAddress
+      syntax: IpAddressNoSuffix
     cLApStaticIpv6PrefixLength:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.8
       name: cisco.cLApStaticIpv6PrefixLength
       syntax: Unsigned32
-    cLApStaticIpv6GatewayInetAddressType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.9
-      name: cisco.cLApStaticIpv6GatewayInetAddressType
-      syntax: InetAddressType #InetAddressType
     cLApStaticIpv6GatewayInetAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.10
       name: cisco.cLApStaticIpv6GatewayInetAddress
-      syntax: IpAddressNoSuffix #InetAddress
-    cLApStaticIpNetmaskType:
-      oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.11
-      name: cisco.cLApStaticIpNetmaskType
-      syntax: InetAddressType #InetAddressType
+      syntax: IpAddressNoSuffix
     cLApStaticIpNetmask:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.12
       name: cisco.cLApStaticIpNetmask
-      syntax: IpAddressNoSuffix #InetAddress
+      syntax: IpAddressNoSuffix
     cLApPreferMode:
       oid: .1.3.6.1.4.1.9.9.513.1.1.10.1.13
       name: cisco.cLApPreferMode
@@ -555,13 +845,26 @@ CISCO-LWAPP-AP-MIB::cLApEnvInfoEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApEnvTemperatureDegree
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApEnvTemperatureDegree:
       oid: .1.3.6.1.4.1.9.9.513.1.1.11.1.1
       name: cisco.cLApEnvTemperatureDegree
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApEnvTemperatureState:
       oid: .1.3.6.1.4.1.9.9.513.1.1.11.1.2
       name: cisco.cLApEnvTemperatureState
@@ -582,9 +885,22 @@ CISCO-LWAPP-AP-MIB::cLApGpsInfoEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApGpsLocationPresent
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApGpsLocationPresent:
       oid: .1.3.6.1.4.1.9.9.513.1.1.12.1.1
       name: cisco.cLApGpsLocationPresent
@@ -596,15 +912,15 @@ CISCO-LWAPP-AP-MIB::cLApGpsInfoEntry:
     cLApGpsLatitude:
       oid: .1.3.6.1.4.1.9.9.513.1.1.12.1.3
       name: cisco.cLApGpsLatitude
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApGpsLongitude:
       oid: .1.3.6.1.4.1.9.9.513.1.1.12.1.4
       name: cisco.cLApGpsLongitude
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApGpsAltitude:
       oid: .1.3.6.1.4.1.9.9.513.1.1.12.1.5
       name: cisco.cLApGpsAltitude
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApGpsCollectionTime:
       oid: .1.3.6.1.4.1.9.9.513.1.1.12.1.6
       name: cisco.cLApGpsCollectionTime
@@ -617,17 +933,13 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
-  discovery_attribute: cLApDot11IfSlotId
+      syntax: UnsignedAsID
+  discovery_attribute: cLApDot11IfType
   attributes:
-    cLApDot11IfSlotId:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
-      name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
     cLApDot11IfType:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.2
       name: cisco.cLApDot11IfType
@@ -651,23 +963,23 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfEntry:
     cLApLomFirstChannel:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.7
       name: cisco.cLApLomFirstChannel
-      syntax: Unsigned32 #CLDot11Channel
+      syntax: EnumInteger
     cLApLomSecondChannel:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.8
       name: cisco.cLApLomSecondChannel
-      syntax: Unsigned32 #CLDot11Channel
+      syntax: EnumInteger
     cLApLomThirdChannel:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.9
       name: cisco.cLApLomThirdChannel
-      syntax: Unsigned32 #CLDot11Channel
+      syntax: EnumInteger
     cLApLomFourthChannel:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.10
       name: cisco.cLApLomFourthChannel
-      syntax: Unsigned32 #CLDot11Channel
+      syntax: EnumInteger
     cLApExtensionChannel:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.11
       name: cisco.cLApExtensionChannel
-      syntax: Unsigned32 #CLDot11Channel
+      syntax: EnumInteger
     cLApLegacyBeamForming:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.12
       name: cisco.cLApLegacyBeamForming
@@ -691,23 +1003,23 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfEntry:
     cLApPromiscuousModeDwelling:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.17
       name: cisco.cLApPromiscuousModeDwelling
-      syntax: Unsigned32
+      syntax: Percent100
     cLApDot11IfStaKeepingTime:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.18
       name: cisco.cLApDot11IfStaKeepingTime
-      syntax: TimeTicks
+      syntax: TicksCentiSec
     cLApDot11IfLinkSpeed:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.19
       name: cisco.cLApDot11IfLinkSpeed
-      syntax: Gauge32
+      syntax: BandwidthMBits
     cLApDot11IfMtu:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.20
       name: cisco.cLApDot11IfMtu
-      syntax: Unsigned32
+      syntax: BytesB
     cLApDot11IfDesc:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.21
       name: cisco.cLApDot11IfDesc
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApDot11acSupport:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.22
       name: cisco.cLApDot11acSupport
@@ -723,7 +1035,7 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfEntry:
     cLAPDot11IfMinTxPowerStep:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.25
       name: cisco.cLAPDot11IfMinTxPowerStep
-      syntax: Unsigned32
+      syntax: SignalDBm
     cLApDot11XorRadioMode:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.26
       name: cisco.cLApDot11XorRadioMode
@@ -739,11 +1051,59 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfEntry:
     cLApDot11IfMaxDataRate:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.29
       name: cisco.cLApDot11IfMaxDataRate
-      syntax: Unsigned32
+      syntax: BandwidthMBits
     cLApDot11IfSensorReachability:
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.30
       name: cisco.cLApDot11IfSensorReachability
-      syntax: Unsigned32
+      syntax: Percent100
+    cLApDot11axSupport:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.31
+      name: cisco.cLApDot11axSupport
+      syntax: TruthValue
+    cLApFraCoverageOverlapFactor:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.32
+      name: cisco.cLApFraCoverageOverlapFactor
+      syntax: Percent100
+    cLApFraSuggestedMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.33
+      name: cisco.cLApFraSuggestedMode
+      syntax: EnumInteger
+    cLApDot11IfDualRadioMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.34
+      name: cisco.cLApDot11IfDualRadioMode
+      syntax: EnumInteger
+    cLApDot11IfDualRadioCapable:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.35
+      name: cisco.cLApDot11IfDualRadioCapable
+      syntax: EnumInteger
+    cLApDot11IfRadioFRACapable:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.36
+      name: cisco.cLApDot11IfRadioFRACapable
+      syntax: EnumInteger
+    cLApDot11IfPhyS80EightyChannelNumber:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.37
+      name: cisco.cLApDot11IfPhyS80EightyChannelNumber
+      syntax: Integer32
+    cLApDot11IfDualRadioOperation:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.39
+      name: cisco.cLApDot11IfDualRadioOperation
+      syntax: EnumInteger
+    cLApDot11IfRadioRoleOperation:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.40
+      name: cisco.cLApDot11IfRadioRoleOperation
+      syntax: EnumInteger
+    cLApDot11IfRadioRole:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.41
+      name: cisco.cLApDot11IfRadioRole
+      syntax: EnumInteger
+    cLApDot11IfRptncPresent:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.42
+      name: cisco.cLApDot11IfRptncPresent
+      syntax: TruthValue
+    cLApDot11IfDartPresent:
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.43
+      name: cisco.cLApDot11IfDartPresent
+      syntax: TruthValue
 
 CISCO-LWAPP-AP-MIB::cLApEthernetIfEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -752,25 +1112,21 @@ CISCO-LWAPP-AP-MIB::cLApEthernetIfEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.1
       name: cisco.cLApEthernetIfSlotId
-      syntax: Unsigned32
-  discovery_attribute: cLApEthernetIfSlotId
+      syntax: UnsignedAsID
+  discovery_attribute: cLApEthernetIfName
   attributes:
-    cLApEthernetIfSlotId:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.1
-      name: cisco.cLApEthernetIfSlotId
-      syntax: Unsigned32
     cLApEthernetIfName:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.2
       name: cisco.cLApEthernetIfName
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApEthernetIfMacAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.3
       name: cisco.cLApEthernetIfMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     cLApEthernetIfAdminStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.4
       name: cisco.cLApEthernetIfAdminStatus
@@ -802,7 +1158,7 @@ CISCO-LWAPP-AP-MIB::cLApEthernetIfEntry:
     cLApEthernetIfLinkSpeed:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.11
       name: cisco.cLApEthernetIfLinkSpeed
-      syntax: Gauge32
+      syntax: BandwidthMBits
     cLApEthernetIfPOEPower:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.12
       name: cisco.cLApEthernetIfPOEPower
@@ -810,11 +1166,11 @@ CISCO-LWAPP-AP-MIB::cLApEthernetIfEntry:
     cLApEthernetIfRxTotalBytes:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.13
       name: cisco.cLApEthernetIfRxTotalBytes
-      syntax: Counter32
+      syntax: BytesB
     cLApEthernetIfTxTotalBytes:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.14
       name: cisco.cLApEthernetIfTxTotalBytes
-      syntax: Counter32
+      syntax: BytesB
     cLApEthernetIfInputCrc:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.15
       name: cisco.cLApEthernetIfInputCrc
@@ -894,7 +1250,7 @@ CISCO-LWAPP-AP-MIB::cLApEthernetIfEntry:
     cLApEthernetIfMtu:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.34
       name: cisco.cLApEthernetIfMtu
-      syntax: Unsigned32
+      syntax: BytesB
     cLApEthernetIfType:
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.35
       name: cisco.cLApEthernetIfType
@@ -911,21 +1267,21 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApDot11RadioMACAddress
   attributes:
     cLApDot11RadioMACAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.1
       name: cisco.cLApDot11RadioMACAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     cLApDot11RadioSubBand:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.2
       name: cisco.cLApDot11RadioSubBand
-      syntax: EnumInteger #CLApDot11RadioSubband
+      syntax: EnumInteger
     cLApDot11RadioVersion:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.3
       name: cisco.cLApDot11RadioVersion
@@ -937,38 +1293,34 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioEntry:
     cLApDot11RadioRole:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.5
       name: cisco.cLApDot11RadioRole
-      syntax: EnumInteger #CLApDot11RadioRole
+      syntax: EnumInteger
     cLApDot11RadioMode:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.6
       name: cisco.cLApDot11RadioMode
-      syntax: EnumInteger #cLApDot11RadioMode
+      syntax: EnumInteger
     cLApDot11RadioSubType:
       oid: .1.3.6.1.4.1.9.9.513.1.2.3.1.7
       name: cisco.cLApDot11RadioSubType
-      syntax: EnumInteger #cLApDot11RadioSubType
+      syntax: EnumInteger
 
 CISCO-LWAPP-AP-MIB::cLApDot11IfAntennaEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApDot11IfAntennaEntry
   index:
-    - type: OctetString
+    - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress # cLApSysMacAddress
-      syntax: MacAddress
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
-      name: cisco.cLApDot11IfSlotId # cLApDot11IfSlotId
-      syntax: Unsigned32
+      name: cisco.cLApDot11IfSlotId
+      syntax: UnsignedAsID
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.4.1.1
-      name: cisco.cLApDot11IfAntennaId # cLApDot11IfAntennaId
-      syntax: Unsigned32
-  discovery_attribute: cLApDot11IfAntennaId
-  attributes:
-    cLApDot11IfAntennaId:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.4.1.1
       name: cisco.cLApDot11IfAntennaId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
+  discovery_attribute: cLApDot11IfAntennaTxEnable
+  attributes:
     cLApDot11IfAntennaTxEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.2.4.1.2
       name: cisco.cLApDot11IfAntennaTxEnable
@@ -977,7 +1329,7 @@ CISCO-LWAPP-AP-MIB::cLApDot11IfAntennaEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.2.4.1.3
       name: cisco.cLApDot11IfAntennaRxEnable
       syntax: TruthValue
-    cisco.cLApDot11IfAntennaEnable:
+    cLApDot11IfAntennaEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.2.4.1.4
       name: cisco.cLApDot11IfAntennaEnable
       syntax: TruthValue
@@ -986,24 +1338,20 @@ CISCO-LWAPP-AP-MIB::cLApVlanIfEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApVlanIfEntry
   index:
-    - type: OctetString
+    - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress # cLApSysMacAddress
-      syntax: MacAddress
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.5.1.1
-      name: cisco.cLApVlanIfEthernetId # cLApVlanIfEthernetId
-      syntax: Unsigned32
-  discovery_attribute: cLApVlanIfEthernetId
-  attributes:
-    cLApVlanIfEthernetId:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.5.1.1
       name: cisco.cLApVlanIfEthernetId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
+  discovery_attribute: cLApVlanIfMode
+  attributes:
     cLApVlanIfMode:
       oid: .1.3.6.1.4.1.9.9.513.1.2.5.1.2
       name: cisco.cLApVlanIfMode
-      syntax: EnumInteger #cLApVlanIfMode
+      syntax: EnumInteger
     cLApVlanIfEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.2.5.1.3
       name: cisco.cLApVlanIfEnable
@@ -1013,55 +1361,28 @@ CISCO-LWAPP-AP-MIB::cLApVlanIfEntry:
       name: cisco.cLApVlanIfNativeVlanId
       syntax: Unsigned32
 
-CISCO-LWAPP-AP-MIB::cLApVlanListEntry:
-  mib: CISCO-LWAPP-AP-MIB
-  object: cLApVlanListEntry
-  index:
-    - type: OctetString
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress # cLApSysMacAddress
-      syntax: MacAddress
-    - type: Unsigned32
-      oid: .1.3.6.1.4.1.9.9.513.1.2.5.1.1
-      name: cisco.cLApVlanIfEthernetId # cLApVlanIfEthernetId
-      syntax: Unsigned32
-    - type: Unsigned32
-      oid: .1.3.6.1.4.1.9.9.513.1.2.6.1.1
-      name: cisco.cLApVlanListVlanId # cLApVlanListVlanId
-      syntax: Unsigned32
-  discovery_attribute: cLApVlanListVlanId
-  attributes:
-    cLApVlanListVlanId:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.6.1.1
-      name: cisco.cLApVlanListVlanId
-      syntax: Unsigned32
-    cLApVlanListRowStatus:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.6.1.2
-      name: cisco.cLApVlanListRowStatus
-      syntax: EnumInteger
-
 CISCO-LWAPP-AP-MIB::cLApDot11GlobalConfigEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApDot11GlobalConfigEntry
   index:
     - type: Integer
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.2
-      name: cisco.cLApDot11IfType # cLApDot11IfType
-      syntax: Integer
+      name: cisco.cLApDot11IfType
+      syntax: EnumInteger
   discovery_attribute: cLApNwLegacyBeamForming
   attributes:
     cLApNwLegacyBeamForming:
       oid: .1.3.6.1.4.1.9.9.513.1.2.7.1.1
       name: cisco.cLApNwLegacyBeamForming
-      syntax: EnumInteger #cLApNwLegacyBeamForming
-    cisco.cLApNwTxPowerThreshold:
+      syntax: EnumInteger
+    cLApNwTxPowerThreshold:
       oid: .1.3.6.1.4.1.9.9.513.1.2.7.1.2
       name: cisco.cLApNwTxPowerThreshold
-      syntax: Integer32
-    cisco.cLApNwTxPowerThresholdVer2:
+      syntax: SignalDBm
+    cLApNwTxPowerThresholdVer2:
       oid: .1.3.6.1.4.1.9.9.513.1.2.7.1.3
       name: cisco.cLApNwTxPowerThresholdVer2
-      syntax: Integer32
+      syntax: SignalDBm
 
 CISCO-LWAPP-AP-MIB::cLApDot11RadioStatsEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1070,11 +1391,11 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioStatsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApDot11RadioStatsRxErrorFrameCount
   attributes:
     cLApDot11RadioStatsRxErrorFrameCount:
@@ -1129,7 +1450,7 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioStatsEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.2.8.1.13
       name: cisco.cLApDot11RadioStatsRetryPacketCount
       syntax: Counter32
-    
+
 CISCO-LWAPP-AP-MIB::cLApDot11RadioRssiEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApDot11RadioRssiEntry
@@ -1137,25 +1458,25 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioRssiEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
-    - type: Integer32
+      syntax: MacAddressNoSuffix
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.2
       name: cisco.cLApDot11IfType
-      syntax: Integer32
+      syntax: EnumInteger
   discovery_attribute: cLApDot11RadioRssiHighest
   attributes:
     cLApDot11RadioRssiHighest:
       oid: .1.3.6.1.4.1.9.9.513.1.2.9.1.1
       name: cisco.cLApDot11RadioRssiHighest
-      syntax: Integer32
+      syntax: SignalDBm
     cLApDot11RadioRssiLowest:
       oid: .1.3.6.1.4.1.9.9.513.1.2.9.1.2
       name: cisco.cLApDot11RadioRssiLowest
-      syntax: Integer32
+      syntax: SignalDBm
     cLApDot11RadioRssiAverage:
       oid: .1.3.6.1.4.1.9.9.513.1.2.9.1.3
       name: cisco.cLApDot11RadioRssiAverage
-      syntax: Integer32
+      syntax: SignalDBm
 
 CISCO-LWAPP-AP-MIB::cLApDot11RadioRateStatsEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1164,11 +1485,11 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioRateStatsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.10.1.1
       name: cisco.cLApDot11RadioRate
@@ -1182,7 +1503,7 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioRateStatsEntry:
     cLApDot11RadioRateStatsRxBytes:
       oid: .1.3.6.1.4.1.9.9.513.1.2.10.1.3
       name: cisco.cLApDot11RadioRateStatsRxBytes
-      syntax: Counter32
+      syntax: BytesB
     cLApDot11RadioRateStatsTxPackets:
       oid: .1.3.6.1.4.1.9.9.513.1.2.10.1.4
       name: cisco.cLApDot11RadioRateStatsTxPackets
@@ -1190,11 +1511,11 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioRateStatsEntry:
     cLApDot11RadioRateStatsTxBytes:
       oid: .1.3.6.1.4.1.9.9.513.1.2.10.1.5
       name: cisco.cLApDot11RadioRateStatsTxBytes
-      syntax: Counter32
+      syntax: BytesB
     cLApDot11RadioRateString:
       oid: .1.3.6.1.4.1.9.9.513.1.2.10.1.6
       name: cisco.cLApDot11RadioRateString
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
 
 CISCO-LWAPP-AP-MIB::cLApDot11RadioSsidEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1203,25 +1524,21 @@ CISCO-LWAPP-AP-MIB::cLApDot11RadioSsidEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
-    - type: Integer32
+      syntax: MacAddressNoSuffix
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.2
       name: cisco.cLApDot11IfType
-      syntax: Integer32
+      syntax: EnumInteger
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.11.1.1
       name: cisco.cLApSsidIndex
-      syntax: Unsigned32
-  discovery_attribute: cLApSsidIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cLApDot11RadioSsidName
   attributes:
-    cLApSsidIndex:
-      oid: .1.3.6.1.4.1.9.9.513.1.2.11.1.1
-      name: cisco.cLApSsidIndex
-      syntax: Unsigned32
     cLApDot11RadioSsidName:
       oid: .1.3.6.1.4.1.9.9.513.1.2.11.1.2
       name: cisco.cLApDot11RadioSsidName
-      syntax: OctetString
+      syntax: DisplayString
 
 CISCO-LWAPP-AP-MIB::cLApCableModemIfStatsEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1230,49 +1547,184 @@ CISCO-LWAPP-AP-MIB::cLApCableModemIfStatsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApCmMacAddress
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApCmMacAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.1
       name: cisco.cLApCmMacAddress
-      syntax: DisplayString #SnmpAdminString
+      syntax: MacAddressNoSuffix
     cLApCmApMacAddress:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.2
       name: cisco.cLApCmApMacAddress
-      syntax: DisplayString #SnmpAdminString
+      syntax: MacAddressNoSuffix
     cLApCmSwVersion:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.3
       name: cisco.cLApCmSwVersion
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApEthernetSpeed:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.4
       name: cisco.cLApEthernetSpeed
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApEthernetStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.5
       name: cisco.cLApEthernetStatus
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCmStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.6
       name: cisco.cLApCmStatus
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCmSerialNumber:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.7
       name: cisco.cLApCmSerialNumber
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCmUsChannelStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.8
       name: cisco.cLApCmUsChannelStatus
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCmDsChannelStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.9
       name: cisco.cLApCmDsChannelStatus
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCmMaskBit:
       oid: .1.3.6.1.4.1.9.9.513.1.2.12.1.10
       name: cisco.cLApCmMaskBit
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
+
+CISCO-LWAPP-AP-MIB::ciscoLwappApGlobal:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappApGlobal
+  discovery_attribute: cLApPrimaryDiscoveryTimeout
+  attributes:
+    cLApPrimaryDiscoveryTimeout:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.3
+      name: cisco.cLApPrimaryDiscoveryTimeout
+      syntax: TicksSec
+    cLApGlobalPrimaryControllerAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.5
+      name: cisco.cLApGlobalPrimaryControllerAddress
+      syntax: IpAddressNoSuffix
+    cLApGlobalPrimaryControllerName:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.6
+      name: cisco.cLApGlobalPrimaryControllerName
+      syntax: DisplayString
+    cLApGlobalSecondaryControllerAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.8
+      name: cisco.cLApGlobalSecondaryControllerAddress
+      syntax: IpAddressNoSuffix
+    cLApGlobalSecondaryControllerName:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.9
+      name: cisco.cLApGlobalSecondaryControllerName
+      syntax: DisplayString
+    cLApGlobalFailoverPriority:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.10
+      name: cisco.cLApGlobalFailoverPriority
+      syntax: TruthValue
+    cLApGlobalTcpMss:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.11
+      name: cisco.cLApGlobalTcpMss
+      syntax: Integer32
+    cLApGlobalRetransmitCount:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.14
+      name: cisco.cLApGlobalRetransmitCount
+      syntax: Unsigned32
+    cLApGlobalRetransmitTimeout:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.15
+      name: cisco.cLApGlobalRetransmitTimeout
+      syntax: TicksSec
+    cLApOeapDisableLocalAccess:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.16
+      name: cisco.cLApOeapDisableLocalAccess
+      syntax: TruthValue
+    cLApGlobalLEDState:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.17
+      name: cisco.cLApGlobalLEDState
+      syntax: TruthValue
+    cLApRadioInterfaceShutdownEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.18
+      name: cisco.cLApRadioInterfaceShutdownEnabled
+      syntax: TruthValue
+    cLApEthernetInterfaceDowntime:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.19
+      name: cisco.cLApEthernetInterfaceDowntime
+      syntax: TicksSec
+    cLAPMulticastGroupAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.21
+      name: cisco.cLAPMulticastGroupAddress
+      syntax: IpAddressNoSuffix
+    cLAPMulticastMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.22
+      name: cisco.cLAPMulticastMode
+      syntax: EnumInteger
+    cLApPrimedDiscoveryTimeout:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.23
+      name: cisco.cLApPrimedDiscoveryTimeout
+      syntax: TicksSec
+    cLApGlobalPreferMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.24
+      name: cisco.cLApGlobalPreferMode
+      syntax: EnumInteger
+    cLApGlobalAPLagCapability:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.25
+      name: cisco.cLApGlobalAPLagCapability
+      syntax: TruthValue
+    cLApGlobalAPDtlsVersion:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.26
+      name: cisco.cLApGlobalAPDtlsVersion
+      syntax: EnumInteger
+    cLApGlobalAPDtlsCipherSuite:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.27
+      name: cisco.cLApGlobalAPDtlsCipherSuite
+      syntax: EnumInteger
+    cLApGlobalMaxApsSupported:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.28
+      name: cisco.cLApGlobalMaxApsSupported
+      syntax: Integer32
+    cLApAuthorizeApMacAuth:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.30
+      name: cisco.cLApAuthorizeApMacAuth
+      syntax: TruthValue
+    cLApAuthorizeApSerialNumAuth:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.31
+      name: cisco.cLApAuthorizeApSerialNumAuth
+      syntax: TruthValue
+    cLApAuthorizeApMethodList:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.32
+      name: cisco.cLApAuthorizeApMethodList
+      syntax: DisplayString
+    cLApGlobalAPAuditReport:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.33
+      name: cisco.cLApGlobalAPAuditReport
+      syntax: TruthValue
+    cLApGlobalAPAuditReportInterval:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.34
+      name: cisco.cLApGlobalAPAuditReportInterval
+      syntax: TicksMin
+    cLApGlobalAPConnectCount:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.35
+      name: cisco.cLApGlobalAPConnectCount
+      syntax: Unsigned32
+    cLApAuthorizeApMacMethodList:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.36
+      name: cisco.cLApAuthorizeApMacMethodList
+      syntax: DisplayString
+    cLApAuthorizeApSerialNumMethodList:
+      oid: .1.3.6.1.4.1.9.9.513.1.3.37
+      name: cisco.cLApAuthorizeApSerialNumMethodList
+      syntax: DisplayString
 
 CISCO-LWAPP-AP-MIB::cLApFastHbTimerEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1281,22 +1733,18 @@ CISCO-LWAPP-AP-MIB::cLApFastHbTimerEntry:
     - type: Integer
       oid: .1.3.6.1.4.1.9.9.513.1.3.1.1.1
       name: cisco.cLApFastHbTimerApType
-      syntax: Integer
-  discovery_attribute: cLApFastHbTimerApType
-  attributes:
-    cLApFastHbTimerApType:
-      oid: .1.3.6.1.4.1.9.9.513.1.3.1.1.1
-      name: cisco.cLApFastHbTimerApType
       syntax: EnumInteger
+  discovery_attribute: cLApFastHbTimerTimeout
+  attributes:
     cLApFastHbTimerTimeout:
       oid: .1.3.6.1.4.1.9.9.513.1.3.1.1.2
       name: cisco.cLApFastHbTimerTimeout
-      syntax: Unsigned32
+      syntax: TicksSec
     cLApFastHbTimerEnabled:
       oid: .1.3.6.1.4.1.9.9.513.1.3.1.1.3
       name: cisco.cLApFastHbTimerEnabled
       syntax: TruthValue
-  
+
 CISCO-LWAPP-AP-MIB::cLApGlobalDot11IfEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApGlobalDot11IfEntry
@@ -1304,7 +1752,7 @@ CISCO-LWAPP-AP-MIB::cLApGlobalDot11IfEntry:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApGlobalDot11IfCdpEnabled
   attributes:
     cLApGlobalDot11IfCdpEnabled:
@@ -1319,13 +1767,31 @@ CISCO-LWAPP-AP-MIB::cLApGlobalEthernetIfEntry:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.2.1.1
       name: cisco.cLApEthernetIfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApGlobalEthernetIfCdpEnabled
   attributes:
     cLApGlobalEthernetIfCdpEnabled:
       oid: .1.3.6.1.4.1.9.9.513.1.3.13.1.1
       name: cisco.cLApGlobalEthernetIfCdpEnabled
       syntax: TruthValue
+
+CISCO-LWAPP-AP-MIB::ciscoLwappApCredentials:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappApCredentials
+  discovery_attribute: cLApCredentialGlobalUserName
+  attributes:
+    cLApCredentialGlobalUserName:
+      oid: .1.3.6.1.4.1.9.9.513.1.4.1
+      name: cisco.cLApCredentialGlobalUserName
+      syntax: DisplayString
+    cLApCredentialGlobalPassword:
+      oid: .1.3.6.1.4.1.9.9.513.1.4.2
+      name: cisco.cLApCredentialGlobalPassword
+      syntax: DisplayString
+    cLApCredentialGlobalSecret:
+      oid: .1.3.6.1.4.1.9.9.513.1.4.3
+      name: cisco.cLApCredentialGlobalSecret
+      syntax: DisplayString
 
 CISCO-LWAPP-AP-MIB::cLApCredentialsEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1334,26 +1800,39 @@ CISCO-LWAPP-AP-MIB::cLApCredentialsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApCredentialUserName
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApCredentialUserName:
-      oid: .1.3.6.1.4.1.9.9.513.1.4.1
+      oid: .1.3.6.1.4.1.9.9.513.1.4.4.1.1
       name: cisco.cLApCredentialUserName
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCredentialPassword:
-      oid: .1.3.6.1.4.1.9.9.513.1.4.2
+      oid: .1.3.6.1.4.1.9.9.513.1.4.4.1.2
       name: cisco.cLApCredentialPassword
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCredentialSecret:
-      oid: .1.3.6.1.4.1.9.9.513.1.4.3
+      oid: .1.3.6.1.4.1.9.9.513.1.4.4.1.3
       name: cisco.cLApCredentialSecret
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApCredentialEnableGlobalCredentials:
-      oid: .1.3.6.1.4.1.9.9.513.1.4.4
+      oid: .1.3.6.1.4.1.9.9.513.1.4.4.1.4
       name: cisco.cLApCredentialEnableGlobalCredentials
       syntax: TruthValue
-  
+
 CISCO-LWAPP-AP-MIB::cLApLinkLatencyEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApLinkLatencyEntry
@@ -1361,9 +1840,22 @@ CISCO-LWAPP-AP-MIB::cLApLinkLatencyEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApLinkLatencyEnable
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApLinkLatencyEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.5.1.1.1
       name: cisco.cLApLinkLatencyEnable
@@ -1376,45 +1868,103 @@ CISCO-LWAPP-AP-MIB::cLApLinkLatencyEntry:
 CISCO-LWAPP-AP-MIB::cLApLinkLatencyStatsEntry:
   mib: CISCO-LWAPP-AP-MIB
   object: cLApLinkLatencyStatsEntry
-  index:
-    - type: MacAddress
-      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-      name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+  augments: CISCO-LWAPP-AP-MIB::cLApLinkLatencyEntry
   discovery_attribute: cLApLinkLatencyStatsCurrent
   attributes:
     cLApLinkLatencyStatsCurrent:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.1
       name: cisco.cLApLinkLatencyStatsCurrent
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApLinkLatencyStatsMin:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.2
       name: cisco.cLApLinkLatencyStatsMin
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApLinkLatencyStatsMax:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.3
       name: cisco.cLApLinkLatencyStatsMax
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApLinkLatencyTimeStamp:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.4
       name: cisco.cLApLinkLatencyTimeStamp
-      syntax: TimeStamp
+      syntax: TicksSec
     cLApDataLinkLatencyStatsCurrent:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.5
       name: cisco.cLApDataLinkLatencyStatsCurrent
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApDataLinkLatencyStatsMin:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.6
       name: cisco.cLApDataLinkLatencyStatsMin
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApDataLinkLatencyStatsMax:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.7
       name: cisco.cLApDataLinkLatencyStatsMax
-      syntax: TimeInterval
+      syntax: TicksMilliSec
     cLApDataLinkLatencyTimeStamp:
       oid: .1.3.6.1.4.1.9.9.513.1.5.2.1.8
       name: cisco.cLApDataLinkLatencyTimeStamp
-      syntax: TimeStamp
+      syntax: TicksSec
+
+CISCO-LWAPP-AP-MIB::ciscoLwappAp802dot1xSupplicant:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappAp802dot1xSupplicant
+  discovery_attribute: cLApGlobal802dot1xAuthenticationEnabled
+  attributes:
+    cLApGlobal802dot1xAuthenticationEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.1
+      name: cisco.cLApGlobal802dot1xAuthenticationEnabled
+      syntax: TruthValue
+    cLApGlobal802dot1xSupplicantUsername:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.2
+      name: cisco.cLApGlobal802dot1xSupplicantUsername
+      syntax: DisplayString
+    cLApGlobal802dot1xSupplicantPassword:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.3
+      name: cisco.cLApGlobal802dot1xSupplicantPassword
+      syntax: DisplayString
+    cLApGlobal802dot1xSupplicantEapType:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.5
+      name: cisco.cLApGlobal802dot1xSupplicantEapType
+      syntax: EnumInteger
+
+CISCO-LWAPP-AP-MIB::cLAp802dot1xSupplicantEntry:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLAp802dot1xSupplicantEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLAp802dot1xSupplicantOverrideEnabled
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
+    cLAp802dot1xSupplicantOverrideEnabled:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.4.1.1
+      name: cisco.cLAp802dot1xSupplicantOverrideEnabled
+      syntax: TruthValue
+    cLAp802dot1xSupplicantOverrideUsername:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.4.1.2
+      name: cisco.cLAp802dot1xSupplicantOverrideUsername
+      syntax: DisplayString
+    cLAp802dot1xSupplicantOverridePassword:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.4.1.3
+      name: cisco.cLAp802dot1xSupplicantOverridePassword
+      syntax: DisplayString
+    cLAp802dot1xSupplicantOverrideEapType:
+      oid: .1.3.6.1.4.1.9.9.513.1.7.4.1.4
+      name: cisco.cLAp802dot1xSupplicantOverrideEapType
+      syntax: EnumInteger
 
 CISCO-LWAPP-AP-MIB::cLApSeClientEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1423,33 +1973,25 @@ CISCO-LWAPP-AP-MIB::cLApSeClientEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
     - type: Integer32
       oid: .1.3.6.1.4.1.9.9.513.1.8.1.1
       name: cisco.cLApSeIndex
-      syntax: Integer32
-  discovery_attribute: cLApSeIndex
+      syntax: IntegerAsID
+  discovery_attribute: cLApSeClientUserName
   attributes:
-    cLApSeIndex:
-      oid: .1.3.6.1.4.1.9.9.513.1.8.1.1
-      name: cisco.cLApSeIndex
-      syntax: Integer32
     cLApSeClientUserName:
       oid: .1.3.6.1.4.1.9.9.513.1.8.1.2
       name: cisco.cLApSeClientUserName
-      syntax: DisplayString #SnmpAdminString
-    cLApSeClientIPAddrType:
-      oid: .1.3.6.1.4.1.9.9.513.1.8.1.3
-      name: cisco.cLApSeClientIPAddrType
-      syntax: InetAddressType #InetAddressType
+      syntax: DisplayString
     cLApSeClientIPAddr:
       oid: .1.3.6.1.4.1.9.9.513.1.8.1.4
       name: cisco.cLApSeClientIPAddr
-      syntax: IpAddressNoSuffix #InetAddress
+      syntax: IpAddressNoSuffix
     cLApSeClientDuration:
       oid: .1.3.6.1.4.1.9.9.513.1.8.1.5
       name: cisco.cLApSeClientDuration
@@ -1466,16 +2008,16 @@ CISCO-LWAPP-AP-MIB::cLApWlanStatsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
-    - type: Integer32
+      syntax: MacAddressNoSuffix
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.2
       name: cisco.cLApDot11IfType
-      syntax: Integer32
+      syntax: EnumInteger
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.512.1.1.1.1.1
       name: cisco.cLWlanIndex
-      syntax: Unsigned32
-  discovery_attribute:  cLApWlanStatsTxPktNum
+      syntax: UnsignedAsID
+  discovery_attribute: cLApWlanStatsTxPktNum
   attributes:
     cLApWlanStatsTxPktNum:
       oid: .1.3.6.1.4.1.9.9.513.1.9.1.1.1
@@ -1513,11 +2055,11 @@ CISCO-LWAPP-AP-MIB::cLApWlanInfoEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.512.1.1.1.1.1
       name: cisco.cLWlanIndex
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApWlanInfoMaxClients
   attributes:
     cLApWlanInfoMaxClients:
@@ -1532,25 +2074,75 @@ CISCO-LWAPP-AP-MIB::cLApRadioWlanInfoEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
       name: cisco.cLApDot11IfSlotId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.512.1.1.1.1.1
       name: cisco.cLWlanIndex
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApRadioWlanSsid
   attributes:
     cLApRadioWlanSsid:
       oid: .1.3.6.1.4.1.9.9.513.1.10.2.1.1
       name: cisco.cLApRadioWlanSsid
-      syntax: DisplayString #SnmpAdminString
+      syntax: DisplayString
     cLApRadioWlanBssid:
       oid: .1.3.6.1.4.1.9.9.513.1.10.2.1.2
       name: cisco.cLApRadioWlanBssid
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
+
+CISCO-LWAPP-AP-MIB::ciscoLwappPacketDumpInfo:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappPacketDumpInfo
+  discovery_attribute: cLApPacketDumpFtpServerAddress
+  attributes:
+    cLApPacketDumpFtpServerAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.2
+      name: cisco.cLApPacketDumpFtpServerAddress
+      syntax: IpAddressNoSuffix
+    cLApPacketDumpFtpServerPath:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.3
+      name: cisco.cLApPacketDumpFtpServerPath
+      syntax: DisplayString
+    cLApPacketDumpFtpUsername:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.4
+      name: cisco.cLApPacketDumpFtpUsername
+      syntax: DisplayString
+    cLApPacketDumpFtpPassword:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.5
+      name: cisco.cLApPacketDumpFtpPassword
+      syntax: DisplayString
+    cLApPacketDumpClassifier:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.6
+      name: cisco.cLApPacketDumpClassifier
+      syntax: EnumBitmap
+    cLApPacketDumpBufferSize:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.7
+      name: cisco.cLApPacketDumpBufferSize
+      syntax: BytesB
+    cLApPacketDumpCaptureTime:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.8
+      name: cisco.cLApPacketDumpCaptureTime
+      syntax: TicksMin
+    cLApPacketDumpTruncation:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.9
+      name: cisco.cLApPacketDumpTruncation
+      syntax: BytesB
+    cLApPacketDumpApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.10
+      name: cisco.cLApPacketDumpApName
+      syntax: DisplayString
+    cLApPacketDumpDeviceMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.11
+      name: cisco.cLApPacketDumpDeviceMacAddress
+      syntax: MacAddressNoSuffix
+    cLApPacketDumpStartStop:
+      oid: .1.3.6.1.4.1.9.9.513.1.11.12
+      name: cisco.cLApPacketDumpStartStop
+      syntax: EnumInteger
 
 CISCO-LWAPP-AP-MIB::cLAplanStatsEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1559,17 +2151,13 @@ CISCO-LWAPP-AP-MIB::cLAplanStatsEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
-    - type: Integer
+      syntax: MacAddressNoSuffix
+    - type: Integer32
       oid: .1.3.6.1.4.1.9.9.513.1.12.1.1.1
       name: cisco.cLApLanPortId
-      syntax: Integer
-  discovery_attribute: cLApLanPortId
+      syntax: IntegerAsID
+  discovery_attribute: cLApLanPortState
   attributes:
-    cLApLanPortId:
-      oid: .1.3.6.1.4.1.9.9.513.1.12.1.1.1
-      name: cisco.cLApLanPortId
-      syntax: Integer
     cLApLanPortState:
       oid: .1.3.6.1.4.1.9.9.513.1.12.1.1.2
       name: cisco.cLApLanPortState
@@ -1586,6 +2174,31 @@ CISCO-LWAPP-AP-MIB::cLAplanStatsEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.12.1.1.5
       name: cisco.cLApLanPoeState
       syntax: TruthValue
+    cLApLanPowerLevelId:
+      oid: .1.3.6.1.4.1.9.9.513.1.12.1.1.6
+      name: cisco.cLApLanPowerLevelId
+      syntax: Unsigned32
+
+CISCO-LWAPP-AP-MIB::cLAplanOverrideEntry:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLAplanOverrideEntry
+  augments: CISCO-LWAPP-AP-MIB::cLApEntrySTATE
+  discovery_attribute: cLApLanOverride
+  attributes:
+    cLApLanOverride:
+      oid: .1.3.6.1.4.1.9.9.513.1.12.2.1.1
+      name: cisco.cLApLanOverride
+      syntax: TruthValue
+
+CISCO-LWAPP-AP-MIB::ciscoLwappApGlobalBleBeacon:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappApGlobalBleBeacon
+  discovery_attribute: cLHaloGlobalBleBeaconInterval
+  attributes:
+    cLHaloGlobalBleBeaconInterval:
+      oid: .1.3.6.1.4.1.9.9.513.1.13.1
+      name: cisco.cLHaloGlobalBleBeaconInterval
+      syntax: Unsigned32
 
 CISCO-LWAPP-AP-MIB::cLHaloBleBeaconEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1594,13 +2207,9 @@ CISCO-LWAPP-AP-MIB::cLHaloBleBeaconEntry:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.1
       name: cisco.cLHaloGlobalBleBeaconId
-      syntax: Unsigned32
-  discovery_attribute: cLHaloGlobalBleBeaconId
+      syntax: UnsignedAsID
+  discovery_attribute: cLHaloGlobalBleBeaconUuid
   attributes:
-    cLHaloGlobalBleBeaconId:
-      oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.1
-      name: cisco.cLHaloGlobalBleBeaconId
-      syntax: Unsigned32
     cLHaloGlobalBleBeaconUuid:
       oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.2
       name: cisco.cLHaloGlobalBleBeaconUuid
@@ -1608,7 +2217,7 @@ CISCO-LWAPP-AP-MIB::cLHaloBleBeaconEntry:
     cLHaloGlobalBleBeaconTxPower:
       oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.3
       name: cisco.cLHaloGlobalBleBeaconTxPower
-      syntax: Unsigned32
+      syntax: SignalDBm
     cLHaloGlobalBleBeaconEnable:
       oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.4
       name: cisco.cLHaloGlobalBleBeaconEnable
@@ -1621,11 +2230,11 @@ CISCO-LWAPP-AP-MIB::cLApBleBeaconEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.9.9.513.1.13.2.1.1
       name: cisco.cLHaloGlobalBleBeaconId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
   discovery_attribute: cLApBleBeaconMajorField
   attributes:
     cLApBleBeaconMajorField:
@@ -1639,7 +2248,7 @@ CISCO-LWAPP-AP-MIB::cLApBleBeaconEntry:
     cLApBleBeaconTxPower:
       oid: .1.3.6.1.4.1.9.9.513.1.13.3.1.3
       name: cisco.cLApBleBeaconTxPower
-      syntax: Unsigned32
+      syntax: SignalDBm
     cLApBleBeaconStatus:
       oid: .1.3.6.1.4.1.9.9.513.1.13.3.1.4
       name: cisco.cLApBleBeaconStatus
@@ -1656,6 +2265,10 @@ CISCO-LWAPP-AP-MIB::cLApBleBeaconEntry:
       oid: .1.3.6.1.4.1.9.9.513.1.13.3.1.7
       name: cisco.cLApBleBeaconApplyGlobal
       syntax: TruthValue
+    cLApBleBeaconAdvTxPower:
+      oid: .1.3.6.1.4.1.9.9.513.1.13.3.1.8
+      name: cisco.cLApBleBeaconAdvTxPower
+      syntax: SignalDBm
 
 CISCO-LWAPP-AP-MIB::cLApHyperlocationEntry:
   mib: CISCO-LWAPP-AP-MIB
@@ -1664,9 +2277,22 @@ CISCO-LWAPP-AP-MIB::cLApHyperlocationEntry:
     - type: MacAddress
       oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
       name: cisco.cLApSysMacAddress
-      syntax: MacAddress
+      syntax: MacAddressNoSuffix
   discovery_attribute: cLApHyperlocationAdminState
   attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
+
     cLApHyperlocationAdminState:
       oid: .1.3.6.1.4.1.9.9.513.1.14.1.1.1
       name: cisco.cLApHyperlocationAdminState
@@ -1676,35 +2302,103 @@ CISCO-LWAPP-AP-MIB::cLApHyperlocationEntry:
       name: cisco.cLApHyperlocationUnsetFlag
       syntax: TruthValue
 
+CISCO-LWAPP-AP-MIB::ciscoLwappApSecureCipher:
+  mib: CISCO-LWAPP-AP-MIB
+  object: ciscoLwappApSecureCipher
+  discovery_attribute: cLApSecureCipher
+  attributes:
+    cLApSecureCipher:
+      oid: .1.3.6.1.4.1.9.9.513.1.15.1
+      name: cisco.cLApSecureCipher
+      syntax: EnumInteger
 
-#CISCO-LWAPP-AP-MIB::cLAp802dot1xSupplicantEntry:
-#  mib: CISCO-LWAPP-802DOT1X-SUPPLICANT-MIB
-#  object: cLAp802dot1xSupplicantEntry
-#  index:
-#    - type: MacAddress
-#      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
-#      name: cisco.cLApSysMacAddress
-#      syntax: MacAddress
-#  discovery_attribute: cLAp802dot1xSupplicantOverrideEnabled
-#  attributes:
-#    cLAp802dot1xSupplicantOverrideEnabled:
-#      oid: .1.3.6.1.4.1.9.9.513.1.1.1.22.1
-#      name: cisco.cLAp802dot1xSupplicantOverrideEnabled
-#      syntax: TruthValue
-#   cLAp802dot1xSupplicantOverrideUsername:
-#      oid: .1.3.6.1.4.1.9.9.513.1.1.1.22.2
-#     name: cisco.cLAp802dot1xSupplicantOverrideUsername
-#      syntax: SnmpAdminString
-#    cLAp802dot1xSupplicantOverridePassword:
-#      oid: .1.3.6.1.4.1.9.9.513.1.1.1.22.3
-#     name: cisco.cLAp802dot1xSupplicantOverridePassword
-#     syntax: SnmpAdminString
+CISCO-LWAPP-AP-MIB::cLAPNtpInfoEntry:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLAPNtpInfoEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: cLAPNtpInfoState
+  attributes:
+    cLApIfMacAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.2
+      name: cisco.cLApIfMacAddress
+      syntax: MacAddressNoSuffix
+    cLApEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.4
+      name: cisco.cLApEntPhysicalIndex
+      syntax: IntegerAsID
+    cLApName:
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.5
+      name: cisco.cLApName
+      syntax: DisplayString
 
+    cLAPNtpInfoState:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.1
+      name: cisco.cLAPNtpInfoState
+      syntax: TruthValue
+    cLApNtpInfoStatus:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.2
+      name: cisco.cLApNtpInfoStatus
+      syntax: EnumInteger
+    cLAPNtpInfoStratum:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.3
+      name: cisco.cLAPNtpInfoStratum
+      syntax: Unsigned32
+    cLAPNtpInfoLastSync:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.4
+      name: cisco.cLAPNtpInfoLastSync
+      syntax: TicksSec
+    cLAPNtpInfoOffset:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.5
+      name: cisco.cLAPNtpInfoOffset
+      syntax: TicksMicroSec
+    cLAPNtpInfoIPAddress:
+      oid: .1.3.6.1.4.1.9.9.513.1.18.1.1.7
+      name: cisco.cLAPNtpInfoIPAddress
+      syntax: IpAddressNoSuffix
 
-
-
-
-
-
-
-
+CISCO-LWAPP-AP-MIB::cLAp11axRadioConfigEntry:
+  mib: CISCO-LWAPP-AP-MIB
+  object: cLAp11axRadioConfigEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
+      name: cisco.cLApDot11IfSlotId
+      syntax: UnsignedAsID
+  discovery_attribute: cLAp11axDualRadioCapable
+  attributes:
+    cLAp11axDualRadioCapable:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.1
+      name: cisco.cLAp11axDualRadioCapable
+      syntax: TruthValue
+    cLAp11axRadioFRACapable:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.2
+      name: cisco.cLAp11axRadioFRACapable
+      syntax: TruthValue
+    cLAp11axDualRadioOperation:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.3
+      name: cisco.cLAp11axDualRadioOperation
+      syntax: EnumInteger
+    cLAp11axDualRadioMode:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.4
+      name: cisco.cLAp11axDualRadioMode
+      syntax: EnumInteger
+    cLAp11axRadioRoleOperation:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.5
+      name: cisco.cLAp11axRadioRoleOperation
+      syntax: EnumInteger
+    cLAp11axRadioRole:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.6
+      name: cisco.cLAp11axRadioRole
+      syntax: EnumInteger
+    cLAp11axObssPdCapable:
+      oid: .1.3.6.1.4.1.9.9.513.1.21.1.1.7
+      name: cisco.cLAp11axObssPdCapable
+      syntax: TruthValue
