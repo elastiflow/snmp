@@ -1,0 +1,70 @@
+CISCO-BRIDGE-EXT-MIB::cbeDot1dTp:
+  mib: CISCO-BRIDGE-EXT-MIB
+  object: cbeDot1dTp
+  discovery_attribute: cbeDot1dTpGlobalAgingTime
+  attributes:
+    cbeDot1dTpGlobalAgingTime:
+      oid: .1.3.6.1.4.1.9.9.401.1.1.1
+      name: cisco.cbeDot1dTpGlobalAgingTime
+      syntax: TicksSec
+
+CISCO-BRIDGE-EXT-MIB::cbeDot1dTpVlanEntry:
+  mib: CISCO-BRIDGE-EXT-MIB
+  object: cbeDot1dTpVlanEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.401.1.1.2.1.1
+      name: cisco.cbeDot1dTpVlanIndex
+      syntax: Unsigned32
+  discovery_attribute: cbeDot1dTpVlanAgingTime
+  attributes:
+    cbeDot1dTpVlanAgingTime:
+      oid: .1.3.6.1.4.1.9.9.401.1.1.2.1.2
+      name: cisco.cbeDot1dTpVlanAgingTime
+      syntax: TicksSec
+    cbeDot1dTpVlanAgingFromGlobal:
+      oid: .1.3.6.1.4.1.9.9.401.1.1.2.1.3
+      name: cisco.cbeDot1dTpVlanAgingFromGlobal
+      syntax: TruthValue
+
+CISCO-BRIDGE-EXT-MIB::cbeDot1dStaticEntry:
+  mib: CISCO-BRIDGE-EXT-MIB
+  object: cbeDot1dStaticEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.1
+      name: cisco.cbeDot1dVlanIndex
+      syntax: Unsigned32
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.2
+      name: cisco.cbeDot1dStaticAddress
+      syntax: MacAddressNoSuffix
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.3
+      name: cisco.cbeDot1dStaticReceivePort
+      syntax: Integer32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.4
+      name: cisco.cbeDot1dStaticPortRangeIndex
+      syntax: EnumInteger
+  discovery_attribute: cbeDot1dStaticAllowedToGoTo
+  attributes:
+    cbeDot1dStaticAllowedToGoTo:
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.5
+      name: cisco.cbeDot1dStaticAllowedToGoTo
+      syntax: OctetString # CiscoPortList
+    cbeDot1dStaticStatus:
+      oid: .1.3.6.1.4.1.9.9.401.1.2.1.1.6
+      name: cisco.cbeDot1dStaticStatus
+      syntax: EnumInteger
+
+CISCO-BRIDGE-EXT-MIB::cbeDot1dVlanEntry:
+  mib: CISCO-BRIDGE-EXT-MIB
+  object: cbeDot1dVlanEntry
+  augments: BRIDGE-MIB::dot1dBasePortEntry
+  discovery_attribute: cbeDot1dVlanOperVlan
+  attributes:
+    cbeDot1dVlanOperVlan:
+      oid: .1.3.6.1.4.1.9.9.401.1.3.1.1.1
+      name: cisco.cbeDot1dVlanOperVlan
+      syntax: Integer32

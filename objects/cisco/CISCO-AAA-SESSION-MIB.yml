@@ -1,0 +1,67 @@
+CISCO-AAA-SESSION-MIB::casnActive:
+  mib: CISCO-AAA-SESSION-MIB
+  object: casnActive
+  augments: CISCO-AAA-SESSION-MIB::casnGeneral
+  discovery_attribute: casnActiveTableEntries
+  attributes:
+    casnActiveTableEntries:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.1
+      name: cisco.casnActiveTableEntries
+      syntax: Gauge32
+    casnActiveTableHighWaterMark:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.2
+      name: cisco.casnActiveTableHighWaterMark
+      syntax: Gauge32
+
+CISCO-AAA-SESSION-MIB::casnActiveEntry:
+  mib: CISCO-AAA-SESSION-MIB
+  object: casnActiveEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.1
+      name: cisco.casnSessionId
+      syntax: UnsignedAsID
+  discovery_attribute: casnUserId
+  attributes:
+    casnUserId:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.2
+      name: cisco.casnUserId
+      syntax: DisplayString
+    casnIpAddr:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.3
+      name: cisco.casnIpAddr
+      syntax: IpAddressNoSuffix
+    casnIdleTime:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.4
+      name: cisco.casnIdleTime
+      syntax: TicksSec
+    casnDisconnect:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.5
+      name: cisco.casnDisconnect
+      syntax: TruthValue
+    casnCallTrackerId:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.6
+      name: cisco.casnCallTrackerId
+      syntax: Unsigned32
+    casnNasPort:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.7
+      name: cisco.casnNasPort
+      syntax: RowPointer
+    casnVaiIfIndex:
+      oid: .1.3.6.1.4.1.9.9.150.1.1.3.1.8
+      name: netif
+      syntax: InterfaceIndexOrZero
+
+CISCO-AAA-SESSION-MIB::casnGeneral:
+  mib: CISCO-AAA-SESSION-MIB
+  object: casnGeneral
+  discovery_attribute: casnTotalSessions
+  attributes:
+    casnTotalSessions:
+      oid: .1.3.6.1.4.1.9.9.150.1.2.1
+      name: cisco.casnTotalSessions
+      syntax: Counter32
+    casnDisconnectedSessions:
+      oid: .1.3.6.1.4.1.9.9.150.1.2.2
+      name: cisco.casnDisconnectedSessions
+      syntax: Counter32
