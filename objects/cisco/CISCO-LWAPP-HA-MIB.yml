@@ -276,3 +276,208 @@ CISCO-LWAPP-HA-MIB::ciscoLwappMcRmiConfig:
       oid: .1.3.6.1.4.1.9.9.843.1.7.10
       name: cisco.cLMcRmiGatewayFailoverInterval
       syntax: Unsigned32
+
+CISCO-LWAPP-HA-MIB::ciscoLwappHaGlobalConfigOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: ciscoLwappHaGlobalConfigOLD
+  augments: CISCO-LWAPP-HA-MIB::cLHaSystemStatisticsOLD
+  discovery_attribute: cLHaPeerIpAddress
+  attributes:
+    cLHaApSsoConfig:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.1
+      name: cisco.cLHaApSsoConfig
+      syntax: TruthValue
+    cLHaPeerIpAddress:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.3
+      name: cisco.cLHaPeerIpAddress
+      syntax: IpAddressNoSuffix
+    cLHaServicePortPeerIpAddress:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.5
+      name: cisco.cLHaServicePortPeerIpAddress
+      syntax: IpAddressNoSuffix
+    cLHaServicePortPeerIpNetMask:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.7
+      name: cisco.cLHaServicePortPeerIpNetMask
+      syntax: IpAddressNoSuffix
+    cLHaRedundancyIpAddress:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.9
+      name: cisco.cLHaRedundancyIpAddress
+      syntax: IpAddressNoSuffix
+    cLHaPeerMacAddress:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.10
+      name: cisco.cLHaPeerMacAddress
+      syntax: MacAddressNoSuffix
+    cLHaVirtualMacAddress:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.11
+      name: cisco.cLHaVirtualMacAddress
+      syntax: MacAddressNoSuffix
+    cLHaPrimaryUnit:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.12
+      name: cisco.cLHaPrimaryUnit
+      syntax: TruthValue
+    cLHaLinkEncryption:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.13
+      name: cisco.cLHaLinkEncryption
+      syntax: TruthValue
+    cLHaNetworkFailOver:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.14
+      name: cisco.cLHaNetworkFailOver
+      syntax: TruthValue
+    cLHaRFStatusUnitIp:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.15
+      name: cisco.cLHaRFStatusUnitIp
+      syntax: IpAddressNoSuffix
+    cLHaKATimeout:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.16
+      name: cisco.cLHaKATimeout
+      syntax: TicksMilliSec
+    cLHaKARetryCount:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.17
+      name: cisco.cLHaKARetryCount
+      syntax: Unsigned32
+    cLHaGwRetryCount:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.18
+      name: cisco.cLHaGwRetryCount
+      syntax: Unsigned32
+    cLHaPeerSearchTimeout:
+      oid: .1.3.6.1.4.1.9.9.198888.0.1.19
+      name: cisco.cLHaPeerSearchTimeout
+      syntax: TicksSec
+
+CISCO-LWAPP-HA-MIB::cLHaNetworkRoutePeerConfigEntryOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: cLHaNetworkRoutePeerConfigEntryOLD
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.198888.0.2.1.1.1
+      name: cisco.cLHaNetworkRoutePeerIPAddressType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.198888.0.2.1.1.2
+      name: cisco.cLHaNetworkRoutePeerIPAddress
+      syntax: IpAddressNoSuffix
+  discovery_attribute: cLHaNetworkRoutePeerIPNetmask
+  attributes:
+    cLHaNetworkRoutePeerIPNetmask:
+      oid: .1.3.6.1.4.1.9.9.198888.0.2.1.1.4
+      name: cisco.cLHaNetworkRoutePeerIPNetmask
+      syntax: IpAddressNoSuffix
+    cLHaNetworkRoutePeerGateway:
+      oid: .1.3.6.1.4.1.9.9.198888.0.2.1.1.6
+      name: cisco.cLHaNetworkRoutePeerGateway
+      syntax: IpAddressNoSuffix
+    cLHaNetworkRoutePeerTransferStatus:
+      oid: .1.3.6.1.4.1.9.9.198888.0.2.1.1.7
+      name: cisco.cLHaNetworkRoutePeerTransferStatus
+      syntax: EnumInteger
+
+CISCO-LWAPP-HA-MIB::cLHaSystemStatisticsOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: cLHaSystemStatisticsOLD
+  discovery_attribute: cLHaAllCpuUsage
+  attributes:
+    cLHaAllCpuUsage:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.1.1
+      name: cisco.cLHaAllCpuUsage
+      syntax: DisplayString
+
+CISCO-LWAPP-HA-MIB::cLHaPowerSupplyStatisticsOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: cLHaPowerSupplyStatisticsOLD
+  augments: CISCO-LWAPP-HA-MIB::cLHaSystemStatisticsOLD
+  discovery_attribute: cLHaPowerSupply1Present
+  attributes:
+    cLHaPowerSupply1Present:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.2.1
+      name: cisco.cLHaPowerSupply1Present
+      syntax: EnumInteger
+    cLHaPowerSupply1Operational:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.2.2
+      name: cisco.cLHaPowerSupply1Operational
+      syntax: EnumInteger
+    cLHaPowerSupply2Present:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.2.3
+      name: cisco.cLHaPowerSupply2Present
+      syntax: EnumInteger
+    cLHaPowerSupply2Operational:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.2.4
+      name: cisco.cLHaPowerSupply2Operational
+      syntax: EnumInteger
+
+CISCO-LWAPP-HA-MIB::cLHaMemoryStatisticsOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: cLHaMemoryStatisticsOLD
+  augments: CISCO-LWAPP-HA-MIB::cLHaSystemStatisticsOLD
+  discovery_attribute: cLHaTotalSystemMemory
+  attributes:
+    cLHaTotalSystemMemory:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.1
+      name: cisco.cLHaTotalSystemMemory
+      syntax: BytesKB
+    cLHaFreeSystemMemory:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.2
+      name: cisco.cLHaFreeSystemMemory
+      syntax: BytesKB
+    cLHaUsedSystemMemory:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.3
+      name: cisco.cLHaUsedSystemMemory
+      syntax: BytesKB
+    cLHaAllocatedFromRtos:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.4
+      name: cisco.cLHaAllocatedFromRtos
+      syntax: BytesKB
+    cLHaChunksFree:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.5
+      name: cisco.cLHaChunksFree
+      syntax: Integer32
+    cLHaMmappedRegions:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.6
+      name: cisco.cLHaMmappedRegions
+      syntax: Integer32
+    cLHaSpaceInMmappedRegions:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.7
+      name: cisco.cLHaSpaceInMmappedRegions
+      syntax: BytesKB
+    cLHaTotalAllocatedSpace:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.8
+      name: cisco.cLHaTotalAllocatedSpace
+      syntax: BytesKB
+    cLHaTotalNotInUseSpace:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.9
+      name: cisco.cLHaTotalNotInUseSpace
+      syntax: BytesKB
+    cLHaTopMostReleasableSpace:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.10
+      name: cisco.cLHaTopMostReleasableSpace
+      syntax: BytesKB
+    cLHaTotalAllocatedInclMmap:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.11
+      name: cisco.cLHaTotalAllocatedInclMmap
+      syntax: BytesKB
+    cLHaTotalUsedInclMmap:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.12
+      name: cisco.cLHaTotalUsedInclMmap
+      syntax: BytesKB
+    cLHaTotalFreeInclMmap:
+      oid: .1.3.6.1.4.1.9.9.198888.0.5.1.3.13
+      name: cisco.cLHaTotalFreeInclMmap
+      syntax: BytesKB
+
+CISCO-LWAPP-HA-MIB::ciscoLwappHaStatisticsVariableOLD:
+  mib: CISCO-LWAPP-HA-MIB
+  object: ciscoLwappHaStatisticsVariableOLD
+  augments: CISCO-LWAPP-HA-MIB::cLHaSystemStatisticsOLD
+  discovery_attribute: cLHaAvgPeerReachLatency
+  attributes:
+    cLHaAvgPeerReachLatency:
+      oid: .1.3.6.1.4.1.9.9.198888.0.6.1
+      name: cisco.cLHaAvgPeerReachLatency
+      syntax: OpTicksMicroSec
+    cLHaAvgGwReachLatency:
+      oid: .1.3.6.1.4.1.9.9.198888.0.6.2
+      name: cisco.cLHaAvgGwReachLatency
+      syntax: OpTicksMicroSec
+    cLHaBulkSyncStatus:
+      oid: .1.3.6.1.4.1.9.9.198888.0.6.3
+      name: cisco.cLHaBulkSyncStatus
+      syntax: DisplayString
