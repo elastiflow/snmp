@@ -1,0 +1,264 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALTEON-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: alt_sw_primary_power_suppyl_failure
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Primary Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Primary Power Supply Failed"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: alt_sw_redun_power_suppyl_failure
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Redundant Power Supply Failed"
+            root.out.event.category.name = "Redundant Power Supply Status"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: alt_sw_def_gw_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Default Gateway Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ")"
+            root.out.event.message = "Default Gateway is Alive"
+
+            root.out.alteon.ipCurCfgGwIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.ipCurCfgGwAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: alt_sw_def_gw_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ")"
+            root.out.event.message = "Default Gateway is Down"
+            root.out.event.category.name = "Default Gateway Status"
+
+            root.out.alteon.ipCurCfgGwIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.ipCurCfgGwAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: alt_sw_def_gw_in_service
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Default Gateway Service Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ")"
+            root.out.event.message = "Default Gateway is Up and In-Service"
+
+            root.out.alteon.ipCurCfgGwIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.ipCurCfgGwAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: alt_sw_def_gw_not_in_service
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Default Gateway is Alive but NOT In-Service"
+            root.out.event.category.name = "Default Gateway Service Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ")"
+
+            root.out.alteon.ipCurCfgGwIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.ipCurCfgGwAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: alt_sw_slb_real_server_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Real Server is Up and Operational"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: alt_sw_slb_real_server_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Real Server is Down and Out-of-Service"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: alt_sw_slb_real_server_max_conn_reached
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Connection Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Real Server has reached maximum connections"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: alt_sw_slb_bkup_real_server_act
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Failover Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Backup Real Server Active, Primary Real Server Unavailable"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: alt_sw_slb_bkup_real_server_deact
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Failover Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Backup Real Server deactived, Primary Real Server available"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: alt_sw_slb_bkup_real_server_act_overflow
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Failover Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Backup Real Server is activated, Primary Real Server is overflowed"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: alt_sw_slb_bkup_real_server_deact_overflow
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Failover Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ")"
+            root.out.event.message = "Backup Real Server is deactivated, Primary Real Server is out of overflow situation"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: alt_sw_slb_failover_standby
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Failover Role"
+            root.out.object.name = $1($2, $3)"
+            root.out.event.message = "Switch is now a standby switch"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: alt_sw_slb_failover_active
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Failover Role"
+            root.out.object.name = $1($2, $3)"
+            root.out.event.message = "Switch is now an active switch"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: alt_sw_slb_failover_switch_up
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Failover Switch Status"
+            root.out.object.name = $1($2, $3)"
+            root.out.event.message = "Failover switch is Alive"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: alt_sw_slb_failover_switch_down
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Failover Switch Status"
+            root.out.object.name = $1($2, $3)"
+            root.out.event.message = "Failover switch is Down"
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: alt_swflt_filter_fired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(0).Value + " " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Packet received on switch port ( PortIndx
+            root.out.event.category.name = "Packet Filtered"
+
+            root.out.alteon.fltCurCfgIndx = this.trap.VarBinds.index(0).Value
+            root.out.alteon.fltCurCfgPortIndx = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: alt_sw_slb_real_server_service_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Service Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ", L4Port
+            root.out.event.message = "Service Port of the Real Server is Up and Operational"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.alteon.slbCurCfgVirtServiceRealPort = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: alt_sw_slb_real_server_service_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Real Server Service Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "(" + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ", L4Port
+            root.out.event.message = "Service Port of the Real Server is Down and Out-of-Service"
+
+            root.out.alteon.slbCurCfgRealServerIndex = this.trap.VarBinds.index(0).Value
+            root.out.alteon.slbCurCfgRealServerIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.alteon.slbCurCfgRealServerName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.alteon.slbCurCfgVirtServiceRealPort = this.trap.VarBinds.index(3).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

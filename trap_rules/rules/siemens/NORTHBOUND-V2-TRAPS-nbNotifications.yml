@@ -1,0 +1,76 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "NORTHBOUND-V2-TRAPS"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: alarm_info_v2
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = $8, lookup($9, ipmanagerX733ProbableCause)  ( Alarm Instance: $14 )"
+            root.out.event.category.name = lookup($10, ipmanagerX733EventType) ( lookup($9, ipmanagerX733ProbableCause) )"
+            root.out.object.name = "Alarm Instance: $14
+        - label: alarm_info_v2_nested_switch
+          switch:
+            - check: ' == 1'
+              processors:
+                - label: alarm_info_v2_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: ' == 2'
+              processors:
+                - label: alarm_info_v2_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: ' == 3'
+              processors:
+                - label: alarm_info_v2_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: ' == 4'
+              processors:
+                - label: alarm_info_v2_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: ' == 5'
+              processors:
+                - label: alarm_info_v2_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: ' == 6'
+              processors:
+                - label: alarm_info_v2_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: alarm_info_v2_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: alarm_info_v2_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

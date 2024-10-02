@@ -1,0 +1,3688 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "FSP2000-R2-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ne_trapsink_test
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: equipment_holder_object_creation
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Holder Object Created  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentHolderObjectCreation"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentHolderObjectCreation"
+            root.out.event.category.name = "Equipment Holder Object Status"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: equipment_holder_object_deletion
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentHolderObjectDeletion"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentHolderObjectDeletion"
+            root.out.event.category.name = "Equipment Holder Object Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Holder Object Deleted  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: ne_trapsink_object_creation
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: ne_trapsink_object_deletion
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: ne_snmpwrite_access_object_creation
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: ne_snmpwrite_access_object_deletion
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: container_state_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-containerStateChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-containerStateChange"
+            root.out.event.category.name = "Container Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.containsPhysicalIndex = this.trap.VarBinds.index(1).Value
+            root.out.adva.containerState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.3.1.1")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(3).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(4).Value
+        - label: container_state_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: container_state_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Container Empty"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: container_state_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Container Contains Accepted Unit"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: container_state_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Container Contains Not Accepted Unit"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: container_state_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Container Contains Unknown Unit"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: container_state_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Container Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: container_state_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: ne_state_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Network Element Status Changed"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neStateChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neStateChange"
+            root.out.event.category.name = "Network Element Status"
+
+            root.out.adva.objectId = this.trap.VarBinds.index(0).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: interface_state_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Status Changed"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceStateChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceStateChange"
+            root.out.event.category.name = "Interface Status"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.objectId = this.trap.VarBinds.index(1).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: equipment_state_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Status Changed  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentStateChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentStateChange"
+            root.out.event.category.name = "Equipment Status"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.objectId = this.trap.VarBinds.index(1).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: ne_attribute_value_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neAttributeValueChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neAttributeValueChange"
+            root.out.event.category.name = "NE Attribute Value Status"
+            root.out.object.name = ""
+            root.out.event.message = "Network Element Attribute Value Changed"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.adva.objectId = this.trap.VarBinds.index(0).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: interface_attribute_value_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAttributeValueChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAttributeValueChange"
+            root.out.event.category.name = "Interface Attribute Value Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Attribute Value Changed  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.objectId = this.trap.VarBinds.index(1).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: equipment_attribute_value_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAttributeValueChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAttributeValueChange"
+            root.out.event.category.name = "Equipment Attribute Value Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Attribute Value Changed  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.objectId = this.trap.VarBinds.index(1).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: ne_authentification_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neAuthentificationFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neAuthentificationFail"
+            root.out.event.category.name = "NE Authentication Status"
+            root.out.object.name = ""
+
+            root.out.adva.neAlarmAuthFailSource = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.3.1")
+            root.out.adva.neAlarmAuthFailDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: ne_authentification_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: ne_authentification_fail_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Network Element Authentication Failure Cleared"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: ne_authentification_fail_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SNMP Agent Indicating Wrong Community"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: ne_authentification_fail_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Unsuccessful Login Request"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: ne_authentification_fail_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Unsuccessful Switch User(su) Request"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: ne_authentification_fail_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Network Element Authentication Failure of Unknown Type"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+        - label: ne_authentification_fail_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: ne_inncdown
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Inter NEMI Network Connection (INNC) Down"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neINNCDown"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neINNCDown"
+            root.out.event.category.name = "INNC Status"
+            root.out.object.name = ""
+
+            root.out.adva.timeStamp = this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: ne_inncup
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neINNCUp"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neINNCUp"
+            root.out.event.category.name = "INNC Status"
+            root.out.object.name = ""
+            root.out.event.message = "Inter NEMI Network Connection (INNC) Up"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.adva.timeStamp = this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: ne_software_update
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-neSoftwareUpdate"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-neSoftwareUpdate"
+            root.out.event.category.name = "NE Software Update Status"
+            root.out.object.name = ""
+
+            root.out.adva.neState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.2.5")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+        - label: ne_software_update_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: ne_software_update_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Network Element Running, Normal Operation"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: ne_software_update_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Network Element UCM Update, Hardware Access Blocked"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: ne_software_update_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Network Element Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: ne_software_update_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: reset_all_telemetry_outputs
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-resetAllTelemetryOutputs"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-resetAllTelemetryOutputs"
+            root.out.event.category.name = "NEMI Reset"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NEMI Reset  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.timeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: interface_alarm_severity_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmSeverityChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmSeverityChange"
+            root.out.object.name = "interfaceAlarmSeverityEntry." + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.3.1.1")
+
+            root.out.adva.interfaceAlarmSeverityType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.3.1.1")
+            root.out.adva.interfaceAlarmSeverityValue = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.3.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_severity_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 10
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_10
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface OOP Status"
+                    root.out.event.message = "Interface Loss of Optical Output Power"
+            - check: this.trap.VarBinds.index(1).Value == 11
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_11
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface OIP Status"
+                    root.out.event.message = "Interface Optical Input Power Too High"
+            - check: this.trap.VarBinds.index(1).Value == 12
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_12
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface OOP Level Status"
+                    root.out.event.message = "Interface Optical Output Power Too Low"
+            - check: this.trap.VarBinds.index(1).Value == 13
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_13
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Plug R Status"
+                    root.out.event.message = "Interface Plug R Line Attenuation Out of Range"
+            - check: this.trap.VarBinds.index(1).Value == 14
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_14
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Interface Plug T Line Attenuation Out of Range"
+                    root.out.event.category.name = "Interface Plug T Status"
+            - check: this.trap.VarBinds.index(1).Value == 15
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_15
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Signal Transmission Status"
+                    root.out.event.message = "Interface Loss of Signal Transmission"
+            - check: this.trap.VarBinds.index(1).Value == 16
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Telemetry Input 1 Status"
+                    root.out.event.message = "Interface Telemetry Input 1"
+            - check: this.trap.VarBinds.index(1).Value == 17
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_17
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Telemetry Input 2 Status"
+                    root.out.event.message = "Interface Telemetry Input 2"
+            - check: this.trap.VarBinds.index(1).Value == 18
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_18
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Telemetry Input 3 Status"
+                    root.out.event.message = "Interface Telemetry Input 3"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - check: this.trap.VarBinds.index(1).Value == 7
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Laser TEC Status"
+                    root.out.event.message = "Interface Laser Thermoelectric Cooler End of life"
+            - check: this.trap.VarBinds.index(1).Value == 8
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interface Module Temperature Status"
+                    root.out.event.message = "Interface Module Temperature Out of Range"
+            - check: this.trap.VarBinds.index(1).Value == 9
+              processors:
+                - label: interface_alarm_severity_change_nested_switch_9
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Interface Laser Temperature Out of Range"
+                    root.out.event.category.name = "Interface Laser Temperature Status"
+            - processors:
+                - label: interface_alarm_severity_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_severity_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: equipment_alarm_severity_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmSeverityChange"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmSeverityChange"
+            root.out.object.name = "equipmentAlarmSeverityEntry." + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.4.1.1")
+
+            root.out.adva.equipmentAlarmSeverityType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.4.1.1")
+            root.out.adva.equipmentAlarmSeverityValue = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.1.4.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_severity_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_severity_change_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: equipment_alarm_severity_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_severity_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 500
+      processors:
+        - label: interface_alarm_loss_of_signal
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Interface Loss of Signal  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSignal"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSignal"
+            root.out.event.category.name = "Interface Signal Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_loss_of_signal_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_loss_of_signal_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_loss_of_signal_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 501
+      processors:
+        - label: interface_alarm_no_loss_of_signal
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSignal"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSignal"
+            root.out.event.category.name = "Interface Signal Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Loss of Signal  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_loss_of_signal_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_loss_of_signal_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_loss_of_signal_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 502
+      processors:
+        - label: interface_alarm_loss_of_link_pulse
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Interface Loss of Link Pulse  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfLinkPulse"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfLinkPulse"
+            root.out.event.category.name = "Interface Link Pulse Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_loss_of_link_pulse_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_loss_of_link_pulse_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_loss_of_link_pulse_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 503
+      processors:
+        - label: interface_alarm_no_loss_of_link_pulse
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Interface Loss of Link Pulse  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfLinkPulse"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfLinkPulse"
+            root.out.event.category.name = "Interface Link Pulse Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_loss_of_link_pulse_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_loss_of_link_pulse_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_loss_of_link_pulse_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 504
+      processors:
+        - label: interface_alarm_loss_of_sync
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSync"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSync"
+            root.out.event.category.name = "Interface Sync Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Loss of Sync  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_loss_of_sync_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_loss_of_sync_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_loss_of_sync_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 505
+      processors:
+        - label: interface_alarm_no_loss_of_sync
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Interface Loss of Sync  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSync"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSync"
+            root.out.event.category.name = "Interface Sync Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_loss_of_sync_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_loss_of_sync_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_loss_of_sync_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 506
+      processors:
+        - label: interface_alarm_partitioned
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Interface Partitioned  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmPartitioned"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmPartitioned"
+            root.out.event.category.name = "Interface Partition Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_partitioned_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_partitioned_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_partitioned_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_partitioned_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 507
+      processors:
+        - label: interface_alarm_no_partitioned
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Interface Partitioned  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoPartitioned"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoPartitioned"
+            root.out.event.category.name = "Interface Partition Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_partitioned_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_partitioned_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_partitioned_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_partitioned_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 542
+      processors:
+        - label: if_alarm_laser_bias_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 543
+      processors:
+        - label: if_alarm_laser_bias_not_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 544
+      processors:
+        - label: if_alarm_laser_bias_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 545
+      processors:
+        - label: if_alarm_laser_bias_not_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 510
+      processors:
+        - label: interface_alarm_laser_tec_eo_l
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Laser Thermoelectric Cooler End of Life  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTecEoL"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTecEoL"
+            root.out.event.category.name = "Interface Laser TEC Status"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_laser_tec_eo_l_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_laser_tec_eo_l_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_laser_tec_eo_l_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 511
+      processors:
+        - label: interface_alarm_no_laser_tec_eo_l
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLaserTecEoL"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLaserTecEoL"
+            root.out.event.category.name = "Interface Laser TEC Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Laser Thermoelectric Cooler End of Life  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_laser_tec_eo_l_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_laser_tec_eo_l_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_laser_tec_eo_l_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 512
+      processors:
+        - label: interface_alarm_if_module_temp_oo_r
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmIfModuleTempOoR"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmIfModuleTempOoR"
+            root.out.event.category.name = "Interface Module Temperature Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Module Temperature Out of Range  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_if_module_temp_oo_r_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_if_module_temp_oo_r_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_if_module_temp_oo_r_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 513
+      processors:
+        - label: interface_alarm_if_module_temp_not_oo_r
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmIfModuleTempNotOoR"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmIfModuleTempNotOoR"
+            root.out.event.category.name = "Interface Module Temperature Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Module Temperature Out of Range  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_if_module_temp_not_oo_r_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_if_module_temp_not_oo_r_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_if_module_temp_not_oo_r_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 514
+      processors:
+        - label: interface_alarm_laser_temp_oo_r
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Interface Laser Temperature Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Laser Temperature Out of Range  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTempOoR"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTempOoR"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_laser_temp_oo_r_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_laser_temp_oo_r_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_laser_temp_oo_r_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 515
+      processors:
+        - label: interface_alarm_laser_temp_not_oo_r
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Laser Temperature Out of Range  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTempNotOoR"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLaserTempNotOoR"
+            root.out.event.category.name = "Interface Laser Temperature Status"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_laser_temp_not_oo_r_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_laser_temp_not_oo_r_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_laser_temp_not_oo_r_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 516
+      processors:
+        - label: interface_alarm_loss_of_oop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Loss of Optical Output Power  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfOOP"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfOOP"
+            root.out.event.category.name = "Interface OOP Status"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_loss_of_oop_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_loss_of_oop_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_loss_of_oop_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 517
+      processors:
+        - label: interface_alarm_no_loss_of_oop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfOOP"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfOOP"
+            root.out.event.category.name = "Interface OOP Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Loss of Optical Output Power  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_loss_of_oop_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_loss_of_oop_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_loss_of_oop_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 546
+      processors:
+        - label: interface_alarm_oiptoo_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 547
+      processors:
+        - label: interface_alarm_oipnot_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 518
+      processors:
+        - label: interface_alarm_oiptoo_high
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOIPTooHigh"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOIPTooHigh"
+            root.out.event.category.name = "Interface OIP Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Optical Input Power Too High ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_oiptoo_high_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_oiptoo_high_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_oiptoo_high_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 519
+      processors:
+        - label: interface_alarm_oipnot_too_high
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOIPNotTooHigh"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOIPNotTooHigh"
+            root.out.event.category.name = "Interface OIP Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Interface Optical Input Power Too High  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_oipnot_too_high_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_oipnot_too_high_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_oipnot_too_high_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 520
+      processors:
+        - label: interface_alarm_ooptoo_low
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOOPTooLow"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOOPTooLow"
+            root.out.event.category.name = "Interface OOP Level Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Interface Optical Ouput Power Too Low  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_ooptoo_low_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_ooptoo_low_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_ooptoo_low_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 521
+      processors:
+        - label: interface_alarm_oopnot_too_low
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Interface Interface Optical Ouput Power Too Low  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOOPNotTooLow"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmOOPNotTooLow"
+            root.out.event.category.name = "Interface OOP Level Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_oopnot_too_low_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_oopnot_too_low_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_oopnot_too_low_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 548
+      processors:
+        - label: interface_alarm_ooptoo_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 549
+      processors:
+        - label: interface_alarm_oopnot_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 526
+      processors:
+        - label: interface_alarm_loss_of_signal_at_t
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Interface Loss of Signal Transmission  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSignalAtT"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmLossOfSignalAtT"
+            root.out.event.category.name = "Interface Signal Transmission Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_loss_of_signal_at_t_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: interface_alarm_loss_of_signal_at_t_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_loss_of_signal_at_t_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 527
+      processors:
+        - label: interface_alarm_no_loss_of_signal_at_t
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Interface Loss of Signal Transmission  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSignalAtT"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-interfaceAlarmNoLossOfSignalAtT"
+            root.out.event.category.name = "Interface Signal Transmission Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: interface_alarm_no_loss_of_signal_at_t_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: interface_alarm_no_loss_of_signal_at_t_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: interface_alarm_no_loss_of_signal_at_t_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 528
+      processors:
+        - label: telemetry_state_on
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-telemetryStateOn"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-telemetryStateOn"
+            root.out.event.category.name = "Telemetry Interface Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Telemetry Interface Error  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: telemetry_state_on_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: telemetry_state_on_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: telemetry_state_on_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: telemetry_state_on_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: telemetry_state_on_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: telemetry_state_on_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: telemetry_state_on_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: telemetry_state_on_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: telemetry_state_on_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 529
+      processors:
+        - label: telemetry_state_off
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Telemetry Interface Error  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-telemetryStateOff"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-telemetryStateOff"
+            root.out.event.category.name = "Telemetry Interface Status"
+
+            root.out.adva.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.interfaceCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.1.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: telemetry_state_off_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: telemetry_state_off_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: telemetry_state_off_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: telemetry_state_off_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: telemetry_state_off_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: telemetry_state_off_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: telemetry_state_off_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: telemetry_state_off_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: telemetry_state_off_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 610
+      processors:
+        - label: telemetry_input2state_on
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 611
+      processors:
+        - label: telemetry_input2state_off
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 612
+      processors:
+        - label: telemetry_input3state_on
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 613
+      processors:
+        - label: telemetry_input3state_off
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 530
+      processors:
+        - label: interface_alarm_att_at_rtoo_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 531
+      processors:
+        - label: interface_alarm_att_at_rnot_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 532
+      processors:
+        - label: interface_alarm_att_at_rtoo_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 533
+      processors:
+        - label: interface_alarm_att_at_rnot_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 534
+      processors:
+        - label: interface_alarm_att_at_ttoo_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 535
+      processors:
+        - label: interface_alarm_att_at_tnot_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 536
+      processors:
+        - label: interface_alarm_att_at_ttoo_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 537
+      processors:
+        - label: interface_alarm_att_at_tnot_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 538
+      processors:
+        - label: interface_alarm_intrusion_at_r
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 539
+      processors:
+        - label: interface_alarm_no_intrusion_at_r
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 540
+      processors:
+        - label: interface_alarm_intrusion_at_t
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 541
+      processors:
+        - label: interface_alarm_no_intrusion_at_t
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 602
+      processors:
+        - label: interface_alarm_att_rx_mon_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 603
+      processors:
+        - label: interface_alarm_att_rx_mon_not_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 604
+      processors:
+        - label: interface_alarm_att_rx_mon_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 605
+      processors:
+        - label: interface_alarm_att_rx_mon_not_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 606
+      processors:
+        - label: interface_alarm_att_tx_mon_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 607
+      processors:
+        - label: interface_alarm_att_tx_mon_not_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 608
+      processors:
+        - label: interface_alarm_att_tx_mon_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 609
+      processors:
+        - label: interface_alarm_att_tx_mon_not_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 614
+      processors:
+        - label: interface_alarm_laser_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 615
+      processors:
+        - label: interface_alarm_laser_no_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 616
+      processors:
+        - label: interface_alarm_pump_laser_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 617
+      processors:
+        - label: interface_alarm_pump_laser_no_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 618
+      processors:
+        - label: interface_alarm_receiver_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 619
+      processors:
+        - label: interface_alarm_receiver_no_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 620
+      processors:
+        - label: interface_alarm_oopoo_r
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 621
+      processors:
+        - label: interface_alarm_oopnormal
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 622
+      processors:
+        - label: if_alarm_temp_safety_shutdown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 623
+      processors:
+        - label: if_alarm_temp_safety_shutdown_clear
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 624
+      processors:
+        - label: interface_alarm_laser_temp2low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 625
+      processors:
+        - label: interface_alarm_laser_temp_not2low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 626
+      processors:
+        - label: interface_alarm_laser_temp2high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 627
+      processors:
+        - label: interface_alarm_laser_temp_not2high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 552
+      processors:
+        - label: equipment_alarm_fan_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Equipment Fan Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Fan Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanFail"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_fan_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_fan_fail_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: equipment_alarm_fan_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_fan_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 553
+      processors:
+        - label: equipment_alarm_fan_no_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "End of Equipment Fan Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanNoFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanNoFail"
+            root.out.event.category.name = "Equipment Fan Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_fan_no_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: equipment_alarm_fan_no_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_fan_no_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 554
+      processors:
+        - label: equipment_alarm_fan_ps_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanPsFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanPsFail"
+            root.out.event.category.name = "Equipment Fan Power Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Fan Power Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_fan_ps_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: equipment_alarm_fan_ps_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_fan_ps_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 555
+      processors:
+        - label: equipment_alarm_fan_ps_no_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Equipment Fan Power Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Equipment Fan Power Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanPsNoFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmFanPsNoFail"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_fan_ps_no_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: equipment_alarm_fan_ps_no_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_fan_ps_no_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 556
+      processors:
+        - label: equipment_alarm_ps_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmPsFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmPsFail"
+            root.out.event.category.name = "Equipment Power Supply Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Equipment Power Supply Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_ps_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_ps_fail_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+            - processors:
+                - label: equipment_alarm_ps_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_ps_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 557
+      processors:
+        - label: equipment_alarm_ps_no_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmPsNoFail"
+            root.out.event.id = "SNMPTRAP-adva-FSP2000-R2-MIB-equipmentAlarmPsNoFail"
+            root.out.event.category.name = "Equipment Power Supply Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of Equipment Power Supply Failure  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.adva.entPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.adva.equipmentCurrentAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2544.1.7.2.1.2.2.1.2")
+            root.out.adva.timeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.adva.indexTranslation = this.trap.VarBinds.index(3).Value
+        - label: equipment_alarm_ps_no_fail_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: equipment_alarm_ps_no_fail_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: equipment_alarm_ps_no_fail_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 560
+      processors:
+        - label: equipment_alarm_temp_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 561
+      processors:
+        - label: equipment_alarm_temp_not_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 562
+      processors:
+        - label: equipment_alarm_temp_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 563
+      processors:
+        - label: equipment_alarm_temp_not_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 564
+      processors:
+        - label: equipment_alarm_voltage_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 565
+      processors:
+        - label: equipment_alarm_voltage_not_too_high
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 566
+      processors:
+        - label: equipment_alarm_voltage_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 567
+      processors:
+        - label: equipment_alarm_voltage_not_too_low
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 570
+      processors:
+        - label: eq_alarm_mismatch
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 571
+      processors:
+        - label: eq_alarm_no_mismatch
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

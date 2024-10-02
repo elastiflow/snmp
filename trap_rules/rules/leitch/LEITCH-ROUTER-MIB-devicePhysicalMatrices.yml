@@ -1,0 +1,883 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LEITCH-ROUTER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: device_physical_matrices_matrix_installed_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: device_physical_matrices_matrix_type_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: device_physical_matrices_matrix_num_inputs_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.message = "Device Name Changed  ( " + "Device: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(0).Value
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.category.name = "Device Name Change"
+
+            root.out.leitch.devicePhysicalMatricesMatrixNumInputs = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: device_physical_matrices_matrix_num_outputs_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: device_physical_matrices_matrix_name_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: device_physical_matrices_matrix_num_modules_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: device_physical_matrices_output_sig_pres_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: device_physical_matrices_output_status_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: device_physical_matrices_output_param1event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceCommStateEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceCommStateEvent"
+            root.out.event.category.name = "Device Communications Status"
+            root.out.object.name = ""
+
+            root.out.leitch.devicePhysicalMatricesOutputParam1 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_output_param1event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_output_param1event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications OK"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_output_param1event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_output_param1event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Undetermined"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: device_physical_matrices_output_param1event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_output_param1event_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: device_physical_matrices_output_param2event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: device_physical_matrices_output_param3event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: device_physical_matrices_output_param4event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceControlStateEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceControlStateEvent"
+            root.out.event.category.name = "Device Control Status"
+            root.out.object.name = ""
+
+            root.out.leitch.devicePhysicalMatricesOutputParam4 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_output_param4event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_output_param4event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control OK"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_output_param4event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_output_param4event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Status Undetermined"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: device_physical_matrices_output_param4event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_output_param4event_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: device_physical_matrices_output_param5event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: device_physical_matrices_output_param6event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: device_physical_matrices_output_param7event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: device_physical_matrices_output_param8event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: device_physical_matrices_output_level_idevent
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: device_physical_matrices_output_level_out_idevent
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: device_physical_matrices_input_sig_pres_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
+            root.out.event.message = "Device IP Subnet Mask Changed  ( Netmask: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.35.21.1.3") + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.category.name = "Device IP Netmask Change"
+            root.out.object.name = "deviceIPSettingsEntry.1"
+
+            root.out.leitch.devicePhysicalMatricesInputSigPres = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.35.21.1.3")
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: device_physical_matrices_input_param1event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Device IP Gateway Change"
+            root.out.object.name = "deviceIPSettingsEntry.1"
+            root.out.event.message = "Device IP Default Gateway Changed  ( Gateway: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsGatewayEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsGatewayEvent"
+
+            root.out.leitch.devicePhysicalMatricesInputParam1 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: device_physical_matrices_input_param2event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "deviceIPSettingsEntry.1"
+
+            root.out.leitch.devicePhysicalMatricesInputParam2 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_input_param2event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_input_param2event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Connected"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_input_param2event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Not Connected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: device_physical_matrices_input_param2event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_input_param2event_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: device_physical_matrices_input_param3event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: device_physical_matrices_input_param4event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Install Status"
+            root.out.object.name = "deviceFansEntry.1"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansInstalledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansInstalledEvent"
+
+            root.out.leitch.devicePhysicalMatricesInputParam4 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_input_param4event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_input_param4event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Installed"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_input_param4event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Removed"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_input_param4event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Install Status Undetermined"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: device_physical_matrices_input_param4event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Install Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_input_param4event_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: device_physical_matrices_input_param5event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansStatusEvent"
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = "deviceFansEntry.1"
+
+            root.out.leitch.devicePhysicalMatricesInputParam5 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_input_param5event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_input_param5event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan OK"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_input_param5event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "Fan Error"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_input_param5event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Status Undetermined"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: device_physical_matrices_input_param5event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_input_param5event_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: device_physical_matrices_input_param6event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: device_physical_matrices_input_param7event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Install Status"
+            root.out.object.name = "devicePSUEntry.1"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUInstalledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUInstalledEvent"
+
+            root.out.leitch.devicePhysicalMatricesInputParam7 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_input_param7event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_input_param7event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_input_param7event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Removed"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_input_param7event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Install Status Undetermined"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: device_physical_matrices_input_param7event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Install Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_input_param7event_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: device_physical_matrices_input_param8event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "devicePSUEntry.1"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUStatusEvent"
+            root.out.event.category.name = "Power Supply Status"
+
+            root.out.leitch.devicePhysicalMatricesInputParam8 = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+        - label: device_physical_matrices_input_param8event_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+              processors:
+                - label: device_physical_matrices_input_param8event_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed and Working"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+              processors:
+                - label: device_physical_matrices_input_param8event_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed and Not Working"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+              processors:
+                - label: device_physical_matrices_input_param8event_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply No Failure"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 4
+              processors:
+                - label: device_physical_matrices_input_param8event_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Failure"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: device_physical_matrices_input_param8event_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: device_physical_matrices_input_param8event_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: device_physical_matrices_input_level_idevent
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 58
+      processors:
+        - label: device_physical_matrices_input_level_in_idevent
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 60
+      processors:
+        - label: device_physical_matrices_mat_param_name_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 61
+      processors:
+        - label: device_physical_matrices_mat_param_type_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 62
+      processors:
+        - label: device_physical_matrices_mat_param_desc_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 63
+      processors:
+        - label: device_physical_matrices_mat_param_value_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 65
+      processors:
+        - label: device_physical_matrices_module_type_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 66
+      processors:
+        - label: device_physical_matrices_module_status_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 68
+      processors:
+        - label: device_physical_matrices_mod_param_name_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 69
+      processors:
+        - label: device_physical_matrices_mod_param_type_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 70
+      processors:
+        - label: device_physical_matricies_mod_param_desc_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 71
+      processors:
+        - label: device_physical_matricies_mod_param_value_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

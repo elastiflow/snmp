@@ -1,0 +1,127 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "HALCYON-PRIMEALERT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: event_open_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = ""
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " - " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+
+            root.out.halcyon.eventHost = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventPort = this.trap.VarBinds.index(1).Value
+            root.out.halcyon.eventModule = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventContext = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventSeverity = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventMessage = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventUrl = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventOpenTime = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventCloseTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: event_close_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = ""
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " - " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+
+            root.out.halcyon.eventHost = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventPort = this.trap.VarBinds.index(1).Value
+            root.out.halcyon.eventModule = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventContext = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventSeverity = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventMessage = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventUrl = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventOpenTime = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventCloseTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: event_log_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = ""
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " - " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+
+            root.out.halcyon.eventHost = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventPort = this.trap.VarBinds.index(1).Value
+            root.out.halcyon.eventModule = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventContext = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventSeverity = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventMessage = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventUrl = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventOpenTime = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.halcyon.eventCloseTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: event_coldstart_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: event_acknowledge_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: event_un_acknowledge_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: event_module_unavailable_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

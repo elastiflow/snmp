@@ -1,0 +1,2321 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "NETWORK-APPLIANCE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: user_defined
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap"
+            root.out.event.category.name = "User-Defined"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: dhm_notice_degraded_io
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Health Monitor"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Degraded-I/O"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: dhm_notice_pfaevent
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Health Monitor"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Predictive-Failure"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: emergency_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Emergency"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: alert_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Alert"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: critical_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Critical"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: error_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Error"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: warning_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Warning"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: notification_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "User-Defined Trap: Notification"
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: informational_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User-Defined"
+            root.out.object.name = ""
+            root.out.event.message = "User-Defined Trap: Debug"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: dbg_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: disk_failed_shutdown
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Status"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Failure, System Shutting Down"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: disk_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Status"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Failure"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: disk_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Status"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Repaired"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: fan_failure_shutdown
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Critical Chassis or CPU Fans Failed, System Shutting Down"
+            root.out.event.category.name = "Fan Status"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: fan_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan Failed"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: fan_warning
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan Warning"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: fan_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan Repaired"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 41
+      processors:
+        - label: power_supply_failure_shutdown
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Critical Power Supplies or Power Rails Failed, System Shutting Down"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 43
+      processors:
+        - label: power_supply_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Redundant Power Supply Failed"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: power_supply_warning
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Power Supply/Power Rail Warning"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 46
+      processors:
+        - label: power_supply_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply Repaired"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 55
+      processors:
+        - label: cpu_too_busy
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "CPU Utilization Exceeds 90%"
+            root.out.event.category.name = "CPU Utilization"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 56
+      processors:
+        - label: cpu_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "CPU Utilization"
+            root.out.object.name = ""
+            root.out.event.message = "CPU Utilization OK"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 62
+      processors:
+        - label: nvram_battery_discharged
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "NVRAM Battery Status"
+            root.out.object.name = ""
+            root.out.event.message = "NVRAM Battery Fully Discharged"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 63
+      processors:
+        - label: nvram_battery_low
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "NVRAM Battery Status"
+            root.out.object.name = ""
+            root.out.event.message = "NVRAM Battery Low"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 72
+      processors:
+        - label: cluster_node_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Cluster Node Status"
+            root.out.object.name = ""
+            root.out.event.message = "Cluster Node Failed, Partner Will Assume Service"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 75
+      processors:
+        - label: cluster_node_taken_over
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Node Assumed Service for Failed Cluster Node"
+            root.out.event.category.name = "Cluster Node Status"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 76
+      processors:
+        - label: cluster_node_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Cluster Node Repaired"
+            root.out.event.category.name = "Cluster Node Status"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 82
+      processors:
+        - label: volume_full
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Volume Status"
+            root.out.object.name = ""
+            root.out.event.message = "Volume More Than 98% Full"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 85
+      processors:
+        - label: volume_nearly_full
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Volume Status"
+            root.out.object.name = ""
+            root.out.event.message = "Volume More Than 95% Full"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 86
+      processors:
+        - label: volume_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Volume Less Than 95% Full"
+            root.out.event.category.name = "Volume Status"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 87
+      processors:
+        - label: volumes_still_full
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 91
+      processors:
+        - label: over_temp_shutdown
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "System Temperature Too High, System Shutting Down"
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 95
+      processors:
+        - label: over_temp
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = ""
+            root.out.event.message = "System Temperature Too High"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 96
+      processors:
+        - label: over_temp_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = ""
+            root.out.event.message = "System Temperature Acceptable"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 103
+      processors:
+        - label: shelf_fault
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Disk Storage Shelf Fault"
+            root.out.event.category.name = "Shelf Status"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 106
+      processors:
+        - label: shelf_repaired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Shelf Status"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Storage Shelf Repaired"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 111
+      processors:
+        - label: global_status_non_recoverable
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Appliance Non-Recoverable, Shutting Down"
+            root.out.event.category.name = "Appliance Status"
+            root.out.object.name = ""
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 113
+      processors:
+        - label: global_status_critical
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Appliance Status"
+            root.out.object.name = ""
+            root.out.event.message = "Appliance Critical, Requires Attention"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 115
+      processors:
+        - label: global_status_non_critical
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Appliance Status"
+            root.out.object.name = ""
+            root.out.event.message = "Appliance Non-Critical, Requires Attention"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 116
+      processors:
+        - label: global_status_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Appliance Status"
+            root.out.object.name = ""
+            root.out.event.message = "Appliance OK"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 126
+      processors:
+        - label: soft_quota_exceeded
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Soft Quota"
+            root.out.object.name = ""
+            root.out.event.message = "User Exceeded Soft Quota Limit"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 127
+      processors:
+        - label: soft_quota_normal
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Soft Quota"
+            root.out.object.name = ""
+            root.out.event.message = "User Safely Under Soft Quota Limit"
+
+            root.out.netapp.productTrapData = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netapp.productSerialNum = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 134
+      processors:
+        - label: autosupport_send_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 135
+      processors:
+        - label: autosupport_configuration_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 136
+      processors:
+        - label: autosupport_sent
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 142
+      processors:
+        - label: ups_line_power_off
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 143
+      processors:
+        - label: ups_battery_critical
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 144
+      processors:
+        - label: ups_shutting_down
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 145
+      processors:
+        - label: ups_battery_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 146
+      processors:
+        - label: ups_line_power_retored
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 151
+      processors:
+        - label: app_emergency
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 152
+      processors:
+        - label: app_alert
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 153
+      processors:
+        - label: app_critical
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 154
+      processors:
+        - label: app_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 155
+      processors:
+        - label: app_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 156
+      processors:
+        - label: app_notice
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 157
+      processors:
+        - label: app_info
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 158
+      processors:
+        - label: app_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 162
+      processors:
+        - label: alf_filewrap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 166
+      processors:
+        - label: alf_file_saved
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 167
+      processors:
+        - label: alf_file_nearly_full
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 176
+      processors:
+        - label: quota_exceeded
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 177
+      processors:
+        - label: quota_normal
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 187
+      processors:
+        - label: wafl_dir_full
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 192
+      processors:
+        - label: ecc_summary
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 195
+      processors:
+        - label: ecc_masked
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 204
+      processors:
+        - label: ftpd_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 206
+      processors:
+        - label: ftpd_max_conn_notice
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 216
+      processors:
+        - label: ftpd_max_conn_threshold_notice
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 222
+      processors:
+        - label: scsitgt_fcplink_break
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 224
+      processors:
+        - label: scsitgt_partner_path_misconfigured
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 226
+      processors:
+        - label: scsitgt_throttle_notice
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 237
+      processors:
+        - label: vif_primary_link_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 238
+      processors:
+        - label: vif_all_links_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 245
+      processors:
+        - label: vf_stopped
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 246
+      processors:
+        - label: vf_started
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 254
+      processors:
+        - label: vscan_virus_detected_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 255
+      processors:
+        - label: vscan_dis_connection
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 256
+      processors:
+        - label: vscan_configuration_change
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 257
+      processors:
+        - label: vscan_connection
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 266
+      processors:
+        - label: vscan_server_upgrade
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 272
+      processors:
+        - label: volume_restricted_by_mirror_big_io
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 274
+      processors:
+        - label: volume_inconsistent_umount
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 275
+      processors:
+        - label: volume_state_changed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 276
+      processors:
+        - label: volume_online
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 283
+      processors:
+        - label: rmc_card_needs_replacement
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 284
+      processors:
+        - label: rmc_card_missing_cables
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 294
+      processors:
+        - label: volume_remote_unreachable
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 296
+      processors:
+        - label: volume_remote_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 297
+      processors:
+        - label: volume_remote_restored
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 298
+      processors:
+        - label: volume_remote_restore_begin
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 304
+      processors:
+        - label: volume_restricted_root_conflict
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 314
+      processors:
+        - label: volume_offline_too_big
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 324
+      processors:
+        - label: volume_offline
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 334
+      processors:
+        - label: volume_restricted
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 344
+      processors:
+        - label: volume_degraded_dirty
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 354
+      processors:
+        - label: volume_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 364
+      processors:
+        - label: snapmirror_sync_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 366
+      processors:
+        - label: snapmirror_sync_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 371
+      processors:
+        - label: chassis_temperature_shutdown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 372
+      processors:
+        - label: chassis_temperature_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 375
+      processors:
+        - label: chassis_temperature_unknown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 376
+      processors:
+        - label: chassis_temperature_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 381
+      processors:
+        - label: chassis_cpufan_stopped
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 383
+      processors:
+        - label: chassis_cpufan_slow
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 386
+      processors:
+        - label: chassis_cpufan_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 391
+      processors:
+        - label: chassis_power_supplies_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 392
+      processors:
+        - label: chassis_power_supply_degraded
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 393
+      processors:
+        - label: chassis_power_supply_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 394
+      processors:
+        - label: chassis_power_supply_removed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 395
+      processors:
+        - label: chassis_power_supply_off
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 396
+      processors:
+        - label: chassis_power_supplies_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 397
+      processors:
+        - label: chassis_power_supply_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 403
+      processors:
+        - label: chassis_power_degraded
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 406
+      processors:
+        - label: chassis_power_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 412
+      processors:
+        - label: chassis_fan_degraded
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 413
+      processors:
+        - label: chassis_fan_removed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 414
+      processors:
+        - label: chassis_fan_stopped
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 415
+      processors:
+        - label: chassis_fan_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 416
+      processors:
+        - label: chassis_fan_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 424
+      processors:
+        - label: write_verification_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 435
+      processors:
+        - label: domain_controller_disconnect
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 436
+      processors:
+        - label: dc_passwd_change_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 437
+      processors:
+        - label: domain_controller_connected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 444
+      processors:
+        - label: plex_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 454
+      processors:
+        - label: plex_offline
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 464
+      processors:
+        - label: shelf_seselectronics_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 467
+      processors:
+        - label: shelf_seselectronics_info
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 473
+      processors:
+        - label: shelf_ifmodule_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 475
+      processors:
+        - label: shelf_ifmodule_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 477
+      processors:
+        - label: shelf_ifmodule_info
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 482
+      processors:
+        - label: max_dir_size_alert
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 485
+      processors:
+        - label: max_dir_size_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 497
+      processors:
+        - label: cifs_stats_exhaust_mem_ctrl_blk
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 501
+      processors:
+        - label: chassis_psremovedx_min_shutdown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 505
+      processors:
+        - label: chassis_psus_mismatch
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 511
+      processors:
+        - label: chassis_fan_failx_min_shutdown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 515
+      processors:
+        - label: chassis_psuwrong_input
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 521
+      processors:
+        - label: power_supply_fan_failx_min_shutdown
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 532
+      processors:
+        - label: remote_system_mgt_alert
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 535
+      processors:
+        - label: remote_system_mgmt_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 536
+      processors:
+        - label: remote_system_mgmt_notification
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 547
+      processors:
+        - label: remote_system_mgmt_periodic
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 556
+      processors:
+        - label: remotesystem_mgmt_test
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 562
+      processors:
+        - label: disk_multipath_one_switch
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 563
+      processors:
+        - label: disk_multipath_no_takeover
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 565
+      processors:
+        - label: disk_multipath_warning
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 574
+      processors:
+        - label: drive_disable_err
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 587
+      processors:
+        - label: hba_offline_information
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 606
+      processors:
+        - label: lun_snap_restore_status
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 616
+      processors:
+        - label: lun_clone_create
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 626
+      processors:
+        - label: lun_clone_split_start
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 627
+      processors:
+        - label: lun_clone_split_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 636
+      processors:
+        - label: flex_clone_split_start
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 637
+      processors:
+        - label: flex_clone_split_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 646
+      processors:
+        - label: volume_clone_create
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 656
+      processors:
+        - label: snap_auto_delete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 666
+      processors:
+        - label: volume_autogrow
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 674
+      processors:
+        - label: timed_target_not_responding
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 676
+      processors:
+        - label: extcache_card_error
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 686
+      processors:
+        - label: extcache_card_offline
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 695
+      processors:
+        - label: sv_backup_snap_warning_limit
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 705
+      processors:
+        - label: av_trend_license_expired
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 706
+      processors:
+        - label: av_trend_license_expiring
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 712
+      processors:
+        - label: reboot_abnormal
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 716
+      processors:
+        - label: reboot_normal
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

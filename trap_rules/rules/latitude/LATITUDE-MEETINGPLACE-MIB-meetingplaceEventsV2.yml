@@ -1,0 +1,705 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LATITUDE-MEETINGPLACE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: mp_t1down
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpT1Down"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpT1Down"
+            root.out.event.category.name = "Telephony Port Status"
+            root.out.object.name = ""
+            root.out.event.message = "Telephony Port Problem, T1 Down"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mp_gwsim_alarm
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpGWSimAlarm"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpGWSimAlarm"
+            root.out.event.category.name = "MeetingPlace Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "MeetingPlace Gateway Alarm"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: mp_maj_hw_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMajHwAlarm"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMajHwAlarm"
+            root.out.event.category.name = "MeetingPlace " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7185.3.1.3.3") + " Status"
+
+            root.out.latitude.mpExCode = this.trap.VarBinds.index(0).Value
+            root.out.latitude.mpSysUnit = this.trap.VarBinds.index(1).Value
+            root.out.latitude.mpHwDev = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7185.3.1.3.3")
+            root.out.latitude.mpHwUnit = this.trap.VarBinds.index(3).Value
+            root.out.latitude.mpHwSlot = this.trap.VarBinds.index(4).Value
+            root.out.latitude.mpHwPort = this.trap.VarBinds.index(5).Value
+        - label: mp_maj_hw_alarm_nested_switch
+          switch:
+            - check: 'this.trap.VarBinds.index(3).Value == '
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value
+                    root.out.event.message = "System Crashed: Power Fail, Reset, or Watchdog Timer"
+            - check: this.trap.VarBinds.index(3).Value == 1179906
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1179906
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Data Service Not Responding"
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+            - check: this.trap.VarBinds.index(3).Value == 1179970
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1179970
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "WebPub Agent Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180034
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1180034
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "WebPub Audio Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180162
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1180162
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "SMTP Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180674
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1180674
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Outlook Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180930
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1180930
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Notes Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180994
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1180994
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "MPNotify Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181186
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181186
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181250
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181250
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf GCC Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181314
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181314
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf MCS Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181378
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181378
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf Sametime Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181506
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181506
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "VoIP MPStream Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181698
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1181698
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "MP Directory Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1183490
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_1183490
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Gateway SIM Agent Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 45176
+              processors:
+                - label: mp_maj_hw_alarm_nested_switch_45176
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value + ", Slot: " + this.trap.VarBinds.index(4).Value + ", Span: " + this.trap.VarBinds.index(5).Value
+                    root.out.event.message = "Red Alarm Detected on T1 Span"
+            - processors:
+                - label: mp_maj_hw_alarm_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.category.name + " Major"
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value + ", Slot: " + this.trap.VarBinds.index(4).Value + ", Port: " + this.trap.VarBinds.index(5).Value
+        - label: mp_maj_hw_alarm_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: mp_min_hw_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "MeetingPlace " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7185.3.1.3.3") + " Status"
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMinHwAlarm"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMinHwAlarm"
+
+            root.out.latitude.mpExCode = this.trap.VarBinds.index(0).Value
+            root.out.latitude.mpSysUnit = this.trap.VarBinds.index(1).Value
+            root.out.latitude.mpHwDev = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7185.3.1.3.3")
+            root.out.latitude.mpHwUnit = this.trap.VarBinds.index(3).Value
+            root.out.latitude.mpHwSlot = this.trap.VarBinds.index(4).Value
+            root.out.latitude.mpHwPort = this.trap.VarBinds.index(5).Value
+        - label: mp_min_hw_alarm_nested_switch
+          switch:
+            - check: 'this.trap.VarBinds.index(3).Value == '
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value
+                    root.out.event.message = "System Crashed: Power Fail, Reset, or Watchdog Timer"
+            - check: this.trap.VarBinds.index(3).Value == 1179906
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1179906
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Data Service Not Responding"
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+            - check: this.trap.VarBinds.index(3).Value == 1179970
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1179970
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "WebPub Agent Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180034
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1180034
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "WebPub Audio Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180162
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1180162
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "SMTP Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180674
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1180674
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Outlook Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180930
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1180930
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Notes Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1180994
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1180994
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "MPNotify Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181186
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181186
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf Gateway Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181250
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181250
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf GCC Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181314
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181314
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf MCS Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181378
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181378
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "DataConf Sametime Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181506
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181506
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "VoIP MPStream Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1181698
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1181698
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "MP Directory Service Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 1183490
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_1183490
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value
+                    root.out.event.message = "Gateway SIM Agent Not Responding"
+            - check: this.trap.VarBinds.index(3).Value == 45176
+              processors:
+                - label: mp_min_hw_alarm_nested_switch_45176
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value + ", Slot: " + this.trap.VarBinds.index(4).Value + ", Span: " + this.trap.VarBinds.index(5).Value
+                    root.out.event.message = "Red Alarm Detected on T1 Span"
+            - processors:
+                - label: mp_min_hw_alarm_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value + ", HW Unit: " + this.trap.VarBinds.index(3).Value + ", Slot: " + this.trap.VarBinds.index(4).Value + ", Port: " + this.trap.VarBinds.index(5).Value
+                    root.out.event.message = root.out.event.category.name + " Minor"
+        - label: mp_min_hw_alarm_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: mp_maj_sw_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMajSwAlarm"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMajSwAlarm"
+            root.out.event.category.name = "MeetingPlace Software Status"
+
+            root.out.latitude.mpExCode = this.trap.VarBinds.index(0).Value
+            root.out.latitude.mpSysUnit = this.trap.VarBinds.index(1).Value
+            root.out.latitude.mpAlarmDesc = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+        - label: mp_maj_sw_alarm_nested_switch
+          switch:
+            - check: ' == '
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "System Crashed: Power Fail, Reset, or Watchdog Timer"
+            - check: ' == 1179906'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1179906
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Data Service Not Responding"
+            - check: ' == 1179970'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1179970
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Agent Not Responding"
+            - check: ' == 1180034'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1180034
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Audio Service Not Responding"
+            - check: ' == 1180162'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1180162
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SMTP Gateway Not Responding"
+            - check: ' == 1180674'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1180674
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Outlook Gateway Not Responding"
+            - check: ' == 1180930'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1180930
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Notes Gateway Not Responding"
+            - check: ' == 1180994'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1180994
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "MPNotify Service Not Responding"
+            - check: ' == 1181186'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181186
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf Gateway Not Responding"
+            - check: ' == 1181250'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181250
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf GCC Service Not Responding"
+            - check: ' == 1181314'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181314
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf MCS Service Not Responding"
+            - check: ' == 1181378'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181378
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf Sametime Service Not Responding"
+            - check: ' == 1181506'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181506
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "VoIP MPStream Service Not Responding"
+            - check: ' == 1181698'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1181698
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "MP Directory Service Not Responding"
+            - check: ' == 1183490'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_1183490
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Gateway SIM Agent Not Responding"
+            - check: ' == 45176'
+              processors:
+                - label: mp_maj_sw_alarm_nested_switch_45176
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Red Alarm Detected on T1 Span"
+            - processors:
+                - label: mp_maj_sw_alarm_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.category.name + " Major"
+        - label: mp_maj_sw_alarm_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: mp_min_sw_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "MeetingPlace Software Status"
+            root.out.object.name = "Server: " + this.trap.VarBinds.index(1).Value
+            root.out.event.class.name = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMinSwAlarm"
+            root.out.event.id = "SNMPTRAP-latitude-LATITUDE-MEETINGPLACE-MIB-mpMinSwAlarm"
+
+            root.out.latitude.mpExCode = this.trap.VarBinds.index(0).Value
+            root.out.latitude.mpSysUnit = this.trap.VarBinds.index(1).Value
+            root.out.latitude.mpAlarmDesc = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+        - label: mp_min_sw_alarm_nested_switch
+          switch:
+            - check: ' == '
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "System Crashed: Power Fail, Reset, or Watchdog Timer"
+            - check: ' == 1179906'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1179906
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Data Service Not Responding"
+            - check: ' == 1179970'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1179970
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Agent Not Responding"
+            - check: ' == 1180034'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1180034
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "WebPub Audio Service Not Responding"
+            - check: ' == 1180162'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1180162
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SMTP Gateway Not Responding"
+            - check: ' == 1180674'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1180674
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Outlook Gateway Not Responding"
+            - check: ' == 1180930'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1180930
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Notes Gateway Not Responding"
+            - check: ' == 1180994'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1180994
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "MPNotify Service Not Responding"
+            - check: ' == 1181186'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181186
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf Gateway Not Responding"
+            - check: ' == 1181250'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181250
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf GCC Service Not Responding"
+            - check: ' == 1181314'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181314
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf MCS Service Not Responding"
+            - check: ' == 1181378'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181378
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DataConf Sametime Service Not Responding"
+            - check: ' == 1181506'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181506
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "VoIP MPStream Service Not Responding"
+            - check: ' == 1181698'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1181698
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "MP Directory Service Not Responding"
+            - check: ' == 1183490'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_1183490
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Gateway SIM Agent Not Responding"
+            - check: ' == 45176'
+              processors:
+                - label: mp_min_sw_alarm_nested_switch_45176
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Red Alarm Detected on T1 Span"
+            - processors:
+                - label: mp_min_sw_alarm_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.category.name + " Minor"
+        - label: mp_min_sw_alarm_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,152 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "UPS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ups_trap_on_battery
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "UPS Operating on Battery Power, ~" + this.trap.VarBinds.index(0).Value + " Minutes Remaining"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapOnBattery"
+            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapOnBattery"
+            root.out.event.category.name = "UPS Status"
+            root.out.object.name = ""
+
+            root.out.IETF.upsEstimatedMinutesRemaining = this.trap.VarBinds.index(0).Value
+            root.out.IETF.upsSecondsOnBattery = this.trap.VarBinds.index(1).Value
+            root.out.IETF.upsConfigLowBattTime = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ups_trap_test_completed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "UPS Test Status"
+            root.out.object.name = "Test ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapTestCompleted"
+            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapTestCompleted"
+
+            root.out.IETF.upsTestId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.upsTestSpinLock = this.trap.VarBinds.index(1).Value
+            root.out.IETF.upsTestResultsSummary = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3")
+            root.out.IETF.upsTestResultsDetail = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.IETF.upsTestStartTime = this.trap.VarBinds.index(4).Value
+            root.out.IETF.upsTestElapsedTime = this.trap.VarBinds.index(5).Value
+        - label: ups_trap_test_completed_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: ups_trap_test_completed_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: ups_trap_test_completed_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: ups_trap_test_completed_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: ups_trap_test_completed_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(2).Value == 5
+              processors:
+                - label: ups_trap_test_completed_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            - check: this.trap.VarBinds.index(2).Value == 6
+              processors:
+                - label: ups_trap_test_completed_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: ups_trap_test_completed_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: ups_trap_test_completed_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ups_trap_alarm_entry_added
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
+            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
+            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.IETF.upsAlarmId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.upsAlarmDescr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: ups_trap_alarm_entry_removed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryRemoved"
+            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryRemoved"
+            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.IETF.upsAlarmId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.upsAlarmDescr = this.trap.VarBinds.index(1).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,29 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WIRELESS-P2MP-RF-METRICS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: p2mp_trap_thresh
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "p2mpThresholdEntry.1.3.6.1.4.1.9.9.180"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "Radio Interface lookup("9", P2mpRadioSignalAttribute) lookup("180", CwrThreshLimitType) " + this.trap.VarBinds.index(0).Value + "  ( MAC: 3.6.1.4.1.9, Interface: ifEntry.1 )"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-RF-METRICS-MIB-p2mpTrapThresh"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-RF-METRICS-MIB-p2mpTrapThresh"
+            root.out.event.category.name = "Radio Interface Threshold Status"
+
+            root.out.cisco.p2mpThreshValue = this.trap.VarBinds.index(0).Value
+            root.out.cisco.p2mpThreshHysteresisTime = this.trap.VarBinds.index(1).Value
+            root.out.cisco.p2mpThreshLimitTime = this.trap.VarBinds.index(2).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

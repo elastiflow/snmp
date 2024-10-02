@@ -1,0 +1,61 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IBMADSM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ibm_adsm_severe_message
+          mapping: |-
+            #!blobl
+            root = this
+
+
+            root.out.ibm.ibmAdsmMessageText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ibm_adsm_warning_message
+          mapping: |-
+            #!blobl
+            root = this
+
+
+            root.out.ibm.ibmAdsmMessageText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ibm_adsm_error_message
+          mapping: |-
+            #!blobl
+            root = this
+
+
+            root.out.ibm.ibmAdsmMessageText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: ibm_adsm_info_message
+          mapping: |-
+            #!blobl
+            root = this
+
+
+            root.out.ibm.ibmAdsmMessageText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: ibm_adsm_trap_message
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

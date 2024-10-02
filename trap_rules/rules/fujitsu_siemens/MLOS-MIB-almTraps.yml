@@ -1,0 +1,33 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "MLOS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: alm_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.object.name = "Termination Point: " + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string() + "  ( " + "Termination Point: " + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string() + " )"
+
+            root.out.fujitsu_siemens.almTime = this.trap.VarBinds.index(0).Value
+            root.out.fujitsu_siemens.almDate = this.trap.VarBinds.index(1).Value
+            root.out.fujitsu_siemens.almNESISAaddr = this.trap.VarBinds.index(2).Value
+            root.out.fujitsu_siemens.almNEType = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.fujitsu_siemens.almNETitle = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.fujitsu_siemens.almSeverity = this.trap.VarBinds.index(5).Value
+            root.out.fujitsu_siemens.almState = this.trap.VarBinds.index(6).Value
+            root.out.fujitsu_siemens.almType = this.trap.VarBinds.index(7).Value
+            root.out.fujitsu_siemens.almTypeDescr = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.fujitsu_siemens.almDescr = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.fujitsu_siemens.almTPname = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

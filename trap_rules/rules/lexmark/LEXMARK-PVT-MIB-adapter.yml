@@ -1,0 +1,155 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LEXMARK-PVT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: ir_cleared
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Normal, Error Condition Cleared  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ir_condition
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Error Condition  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ir_output_full
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Output Bin Full  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ir_load_paper
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Load Printer Paper  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "Printer Status"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: ir_paper_jam
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Paper Jam  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: ir_toner_low
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Toner Low  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: ir_service_req
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Service Required  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: ir_disk_err
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Disk Error  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: ir_cover_open
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Printer Cover Open  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "Printer Status"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: ir_page_complexity
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Printer Page Complexity Error  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: ir_offline
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Printer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Printer Offline  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: ir_cleared_type_ii
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Printer Normal, Error Condition Cleared  ( IR Code: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "Printer Status"
+
+            root.out.lexmark.prtgenStatusIRC = this.trap.VarBinds.index(0).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

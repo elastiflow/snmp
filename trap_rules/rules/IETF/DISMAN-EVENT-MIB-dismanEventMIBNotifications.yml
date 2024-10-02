@@ -1,0 +1,111 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DISMAN-EVENT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: mte_trigger_fired
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Event Trigger Fired, OID: " + this.trap.VarBinds.index(3).Value + "
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFired"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFired"
+            root.out.event.category.name = "Event Trigger Status"
+            root.out.object.name = "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value
+
+            root.out.IETF.mteHotTrigger = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mteHotTargetName = this.trap.VarBinds.index(1).Value
+            root.out.IETF.mteHotContextName = this.trap.VarBinds.index(2).Value
+            root.out.IETF.mteHotOID = this.trap.VarBinds.index(3).Value
+            root.out.IETF.mteHotValue = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mte_trigger_rising
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerRising"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerRising"
+            root.out.event.category.name = "Event Trigger Status"
+            root.out.object.name = "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Event Trigger Rising, OID: " + this.trap.VarBinds.index(3).Value + "
+
+            root.out.IETF.mteHotTrigger = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mteHotTargetName = this.trap.VarBinds.index(1).Value
+            root.out.IETF.mteHotContextName = this.trap.VarBinds.index(2).Value
+            root.out.IETF.mteHotOID = this.trap.VarBinds.index(3).Value
+            root.out.IETF.mteHotValue = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: mte_trigger_falling
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFalling"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFalling"
+            root.out.event.category.name = "Event Trigger Status"
+            root.out.object.name = "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Event Trigger Falling, OID: " + this.trap.VarBinds.index(3).Value + "
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.IETF.mteHotTrigger = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mteHotTargetName = this.trap.VarBinds.index(1).Value
+            root.out.IETF.mteHotContextName = this.trap.VarBinds.index(2).Value
+            root.out.IETF.mteHotOID = this.trap.VarBinds.index(3).Value
+            root.out.IETF.mteHotValue = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: mte_trigger_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFailure"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteTriggerFailure"
+            root.out.event.category.name = "Event Trigger Status"
+            root.out.object.name = "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Event Trigger Failed, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.88.2.1.6") + "  ( " + "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.IETF.mteHotTrigger = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mteHotTargetName = this.trap.VarBinds.index(1).Value
+            root.out.IETF.mteHotContextName = this.trap.VarBinds.index(2).Value
+            root.out.IETF.mteHotOID = this.trap.VarBinds.index(3).Value
+            root.out.IETF.mteFailedReason = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.88.2.1.6")
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: mte_event_set_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteEventSetFailure"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-EVENT-MIB-mteEventSetFailure"
+            root.out.event.category.name = "Event Set Status"
+            root.out.object.name = "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Event Set Failed, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.88.2.1.6") + "  ( " + "Trigger: " + this.trap.VarBinds.index(0).Value + ", Target: " + this.trap.VarBinds.index(1).Value + ", Context: " + this.trap.VarBinds.index(2).Value + ", OID: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.IETF.mteHotTrigger = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mteHotTargetName = this.trap.VarBinds.index(1).Value
+            root.out.IETF.mteHotContextName = this.trap.VarBinds.index(2).Value
+            root.out.IETF.mteHotOID = this.trap.VarBinds.index(3).Value
+            root.out.IETF.mteFailedReason = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.88.2.1.6")
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

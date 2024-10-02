@@ -1,0 +1,1420 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IBM-SERVERAID-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 201
+      processors:
+        - label: ibm_serve_raid_no_controllers
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidNoControllers"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidNoControllers"
+            root.out.event.category.name = "ServeRaid Status"
+            root.out.object.name = ""
+            root.out.event.message = "No Controllers Found in System"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 202
+      processors:
+        - label: ibm_serve_raid_controller_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Commands Not Responding on Controller  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerFail"
+            root.out.event.category.name = "Controller Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 203
+      processors:
+        - label: ibm_serve_raid_dead_battery
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Cache Battery Dead  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDeadBattery"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDeadBattery"
+            root.out.event.category.name = "Controller Cache Battery Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 204
+      processors:
+        - label: ibm_serve_raid_dead_battery_cache
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Cache Battery Defective, Error Code: " + this.trap.VarBinds.index(2).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDeadBatteryCache"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDeadBatteryCache"
+            root.out.event.category.name = "Controller Cache Battery Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 205
+      processors:
+        - label: ibm_serve_raid_polling_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPollingFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPollingFail"
+            root.out.event.category.name = "Controller Background Polling Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Background Polling Commands Not Responding, Error Code: " + this.trap.VarBinds.index(2).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 206
+      processors:
+        - label: ibm_serve_raid_config_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidConfigFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidConfigFail"
+            root.out.event.category.name = "ServeRAID Controller Configuration Status"
+            root.out.object.name = ""
+            root.out.event.message = "Cannot Read Controller Configuration"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 207
+      processors:
+        - label: ibm_serve_raid_controller_added
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Controller Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Added  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerAdded"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerAdded"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 208
+      processors:
+        - label: ibm_serve_raid_controller_replaced
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerReplaced"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerReplaced"
+            root.out.event.category.name = "Controller Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Replaced  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 209
+      processors:
+        - label: ibm_serve_raid_controller_failover
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerFailover"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerFailover"
+            root.out.event.category.name = "Controller Failover Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Failover Detected, Passive Controller Now Active  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 210
+      processors:
+        - label: ibm_serve_raid_controller_version_mismatch
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerVersionMismatch"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerVersionMismatch"
+            root.out.event.category.name = "Controller Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Version Mismatch, BIOS, Firmware and Driver Not Compatible  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 211
+      processors:
+        - label: ibm_serve_raid_controller_battery_overtemp
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerBatteryOvertemp"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidControllerBatteryOvertemp"
+            root.out.event.category.name = "Controller Battery Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Controller Battery Exceeded Normal Operating Temperature  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 215
+      processors:
+        - label: ibm_serve_raidcontroller_bad_stripes
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 216
+      processors:
+        - label: ibm_serve_raid_controller_battery_temp_normal
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 301
+      processors:
+        - label: ibm_serve_raid_logical_drive_critical
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Critical  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveCritical"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveCritical"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 302
+      processors:
+        - label: ibm_serve_raid_logical_drive_blocked
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveBlocked"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveBlocked"
+            root.out.event.category.name = "Logical Drive Blocking Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Blocked  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 303
+      processors:
+        - label: ibm_serve_raid_logical_drive_off_line
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveOffLine"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveOffLine"
+            root.out.event.category.name = "Logical Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Offline  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 304
+      processors:
+        - label: ibm_serve_raid_rebuild_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildDetected"
+            root.out.event.category.name = "Logical Drive Rebuild Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Rebuilding  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 305
+      processors:
+        - label: ibm_serve_raid_rebuild_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildComplete"
+            root.out.event.category.name = "Logical Drive Rebuild Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Rebuild Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 306
+      processors:
+        - label: ibm_serve_raid_rebuild_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidRebuildFail"
+            root.out.event.category.name = "Logical Drive Rebuild Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Rebuild Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 307
+      processors:
+        - label: ibm_serve_raid_sync_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Logical Drive Synchronizing  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncDetected"
+            root.out.event.category.name = "Logical Drive Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 308
+      processors:
+        - label: ibm_serve_raid_sync_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncComplete"
+            root.out.event.category.name = "Logical Drive Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Synchronization Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 309
+      processors:
+        - label: ibm_serve_raid_sync_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Logical Drive Synchronization Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidSyncFail"
+            root.out.event.category.name = "Logical Drive Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 310
+      processors:
+        - label: ibm_serve_raid_migration_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationDetected"
+            root.out.event.category.name = "Logical Drive Migration Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Migrating  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 311
+      processors:
+        - label: ibm_serve_raid_migration_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Migration Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Migration Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationComplete"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 312
+      processors:
+        - label: ibm_serve_raid_migration_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Logical Drive Migration Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidMigrationFail"
+            root.out.event.category.name = "Logical Drive Migration Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 313
+      processors:
+        - label: ibm_serve_raid_compression_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Compression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Compressing  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompressionDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompressionDetected"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 314
+      processors:
+        - label: ibm_serve_raid_compression_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompressionComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompressionComplete"
+            root.out.event.category.name = "Logical Drive Compression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Compression Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 315
+      processors:
+        - label: ibm_serve_raidcompression_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidcompressionFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidcompressionFail"
+            root.out.event.category.name = "Logical Drive Compression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Compression Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 316
+      processors:
+        - label: ibm_serve_raid_decompression_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionDetected"
+            root.out.event.category.name = "Logical Drive Decompression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Decompressing  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 317
+      processors:
+        - label: ibm_serve_raid_decompression_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Decompression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Decompression Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionComplete"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 318
+      processors:
+        - label: ibm_serve_raid_decompression_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDecompressionFail"
+            root.out.event.category.name = "Logical Drive Decompression Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Decompression Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 319
+      processors:
+        - label: ibm_serve_raid_flash_copy_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Flash Copy Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Flash Copying  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyDetected"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 320
+      processors:
+        - label: ibm_serve_raid_flash_copy_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyComplete"
+            root.out.event.category.name = "Logical Drive Flash Copy Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Flash Copy Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 321
+      processors:
+        - label: ibm_serve_raid_flash_copy_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Flash Copy Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFlashCopyFail"
+            root.out.event.category.name = "Logical Drive Flash Copy Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 322
+      processors:
+        - label: ibm_serve_raid_array_rebuild_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildDetected"
+            root.out.event.category.name = "Array Rebuild Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Rebuilding  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 323
+      processors:
+        - label: ibm_serve_raid_array_rebuild_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Rebuild Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildComplete"
+            root.out.event.category.name = "Array Rebuild Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 324
+      processors:
+        - label: ibm_serve_raid_array_rebuild_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayRebuildFail"
+            root.out.event.category.name = "Array Rebuild Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Rebuild Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 325
+      processors:
+        - label: ibm_serve_raid_array_sync_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncDetected"
+            root.out.event.category.name = "Array Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Synchronizing  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 326
+      processors:
+        - label: ibm_serve_raid_array_sync_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Array Synchronization Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncComplete"
+            root.out.event.category.name = "Array Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 327
+      processors:
+        - label: ibm_serve_raid_array_sync_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArraySyncFail"
+            root.out.event.category.name = "Array Synchronization Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Synchronization Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 328
+      processors:
+        - label: ibm_serve_raid_array_flash_copy_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Flash Copying  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyDetected"
+            root.out.event.category.name = "Array Flash Copy Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 329
+      processors:
+        - label: ibm_serve_raid_array_flash_copy_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyComplete"
+            root.out.event.category.name = "Array Flash Copy Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Array Flash Copy Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 330
+      processors:
+        - label: ibm_serve_raid_array_flash_copy_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Array Flash Copy Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidArrayFlashCopyFail"
+            root.out.event.category.name = "Array Flash Copy Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Array: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapArray = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 331
+      processors:
+        - label: ibm_serve_raid_logical_drive_unblocked
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveUnblocked"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveUnblocked"
+            root.out.event.category.name = "Logical Drive Blocking Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Unblocked  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 332
+      processors:
+        - label: ibm_serve_raid_compaction_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Logical Drive Compacting  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionDetected"
+            root.out.event.category.name = "Logical Drive Compaction Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 333
+      processors:
+        - label: ibm_serve_raid_compaction_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Compaction Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionComplete"
+            root.out.event.category.name = "Logical Drive Compaction Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 334
+      processors:
+        - label: ibm_serve_raid_compaction_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Logical Drive Compaction Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Compaction Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidCompactionFail"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 335
+      processors:
+        - label: ibm_serve_raid_expansion_detected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Logical Drive Expanding  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionDetected"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionDetected"
+            root.out.event.category.name = "Logical Drive Expansion Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 336
+      processors:
+        - label: ibm_serve_raid_expansion_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionComplete"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionComplete"
+            root.out.event.category.name = "Logical Drive Expansion Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Expansion Complete  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 337
+      processors:
+        - label: ibm_serve_raid_expansion_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidExpansionFail"
+            root.out.event.category.name = "Logical Drive Expansion Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Logical Drive Expansion Failed, Error Code: " + this.trap.VarBinds.index(3).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Logical Drive: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapLogicalDrive = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapErrorCode = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 338
+      processors:
+        - label: ibm_serve_raid_logical_drive_critical_periodic
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Controller Logical Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Periodic Controller Scan Found 1 or More Critical Logical Drives  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveCriticalPeriodic"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidLogicalDriveCriticalPeriodic"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 339
+      processors:
+        - label: ibm_serve_raid_copy_back_detected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 340
+      processors:
+        - label: ibm_serve_raid_copy_back_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 341
+      processors:
+        - label: ibm_serve_raid_copy_back_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 342
+      processors:
+        - label: ibm_serve_raid_init_detected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 343
+      processors:
+        - label: ibm_serve_raid_init_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 344
+      processors:
+        - label: ibm_serve_raid_init_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 345
+      processors:
+        - label: ibm_serve_raidlogical_drive_ok
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 346
+      processors:
+        - label: ibm_serve_raidlogical_drive_added
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 347
+      processors:
+        - label: ibm_serve_raidlogical_drive_removed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 401
+      processors:
+        - label: ibm_serve_raid_defunct_drive
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Drive Defunct  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctDrive"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctDrive"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 402
+      processors:
+        - label: ibm_serve_raid_pfa_drive
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPfaDrive"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPfaDrive"
+            root.out.event.category.name = "Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "PFA Drive  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 403
+      processors:
+        - label: ibm_serve_raid_defunct_replaced
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Drive Set to Hot-Spare  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctReplaced"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctReplaced"
+            root.out.event.category.name = "Drive Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 404
+      processors:
+        - label: ibm_serve_raid_defunct_drive_fru
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctDriveFru"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidDefunctDriveFru"
+            root.out.event.category.name = "Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", SCSI ID: " + this.trap.VarBinds.index(4).Value
+            root.out.event.message = "Drive Defunct, FRU Part #: " + this.trap.VarBinds.index(1).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", SCSI ID: " + this.trap.VarBinds.index(4).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFru = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 405
+      processors:
+        - label: ibm_serve_raid_pfa_drive_fru
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPfaDriveFru"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPfaDriveFru"
+            root.out.event.category.name = "Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", SCSI ID: " + this.trap.VarBinds.index(4).Value
+            root.out.event.message = "PFA Drive, FRU Part #: " + this.trap.VarBinds.index(1).Value + "  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", SCSI ID: " + this.trap.VarBinds.index(4).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFru = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 406
+      processors:
+        - label: ibm_serve_raid_unsupported_drive
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidUnsupportedDrive"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidUnsupportedDrive"
+            root.out.event.category.name = "Drive Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Physical Drive Unsupported  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + ", SCSI ID: " + this.trap.VarBinds.index(3).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapDeviceId = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 407
+      processors:
+        - label: ibm_serve_raid_drive_added
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 408
+      processors:
+        - label: ibm_serve_raid_drive_removed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 409
+      processors:
+        - label: ibm_serve_raid_drive_clear_detected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 410
+      processors:
+        - label: ibm_serve_raid_drive_clear_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 411
+      processors:
+        - label: ibm_serve_raid_drive_clear_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 412
+      processors:
+        - label: ibm_serve_raid_drive_sync_detected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 413
+      processors:
+        - label: ibm_serve_raid_drive_sync_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 414
+      processors:
+        - label: ibm_serve_raid_drive_sync_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 415
+      processors:
+        - label: ibm_serve_raid_drive_verify_detected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 416
+      processors:
+        - label: ibm_serve_raid_drive_verify_complete
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 417
+      processors:
+        - label: ibm_serve_raid_drive_verify_fail
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 501
+      processors:
+        - label: ibm_serve_raid_enclosure_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidEnclosureOK"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidEnclosureOK"
+            root.out.event.category.name = "Enclosure Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "Enclosure Drive Responding  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 502
+      processors:
+        - label: ibm_serve_raid_enclosure_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidEnclosureFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidEnclosureFail"
+            root.out.event.category.name = "Enclosure Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "Enclosure Drive Not Responding  ( " + "Controller: " + this.trap.VarBinds.index(1).Value + ", Channel: " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 503
+      processors:
+        - label: ibm_serve_raid_fan_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Enclosure Fan Operational  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanOk"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanOk"
+            root.out.event.category.name = "Enclosure Fan Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFan = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 504
+      processors:
+        - label: ibm_serve_raid_fan_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanFail"
+            root.out.event.category.name = "Enclosure Fan Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Fan Malfunctioning  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFan = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 505
+      processors:
+        - label: ibm_serve_raid_fan_installed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Fan Installed  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanInstalled"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanInstalled"
+            root.out.event.category.name = "Enclosure Fan Status"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFan = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 506
+      processors:
+        - label: ibm_serve_raid_fan_removed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanRemoved"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidFanRemoved"
+            root.out.event.category.name = "Enclosure Fan Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Fan Removed  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Fan: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapFan = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 507
+      processors:
+        - label: ibm_serve_raid_temp_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTempOk"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTempOk"
+            root.out.event.category.name = "Enclosure Temperature Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: $4
+            root.out.event.message = "Enclosure Temperature OK  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: $4 + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 508
+      processors:
+        - label: ibm_serve_raid_temp_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTempFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTempFail"
+            root.out.event.category.name = "Enclosure Temperature Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: $4
+            root.out.event.message = "Enclosure Temperature Out of Range  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: $4 + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 509
+      processors:
+        - label: ibm_serve_raid_power_supply_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyOk"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyOk"
+            root.out.event.category.name = "Enclosure Power Supply Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Power Supply OK  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapPowerSupply = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 510
+      processors:
+        - label: ibm_serve_raid_power_supply_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyFail"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyFail"
+            root.out.event.category.name = "Enclosure Power Supply Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Power Supply Failed  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapPowerSupply = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 511
+      processors:
+        - label: ibm_serve_raid_power_supply_installed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyInstalled"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyInstalled"
+            root.out.event.category.name = "Enclosure Power Supply Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Power Supply Installed  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapPowerSupply = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 512
+      processors:
+        - label: ibm_serve_raid_power_supply_removed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyRemoved"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidPowerSupplyRemoved"
+            root.out.event.category.name = "Enclosure Power Supply Status"
+            root.out.object.name = "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Enclosure Power Supply Removed  ( " + "Controller: " + this.trap.VarBinds.index(2).Value + ", Channel: " + this.trap.VarBinds.index(3).Value + ", Power Supply: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+            root.out.ibm.ibmServeRaidTrapPowerSupply = this.trap.VarBinds.index(1).Value
+            root.out.ibm.ibmServeRaidTrapController = this.trap.VarBinds.index(2).Value
+            root.out.ibm.ibmServeRaidTrapChannel = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 601
+      processors:
+        - label: ibm_serve_raid_test_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "ServeRaid Test Trap"
+            root.out.event.class.name = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTestTrap"
+            root.out.event.id = "SNMPTRAP-ibm-IBM-SERVERAID-MIB-ibmServeRaidTestTrap"
+            root.out.event.category.name = "ServeRaid Test"
+
+            root.out.ibm.ibmServeRaidTrapServerName = this.trap.VarBinds.index(0).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

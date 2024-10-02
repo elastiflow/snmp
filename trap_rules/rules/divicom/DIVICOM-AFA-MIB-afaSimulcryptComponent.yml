@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DIVICOM-AFA-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: afa_generic_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Hardware Mismatch, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSMismatched"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSMismatched"
+            root.out.event.category.name = "NMS Hardware Mismatch"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

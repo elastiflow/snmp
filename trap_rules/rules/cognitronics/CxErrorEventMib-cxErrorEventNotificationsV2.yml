@@ -1,0 +1,94 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CxErrorEventMib"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cx_error_event_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "CX Error"
+            root.out.object.name = "errorSequenceNumber: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + "  ( Board: " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.cognitronics.errorSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cognitronics.errorReferencedSequenceNumber = this.trap.VarBinds.index(1).Value
+            root.out.cognitronics.errorBoardNumber = this.trap.VarBinds.index(2).Value
+            root.out.cognitronics.errorTimestamp = this.trap.VarBinds.index(3).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.cognitronics.errorAction = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.6703.2.1.2.1.1.5")
+            root.out.cognitronics.errorLevel = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.6703.2.1.2.1.1.6")
+            root.out.cognitronics.errorText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.cognitronics.manualErrorNumber = this.trap.VarBinds.index(7).Value
+            root.out.cognitronics.applicationData = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+        - label: cx_error_event_notify_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: cx_error_event_notify_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: cx_error_event_notify_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: cx_error_event_notify_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: cx_error_event_notify_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: cx_error_event_notify_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: cx_error_event_notify_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: cx_error_event_notify_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cx_error_logs_flushed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Error Logs"
+            root.out.object.name = "Board: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Error Logs Flushed  ( " + "Board: " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.cognitronics.errorSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cognitronics.errorBoardNumber = this.trap.VarBinds.index(1).Value
+            root.out.cognitronics.errorTimestamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.cognitronics.manualErrorNumber = this.trap.VarBinds.index(3).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

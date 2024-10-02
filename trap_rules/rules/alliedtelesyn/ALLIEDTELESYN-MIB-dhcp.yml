@@ -1,0 +1,28 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALLIEDTELESYN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: dhcp_range_exhausted_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ALLIEDTELESYN-MIB-firewallTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ALLIEDTELESYN-MIB-firewallTrap"
+            root.out.event.category.name = "Intrusion/Attack"
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.alliedtelesyn.dhcpRangeExhaustedGateway = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.dhcpRangeExhaustedInterface = this.trap.VarBinds.index(1).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

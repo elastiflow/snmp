@@ -1,0 +1,124 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ZS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: zone_service_req_rej_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Registration Request Rejected by Local Zone Server, " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.1") + "  ( " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.11.1.4") + ": " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneServiceReqRejNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneServiceReqRejNotify"
+            root.out.event.category.name = "Registration Request Status"
+            root.out.object.name = "zoneMemberEntry.1.9.9.294"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.zoneMemberFormat = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.11.1.4")
+            root.out.cisco.zoneMemberID = this.trap.VarBinds.index(1).Value
+            root.out.cisco.zoneServiceRejReasonCode = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.1")
+            root.out.cisco.zoneServiceRejReasonCodeExp = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.2")
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: zone_merge_failure_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneMergeFailureNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneMergeFailureNotify"
+            root.out.event.category.name = "Zone Merge Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", vsanEntry." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Zone Merge Failure  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + ", vsanEntry." + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.zoneMergeFailureVSANNum = this.trap.VarBinds.index(1).Value
+            root.out.cisco.zoneMergeFailureObject = this.trap.VarBinds.index(2).Value
+            root.out.cisco.zoneMergeFailureReason = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.6")
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: zone_merge_success_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneMergeSuccessNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneMergeSuccessNotify"
+            root.out.event.category.name = "Zone Merge Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", vsanEntry." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Zone Merge Successful  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + ", vsanEntry." + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.zoneMergeSuccessVSANNum = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: zone_def_zone_behaviour_chng_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneDefZoneBehaviourChngNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneDefZoneBehaviourChngNotify"
+            root.out.event.category.name = "Default Zone Behaviour"
+            root.out.object.name = "zoneDefaultZoneEntry.294"
+            root.out.event.message = "Default Zone Behaviour Changed to " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.1.1.1") + "  ( VSAN: VSAN000294 )" + "  ( VSAN: VSAN00294 )" + "  ( VSAN: VSAN0294 )" + "  ( VSAN: VSAN294 )" + "  ( zoneDefaultZoneEntry.294 )"
+
+            root.out.cisco.zoneDefaultZoneBehaviour = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.1.1.1")
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: zone_unsupp_mem_in_int_op_mode_notify
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: zone_activate_notify
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: zone_compact_notify
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,125 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-PIM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_pim_interface_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "PIM Interface Status"
+            root.out.object.name = "184"
+            root.out.event.message = "PIM Interface Up  ( 184 )"
+
+            root.out.cisco.pimInterfaceStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.61.1.1.2.1.7")
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_pim_interface_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "PIM Interface Status"
+            root.out.object.name = "184"
+            root.out.event.message = "PIM Interface Down  ( 184 )"
+
+            root.out.cisco.pimInterfaceStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.61.1.1.2.1.7")
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cisco_pim_rpmapping_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "RP Mapping"
+            root.out.object.name = ""
+            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.2.1.1"), cpimRPMappingChangeType) + "  ( Component.GroupAddr.GroupMask.Addr
+
+            root.out.cisco.pimRPSetHoldTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cpimRPMappingChangeType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.2.1.1")
+        - label: cisco_pim_rpmapping_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cisco_pim_rpmapping_change_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cisco_pim_rpmapping_change_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: cisco_pim_rpmapping_change_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: cisco_pim_rpmapping_change_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: cisco_pim_rpmapping_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: cisco_pim_rpmapping_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cisco_pim_invalid_register
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Register Message"
+            root.out.object.name = this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(5).Value
+            root.out.event.message = "Invalid Register Message  ( Origin
+
+            root.out.cisco.cpimLastErrorOriginType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.4")
+            root.out.cisco.cpimLastErrorOrigin = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cpimLastErrorGroupType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.6")
+            root.out.cisco.cpimLastErrorGroup = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cpimLastErrorRPType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.8")
+            root.out.cisco.cpimLastErrorRP = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cpimInvalidRegisterMsgsRcvd = this.trap.VarBinds.index(6).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cisco_pim_invalid_join_prune
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Join/Prune"
+            root.out.object.name = this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(5).Value
+            root.out.event.message = "Invalid Join/Prune Message  ( Origin
+
+            root.out.cisco.cpimLastErrorOriginType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.4")
+            root.out.cisco.cpimLastErrorOrigin = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cpimLastErrorGroupType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.6")
+            root.out.cisco.cpimLastErrorGroup = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cpimLastErrorRPType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.184.1.1.8")
+            root.out.cisco.cpimLastErrorRP = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cpimInvalidJoinPruneMsgsRcvd = this.trap.VarBinds.index(6).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

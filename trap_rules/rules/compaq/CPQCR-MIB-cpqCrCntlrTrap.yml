@@ -1,0 +1,51 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CPQCR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cpq_cr_controller1failure_trap
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = "Primary RAID Controller Failed"
+            root.out.event.category.name = "Primary Controller Status"
+            root.out.object.name = ""
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cpq_cr_controller1information_trap
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Primary RAID Controller Recovered"
+            root.out.event.category.name = "Primary Controller Status"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cpq_cr_controller2failure_trap
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Secondary Controller Status"
+            root.out.object.name = ""
+            root.out.event.message = "Secondary RAID Controller Failed"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cpq_cr_controller2information_trap
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Secondary Controller Status"
+            root.out.object.name = ""
+            root.out.event.message = "Secondary RAID Controller Recovered"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

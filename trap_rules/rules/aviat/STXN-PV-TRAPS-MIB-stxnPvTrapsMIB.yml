@@ -1,0 +1,326 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "STXN-PV-TRAPS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: pv_raise_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = this.trap.VarBinds.index(0).Value3
+            root.out.event.class.name = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvRaiseTrap"
+            root.out.event.id = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvRaiseTrap"
+            root.out.event.category.name = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() + " Status"
+            root.out.object.name = "Physical Path: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+
+            root.out.aviat.pvTrapSourceAddress = this.trap.VarBinds.index(0).Value
+            root.out.aviat.pvTrapIndex = this.trap.VarBinds.index(1).Value
+            root.out.aviat.pvTrapTimeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvTrapNotes = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourcePhysicalPath = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceDeviceType = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceIPAddress = this.trap.VarBinds.index(6).Value
+            root.out.aviat.pvEventSourceID = this.trap.VarBinds.index(7).Value
+            root.out.aviat.pvEventID = this.trap.VarBinds.index(8).Value
+            root.out.aviat.pvEventTimeStamp = this.trap.VarBinds.index(9).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvEventState = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.7")
+            root.out.aviat.pvEventSeverity = this.trap.VarBinds.index(11).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.8")
+            root.out.aviat.pvEventName = this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string()
+        - label: pv_raise_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(11).Value == 0
+              processors:
+                - label: pv_raise_trap_nested_switch_0
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 1
+              processors:
+                - label: pv_raise_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 2
+              processors:
+                - label: pv_raise_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(11).Value == 3
+              processors:
+                - label: pv_raise_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 4
+              processors:
+                - label: pv_raise_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(11).Value == 5
+              processors:
+                - label: pv_raise_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(11).Value == 6
+              processors:
+                - label: pv_raise_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: pv_raise_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: pv_raise_trap_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: pv_clear_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Physical Path: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value3
+            root.out.event.class.name = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvClearTrap"
+            root.out.event.id = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvClearTrap"
+            root.out.event.category.name = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() + " Status"
+
+            root.out.aviat.pvTrapSourceAddress = this.trap.VarBinds.index(0).Value
+            root.out.aviat.pvTrapIndex = this.trap.VarBinds.index(1).Value
+            root.out.aviat.pvTrapTimeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvTrapNotes = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourcePhysicalPath = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceDeviceType = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceIPAddress = this.trap.VarBinds.index(6).Value
+            root.out.aviat.pvEventSourceID = this.trap.VarBinds.index(7).Value
+            root.out.aviat.pvEventID = this.trap.VarBinds.index(8).Value
+            root.out.aviat.pvEventTimeStamp = this.trap.VarBinds.index(9).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvEventState = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.7")
+            root.out.aviat.pvEventSeverity = this.trap.VarBinds.index(11).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.8")
+            root.out.aviat.pvEventName = this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string()
+        - label: pv_clear_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(11).Value == 0
+              processors:
+                - label: pv_clear_trap_nested_switch_0
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 1
+              processors:
+                - label: pv_clear_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 2
+              processors:
+                - label: pv_clear_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(11).Value == 3
+              processors:
+                - label: pv_clear_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 4
+              processors:
+                - label: pv_clear_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(11).Value == 5
+              processors:
+                - label: pv_clear_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(11).Value == 6
+              processors:
+                - label: pv_clear_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: pv_clear_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: pv_clear_trap_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: pv_acknowledged_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvAcknowledgedTrap"
+            root.out.event.id = "SNMPTRAP-digitalmicromwave-STXN-PV-TRAPS-MIB-pvAcknowledgedTrap"
+            root.out.object.name = "Physical Path: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string()
+            root.out.event.category.name = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() + " Status"
+
+            root.out.aviat.pvTrapSourceAddress = this.trap.VarBinds.index(0).Value
+            root.out.aviat.pvTrapIndex = this.trap.VarBinds.index(1).Value
+            root.out.aviat.pvTrapTimeStamp = this.trap.VarBinds.index(2).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvTrapNotes = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourcePhysicalPath = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceDeviceType = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.aviat.pvEventSourceIPAddress = this.trap.VarBinds.index(6).Value
+            root.out.aviat.pvEventSourceID = this.trap.VarBinds.index(7).Value
+            root.out.aviat.pvEventID = this.trap.VarBinds.index(8).Value
+            root.out.aviat.pvEventTimeStamp = this.trap.VarBinds.index(9).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.aviat.pvEventState = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.7")
+            root.out.aviat.pvEventSeverity = this.trap.VarBinds.index(11).Value.enum_enrich(".1.3.6.1.4.1.2509.5.5.1.3.8")
+            root.out.aviat.pvEventName = this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string()
+        - label: pv_acknowledged_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(11).Value == 0
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_0
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 1
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 2
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(11).Value == 3
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(11).Value == 4
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(11).Value == 5
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(11).Value == 6
+              processors:
+                - label: pv_acknowledged_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: pv_acknowledged_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: pv_acknowledged_trap_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,202 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BGP4-V2-MIB-JUNIPER"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: jnx_bgp_m2established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-BGP4-V2-MIB-JUNIPER-jnxBgpM2Established"
+            root.out.event.id = "SNMPTRAP-juniper-BGP4-V2-MIB-JUNIPER-jnxBgpM2Established"
+            root.out.event.category.name = "BGP Peer Status"
+            root.out.object.name = "jnxBgpM2PeerEntry."
+
+            root.out.juniper.jnxBgpM2PeerLocalAddrType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.6")
+            root.out.juniper.jnxBgpM2PeerLocalAddr = this.trap.VarBinds.index(1).Value
+            root.out.juniper.jnxBgpM2PeerRemoteAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.10")
+            root.out.juniper.jnxBgpM2PeerRemoteAddr = this.trap.VarBinds.index(3).Value
+            root.out.juniper.jnxBgpM2PeerLastErrorReceived = this.trap.VarBinds.index(4).Value
+            root.out.juniper.jnxBgpM2PeerState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.2")
+        - label: jnx_bgp_m2established_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(5).Value == 1
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+                    root.out.event.message = "BGP Peer Connection Idle"
+            - check: this.trap.VarBinds.index(5).Value == 2
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Connected"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value == 3
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Active"
+            - check: this.trap.VarBinds.index(5).Value == 4
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Open Sent"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value == 5
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Open Confirmed"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value == 6
+              processors:
+                - label: jnx_bgp_m2established_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+                    root.out.event.message = "BGP Peer Connection Established"
+            - processors:
+                - label: jnx_bgp_m2established_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: jnx_bgp_m2established_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: jnx_bgp_m2backward_transition
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-BGP4-V2-MIB-JUNIPER-jnxBgpM2BackwardTransition"
+            root.out.event.id = "SNMPTRAP-juniper-BGP4-V2-MIB-JUNIPER-jnxBgpM2BackwardTransition"
+            root.out.event.category.name = "BGP Peer Status"
+            root.out.object.name = "jnxBgpM2PeerEntry."
+
+            root.out.juniper.jnxBgpM2PeerLocalAddrType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.6")
+            root.out.juniper.jnxBgpM2PeerLocalAddr = this.trap.VarBinds.index(1).Value
+            root.out.juniper.jnxBgpM2PeerRemoteAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.10")
+            root.out.juniper.jnxBgpM2PeerRemoteAddr = this.trap.VarBinds.index(3).Value
+            root.out.juniper.jnxBgpM2PeerLastErrorReceived = this.trap.VarBinds.index(4).Value
+            root.out.juniper.jnxBgpM2PeerLastErrorReceivedText = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxBgpM2PeerState = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.2636.5.1.1.2.1.1.1.2")
+        - label: jnx_bgp_m2backward_transition_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(6).Value == 1
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+                    root.out.event.message = "BGP Peer Connection Idle"
+            - check: this.trap.VarBinds.index(6).Value == 2
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Connected"
+            - check: this.trap.VarBinds.index(6).Value == 3
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Active"
+            - check: this.trap.VarBinds.index(6).Value == 4
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Open Sent"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(6).Value == 5
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Open Confirmed"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(6).Value == 6
+              processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BGP Peer Connection Established"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - processors:
+                - label: jnx_bgp_m2backward_transition_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Status Unknown"
+        - label: jnx_bgp_m2backward_transition_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

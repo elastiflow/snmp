@@ -1,0 +1,111 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-TS-STACK-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_ts_tr_crfnew_root
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Stack Configuration"
+            root.out.object.name = ""
+            root.out.event.message = "Switch Added or Removed from Stack"
+
+            root.out.cisco.sysName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.cisco.sysLocation = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.ciscoTsTrCRFInfoTrCRFNumber = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_ts_tr_crftopology_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Stack Matrix"
+            root.out.object.name = ""
+
+            root.out.cisco.sysName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.cisco.sysLocation = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.ciscoTsTrCRFInfoTrCRFNumber = this.trap.VarBinds.index(2).Value
+        - label: cisco_ts_tr_crftopology_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: cisco_ts_tr_crftopology_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Stack Switched Over to Primary Matrix"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: cisco_ts_tr_crftopology_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Stack Switched Over to Secondary Matrix"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: cisco_ts_tr_crftopology_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Stack Not Connected to a Matrix"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: cisco_ts_tr_crftopology_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Stack Matrix Failed"
+            - processors:
+                - label: cisco_ts_tr_crftopology_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: cisco_ts_tr_crftopology_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cisco_ts_tr_brfnew_root
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cisco_ts_tr_brftopology_change
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,92 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-FCTRACEROUTE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: fc_trace_route_completion_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fibre Channel Traceroute Status"
+            root.out.object.name = "fcTraceRouteEntry.296"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-FCTRACEROUTE-MIB-fcTraceRouteCompletionNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-FCTRACEROUTE-MIB-fcTraceRouteCompletionNotify"
+
+            root.out.cisco.fcTraceRouteTargetAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.fcTraceRouteOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.296.1.1.1.1.7")
+        - label: fc_trace_route_completion_notify_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: fc_trace_route_completion_notify_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Fibre Channel Traceroute In Progress"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: fc_trace_route_completion_notify_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fibre Channel Traceroute Successful"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: fc_trace_route_completion_notify_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fibre Channel Traceroute Partially Successful"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: fc_trace_route_completion_notify_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fibre Channel Traceroute Failed"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: fc_trace_route_completion_notify_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Fibre Channel Traceroute Disabled"
+            - processors:
+                - label: fc_trace_route_completion_notify_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fibre Channel Traceroute Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: fc_trace_route_completion_notify_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Target: " + this.trap.VarBinds.index(0).Value + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

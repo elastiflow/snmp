@@ -1,0 +1,29 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WIRELESS-IF-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cwr_trap_thresh
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapConfigMismatch"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapConfigMismatch"
+            root.out.event.category.name = "Configuration Mismatch"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Configuration Inconsistent, " + this.trap.VarBinds.index(1).Value + "  ( " + "ifEntry." + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.cisco.cwrThreshValue = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrThreshHysteresisTime = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cwrThreshLimitTime = this.trap.VarBinds.index(2).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

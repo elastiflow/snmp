@@ -1,0 +1,111 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LOAD-BAL-SYSTEM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: load_bal_trap_misc
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Miscellaneous Message"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: load_bal_trap_service_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Service Status"
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.f5labs.ipAddressString = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.f5labs.memberPort = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: load_bal_trap_service_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Service Status"
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.f5labs.ipAddressString = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.f5labs.memberPort = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: load_bal_trap_reset
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: load_bal_trap_denial
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Request Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: load_bal_trap_login
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Root Login"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: load_bal_trap_remove_unit
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.category.name = "Unit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: load_bal_trap_add_unit
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+
+            root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

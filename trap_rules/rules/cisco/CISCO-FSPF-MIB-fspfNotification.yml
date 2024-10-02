@@ -1,0 +1,106 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-FSPF-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: fspf_nbr_state_change_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-FSPF-MIB-fspfNbrStateChangeNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-FSPF-MIB-fspfNbrStateChangeNotify"
+            root.out.event.category.name = "FSPF Neighbor Status"
+            root.out.object.name = "fspfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(0).Value
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.notifyVsanIndex = this.trap.VarBinds.index(1).Value
+            root.out.cisco.fspfDomainId = this.trap.VarBinds.index(2).Value
+            root.out.cisco.fspfIfNbrDomainId = this.trap.VarBinds.index(3).Value
+            root.out.cisco.fspfIfNbrState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.287.1.2.1.14")
+            root.out.cisco.fspfIfPrevNbrState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.287.1.4")
+        - label: fspf_nbr_state_change_notify_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "FSPF Neighbor Down"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "FSPF Neighbor Initializing"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "FSPF Neighbor Database Exchange"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "FSPF Neighbor Waiting for Database Acknowledgement"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "FSPF Neighbor Waiting for Database"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "FSPF Neighbor Connected"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - processors:
+                - label: fspf_nbr_state_change_notify_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "FSPF Neighbor Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: fspf_nbr_state_change_notify_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

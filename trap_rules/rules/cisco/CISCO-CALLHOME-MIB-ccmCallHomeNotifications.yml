@@ -1,0 +1,87 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-CALLHOME-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ccm_smtp_server_fail_notif
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmSmtpServerFailNotif"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmSmtpServerFailNotif"
+            root.out.event.category.name = "SMTP Status"
+            root.out.event.message = "Failed to Send E-Mail Notification via SMTP  ( SMTP Server: :" + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "ccmSmtpServersEntry.."
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.ccmSmtpServersPort = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ccm_alert_group_type_added_notif
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmAlertGroupTypeAddedNotif"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmAlertGroupTypeAddedNotif"
+            root.out.event.category.name = "Alert Group Type Status"
+            root.out.object.name = "callHomeAlertGroupTypeEntry.300"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+            root.out.event.message = "Alert Group Type Added  ( Alert Group: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.cisco.callHomeAlertGroupName = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ccm_alert_group_type_deleted_notif
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmAlertGroupTypeDeletedNotif"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CALLHOME-MIB-ccmAlertGroupTypeDeletedNotif"
+            root.out.event.category.name = "Alert Group Type Status"
+            root.out.object.name = "callHomeAlertGroupTypeEntry.300"
+            root.out.event.message = "Alert Group Type Deleted  ( Alert Group: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.cisco.callHomeAlertGroupName = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: ccm_smtp_msg_send_fail_notif
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: ccm_event_notif
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

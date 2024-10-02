@@ -1,0 +1,68 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DISMAN-TRACEROUTE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: trace_route_path_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "traceRouteCtlEntry. ( on $Node )"
+            root.out.event.message = "Traceroute Path Changed  ( from $Node )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.category.name = "Traceroute Path Status"
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRoutePathChange"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRoutePathChange"
+
+            root.out.IETF.traceRouteCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.81.1.2.1.3")
+            root.out.IETF.traceRouteCtlTargetAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.traceRouteResultsIpTgtAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.81.1.3.1.4")
+            root.out.IETF.traceRouteResultsIpTgtAddr = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: trace_route_test_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "traceRouteCtlEntry. ( on $Node )"
+            root.out.event.message = "Traceroute Path Not Determined  ( from $Node )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRouteTestFailed"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRouteTestFailed"
+            root.out.event.category.name = "Traceroute Path Status"
+
+            root.out.IETF.traceRouteCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.81.1.2.1.3")
+            root.out.IETF.traceRouteCtlTargetAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.traceRouteResultsIpTgtAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.81.1.3.1.4")
+            root.out.IETF.traceRouteResultsIpTgtAddr = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: trace_route_test_completed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Traceroute Path Status"
+            root.out.object.name = "traceRouteCtlEntry. ( on $Node )"
+            root.out.event.message = "Traceroute Path Determined  ( from $Node )"
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRouteTestCompleted"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-TRACEROUTE-MIB-traceRouteTestCompleted"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.IETF.traceRouteCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.81.1.2.1.3")
+            root.out.IETF.traceRouteCtlTargetAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.traceRouteResultsIpTgtAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.81.1.3.1.4")
+            root.out.IETF.traceRouteResultsIpTgtAddr = this.trap.VarBinds.index(3).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

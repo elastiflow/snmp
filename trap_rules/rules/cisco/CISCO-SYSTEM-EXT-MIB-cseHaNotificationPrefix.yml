@@ -1,0 +1,43 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-SYSTEM-EXT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cse_ha_restart_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Service Status"
+            root.out.object.name = "Service: " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Service Restarted on Active Supervisor, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.305.1.3.2") + "  ( " + "Service: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SYSTEM-EXT-MIB-cseHaRestartNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-SYSTEM-EXT-MIB-cseHaRestartNotify"
+
+            root.out.cisco.cseHaRestartReason = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.305.1.3.2")
+            root.out.cisco.cseHaRestartService = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cseHaRestartStateless = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.305.1.3.3")
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cse_shut_down_notify
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

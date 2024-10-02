@@ -1,0 +1,123 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "JCImSeries-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: opc_standard_active_general_conditional_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " ( " + this.trap.VarBinds.index(0).Value7.replace_all("\\s+$", "") + " )" + ": " + this.trap.VarBinds.index(12).Value + " " + this.trap.VarBinds.index(0).Value4 + ", " + this.trap.VarBinds.index(0).Value5
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: opc_standard_inactive_conditional_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " ( " + this.trap.VarBinds.index(0).Value7.replace_all("\\s+$", "") + " ) Normal" + " Normal" + ": " + this.trap.VarBinds.index(0).Value3 + " " + this.trap.VarBinds.index(0).Value4 + ", " + this.trap.VarBinds.index(0).Value5
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: opc_standard_general_conditional_event_acknowledged
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " ( " + this.trap.VarBinds.index(0).Value7.replace_all("\\s+$", "") + " )" + ": " + this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string() + " " + this.trap.VarBinds.index(0).Value4 + ", " + this.trap.VarBinds.index(0).Value5
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: opc_standard_simple_notification
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " ( " + this.trap.VarBinds.index(0).Value7.replace_all("\\s+$", "") + " )" + ": " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + " " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + ", " + this.trap.VarBinds.index(0).Value5
+            root.out.event.category.name = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: opc_standard_tracking_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " ( " + this.trap.VarBinds.index(0).Value7.replace_all("\\s+$", "") + " ) Normal" + " Normal" + ": " + this.trap.VarBinds.index(0).Value3 + " " + this.trap.VarBinds.index(0).Value4 + ", " + this.trap.VarBinds.index(0).Value5
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(11).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

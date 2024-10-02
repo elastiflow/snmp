@@ -1,0 +1,251 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "FCMGMT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: conn_unit_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Conn. Unit Status"
+            root.out.object.name = "connUnitEntry."
+
+            root.out.IETF.connUnitStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.94.1.6.1.6")
+            root.out.IETF.connUnitState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.6.1.5")
+        - label: conn_unit_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: conn_unit_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Status Unknown, Online  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: conn_unit_status_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Status Unknown, Offline  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: conn_unit_status_change_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: conn_unit_status_change_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: conn_unit_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Status Unknown, State Unknown  ( " + root.out.object.name + " )"
+        - label: conn_unit_status_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: conn_unit_deleted_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Connectivity Unit Deleted  ( " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "Conn. Unit"
+            root.out.object.name = "connUnitEntry."
+
+            root.out.IETF.connUnitId = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: conn_unit_event_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Conn. Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7") + " Event"
+            root.out.object.name = "connUnitEventEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Connectivity Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7") + " Event, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.IETF.connUnitEventId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.connUnitEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7")
+            root.out.IETF.connUnitEventObject = this.trap.VarBinds.index(2).Value
+            root.out.IETF.connUnitEventDescr = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: conn_unit_sensor_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Conn. Unit Sensor Status"
+            root.out.object.name = "connUnitSensorEntry."
+
+            root.out.IETF.connUnitSensorStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.94.1.8.1.4")
+        - label: conn_unit_sensor_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: conn_unit_sensor_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Sensor Status Unknown  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: conn_unit_sensor_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Sensor Status: Other  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: conn_unit_sensor_status_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Sensor OK  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: conn_unit_sensor_status_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Sensor Warning  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(0).Value == 5
+              processors:
+                - label: conn_unit_sensor_status_change_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Sensor Failed  ( " + root.out.object.name + " )"
+            - processors:
+                - label: conn_unit_sensor_status_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: conn_unit_sensor_status_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: conn_unit_port_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Conn. Unit Port Status"
+            root.out.object.name = "connUnitPortEntry."
+
+            root.out.IETF.connUnitPortStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.94.1.10.1.7")
+            root.out.IETF.connUnitPortState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.10.1.6")
+        - label: conn_unit_port_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 10
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_10
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Port Status: Unknown, Online  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Port Status: Unknown, Offline  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Port Status: Unknown, Bypassed  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Port Status: Unknown, Diagnostics  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_6
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 7
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_7
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 8
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_8
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 9
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_9
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: conn_unit_port_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connectivity Unit Port Status: Unknown, Unknown  ( " + root.out.object.name + " )"
+        - label: conn_unit_port_status_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

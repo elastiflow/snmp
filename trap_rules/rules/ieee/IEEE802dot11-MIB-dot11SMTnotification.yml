@@ -1,0 +1,121 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IEEE802dot11-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: dot11disassociate
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "STA Sent Disassociation Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
+            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
+            root.out.event.category.name = "802.11 Disassociation"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
+
+            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.ieee.dot11DisassociateReason = this.trap.VarBinds.index(1).Value
+            root.out.ieee.dot11DisassociateStation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: dot11deauthenticate
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
+            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
+            root.out.event.category.name = "802.11 Deauthentication"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "STA Sent Deauthentication Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+
+            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.ieee.dot11DeauthenticateReason = this.trap.VarBinds.index(1).Value
+            root.out.ieee.dot11DeauthenticateStation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: dot11authenticate_fail
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "STA Sent Authentication Failure Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
+            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
+            root.out.event.category.name = "802.11 Authentication Failure"
+
+            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.ieee.dot11AuthenticateFailStatus = this.trap.VarBinds.index(1).Value
+            root.out.ieee.dot11AuthenticateFailStation = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: dot11associate
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: dot11associate_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: dot11reassociate
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: dot11reassociate_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

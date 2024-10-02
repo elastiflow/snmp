@@ -1,0 +1,615 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SFALERT"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: sf_event
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Source: $7, Destination: $9:" + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()0
+            root.out.event.class.name = "SNMPTRAP-sourcefire-SFALERT-sfEvent"
+            root.out.event.id = "SNMPTRAP-sourcefire-SFALERT-sfEvent"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.category.name = "IDS Alert [ " + this.trap.VarBinds.index(1).Value + ": " + this.trap.VarBinds.index(2).Value + " rev. " + this.trap.VarBinds.index(3).Value + " ]"
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + "  ( " + "Source: $7, Destination: $9:" + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()0 + " )"
+
+            root.out.talos.sfAlertDateAndTime = this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.talos.sfSignatureGenerator = this.trap.VarBinds.index(1).Value
+            root.out.talos.sfSignatureId = this.trap.VarBinds.index(2).Value
+            root.out.talos.sfSignatureRevision = this.trap.VarBinds.index(3).Value
+            root.out.talos.sfEventMessage = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.talos.sfIpProtocol = this.trap.VarBinds.index(5).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: sf_event_ip_string
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-sourcefire-SFALERT-sfEventIpString"
+            root.out.event.id = "SNMPTRAP-sourcefire-SFALERT-sfEventIpString"
+            root.out.event.category.name = "IDS Alert [ " + this.trap.VarBinds.index(1).Value + ": " + this.trap.VarBinds.index(2).Value + " rev. " + this.trap.VarBinds.index(3).Value + " ]"
+            root.out.object.name = "Source: " + this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ", Destination: $9:" + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()0
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + "  ( " + "Source: " + this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string() + ", Destination: $9:" + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()0 + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.talos.sfAlertDateAndTime = this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.talos.sfSignatureGenerator = this.trap.VarBinds.index(1).Value
+            root.out.talos.sfSignatureId = this.trap.VarBinds.index(2).Value
+            root.out.talos.sfSignatureRevision = this.trap.VarBinds.index(3).Value
+            root.out.talos.sfEventMessage = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.talos.sfIpProtocol = this.trap.VarBinds.index(5).Value
+            root.out.talos.sfSourceIpString = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.talos.sfDestinationIpString = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: dce_new_host
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: dce_new_tcp_service
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: dce_new_udp_service
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: dce_new_net_proto
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: dce_new_xport_proto
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: dce_host_ip_changed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: dce_host_ip_reused
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: dce_hops_changed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: dce_tcp_svc_info_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: dce_udp_svc_info_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: dce_host_timeout
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: dce_tcp_port_closed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: dce_udp_port_closed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: dce_tcp_port_timeout
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: dce_udp_port_timeout
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: dce_mac_info_change
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: dce_mac_add
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: dce_host_type_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: dce_vlan_tag
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: dce_host_deleted
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: sf_event_impact
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: dce_new_client_application
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: dce_client_application_timeout
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: sf_policy_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: dce_netbios_name
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: dce_host_dropped
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: sf_impact_alert
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: dce_banner_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: sf_health_monitor_alert
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: dce_tcp_svc_confidence_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: dce_udp_svc_confidence_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 37
+      processors:
+        - label: dce_new_os
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: dce_identity_conflict
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 39
+      processors:
+        - label: dce_identity_timeout
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: dce_client_application_update
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 43
+      processors:
+        - label: dce_network_based_malware_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: dce_retrospective_malware_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: sf_firewall_event
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 46
+      processors:
+        - label: sf_firewall_event_ip_string
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 47
+      processors:
+        - label: dce_host_iocset
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

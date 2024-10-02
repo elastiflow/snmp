@@ -1,0 +1,201 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-C8500-REDUNDANCY-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ccr_cpu_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrCpuStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrCpuStatusChange"
+            root.out.event.category.name = "CPU Card Redundancy Status"
+            root.out.object.name = "ccrCpuEntry.105"
+
+            root.out.cisco.ccrCpuStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.105.1.1.1.1.3")
+        - label: ccr_cpu_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: ccr_cpu_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "CPU Card Redundancy Not Present"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: ccr_cpu_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+                    root.out.event.message = "CPU Card Redundancy OK"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: ccr_cpu_status_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "CPU Card Redundancy Fault"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: ccr_cpu_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "CPU Card Redundancy Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: ccr_cpu_status_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Slot: $ccrCpuSlotIndex )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ccr_switch_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
+            root.out.event.category.name = "Switch Card Redundancy Status"
+            root.out.object.name = "ccrSwitchEntry.105"
+
+            root.out.cisco.ccrSwitchStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.105.1.2.1.1.3")
+        - label: ccr_switch_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: ccr_switch_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card Redundancy Not Present"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: ccr_switch_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Switch Card Redundancy OK"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: ccr_switch_status_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+                    root.out.event.message = "Switch Card Redundancy Fault"
+            - processors:
+                - label: ccr_switch_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card Redundancy Status Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: ccr_switch_status_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Slot: $ccrSwitchSlotIndex )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ccr_switch_mode_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchModeChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchModeChange"
+            root.out.event.category.name = "Switch Card Redundancy Mode"
+            root.out.object.name = "ccrSwitchEntry.105"
+
+            root.out.cisco.ccrSwitchMode = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.105.1.2.1.1.2")
+        - label: ccr_switch_mode_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: ccr_switch_mode_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card in Active Redundancy Mode"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: ccr_switch_mode_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card in Standby Redundancy Mode"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: ccr_switch_mode_change_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card Not Used for Redundancy"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: ccr_switch_mode_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card Not Present"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: ccr_switch_mode_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Switch Card Redundancy Mode Unknown"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: ccr_switch_mode_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Slot: $ccrSwitchSlotIndex )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

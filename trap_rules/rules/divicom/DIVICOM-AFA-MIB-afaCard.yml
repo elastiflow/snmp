@@ -1,0 +1,452 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DIVICOM-AFA-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: afa_watchdog_reset
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSMismatched"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSMismatched"
+            root.out.event.category.name = "NMS Hardware Mismatch"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Hardware Mismatch, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: afa_memory_parity_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSOffline"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSOffline"
+            root.out.event.category.name = "NMS Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Offline, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: afa_bus_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSRetrieving"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSRetrieving"
+            root.out.event.category.name = "NMS Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Retrieving, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: afa_self_test_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSTimeout"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSTimeout"
+            root.out.event.category.name = "NMS Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Timeout, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: afa_high_temperature_warning
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "NMS Software Mismatch"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Software Mismatch, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSSoftwareMismatched"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSSoftwareMismatched"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: afa_high_temperature_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSDiscovering"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNMSDiscovering"
+            root.out.event.category.name = "NMS Discovering"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NMS Discovering, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: afa_bad_slot_configuration
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "NV Configuration Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NV Configuration Error, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNVConfigurationError"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNVConfigurationError"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: afa_card_busy
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Provision Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Provision Error, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaProvisionError"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaProvisionError"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: afa_sync_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaOverSubscribed"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaOverSubscribed"
+            root.out.event.category.name = "Hardware Subscription Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Hardware Oversubscribed, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: afa_sntptimeout
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNvramCorrupted"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNvramCorrupted"
+            root.out.event.category.name = "NVRAM Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "NVRAM Corrupted, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: afa_core_file_exists
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaLowBattery"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaLowBattery"
+            root.out.event.category.name = "Battery Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Low Battery, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: afa_master_backoff
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBadFlashBlock"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBadFlashBlock"
+            root.out.event.category.name = "Flash Block Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Bad Flash Block, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: afa_slave_active
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "NVRAM Write Error, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNvramWriteError"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaNvramWriteError"
+            root.out.event.category.name = "NVRAM Write Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: afa_psifile_number_exceeded_limit
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaComponentOverSubscribed"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaComponentOverSubscribed"
+            root.out.event.category.name = "Subscription Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Oversubscribed, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: afa_scsprovision_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Flash Card Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Flash Card Removed, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaFlashCardRemoved"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaFlashCardRemoved"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: afa_pciclock_read_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Flash Card Write Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Flash Card Not Writable, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaReadOnlyFlash"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaReadOnlyFlash"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: afa_communication_loss
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Component Busy, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaComponentBusy"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaComponentBusy"
+            root.out.event.category.name = "Component Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: afa_voltage_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaPowerSupplyFailed"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaPowerSupplyFailed"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Power Supply Failure, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: afa_mpegdecoder_lnberror
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBadSlotConfig"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBadSlotConfig"
+            root.out.event.category.name = "Slot Configuration Status"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Bad Slot Configuration, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: afa_mpegdecoder_general_lock_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Hardware/Software Compatibility"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Hardware Incompatible With Software, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaHardwareIncompWithSW"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaHardwareIncompWithSW"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: afa_switch_reference_lock_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Backup Power Supply Failure, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + "Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Object: " + this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string() + ", Alarm ID: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.class.name = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBackupPowerSupplyFailed"
+            root.out.event.id = "SNMPTRAP-divicom-DIVICOM-AFA-MIB-afaBackupPowerSupplyFailed"
+            root.out.event.category.name = "Backup Power Supply Status"
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

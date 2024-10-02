@@ -1,0 +1,39 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BRIDGE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: new_root
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = @Node is New Root of Spanning Tree"
+            root.out.event.class.name = "SNMPTRAP-IETF-BRIDGE-MIB-newRoot"
+            root.out.event.id = "SNMPTRAP-IETF-BRIDGE-MIB-newRoot"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.category.name = "Spanning Tree Root"
+            root.out.object.name = ""
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: topology_change
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.message = "Port Transitioned <Learn to Forward> or <Forward to Block>"
+            root.out.event.class.name = "SNMPTRAP-IETF-BRIDGE-MIB-topologyChange"
+            root.out.event.id = "SNMPTRAP-IETF-BRIDGE-MIB-topologyChange"
+            root.out.event.category.name = "Bridge Topology Change"
+            root.out.object.name = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

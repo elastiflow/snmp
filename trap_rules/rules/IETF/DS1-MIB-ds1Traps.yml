@@ -1,0 +1,262 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DS1-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: dsx1line_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DS1-MIB-dsx1LineStatusChange"
+            root.out.event.id = "SNMPTRAP-IETF-DS1-MIB-dsx1LineStatusChange"
+            root.out.event.category.name = "DS1 Line Status"
+            root.out.object.name = "dsx1ConfigEntry.1"
+
+            root.out.IETF.dsx1LineStatus = this.trap.VarBinds.index(0).Value
+            root.out.IETF.dsx1LineStatusLastChange = this.trap.VarBinds.index(1).Value
+        - label: dsx1line_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: dsx1line_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Line Normal"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value == 1024
+              processors:
+                - label: dsx1line_status_change_nested_switch_1024
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 TS16 Loss of Multiframe"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 128
+              processors:
+                - label: dsx1line_status_change_nested_switch_128
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Line Loopback"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 16
+              processors:
+                - label: dsx1line_status_change_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "DS1 Alarm Indication Signal"
+            - check: this.trap.VarBinds.index(0).Value == 16384
+              processors:
+                - label: dsx1line_status_change_nested_switch_16384
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Carrier Equipment Out of Service"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: dsx1line_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Far-End Loss of Frame"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 2048
+              processors:
+                - label: dsx1line_status_change_nested_switch_2048
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Test Code Detected"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 256
+              processors:
+                - label: dsx1line_status_change_nested_switch_256
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Alarm Indication Signal (E1 TS16)"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 32
+              processors:
+                - label: dsx1line_status_change_nested_switch_32
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Frame"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 32768
+              processors:
+                - label: dsx1line_status_change_nested_switch_32768
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS2 Payload Alarm Indication Signal"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 34
+              processors:
+                - label: dsx1line_status_change_nested_switch_34
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Frame: Far-End LOF"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: dsx1line_status_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Frame"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 40
+              processors:
+                - label: dsx1line_status_change_nested_switch_40
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Frame: Far-End AIS"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 4096
+              processors:
+                - label: dsx1line_status_change_nested_switch_4096
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Unknown Alarm"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 42
+              processors:
+                - label: dsx1line_status_change_nested_switch_42
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+                    root.out.event.message = "DS1 Loss of Frame: Far-End AIS and LOF"
+            - check: this.trap.VarBinds.index(0).Value == 512
+              processors:
+                - label: dsx1line_status_change_nested_switch_512
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Far End TS16 Loss of Multiframe"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 64
+              processors:
+                - label: dsx1line_status_change_nested_switch_64
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Signal"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 65536
+              processors:
+                - label: dsx1line_status_change_nested_switch_65536
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS2 Performance Threshold Exceeded"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 8
+              processors:
+                - label: dsx1line_status_change_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Far-End Alarm Indication Signal"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 8192
+              processors:
+                - label: dsx1line_status_change_nested_switch_8192
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "DS1 Unavailable Signal State"
+            - check: this.trap.VarBinds.index(0).Value == 96
+              processors:
+                - label: dsx1line_status_change_nested_switch_96
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Loss of Frame and Signal"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 98
+              processors:
+                - label: dsx1line_status_change_nested_switch_98
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+                    root.out.event.message = "DS1 Loss of Frame and Signal: Far-End LOF"
+            - processors:
+                - label: dsx1line_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS1 Line Multiple Alarms, dsx1LineStatus: " + this.trap.VarBinds.index(0).Value
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: dsx1line_status_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

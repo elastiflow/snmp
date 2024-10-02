@@ -1,0 +1,172 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DS3-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: dsx3line_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DS3-MIB-dsx3LineStatusChange"
+            root.out.event.id = "SNMPTRAP-IETF-DS3-MIB-dsx3LineStatusChange"
+            root.out.event.category.name = "DS3 Line Status"
+            root.out.object.name = "dsx3ConfigEntry.1"
+
+            root.out.IETF.dsx3LineStatus = this.trap.VarBinds.index(0).Value
+            root.out.IETF.dsx3LineStatusLastChange = this.trap.VarBinds.index(1).Value
+        - label: dsx3line_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: dsx3line_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Line Normal"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(0).Value == 1024
+              processors:
+                - label: dsx3line_status_change_nested_switch_1024
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Unavailable Signal State"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 128
+              processors:
+                - label: dsx3line_status_change_nested_switch_128
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Line Loopback"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 16
+              processors:
+                - label: dsx3line_status_change_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Alarm Indication Signal"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: dsx3line_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Far End Remote Alarm Indication"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 2048
+              processors:
+                - label: dsx3line_status_change_nested_switch_2048
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Carrier Equipment Out of Service"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 256
+              processors:
+                - label: dsx3line_status_change_nested_switch_256
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Test Pattern Detected"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 32
+              processors:
+                - label: dsx3line_status_change_nested_switch_32
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Loss of Frame"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: dsx3line_status_change_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Remote Alarm Indication"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 512
+              processors:
+                - label: dsx3line_status_change_nested_switch_512
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Unknown Alarm"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value == 64
+              processors:
+                - label: dsx3line_status_change_nested_switch_64
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Loss of Signal"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 8
+              processors:
+                - label: dsx3line_status_change_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "DS3 Far End Alarm Indication Signal"
+            - check: this.trap.VarBinds.index(0).Value == 96
+              processors:
+                - label: dsx3line_status_change_nested_switch_96
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Loss of Frame and Signal"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: dsx3line_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "DS3 Line Multiple Alarms, dsx3LineStatus: " + this.trap.VarBinds.index(0).Value
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: dsx3line_status_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

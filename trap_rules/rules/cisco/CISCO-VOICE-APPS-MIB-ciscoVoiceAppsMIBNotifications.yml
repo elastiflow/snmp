@@ -1,0 +1,94 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-VOICE-APPS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cva_module_start
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Voice Application Module Started  ( " + "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleStart"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleStart"
+            root.out.event.category.name = "Voice Application Module Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+
+            root.out.cisco.cvaAlarmSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.1")
+            root.out.cisco.cvaModuleName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cva_module_stop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleStop"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleStop"
+            root.out.event.category.name = "Voice Application Module Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Voice Application Module Stopped, " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.5") + "  ( " + "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+
+            root.out.cisco.cvaAlarmSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.1")
+            root.out.cisco.cvaModuleName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaModuleFailureCause = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.5")
+            root.out.cisco.cvaModuleFailureName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaModuleFailureMessage = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cva_module_run_time_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleRunTimeFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaModuleRunTimeFailure"
+            root.out.event.category.name = "Voice Application Module Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Voice Application Module Runtime " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.7") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + ", " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + "  ( " + "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+
+            root.out.cisco.cvaAlarmSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.1")
+            root.out.cisco.cvaModuleName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaModuleRunTimeFailureCause = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.7")
+            root.out.cisco.cvaModuleFailureName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaModuleFailureMessage = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cva_process_start
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaProcessStart"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaProcessStart"
+            root.out.event.category.name = "Voice Application Process Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", PID: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "Voice Application Process Started  ( " + "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", PID: " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.cisco.cvaAlarmSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.1")
+            root.out.cisco.cvaModuleName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaProcessId = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cva_process_stop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaProcessStop"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-APPS-MIB-cvaProcessStop"
+            root.out.event.category.name = "Voice Application Process Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", PID: " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = "Voice Application Process Stopped  ( " + "Module: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", PID: " + this.trap.VarBinds.index(2).Value + " )"
+
+            root.out.cisco.cvaAlarmSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.190.1.2.1")
+            root.out.cisco.cvaModuleName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.cisco.cvaProcessId = this.trap.VarBinds.index(2).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

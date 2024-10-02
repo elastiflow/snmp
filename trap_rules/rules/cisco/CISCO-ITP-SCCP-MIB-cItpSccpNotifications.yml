@@ -1,0 +1,65 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ITP-SCCP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: c_itp_sccp_gtt_map_state_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ITP-SCCP-MIB-cItpSccpGttMapStateChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ITP-SCCP-MIB-cItpSccpGttMapStateChange"
+            root.out.event.category.name = "Mated Application Status"
+            root.out.object.name = "cItpSccpGttMapTableEntry.."
+
+            root.out.cisco.cItpSpCLLICode = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cItpSpDisplayName = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cItpSccpGttMapDisplayPC = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cItpSccpGttMapDisplaySS = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cItpSccpGttMapSsStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.233.1.3.1.1.7")
+        - label: c_itp_sccp_gtt_map_state_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: c_itp_sccp_gtt_map_state_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mated Application Subsystem Allowed"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: c_itp_sccp_gtt_map_state_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mated Application Subsystem Prohibited"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: c_itp_sccp_gtt_map_state_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Mated Application Subsystem Status Unknown"
+        - label: c_itp_sccp_gtt_map_state_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Point Code: " + this.trap.VarBinds.index(2).Value + ", Subsystem: " + this.trap.VarBinds.index(3).Value + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

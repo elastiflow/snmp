@@ -1,0 +1,228 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WIRELESS-DOCS-EXT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cwdx_he_su_on_off_notification
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SU Status"
+            root.out.object.name = ""
+
+            root.out.cisco.cwdIfHeSuStatusMacAddress = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwdIfHeSuStatusIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cwdIfHeSuStatusDownChanIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cwdIfHeSuStatusUpChanIfIndex = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cwdIfHeSuStatusServiceId = this.trap.VarBinds.index(4).Value
+            root.out.cisco.cwdxHeSuStatusValue = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.169.1.3.3.1.1")
+        - label: cwdx_he_su_on_off_notification_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(5).Value == 1
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Offline  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 10
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_10
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit KEK Key Assignment Rejected  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 11
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_11
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit TEK Key Assignment Rejected  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 12
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_12
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Online  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 13
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_13
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit TFTP File Transfer Started  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 14
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_14
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Sent Time of Day Request  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 2
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit (see cwdIfHeSuStatusValue for status)  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 3
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit   ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 4
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Sent Initial Ranging  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 5
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Online, Network Access Disabled  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 6
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Online, BPI enabled and KEK assigned  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 7
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Online, BPI enabled and TEK assigned  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 8
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Rejected, Bad MIC  ( MAC
+            - check: this.trap.VarBinds.index(5).Value == 9
+              processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_9
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Rejected, Bad COS  ( MAC
+            - processors:
+                - label: cwdx_he_su_on_off_notification_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: cwdx_he_su_on_off_notification_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cwdx_he_su_ch_over_notification
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SU Channel Override"
+            root.out.object.name = ""
+
+            root.out.cisco.cwdxHeSuChOverMacAddress = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwdxHeSuChOverDownFrequency = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cwdxHeSuChOverUpChannelId = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cwdxHeSuChOverOpInitiatedTime = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cwdxHeSuChOverState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.169.1.3.6.1.7")
+        - label: cwdx_he_su_ch_over_notification_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit received RNG-RSP Message  ( MAC
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Command not Active  ( MAC
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit No Operation Needed  ( MAC
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Not Found  ( MAC
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Head-end Waiting to Send RNG-RSP Message to Subscriber-unit  ( MAC
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Subscriber-unit Timeout  ( MAC
+            - processors:
+                - label: cwdx_he_su_ch_over_notification_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: cwdx_he_su_ch_over_notification_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

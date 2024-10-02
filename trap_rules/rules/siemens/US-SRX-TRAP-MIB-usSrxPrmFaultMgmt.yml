@@ -1,0 +1,545 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "US-SRX-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: us_srx_prm_init_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptResourceTrap"
+            root.out.event.id = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptResourceTrap"
+            root.out.event.category.name = "SIP+ System Resource Status"
+            root.out.object.name = "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0
+            root.out.event.message = this.trap.VarBinds.index(7).Value + ", Parameters: " + this.trap.VarBinds.index(12).Value + "  ( " + "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0 + " )"
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich("1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich("1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value
+        - label: us_srx_prm_init_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: us_srx_prm_init_trap_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: us_srx_prm_init_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: us_srx_prm_init_trap_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: us_srx_prm_exited_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptOperationalTrap"
+            root.out.event.id = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptOperationalTrap"
+            root.out.event.category.name = "SIP+ Operational Status"
+            root.out.object.name = "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(9).Value
+            root.out.event.message = this.trap.VarBinds.index(7).Value + ", Parameters: " + this.trap.VarBinds.index(12).Value + "  ( " + "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(9).Value + " )"
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich("1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich("1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value
+        - label: us_srx_prm_exited_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: us_srx_prm_exited_trap_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: us_srx_prm_exited_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: us_srx_prm_exited_trap_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: us_srx_prm_monitor_failed_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptCommunicationTrap"
+            root.out.event.id = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptCommunicationTrap"
+            root.out.event.category.name = "SIP+ Communication Status"
+            root.out.object.name = "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0
+            root.out.event.message = this.trap.VarBinds.index(7).Value + ", Parameters: " + this.trap.VarBinds.index(12).Value + "  ( " + "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0 + " )"
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich("1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich("1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value
+        - label: us_srx_prm_monitor_failed_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: us_srx_prm_monitor_failed_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: us_srx_prm_monitor_failed_trap_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: us_srx_prm_mismatch_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptUpTrap"
+            root.out.event.id = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptUpTrap"
+            root.out.event.category.name = "SIPTSM Status"
+            root.out.object.name = "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0
+            root.out.event.message = this.trap.VarBinds.index(7).Value + ", Parameters: " + this.trap.VarBinds.index(0).Value3 + "  ( " + "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0 + " )"
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich("1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich("1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value
+        - label: us_srx_prm_mismatch_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: us_srx_prm_mismatch_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: us_srx_prm_mismatch_trap_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: us_srx_prm_gateway_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptShutDownTrap"
+            root.out.event.id = "SNMPTRAP-siemens-US-SRX-TRAP-MIB-usSrxSiptShutDownTrap"
+            root.out.event.category.name = "SIPTSM Status"
+            root.out.object.name = "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0
+            root.out.event.message = this.trap.VarBinds.index(7).Value + ", Parameters: " + this.trap.VarBinds.index(0).Value3 + "  ( " + "Reporting: " + this.trap.VarBinds.index(8).Value + ", Faulty: " + this.trap.VarBinds.index(0).Value0 + " )"
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich("1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich("1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value
+        - label: us_srx_prm_gateway_trap_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: us_srx_prm_gateway_trap_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+        - label: us_srx_prm_gateway_trap_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: us_srx_prm_pri_bch_mismatch_trap
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

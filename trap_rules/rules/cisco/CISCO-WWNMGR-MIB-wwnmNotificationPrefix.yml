@@ -1,0 +1,75 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WWNMGR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: wwnm_type1wwn_shortage_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnShortageNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnShortageNotify"
+            root.out.event.category.name = "NAA Type 1 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWN Shortage, " + this.trap.VarBinds.index(0).Value + " NAA Type 1 WWNs Available"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.wwnmType1AvailableWwns = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: wwnm_type1wwn_available_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "WWNs Available, " + this.trap.VarBinds.index(0).Value + " NAA Type 1 WWNs Available"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnAvailableNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnAvailableNotify"
+            root.out.event.category.name = "NAA Type 1 WWN Availablity"
+            root.out.object.name = ""
+
+            root.out.cisco.wwnmType1AvailableWwns = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: wwnm_type_other_wwn_shortage_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnShortageNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnShortageNotify"
+            root.out.event.category.name = "NAA Type 2&5 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWN Shortage, " + this.trap.VarBinds.index(0).Value + " NAA Type 2&5 WWNs Available"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.wwnmTypeOtherAvailableWwns = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: wwnm_type_other_wwn_available_notify
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnAvailableNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnAvailableNotify"
+            root.out.event.category.name = "NAA Type 2&5 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWNs Available, " + this.trap.VarBinds.index(0).Value + " NAA Type 2&5 WWNs Available"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.cisco.wwnmTypeOtherAvailableWwns = this.trap.VarBinds.index(0).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

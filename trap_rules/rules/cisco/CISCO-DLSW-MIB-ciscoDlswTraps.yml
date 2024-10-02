@@ -1,0 +1,93 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-DLSW-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_dlsw_trap_tconn_partner_reject
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Partner"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Transport Connection Rejected Partner DLSw during Capabilities Exchanges  ( TransDomain
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_dlsw_trap_tconn_prot_violation
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Protocol"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "Protocol Violation Detected for DLSw Transport Connection  ( TransDomain
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cisco_dlsw_trap_tconn_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "DLSw Transport Connected  ( TransDomain
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cisco_dlsw_trap_tconn_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value
+            root.out.event.message = "DLSw Transport Connection Disconnected  ( TransDomain
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cisco_dlsw_trap_circuit_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Circuit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "DLSw Circuit Connected  ( S1Mac
+
+            root.out.cisco.ciscoDlswCircuitS1Mac = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswCircuitS1Sap = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ciscoDlswCircuitS2Mac = this.trap.VarBinds.index(2).Value
+            root.out.cisco.ciscoDlswCircuitS2Sap = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cisco_dlsw_trap_circuit_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Circuit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "DLSw Circuit Disconnected  ( S1Mac
+
+            root.out.cisco.ciscoDlswCircuitS1Mac = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswCircuitS1Sap = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ciscoDlswCircuitS2Mac = this.trap.VarBinds.index(2).Value
+            root.out.cisco.ciscoDlswCircuitS2Sap = this.trap.VarBinds.index(3).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

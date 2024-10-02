@@ -1,0 +1,27 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALLIEDTELESYN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: config_file_exist_trap
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.207.8.4.4.4.49.6")
+            root.out.event.category.name = "Intrusion/Attack"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ALLIEDTELESYN-MIB-firewallTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ALLIEDTELESYN-MIB-firewallTrap"
+            root.out.object.name = ""
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.alliedtelesyn.configFileExist = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.207.8.4.4.4.49.6")
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

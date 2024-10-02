@@ -1,0 +1,91 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CENTRECOM-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: overheat
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = ""
+            root.out.event.message = "Overheat Condition, System Shutting Down"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: fanfailed
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan Failed"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: fan_ok
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan OK"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: invalid_login_attempt
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = "Invalid Login Attempt"
+            root.out.event.category.name = "Login"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: power_supply_fail
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply Failed"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: power_supply_good
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply OK"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: rps_alarm
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = "Redundant Power Supply Alarm"
+            root.out.event.category.name = "Redundant Power Supply Status"
+            root.out.object.name = ""
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: rps_no_alarm
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = "Redundant Power Supply OK"
+            root.out.event.category.name = "Redundant Power Supply Status"
+            root.out.object.name = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

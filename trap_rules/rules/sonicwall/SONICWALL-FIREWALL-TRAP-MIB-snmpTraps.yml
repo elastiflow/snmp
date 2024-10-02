@@ -1,0 +1,53 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SONICWALL-FIREWALL-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cold_start
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = $2
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.object.name = ""
+            root.out.event.class.name = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapAttack"
+            root.out.event.id = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapAttack"
+            root.out.event.category.name = "Attack: Unknown ( $1 ): lookup($1, sonicwallFwTrapType)
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: warm_start
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.message = $2
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapSysError"
+            root.out.event.id = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapSysError"
+            root.out.event.category.name = "System Error: Unknown ( $1 ): lookup($1, sonicwallFwTrapType)
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: authentication_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

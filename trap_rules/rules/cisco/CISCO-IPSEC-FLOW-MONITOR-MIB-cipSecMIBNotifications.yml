@@ -1,0 +1,232 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-IPSEC-FLOW-MONITOR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cike_tunnel_start
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Active  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeTunnelStart"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeTunnelStart"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cikeTunLifeTime = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cike_tunnel_stop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeTunnelStop"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeTunnelStop"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Stopped  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cikeTunActiveTime = this.trap.VarBinds.index(2).Value
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cike_sys_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeSysFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeSysFailure"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Internal or System Capacity Error  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cike_cert_crl_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeCertCrlFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeCertCrlFailure"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Certificate or CRL Error  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cike_protocol_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeProtocolFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeProtocolFailure"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Protocol Error  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cike_no_sa
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeNoSa"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cikeNoSa"
+            root.out.event.category.name = "Phase-1 IKE Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-1 IKE Tunnel Non-Existent Security Association  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cip_sec_tunnel_start
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecTunnelStart"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecTunnelStart"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cipSecTunnelEntry.171"
+            root.out.event.message = "IPsec Phase-2 Tunnel Active  ( cipSecTunnelEntry.171 )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.cisco.cipSecTunLifeTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cipSecTunLifeSize = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: cip_sec_tunnel_stop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecTunnelStop"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecTunnelStop"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cipSecTunnelEntry.171"
+            root.out.event.message = "IPsec Phase-2 Tunnel Inactive  ( cipSecTunnelEntry.171 )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cipSecTunActiveTime = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: cip_sec_sys_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecSysFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecSysFailure"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cipSecTunnelEntry."
+            root.out.event.message = "IPsec Phase-2 Tunnel Internal or System Capacity Error  ( cipSecTunnelEntry., " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cipSecTunActiveTime = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cipSecSpiProtocol = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.171.1.3.4.1.4")
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: cip_sec_set_up_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecSetUpFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecSetUpFailure"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cikePeerEntry."
+            root.out.event.message = "IPsec Phase-2 Tunnel Setup Failed  ( " + this.trap.VarBinds.index(0).Value + " to " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cikePeerLocalAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cikePeerRemoteAddr = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: cip_sec_early_tun_term
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecEarlyTunTerm"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecEarlyTunTerm"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cipSecTunnelEntry.171"
+            root.out.event.message = "IPsec Phase-2 Tunnel Terminated Early  ( cipSecTunnelEntry.171 )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.cisco.cipSecTunActiveTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cipSecSpiProtocol = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.171.1.3.4.1.4")
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: cip_sec_protocol_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "cipSecTunnelEntry.171"
+            root.out.event.message = "IPsec Phase-2 Tunnel Protocol Error  ( cipSecTunnelEntry.171 )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecProtocolFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecProtocolFailure"
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+
+            root.out.cisco.cipSecTunActiveTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cipSecSpiProtocol = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.171.1.3.4.1.4")
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: cip_sec_no_sa
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Phase-2 Tunnel Status"
+            root.out.object.name = "cipSecTunnelEntry.171"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecNoSa"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-FLOW-MONITOR-MIB-cipSecNoSa"
+            root.out.event.message = "IPsec Phase-2 Tunnel Non-Existent Security Association  ( cipSecTunnelEntry.171 )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

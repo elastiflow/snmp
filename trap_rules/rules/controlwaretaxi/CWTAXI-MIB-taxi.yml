@@ -1,0 +1,876 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CWTAXI-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: taxi_manual_button_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Manual Button Call"
+            root.out.event.message = "Manual Button Call Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmNumberOfBChan = this.trap.VarBinds.index(5).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: taxi_manual_button_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Manual Button Call Failed, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.event.category.name = "Manual Button Call"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: taxi_manual_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Manual Call"
+            root.out.event.message = "Manual Call Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmNumberOfBChan = this.trap.VarBinds.index(5).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: taxi_manual_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Manual Call Failed, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.event.category.name = "Manual Call"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: taxi_nms_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Nms Call"
+            root.out.event.message = "Nms Call Established, Addr
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: taxi_nms_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Nms Call Failed, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8") + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10") + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.event.category.name = "Nms Call"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmInbErrorCode = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: taxi_supvsr_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Supervisor Call"
+            root.out.event.message = "Supervisor Call Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: taxi_supvsr_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8") + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10") + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.event.category.name = "Supervisor Call"
+            root.out.event.message = "Supervisor Call Failed, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmInbErrorCode = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: taxi_backup_call_req
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Backup Call"
+            root.out.event.message = "Backup Call Request, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: taxi_backup_call_req_outof_time_window
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Backup Call"
+            root.out.event.message = "Backup Call Request Out of Time Window, Port
+            root.out.object.name = this.trap.VarBinds.index(2).Value + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: taxi_backup_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Backup Call"
+            root.out.event.message = "Backup Call Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmNumberOfBChan = this.trap.VarBinds.index(5).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: taxi_backup_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.event.category.name = "Backup Call"
+            root.out.event.message = "Backup Call Failed, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: taxi_isdn_line_test_call_success_ful
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Isdn Line Test Call SuccessFul, Slot
+            root.out.object.name = this.trap.VarBinds.index(2).Value + ".part " + this.trap.VarBinds.index(3).Value
+            root.out.event.category.name = "Isdn Line Test"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: taxi_isdn_line_test_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(7).Value + ".part " + this.trap.VarBinds.index(8).Value
+            root.out.event.category.name = "Isdn Line Test"
+            root.out.event.message = "Isdn Line Test Call Failed, ReasonCode
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmInbErrorCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(7).Value
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(8).Value
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: taxi_inc_call_accepted
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Incoming Call"
+            root.out.event.message = "Incoming Call Accepted, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmNumberOfBChan = this.trap.VarBinds.index(5).Value
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: taxi_inc_call_rejected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Incoming Call"
+            root.out.event.message = "Incoming Call Rejected, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6") + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7") + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8") + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10") + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmInbErrorCode = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: taxi_port_disconnected
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
+            root.out.event.message = "Port Disconnected, Slot
+            root.out.event.category.name = "Port"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmReasonCode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.6")
+            root.out.controlwaretaxi.taxiAlarmCauseCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.7")
+            root.out.controlwaretaxi.taxiAlarmCallErrorCode = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.8")
+            root.out.controlwaretaxi.taxiAlarmInbMsgCode = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.10")
+            root.out.controlwaretaxi.taxiAlarmInbErrorCode = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.9")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(11).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: taxi_module_initialized
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value + ".part " + this.trap.VarBinds.index(3).Value
+            root.out.event.category.name = "Init"
+            root.out.event.message = "ModuleInitialized, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: taxi_device_initialized
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.category.name = "Init"
+            root.out.event.message = "Device Initialized"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: taxi_perm_activated
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.category.name = "Perm"
+            root.out.event.message = "Perm Activated"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: taxi_perm_deactivated
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Perm"
+            root.out.event.message = "Perm Deactivated"
+            root.out.object.name = ""
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: taxi_config_changed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value + ".part " + this.trap.VarBinds.index(3).Value
+            root.out.event.category.name = "Config"
+            root.out.event.message = "Configuration Changed, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: taxi_no_polling_response
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = ""
+            root.out.event.message = "No Polling Response"
+            root.out.object.name = "Poll Resp"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: taxi_unit_responding_to_poll
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = ""
+            root.out.event.category.name = "Poll Resp"
+            root.out.event.message = "Unit Responding To Poll"
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: taxi_module_in_slot_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value + ".part " + this.trap.VarBinds.index(3).Value
+            root.out.event.category.name = ""
+            root.out.event.message = "Module In Slot Failed, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: taxi_power_supply_activated
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply"
+            root.out.event.message = "Power Supply Activated, Part
+            root.out.object.name = "unspecified.part " + this.trap.VarBinds.index(2).Value
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: taxi_power_supply_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "unspecified.part " + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "Power Supply"
+            root.out.event.message = "Power Supply Failed, Part
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPart = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: taxi_monitor_sicline_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "Monitor SIC"
+            root.out.event.message = "Monitor SIC Line Failure, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: taxi_monitor_sicquality_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "Monitor SIC"
+            root.out.event.message = "Monitor SIC Quality Error, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: taxi_monitor_sicloop
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "Monitor SIC"
+            root.out.event.message = "Monitor SIC Loop, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: taxi_dial_proc_call_to_dadestablished
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Dial Proc Call To DAD"
+            root.out.event.message = "Dial Proc Call To DAD Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: taxi_dial_proc_call_to_dadfailed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Dial Proc Call To DAD"
+            root.out.event.message = "Dial Proc Call To DAD Failed, Addr
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: taxi_perm_call_established
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.category.name = "Perm Call"
+            root.out.event.message = "Perm Call Established, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(4).Value
+            root.out.controlwaretaxi.taxiAlarmNumberOfBChan = this.trap.VarBinds.index(5).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(7).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(8).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: taxi_perm_call_failed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.event.category.name = "Perm Call"
+            root.out.event.message = "Perm Call Failed, Addr
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmAddr = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: taxi_monitor_sicline_ok
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
+            root.out.event.category.name = "Monitor SIC"
+            root.out.event.message = "Monitor SIC Line OK, Slot
+
+            root.out.controlwaretaxi.taxiSysIpAddr = this.trap.VarBinds.index(0).Value
+            root.out.controlwaretaxi.taxiAlarmType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1072.3.24.1.1.4")
+            root.out.controlwaretaxi.taxiAlarmSlot = this.trap.VarBinds.index(2).Value
+            root.out.controlwaretaxi.taxiAlarmPort = this.trap.VarBinds.index(3).Value
+            root.out.controlwaretaxi.taxiAlarmHostName = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectName = this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string()
+            root.out.controlwaretaxi.taxiAlarmConnectInfo = this.trap.VarBinds.index(6).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: taxi_g704backup_call_request
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 37
+      processors:
+        - label: taxi_g704backup_call_turned_down
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: taxi_g704backup_call_established
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 39
+      processors:
+        - label: taxi_g704backup_call_failed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: taxi_g704backup_call_cleared
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 41
+      processors:
+        - label: taxi_g704permanent_line_established
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 42
+      processors:
+        - label: taxi_g704tacall_established
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 43
+      processors:
+        - label: taxi_g704tacall_cleared
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: taxi_layer1on
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: taxi_layer1off
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 46
+      processors:
+        - label: taxi_g704backup_call_turned_down_critical
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 47
+      processors:
+        - label: taxi_trap_isdnline_test_not_performed
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 48
+      processors:
+        - label: taxi_trap_feature_key_accepted
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 49
+      processors:
+        - label: taxi_trap_feature_key_rejected
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 50
+      processors:
+        - label: taxi_trap_feature_key_not_support_config
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 51
+      processors:
+        - label: taxi_trap_feature_key_port_offline
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

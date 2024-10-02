@@ -1,0 +1,95 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "MPLS-VPN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: mpls_vrf_if_up
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "VRF Interface Status"
+            root.out.object.name = "mplsVpnInterfaceConfEntry."
+            root.out.event.message = "VRF Interface Up  ( VPN: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.118.1.2.2.1.6") + ", ifIndex: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.118.1.2.1.1.6") + " )"
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsVrfIfUp"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsVrfIfUp"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
+
+            root.out.IETF.mplsVpnIfConfRowStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.118.1.2.1.1.6")
+            root.out.IETF.mplsVpnVrfOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.118.1.2.2.1.6")
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mpls_vrf_if_down
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "VRF Interface Status"
+            root.out.object.name = "mplsVpnInterfaceConfEntry."
+            root.out.event.message = "VRF Interface Down  ( VPN: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.118.1.2.2.1.6") + ", ifIndex: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.118.1.2.1.1.6") + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsVrfIfDown"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsVrfIfDown"
+
+            root.out.IETF.mplsVpnIfConfRowStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.118.1.2.1.1.6")
+            root.out.IETF.mplsVpnVrfOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.118.1.2.2.1.6")
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: mpls_num_vrf_route_mid_thresh_exceeded
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfRouteMidThreshExceeded"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfRouteMidThreshExceeded"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.message = "VRF Table # of Routes Mid. Threshold  ( VPN: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.category.name = "VRF Table Performance"
+            root.out.object.name = "mplsVpnVrfPerfEntry."
+
+            root.out.IETF.mplsVpnVrfPerfCurrNumRoutes = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mplsVpnVrfConfMidRouteThreshold = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: mpls_num_vrf_route_max_thresh_exceeded
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "mplsVpnVrfPerfEntry."
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.category.name = "VRF Table Performance"
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfRouteMaxThreshExceeded"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfRouteMaxThreshExceeded"
+            root.out.event.message = "VRF Table # of Routes Exceeds Max. Threshold  ( VPN: " + this.trap.VarBinds.index(0).Value + " )"
+
+            root.out.IETF.mplsVpnVrfPerfCurrNumRoutes = this.trap.VarBinds.index(0).Value
+            root.out.IETF.mplsVpnVrfConfHighRouteThreshold = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: mpls_num_vrf_sec_illgl_lbl_thrsh_excd
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "VRF Table Security"
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfSecIllegalLabelThreshExceeded"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-VPN-MIB-mplsNumVrfSecIllegalLabelThreshExceeded"
+            root.out.object.name = "mplsVpnVrfSecEntry."
+            root.out.event.message = "VRF Illegal Label Violations Exceeds Threshold  ( VPN: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+
+            root.out.IETF.mplsVpnVrfSecIllegalLblVltns = this.trap.VarBinds.index(0).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,77 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-VSAN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: vsan_status_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VSAN-MIB-vsanStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VSAN-MIB-vsanStatusChange"
+            root.out.event.category.name = "VSAN Status"
+            root.out.object.name = "vsanEntry." + this.trap.VarBinds.index(0).Value
+
+            root.out.cisco.notifyVsanIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.vsanAdminState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.282.1.1.3.1.4")
+            root.out.cisco.vsanOperState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.282.1.1.3.1.8")
+        - label: vsan_status_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: vsan_status_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "VSAN Status Unknown, Administratively Active"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: vsan_status_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "VSAN Status Unknown, Administratively Suspended"
+            - processors:
+                - label: vsan_status_change_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "VSAN Status Unknown, Administrative Status Unknown"
+        - label: vsan_status_change_after_switch
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( VSAN: VSAN000" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN00" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN0" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN" + this.trap.VarBinds.index(0).Value + " )" + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: vsan_port_membership_change
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

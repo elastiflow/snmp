@@ -1,0 +1,84 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCOTRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: cold_start
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCOTRAP-MIB-reload"
+            root.out.event.id = "SNMPTRAP-cisco-CISCOTRAP-MIB-reload"
+            root.out.event.category.name = "System Reload"
+            root.out.object.name = ""
+            root.out.event.message = "System Reinitialized, " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+
+            root.out.cisco.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.whyReload = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: link_down
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: link_up
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: authentication_failure
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: egp_neighbor_loss
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = ""
+            root.out.event.severity.level = ""
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"
