@@ -32,7 +32,7 @@
             root.out.cisco.ciscoTsTrCRFInfoTrCRFNumber = this.trap.VarBinds.index(2).Value
         - label: cisco_ts_tr_crftopology_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(2).Value == 1
+            - check: this.trap.VarBinds.index(2).Value.string() == 1
               processors:
                 - label: cisco_ts_tr_crftopology_change_nested_switch_1
                   mapping: |
@@ -40,7 +40,7 @@
                     root = this
 
                     root.out.event.message = "Stack Switched Over to Primary Matrix"
-            - check: this.trap.VarBinds.index(2).Value == 2
+            - check: this.trap.VarBinds.index(2).Value.string() == 2
               processors:
                 - label: cisco_ts_tr_crftopology_change_nested_switch_2
                   mapping: |
@@ -48,7 +48,7 @@
                     root = this
 
                     root.out.event.message = "Stack Switched Over to Secondary Matrix"
-            - check: this.trap.VarBinds.index(2).Value == 3
+            - check: this.trap.VarBinds.index(2).Value.string() == 3
               processors:
                 - label: cisco_ts_tr_crftopology_change_nested_switch_3
                   mapping: |
@@ -56,7 +56,7 @@
                     root = this
 
                     root.out.event.message = "Stack Not Connected to a Matrix"
-            - check: this.trap.VarBinds.index(2).Value == 4
+            - check: this.trap.VarBinds.index(2).Value.string() == 4
               processors:
                 - label: cisco_ts_tr_crftopology_change_nested_switch_4
                   mapping: |

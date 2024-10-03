@@ -10,11 +10,11 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + ", " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + "  ( " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
-            root.out.event.class.name = "SNMPTRAP-alcatel-GENOSALARMNOTIFICATION-MIB-alarmRaise_" + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "_" + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
-            root.out.event.id = "SNMPTRAP-alcatel-GENOSALARMNOTIFICATION-MIB-alarmRaise_" + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "_" + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.event.class.name = "SNMPTRAP-alcatel-GENOSALARMNOTIFICATION-MIB-alarmRaise_" + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + "_" + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
+            root.out.event.id = "SNMPTRAP-alcatel-GENOSALARMNOTIFICATION-MIB-alarmRaise_" + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + "_" + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "GENOS Alarm Status"
-            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() + ", " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() + "  ( " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.nokia.currentAlarmId = this.trap.VarBinds.index(0).Value
             root.out.nokia.friendlyName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -33,7 +33,7 @@
             root.out.nokia.asIdentity = this.trap.VarBinds.index(14).Value.snmp_v2_tc_display_string()
         - label: alarm_raise_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == cleared
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == cleared
               processors:
                 - label: alarm_raise_nested_switch_cleared
                   mapping: |
@@ -42,7 +42,7 @@
 
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == critical
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == critical
               processors:
                 - label: alarm_raise_nested_switch_critical
                   mapping: |
@@ -51,7 +51,7 @@
 
                     root.out.event.severity.code = 5
                     root.out.event.severity.level = "Notice"
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == indeterminate
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == indeterminate
               processors:
                 - label: alarm_raise_nested_switch_indeterminate
                   mapping: |
@@ -60,7 +60,7 @@
 
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == major
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == major
               processors:
                 - label: alarm_raise_nested_switch_major
                   mapping: |
@@ -69,7 +69,7 @@
 
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == minor
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == minor
               processors:
                 - label: alarm_raise_nested_switch_minor
                   mapping: |
@@ -78,7 +78,7 @@
 
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string() == warning
+            - check: this.trap.VarBinds.index(5).Value.snmp_v2_tc_display_string().string() == warning
               processors:
                 - label: alarm_raise_nested_switch_warning
                   mapping: |
@@ -108,7 +108,7 @@
             root = this
 
             root.out.event.category.name = "GENOS Alarm Status"
-            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value.string()
             root.out.event.message = "GENOS Alarm Cleared"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"

@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Accounting File Status"
+            root.out.object.name = "acctngFileEntry.60"
+            root.out.event.message = "Accounting File Over " + this.trap.VarBinds.index(2).Value.string() + "% Full  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileNearlyFull"
             root.out.event.id = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileNearlyFull"
-            root.out.event.category.name = "Accounting File Status"
-            root.out.object.name = "acctngFileEntry.60"
-            root.out.event.message = "Accounting File Over " + this.trap.VarBinds.index(2).Value + "% Full  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + " )"
 
             root.out.IETF.acctngFileName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.IETF.acctngFileMaximumSize = this.trap.VarBinds.index(1).Value
@@ -29,7 +29,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Accounting File Full  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = "Accounting File Full  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileFull"

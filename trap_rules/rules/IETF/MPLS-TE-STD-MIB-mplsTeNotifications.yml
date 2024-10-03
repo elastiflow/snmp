@@ -40,13 +40,13 @@
             #!blobl
             root = this
 
+            root.out.event.message = "MPLS Tunnel Up  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelUp"
             root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelUp"
             root.out.event.category.name = "MPLS Tunnel Status"
             root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
-            root.out.event.message = "MPLS Tunnel Up  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: mpls_tunnel_down
@@ -128,13 +128,13 @@
             #!blobl
             root = this
 
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelRerouted"
             root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelRerouted"
             root.out.event.category.name = "MPLS Tunnel Status"
             root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
             root.out.event.message = "MPLS Tunnel Re-Routed  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: mpls_tunnel_reoptimized

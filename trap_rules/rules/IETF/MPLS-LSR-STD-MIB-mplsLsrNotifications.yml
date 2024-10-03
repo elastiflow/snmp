@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCUp"
-            root.out.event.id = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCUp"
-            root.out.event.message = "MPLS Cross-Connects Up  ( mplsXCEntry. to mplsXCEntry. )"
+            root.out.event.category.name = "MPLS Cross-Connect Status"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
-            root.out.event.category.name = "MPLS Cross-Connect Status"
-            root.out.object.name = "mplsXCEntry. to mplsXCEntry."
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCUp"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCUp"
+            root.out.object.name = "mplsXCEntry. to mplsXCEntry."_last
+            root.out.event.message = "MPLS Cross-Connects Up  ( mplsXCEntry. to mplsXCEntry."_last )"
 
             root.out.IETF.mplsXCOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10")
             root.out.IETF.mplsXCOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10")
@@ -27,13 +27,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "MPLS Cross-Connect Status"
+            root.out.object.name = "mplsXCEntry. to mplsXCEntry."_last
+            root.out.event.message = "MPLS Cross-Connects " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10").string() + "  ( mplsXCEntry. to mplsXCEntry."_last )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCDown"
             root.out.event.id = "SNMPTRAP-IETF-MPLS-LSR-STD-MIB-mplsXCDown"
-            root.out.event.category.name = "MPLS Cross-Connect Status"
-            root.out.object.name = "mplsXCEntry. to mplsXCEntry."_last
-            root.out.event.message = "MPLS Cross-Connects " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10") + "  ( mplsXCEntry. to mplsXCEntry."_last )"
 
             root.out.IETF.mplsXCOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10")
             root.out.IETF.mplsXCOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.2.1.10.1.10")

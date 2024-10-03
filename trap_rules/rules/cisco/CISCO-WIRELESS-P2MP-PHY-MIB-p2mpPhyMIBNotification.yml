@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "p2mpRadioPhyEntry.170"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpRadioPhyFailNotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpRadioPhyFailNotification"
             root.out.event.category.name = "Radio Interface Status"
-            root.out.object.name = "p2mpRadioPhyEntry.170"
 
             root.out.cisco.p2mpLastPhyFailureType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.1.1.1.8")
             root.out.cisco.p2mpLastPhyFailureReason = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -26,9 +26,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Radio Interface OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Radio Interface OK"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: p2mp_radio_phy_fail_notification_nested_switch_2
@@ -56,9 +56,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Radio Interface Hardware Initialization Failure"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Radio Interface Hardware Initialization Failure"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: p2mp_radio_phy_fail_notification_nested_switch_5
@@ -66,9 +66,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Radio Interface Communications Link Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Radio Interface Communications Link Error"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: p2mp_radio_phy_fail_notification_nested_switch_6
@@ -76,24 +76,24 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Radio Interface Automatic Cable Compensation Failure"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Radio Interface Automatic Cable Compensation Failure"
             - processors:
                 - label: p2mp_radio_phy_fail_notification_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Radio Interface Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Radio Interface Status Unknown"
         - label: p2mp_radio_phy_fail_notification_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + "  ( " + root.out.object.name + " )"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + "  ( " + root.out.object.name + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: p2mp_trap_rf_supply_voltage
@@ -101,10 +101,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "RF Supply Voltage Status"
-            root.out.object.name = "p2mpRfEntry.9.170"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfSupplyVoltage"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfSupplyVoltage"
+            root.out.event.category.name = "RF Supply Voltage Status"
+            root.out.object.name = "p2mpRfEntry.9.170"
 
             root.out.cisco.p2mpRfSupplyVoltageState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.13")
         - label: p2mp_trap_rf_supply_voltage_nested_switch
@@ -166,9 +166,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "RF Receive Frequency Oscillator Ok"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "RF Receive Frequency Oscillator Ok"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: p2mp_trap_rf_rx_osc_nested_switch_2
@@ -176,9 +176,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "RF Receive Frequency Oscillator Bad"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "RF Receive Frequency Oscillator Bad"
             - processors:
                 - label: p2mp_trap_rf_rx_osc_nested_switch_default
                   mapping: |
@@ -216,9 +216,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "RF Transmit Frequency Oscillator Ok"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "RF Transmit Frequency Oscillator Ok"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: p2mp_trap_rf_tx_osc_nested_switch_2
@@ -226,9 +226,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "RF Transmit Frequency Oscillator Bad"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "RF Transmit Frequency Oscillator Bad"
             - processors:
                 - label: p2mp_trap_rf_tx_osc_nested_switch_default
                   mapping: |
@@ -251,13 +251,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "RF Module Temperature Status"
+            root.out.event.message = "RF Module Temperature, " + this.trap.VarBinds.index(0).Value.string() + "C, Excessive  ( p2mpRfEntry.9.170 )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfTemp"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfTemp"
-            root.out.event.message = "RF Module Temperature, " + this.trap.VarBinds.index(0).Value + "C, Excessive  ( p2mpRfEntry.9.170 )"
+            root.out.object.name = "p2mpRfEntry.9.170"
             root.out.event.severity.code = 4
             root.out.event.severity.level = "Warning"
-            root.out.object.name = "p2mpRfEntry.9.170"
-            root.out.event.category.name = "RF Module Temperature Status"
 
             root.out.cisco.p2mpRfTemperature = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 6
@@ -267,13 +267,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "p2mpRfEntry.9.170"
             root.out.event.category.name = "RF Communication Link"
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfCommLinkError"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfCommLinkError"
-            root.out.event.message = "Host/IF Module Communications Link Failure to RF " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2") + "  ( p2mpRfEntry.9.170 )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfCommLinkError"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfCommLinkError"
+            root.out.event.message = "Host/IF Module Communications Link Failure to RF " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2").string() + "  ( p2mpRfEntry.9.170 )"
+            root.out.object.name = "p2mpRfEntry.9.170"
 
             root.out.cisco.p2mpRfType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2")
     - check: this.trap.SpecificTrap == 7
@@ -283,13 +283,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapTxPower"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapTxPower"
-            root.out.event.category.name = "RF Transmit Power Status"
-            root.out.object.name = "p2mpRfEntry.9.170"
-            root.out.event.message = "RF " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2") + " Transmit Power Exceeded Threshold"
+            root.out.event.message = "RF " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2").string() + " Transmit Power Exceeded Threshold"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.category.name = "RF Transmit Power Status"
+            root.out.object.name = "p2mpRfEntry.9.170"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapTxPower"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapTxPower"
 
             root.out.cisco.p2mpRfType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.2")
     - check: this.trap.SpecificTrap == 8
@@ -299,10 +299,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "RF Resource Status"
-            root.out.object.name = "p2mpRfEntry.9.170"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfStatusChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapRfStatusChange"
+            root.out.event.category.name = "RF Resource Status"
+            root.out.object.name = "p2mpRfEntry.9.170"
 
             root.out.cisco.p2mpRfStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.1.2.1.1.14")
         - label: p2mp_trap_rf_status_change_nested_switch
@@ -349,10 +349,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "p2mpHeIntFreqEntry.170"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapHeIfRxOsc"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-P2MP-PHY-MIB-p2mpTrapHeIfRxOsc"
             root.out.event.category.name = "IF Receive Oscillator"
-            root.out.object.name = "p2mpHeIntFreqEntry.170"
 
             root.out.cisco.p2mpHeIfRxOscState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.170.1.3.2.1.2")
         - label: p2mp_trap_he_if_rx_osc_nested_switch
@@ -474,9 +474,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "IF Reference Frequency Oscillator Bad"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "IF Reference Frequency Oscillator Bad"
             - processors:
                 - label: p2mp_trap_he_if_ext_ref_osc_nested_switch_default
                   mapping: |

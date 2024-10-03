@@ -48,15 +48,15 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Mated Application Subsystem Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Mated Application Subsystem Status Unknown"
         - label: c_itp_sccp_gtt_map_state_change_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Point Code: " + this.trap.VarBinds.index(2).Value + ", Subsystem: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Point Code: " + this.trap.VarBinds.index(2).Value.string() + ", Subsystem: " + this.trap.VarBinds.index(3).Value.string() + " )"
     - processors:
         - label: default
           mapping: |

@@ -12,7 +12,7 @@
 
             root.out.event.category.name = "Dispatcher Status"
             root.out.object.name = ""
-            root.out.event.message = "Dispatcher Started: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Dispatcher Started: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -26,7 +26,7 @@
 
             root.out.event.category.name = "Dispatcher Status"
             root.out.object.name = ""
-            root.out.event.message = "Dispatcher Shutdown: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Dispatcher Shutdown: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -38,9 +38,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Dispatcher configuration Invalid: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Dispatcher Configuration"
-            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Dispatcher configuration Invalid: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -52,9 +52,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Connection to the UPLAgent ( " + this.trap.VarBinds.index(2).Value + " ) on " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + " is Down"
             root.out.event.category.name = "Agent Connection Status"
-            root.out.object.name = this.trap.VarBinds.index(2).Value + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string() + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Connection to the UPLAgent ( " + this.trap.VarBinds.index(2).Value.string() + " ) on " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + " is Down"
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -69,7 +69,7 @@
 
             root.out.event.category.name = "Dispatcher DB Conn Status"
             root.out.object.name = ""
-            root.out.event.message = "Dispatcher connection to database is Down: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Dispatcher connection to database is Down: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -82,8 +82,8 @@
             root = this
 
             root.out.event.category.name = "Dispatcher Resources"
-            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
-            root.out.event.message = "Dispatcher out-of-resource: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Dispatcher out-of-resource: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.upldHostName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.openwave.upldProcessId = this.trap.VarBinds.index(1).Value
@@ -95,9 +95,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "UP Link Agent ( " + this.trap.VarBinds.index(0).Value + " ) Started: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "UP Link Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) Started: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Agent Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -111,8 +111,8 @@
             root = this
 
             root.out.event.category.name = "Agent Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "UP Link Agent ( " + this.trap.VarBinds.index(0).Value + " ) Shutdown: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "UP Link Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) Shutdown: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -126,8 +126,8 @@
             root = this
 
             root.out.event.category.name = "Agent DB Conn Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value + " " + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) connection to database is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + " " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) connection to database is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -140,9 +140,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) detects Fax Manager connection is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Fax Manager Conn Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) detects Fax Manager connection is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -156,8 +156,8 @@
             root = this
 
             root.out.event.category.name = "Messenger Conn Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) detects Messenger connection is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) detects Messenger connection is Down: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -171,8 +171,8 @@
             root = this
 
             root.out.event.category.name = "Agent Configuration"
-            root.out.object.name = this.trap.VarBinds.index(0).Value + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) configuration Invalid: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) configuration Invalid: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -185,9 +185,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) internal fatal error: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Agent Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) internal fatal error: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -200,9 +200,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value + " ) out-of-resource: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Agent ( " + this.trap.VarBinds.index(0).Value.string() + " ) out-of-resource: " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Agent Resources"
-            root.out.object.name = this.trap.VarBinds.index(0).Value + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + " " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
 
             root.out.openwave.uplaAgentIdentifier = this.trap.VarBinds.index(0).Value
             root.out.openwave.uplaHostName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()

@@ -35,9 +35,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "CPU Card Redundancy OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "CPU Card Redundancy OK"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: ccr_cpu_status_change_nested_switch_3
@@ -70,10 +70,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
             root.out.event.category.name = "Switch Card Redundancy Status"
             root.out.object.name = "ccrSwitchEntry.105"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C8500-REDUNDANCY-MIB-ccrSwitchStatusChange"
 
             root.out.cisco.ccrSwitchStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.105.1.2.1.1.3")
         - label: ccr_switch_status_change_nested_switch
@@ -95,9 +95,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Switch Card Redundancy OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Switch Card Redundancy OK"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: ccr_switch_status_change_nested_switch_3
@@ -105,9 +105,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Switch Card Redundancy Fault"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "Switch Card Redundancy Fault"
             - processors:
                 - label: ccr_switch_status_change_nested_switch_default
                   mapping: |

@@ -25,9 +25,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine In Service"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Virtual Machine In Service"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_local_director_virtual_state_change_nested_switch_2
@@ -35,9 +35,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine Out of Service, Manually"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Virtual Machine Out of Service, Manually"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: cisco_local_director_virtual_state_change_nested_switch_3
@@ -55,9 +55,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine Failed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
+                    root.out.event.message = "Virtual Machine Failed"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: cisco_local_director_virtual_state_change_nested_switch_5
@@ -95,9 +95,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Virtual Machine Failed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "Virtual Machine Failed"
             - processors:
                 - label: cisco_local_director_virtual_state_change_nested_switch_default
                   mapping: |
@@ -120,10 +120,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorRealStateChange"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorRealStateChange"
             root.out.event.category.name = "Real Machine Status"
             root.out.object.name = "cldRealTableEntry.4.1.9.9.99"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorRealStateChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorRealStateChange"
 
             root.out.cisco.cldRealState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.2.1.1.3")
         - label: cisco_local_director_real_state_change_nested_switch
@@ -214,9 +214,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Real Machine Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Real Machine Status Unknown"
         - label: cisco_local_director_real_state_change_after_switch
           mapping: |
             #!blobl
@@ -230,10 +230,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorFailoverEnableChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorFailoverEnableChange"
             root.out.event.category.name = "Failover Status"
+            root.out.object.name = ""
 
             root.out.cisco.cldFailoverEnabled = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.3.1")
         - label: cisco_local_director_failover_enable_change_nested_switch
@@ -314,9 +314,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Failover Serial Cable Disconnected Locally"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Failover Serial Cable Disconnected Locally"
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: cisco_local_director_failover_cable_change_nested_switch_4
@@ -343,9 +343,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Failover Serial Cable Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Failover Serial Cable Status Unknown"
         - label: cisco_local_director_failover_cable_change_after_switch
           mapping: |+
             #!blobl
@@ -358,10 +358,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorFailoverUnitStatus"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorFailoverUnitStatus"
             root.out.event.category.name = "Failover Status"
+            root.out.object.name = ""
 
             root.out.cisco.cldFailoverUnitStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.3.4")
         - label: cisco_local_director_failover_unit_status_nested_switch
@@ -373,18 +373,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "LocalDirector in Standby: Not Active and Only Monitoring 'Active' Unit"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "LocalDirector in Standby: Not Active and Only Monitoring 'Active' Unit"
             - processors:
                 - label: cisco_local_director_failover_unit_status_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "LocalDirector Failover Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "LocalDirector Failover Status Unknown"
         - label: cisco_local_director_failover_unit_status_after_switch
           mapping: |+
             #!blobl
@@ -400,7 +400,7 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorEVirtualStateChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorEVirtualStateChange"
             root.out.event.category.name = "Virtual Machine Status"
-            root.out.object.name = "cldeVirtualTableEntry.6.1.4.1.9.9.99"
+            root.out.object.name = "cldeVirtualTableEntry.6.1.4.1.9.9.lookup("99", MachineProtocol)_Raw
 
             root.out.cisco.cldeVirtualState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.1.2.1.5")
         - label: cisco_local_director_evirtual_state_change_nested_switch
@@ -412,9 +412,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine In Service"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Virtual Machine In Service"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_local_director_evirtual_state_change_nested_switch_2
@@ -422,9 +422,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine Out of Service, Manually"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Virtual Machine Out of Service, Manually"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: cisco_local_director_evirtual_state_change_nested_switch_3
@@ -442,9 +442,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Virtual Machine Failed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "Virtual Machine Failed"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: cisco_local_director_evirtual_state_change_nested_switch_5
@@ -507,10 +507,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = "cldeRealTableEntry.6.1.4.1.9.9.99"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorERealStateChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorERealStateChange"
             root.out.event.category.name = "Real Machine Status"
+            root.out.object.name = "cldeRealTableEntry.6.1.4.1.9.9.99"
 
             root.out.cisco.cldeRealState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.2.2.1.5")
         - label: cisco_local_director_ereal_state_change_nested_switch
@@ -522,9 +522,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Real Machine In Service"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Real Machine In Service"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_local_director_ereal_state_change_nested_switch_2
@@ -572,9 +572,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Real Machine Manually Taken Offline"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Real Machine Manually Taken Offline"
             - check: this.trap.VarBinds.index(0).Value == 7
               processors:
                 - label: cisco_local_director_ereal_state_change_nested_switch_7
@@ -617,10 +617,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "cldexVirtualTableEntry....."
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorExVirtualStateChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-LOCAL-DIRECTOR-MIB-ciscoLocalDirectorExVirtualStateChange"
             root.out.event.category.name = "Virtual Machine Status"
-            root.out.object.name = "cldexVirtualTableEntry.....$String_OctetString
 
             root.out.cisco.cldexVirtualState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.99.1.1.3.1.6")
         - label: cisco_local_director_ex_virtual_state_change_nested_switch
@@ -632,9 +632,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine In Service"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Virtual Machine In Service"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_local_director_ex_virtual_state_change_nested_switch_2
@@ -672,9 +672,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Virtual Machine Reached Connection Limit"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Virtual Machine Reached Connection Limit"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: cisco_local_director_ex_virtual_state_change_nested_switch_6
@@ -682,9 +682,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Virtual Machine Manually Taken Offline"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Virtual Machine Manually Taken Offline"
             - check: this.trap.VarBinds.index(0).Value == 7
               processors:
                 - label: cisco_local_director_ex_virtual_state_change_nested_switch_7

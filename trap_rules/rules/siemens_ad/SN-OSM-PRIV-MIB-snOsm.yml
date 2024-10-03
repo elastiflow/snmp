@@ -10,9 +10,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Redundancy Manager Status"
             root.out.object.name = ""
             root.out.event.message = "Redundancy Manager Active"
+            root.out.event.category.name = "Redundancy Manager Status"
     - check: this.trap.SpecificTrap == 12
       processors:
         - label: sn_osm_rm_passive_state
@@ -20,9 +20,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Redundancy Manager Passive"
             root.out.event.category.name = "Redundancy Manager Status"
             root.out.object.name = ""
+            root.out.event.message = "Redundancy Manager Passive"
     - check: this.trap.SpecificTrap == 21
       processors:
         - label: sn_osm_standby_active_state
@@ -154,7 +154,7 @@
             root.out.siemens_ad.snOsmFaultValue = this.trap.VarBinds.index(0).Value
         - label: sn_osm_fault_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 0
+            - check: this.trap.VarBinds.index(0).Value.string() == 0
               processors:
                 - label: sn_osm_fault_nested_switch_0
                   mapping: |
@@ -183,13 +183,13 @@
 
             root.out.event.category.name = "Digital Input Status"
             root.out.object.name = ""
-            root.out.event.message = "Digital Input State: " + this.trap.VarBinds.index(1).Value + ", Digital Input Value: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Digital Input State: " + this.trap.VarBinds.index(1).Value.string() + ", Digital Input Value: " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.siemens_ad.snOsmDigitalInputChange = this.trap.VarBinds.index(0).Value
             root.out.siemens_ad.snOsmDigitalInputState = this.trap.VarBinds.index(1).Value
         - label: sn_osm_digital_input_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 0
+            - check: this.trap.VarBinds.index(1).Value.string() == 0
               processors:
                 - label: sn_osm_digital_input_nested_switch_0
                   mapping: |+

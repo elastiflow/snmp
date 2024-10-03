@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "ISDN BRI Int. U Interface Loopback Status"
-            root.out.object.name = "ciuIfStatusEntry.18"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDNU-IF-MIB-ciuIfLoopStatusNotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDNU-IF-MIB-ciuIfLoopStatusNotification"
+            root.out.event.category.name = "ISDN BRI Int. U Interface Loopback Status"
+            root.out.object.name = "ciuIfStatusEntry.18"
 
             root.out.cisco.ciuIfLoopStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.18.1.1.2.1.6")
         - label: ciu_if_loop_status_notification_nested_switch
@@ -25,9 +25,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ISDN BRI Integrated U Interface Normal"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "ISDN BRI Integrated U Interface Normal"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: ciu_if_loop_status_notification_nested_switch_2
@@ -35,9 +35,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "ISDN BRI Integrated U Interface in Type-2 (CO to U) Loopback"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "ISDN BRI Integrated U Interface in Type-2 (CO to U) Loopback"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: ciu_if_loop_status_notification_nested_switch_3
@@ -55,9 +55,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "ISDN BRI Integrated U Interface in NT Quiet Mode"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "ISDN BRI Integrated U Interface in NT Quiet Mode"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: ciu_if_loop_status_notification_nested_switch_5
@@ -65,9 +65,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ISDN BRI Integrated U Interface in Insertion Loss Measurement Test Mode"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "ISDN BRI Integrated U Interface in Insertion Loss Measurement Test Mode"
             - processors:
                 - label: ciu_if_loop_status_notification_nested_switch_default
                   mapping: |

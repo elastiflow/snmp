@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrStateChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrStateChange"
             root.out.event.category.name = "Mobile Router Status"
+            root.out.object.name = ""
 
             root.out.cisco.mnState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.44.1.3.1.1")
         - label: cmi_mr_state_change_nested_switch
@@ -74,9 +74,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Mobile Router Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Mobile Router Status Unknown"
         - label: cmi_mr_state_change_after_switch
           mapping: |+
             #!blobl
@@ -89,13 +89,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "mnRegistrationEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Mobile Router Care-of-Address Changed to " + this.trap.VarBinds.index(0).Value + "  ( MR Agent: " + this.trap.VarBinds.index(1).Value + " )"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrCoaChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrCoaChange"
             root.out.event.category.name = "Mobile Router CoA Change"
+            root.out.object.name = "mnRegistrationEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Mobile Router Care-of-Address Changed to " + this.trap.VarBinds.index(0).Value.string() + "  ( MR Agent: " + this.trap.VarBinds.index(1).Value.string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.cisco.mnRegCOA = this.trap.VarBinds.index(0).Value
             root.out.cisco.mnRegAgentAddress = this.trap.VarBinds.index(1).Value
@@ -106,11 +106,11 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Mobile Router Agent Discovery"
-            root.out.object.name = "cmiMrMaAdvEntry."Type_Raw."
-            root.out.event.message = "Mobile Router Discovered New Mobile Agent  ( Mobile Agent: , Interface: ifEntry." + this.trap.VarBinds.index(2).Value + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrNewMA"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrNewMA"
+            root.out.event.category.name = "Mobile Router Agent Discovery"
+            root.out.object.name = "cmiMrMaAdvEntry.lookup("", InetAddressType) (  )"_Raw."
+            root.out.event.message = "Mobile Router Discovered New Mobile Agent  ( Mobile Agent: , Interface: ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
 
@@ -124,13 +124,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "Network Access Identifier: " + this.trap.VarBinds.index(6).Value
-            root.out.event.message = "Mobile Node Registration Failed, " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.10") + "  ( " + "Network Access Identifier: " + this.trap.VarBinds.index(6).Value + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiHaMnRegReqFailed"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiHaMnRegReqFailed"
             root.out.event.category.name = "Mobile Node Registration Status"
+            root.out.object.name = "Network Access Identifier: " + this.trap.VarBinds.index(6).Value.string()
+            root.out.event.message = "Mobile Node Registration Failed, " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.10").string() + "  ( " + "Network Access Identifier: " + this.trap.VarBinds.index(6).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.cisco.cmiNtRegCOAType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.3")
             root.out.cisco.cmiNtRegCOA = this.trap.VarBinds.index(1).Value

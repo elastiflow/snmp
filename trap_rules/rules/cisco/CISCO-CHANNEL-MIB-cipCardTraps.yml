@@ -10,9 +10,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Card Link Failure"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
             root.out.event.message = "Significant Link Event: Degraded Interface Line Quality"
+            root.out.event.category.name = "Card Link Failure"
 
             root.out.cisco.cipCardDtrBrdIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.cipCardDtrBrdStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.20.1.2.1.3")
@@ -46,7 +46,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Board Failed, Signal OK: " + lookup(this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.20.1.2.1.12"), linkIncidentTrapCause) + "  ( Card.DtrBrd
+                    root.out.event.message = "Board Failed, Signal OK: " + lookup(this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.20.1.2.1.12").string(), linkIncidentTrapCause) + "  ( Card.DtrBrd
             - check: this.trap.VarBinds.index(1).Value == 2
               processors:
                 - label: cip_card_dtr_brd_link_failure_nested_switch_2
@@ -54,7 +54,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Board Failed, Signal Failure: " + lookup(this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.20.1.2.1.12"), linkIncidentTrapCause) + "  ( Card.DtrBrd
+                    root.out.event.message = "Board Failed, Signal Failure: " + lookup(this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.20.1.2.1.12").string(), linkIncidentTrapCause) + "  ( Card.DtrBrd
             - processors:
                 - label: cip_card_dtr_brd_link_failure_nested_switch_default
                   mapping: |+

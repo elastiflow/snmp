@@ -55,9 +55,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Repeater Group Failure"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Repeater Group Failure"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: rptr_health_nested_switch_5
@@ -99,8 +99,8 @@
             #!blobl
             root = this
 
-            root.out.object.name = "rptrGroupEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Repeater Port Group Structure Changed  ( " + "rptrGroupEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "rptrGroupEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Repeater Port Group Structure Changed  ( " + "rptrGroupEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrGroupChange"
@@ -115,13 +115,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Repeater Status"
             root.out.object.name = ""
             root.out.event.message = "Repeater Reset"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrResetEvent"
             root.out.event.id = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrResetEvent"
+            root.out.event.category.name = "Repeater Status"
 
             root.out.IETF.rptrOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.22.1.1.2")
     - check: this.trap.SpecificTrap == 4
@@ -131,10 +131,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoHealth"
-            root.out.event.id = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoHealth"
             root.out.event.category.name = "Repeater Status"
             root.out.object.name = ""
+            root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoHealth"
+            root.out.event.id = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoHealth"
 
             root.out.IETF.rptrInfoOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.22.1.4.1.1.3")
         - label: rptr_info_health_nested_switch
@@ -156,9 +156,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Repeater OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Repeater OK"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: rptr_info_health_nested_switch_3
@@ -166,18 +166,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Repeater Failure"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
+                    root.out.event.message = "Repeater Failure"
             - processors:
                 - label: rptr_info_health_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Repeater Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Repeater Status Unknown"
         - label: rptr_info_health_after_switch
           mapping: |+
             #!blobl
@@ -190,10 +190,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoResetEvent"
-            root.out.event.id = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoResetEvent"
             root.out.event.category.name = "Repeater Status"
             root.out.object.name = ""
+            root.out.event.class.name = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoResetEvent"
+            root.out.event.id = "SNMPTRAP-IETF-SNMP-REPEATER-MIB-rptrInfoResetEvent"
 
             root.out.IETF.rptrInfoOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.22.1.4.1.1.3")
         - label: rptr_info_reset_event_nested_switch
@@ -205,9 +205,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Repeater Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Repeater Status Unknown"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: rptr_info_reset_event_nested_switch_2
@@ -225,18 +225,18 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Repeater Failure"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "Repeater Failure"
             - processors:
                 - label: rptr_info_reset_event_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Repeater Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Repeater Status Unknown"
         - label: rptr_info_reset_event_after_switch
           mapping: |+
             #!blobl

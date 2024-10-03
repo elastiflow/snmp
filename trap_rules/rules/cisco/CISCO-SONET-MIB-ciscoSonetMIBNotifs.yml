@@ -10,26 +10,26 @@
             #!blobl
             root = this
 
-            root.out.object.name = "sonetSectionCurrentEntry.1"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SONET-MIB-ciscoSonetSectionStatusChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SONET-MIB-ciscoSonetSectionStatusChange"
             root.out.event.category.name = "SONET Section Status"
+            root.out.object.name = "sonetSectionCurrentEntry.1"
 
             root.out.cisco.sonetSectionCurrentStatus = this.trap.VarBinds.index(0).Value
             root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
         - label: cisco_sonet_section_status_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: cisco_sonet_section_status_change_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SONET Section OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 2
+                    root.out.event.message = "SONET Section OK"
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: cisco_sonet_section_status_change_nested_switch_2
                   mapping: |
@@ -39,7 +39,7 @@
                     root.out.event.message = "SONET Section Loss of Signal"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 4
+            - check: this.trap.VarBinds.index(0).Value.string() == 4
               processors:
                 - label: cisco_sonet_section_status_change_nested_switch_4
                   mapping: |
@@ -49,16 +49,16 @@
                     root.out.event.message = "SONET Section Loss of Frame"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 6
+            - check: this.trap.VarBinds.index(0).Value.string() == 6
               processors:
                 - label: cisco_sonet_section_status_change_nested_switch_6
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SONET Section Loss of Signal and Frame"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "SONET Section Loss of Signal and Frame"
             - processors:
                 - label: cisco_sonet_section_status_change_nested_switch_default
                   mapping: |
@@ -73,7 +73,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cisco_sonet_line_status_change
@@ -90,27 +90,27 @@
             root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
         - label: cisco_sonet_line_status_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: cisco_sonet_line_status_change_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SONET Line OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 2
+                    root.out.event.message = "SONET Line OK"
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: cisco_sonet_line_status_change_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SONET Line Alarm Indication Signal"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 4
+                    root.out.event.message = "SONET Line Alarm Indication Signal"
+            - check: this.trap.VarBinds.index(0).Value.string() == 4
               processors:
                 - label: cisco_sonet_line_status_change_nested_switch_4
                   mapping: |
@@ -120,7 +120,7 @@
                     root.out.event.message = "SONET Line Remote Defect Indicator"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 6
+            - check: this.trap.VarBinds.index(0).Value.string() == 6
               processors:
                 - label: cisco_sonet_line_status_change_nested_switch_6
                   mapping: |
@@ -144,7 +144,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: cisco_sonet_path_status_change
@@ -161,47 +161,27 @@
             root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
         - label: cisco_sonet_path_status_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: cisco_sonet_path_status_change_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "SONET Path OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "SONET Path OK"
-            - check: this.trap.VarBinds.index(0).Value == 16
-              processors:
-                - label: cisco_sonet_path_status_change_nested_switch_16
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "SONET Path Unequipped"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: cisco_sonet_path_status_change_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
                     root.out.event.message = "SONET Path STS Loss of Pointer"
-            - check: this.trap.VarBinds.index(0).Value == 32
-              processors:
-                - label: cisco_sonet_path_status_change_nested_switch_32
-                  mapping: |
-                    #!blobl
-                    root = this
-
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "SONET Path Signal Label Mismatch"
-            - check: this.trap.VarBinds.index(0).Value == 4
+            - check: this.trap.VarBinds.index(0).Value.string() == 4
               processors:
                 - label: cisco_sonet_path_status_change_nested_switch_4
                   mapping: |
@@ -211,7 +191,7 @@
                     root.out.event.message = "SONET Path STS Alarm Indication Signal"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 8
+            - check: this.trap.VarBinds.index(0).Value.string() == 8
               processors:
                 - label: cisco_sonet_path_status_change_nested_switch_8
                   mapping: |
@@ -221,21 +201,41 @@
                     root.out.event.message = "SONET Path Remote Defect Indicator"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 16
+              processors:
+                - label: cisco_sonet_path_status_change_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SONET Path Unequipped"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 32
+              processors:
+                - label: cisco_sonet_path_status_change_nested_switch_32
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SONET Path Signal Label Mismatch"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
             - processors:
                 - label: cisco_sonet_path_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SONET Path Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "SONET Path Status Unknown"
         - label: cisco_sonet_path_status_change_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: cisco_sonet_vtstatus_change
@@ -252,7 +252,7 @@
             root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
         - label: cisco_sonet_vtstatus_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: cisco_sonet_vtstatus_change_nested_switch_1
                   mapping: |
@@ -262,17 +262,7 @@
                     root.out.event.message = "SONET VT OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 16
-              processors:
-                - label: cisco_sonet_vtstatus_change_nested_switch_16
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "SONET VT Path RFI"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: cisco_sonet_vtstatus_change_nested_switch_2
                   mapping: |
@@ -282,17 +272,7 @@
                     root.out.event.message = "SONET VT Loss of Pointer"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 32
-              processors:
-                - label: cisco_sonet_vtstatus_change_nested_switch_32
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "SONET VT Unequipped"
-            - check: this.trap.VarBinds.index(0).Value == 4
+            - check: this.trap.VarBinds.index(0).Value.string() == 4
               processors:
                 - label: cisco_sonet_vtstatus_change_nested_switch_4
                   mapping: |
@@ -302,7 +282,37 @@
                     root.out.event.message = "SONET VT Alarm Indication Signal"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 64
+            - check: this.trap.VarBinds.index(0).Value.string() == 8
+              processors:
+                - label: cisco_sonet_vtstatus_change_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SONET VT Remote Defect Indicator"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 16
+              processors:
+                - label: cisco_sonet_vtstatus_change_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SONET VT Path RFI"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 32
+              processors:
+                - label: cisco_sonet_vtstatus_change_nested_switch_32
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "SONET VT Unequipped"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 64
               processors:
                 - label: cisco_sonet_vtstatus_change_nested_switch_64
                   mapping: |
@@ -312,16 +322,6 @@
                     root.out.event.message = "SONET VT Signal Label Mismatch"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 8
-              processors:
-                - label: cisco_sonet_vtstatus_change_nested_switch_8
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "SONET VT Remote Defect Indicator"
             - processors:
                 - label: cisco_sonet_vtstatus_change_nested_switch_default
                   mapping: |
@@ -336,7 +336,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
     - processors:
         - label: default
           mapping: |

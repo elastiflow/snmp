@@ -55,7 +55,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = "HC RMON Alarm: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4") + " of " + this.trap.VarBinds.index(0).Value + " Crossed $threshold
+            root.out.event.message = "HC RMON Alarm: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4").string() + " of " + this.trap.VarBinds.index(0).Value.string() + " Crossed $threshold
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: c_hc_falling_alarm
@@ -108,7 +108,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = "HC RMON Alarm Cleared: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4") + " of " + this.trap.VarBinds.index(0).Value + " Crossed $threshold
+            root.out.event.message = "HC RMON Alarm Cleared: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4").string() + " of " + this.trap.VarBinds.index(0).Value.string() + " Crossed $threshold
     - processors:
         - label: default
           mapping: |

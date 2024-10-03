@@ -13,8 +13,8 @@
             root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkUp"
             root.out.event.id = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkUp"
             root.out.event.category.name = "Link Status"
-            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Link Up  ( " + "Physical Address: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Link Up  ( " + "Physical Address: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
 
@@ -26,13 +26,13 @@
             #!blobl
             root = this
 
+            root.out.event.message = "Link Down  ( " + "Physical Address: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkDown"
             root.out.event.id = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkDown"
             root.out.event.category.name = "Link Status"
-            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Link Down  ( " + "Physical Address: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value
     - processors:

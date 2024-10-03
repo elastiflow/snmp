@@ -10,9 +10,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Gateway Status"
             root.out.object.name = ""
             root.out.event.message = "Gateway Down"
+            root.out.event.category.name = "Gateway Status"
     - check: this.trap.SpecificTrap == 9902
       processors:
         - label: restart_gwsuccess
@@ -20,9 +20,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Gateway Restart Successful"
             root.out.event.category.name = "Gateway Status"
             root.out.object.name = ""
+            root.out.event.message = "Gateway Restart Successful"
     - check: this.trap.SpecificTrap == 9903
       processors:
         - label: restart_gwfailed
@@ -30,9 +30,9 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Gateway Status"
             root.out.object.name = ""
             root.out.event.message = "Gateway Restart Failed"
-            root.out.event.category.name = "Gateway Status"
     - check: this.trap.SpecificTrap == 9904
       processors:
         - label: cc_is_down
@@ -50,9 +50,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Command Center Status"
             root.out.object.name = ""
             root.out.event.message = "Command Center Restart Successful"
+            root.out.event.category.name = "Command Center Status"
     - check: this.trap.SpecificTrap == 9906
       processors:
         - label: restart_ccfailed
@@ -72,7 +72,7 @@
 
             root.out.event.category.name = "Connection Status"
             root.out.object.name = "gwEntry."
-            root.out.event.message = "Gateway Lost Connecton to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = "Gateway Lost Connecton to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9908
@@ -84,7 +84,7 @@
 
             root.out.event.category.name = "Connection Status"
             root.out.object.name = "gwEntry."
-            root.out.event.message = "Gateway Cannot Connect to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = "Gateway Cannot Connect to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9911
@@ -94,9 +94,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Gateway Port Out of Service  ( " + "gwPortEntry." + this.trap.VarBinds.index(0).Value + " )"
             root.out.event.category.name = "Gateway Port Status"
-            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Port Out of Service  ( " + "gwPortEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.portIndex = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9912
@@ -107,8 +107,8 @@
             root = this
 
             root.out.event.category.name = "Gateway Port Status"
-            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Gateway Port In Service  ( " + "gwPortEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Port In Service  ( " + "gwPortEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.portIndex = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9913
@@ -118,9 +118,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Gateway Voice Port Status"
             root.out.object.name = ""
             root.out.event.message = "Gateway Cannot Dial Up, No Voice Port"
+            root.out.event.category.name = "Gateway Voice Port Status"
     - check: this.trap.SpecificTrap == 9914
       processors:
         - label: connect_no_voice_port
@@ -138,7 +138,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Gateway Connected to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = "Gateway Connected to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.category.name = "Connection Status"
             root.out.object.name = "gwEntry."
 
@@ -152,7 +152,7 @@
 
             root.out.event.category.name = "Connection Status"
             root.out.object.name = "gwEntry."
-            root.out.event.message = "Gateway Disconnected from Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = "Gateway Disconnected from Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9917
@@ -163,8 +163,8 @@
             root = this
 
             root.out.event.category.name = "Gateway Registration"
-            root.out.object.name = "gwEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Gateway Not Registered  ( " + "gwEntry." + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "gwEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Not Registered  ( " + "gwEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.clarent.gwId = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9918
@@ -176,7 +176,7 @@
 
             root.out.event.category.name = "Call Rating Status"
             root.out.object.name = ""
-            root.out.event.message = "Call Rating Failed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Call Rating Failed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9919
@@ -226,9 +226,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "Gateway Shutdown, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Shutdown, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9928
@@ -238,9 +238,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "DSP Board Resetting, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "DSP Board Status"
             root.out.object.name = ""
-            root.out.event.message = "DSP Board Resetting, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9929
@@ -250,9 +250,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "Clearing House Credit Status Changed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Clearing House Credit Status"
             root.out.object.name = ""
-            root.out.event.message = "Clearing House Credit Status Changed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9930
@@ -264,7 +264,7 @@
 
             root.out.event.category.name = "Clarent Connect Credit Status"
             root.out.object.name = ""
-            root.out.event.message = "Clarent Connect Credit Status Changed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Clarent Connect Credit Status Changed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9931
@@ -274,9 +274,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Gateway Validation"
             root.out.object.name = ""
-            root.out.event.message = "Gateway Validate Egress Error, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Gateway Validate Egress Error, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.category.name = "Gateway Validation"
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9932
@@ -296,9 +296,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.48.2") + " Error"
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.48.2").string() + " Error"
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
             root.out.clarent.trapClass = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.48.2")
@@ -360,9 +360,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Software " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.99999") + " Operation Error  ( " + "Package: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
             root.out.event.category.name = "Software Update Status"
-            root.out.object.name = "Package: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = "Package: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Software " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.99999").string() + " Operation Error  ( " + "Package: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.clarent.packageName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.clarent.packageOperation = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.99999")
@@ -374,9 +374,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "Call Placed to Intercept Number, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Number Intercept"
             root.out.object.name = ""
-            root.out.event.message = "Call Placed to Intercept Number, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9936
@@ -396,9 +396,9 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "ThroughPacket Server Status"
             root.out.object.name = ""
             root.out.event.message = "ThroughPacket Server Restart Failed"
-            root.out.event.category.name = "ThroughPacket Server Status"
     - check: this.trap.SpecificTrap == 9938
       processors:
         - label: tp_restarted
@@ -416,8 +416,8 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Application Threshold ( " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " )"
-            root.out.object.name = "Application: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.category.name = "Application Threshold ( " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.object.name = "Application: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
             root.out.event.message = ""
 
             root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
@@ -474,7 +474,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Threshold " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2858.48.10") + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + ", " + this.trap.VarBinds.index(4).Value + ", Crossed " + this.trap.VarBinds.index(3).Value + "  ( " + root.out.object.name + " )"
+            root.out.event.message = "Threshold " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2858.48.10").string() + ": " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + ", " + this.trap.VarBinds.index(4).Value.string() + ", Crossed " + this.trap.VarBinds.index(3).Value.string() + "  ( " + root.out.object.name + " )"
     - check: this.trap.SpecificTrap == 9940
       processors:
         - label: system_reboot
@@ -484,7 +484,7 @@
 
             root.out.event.category.name = "System Reboot"
             root.out.object.name = ""
-            root.out.event.message = "System Rebooting, startShutdown Command, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "System Rebooting, startShutdown Command, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9941
@@ -496,7 +496,7 @@
 
             root.out.event.category.name = "System Reboot"
             root.out.object.name = ""
-            root.out.event.message = "System Enabled to Receive startShutdown Command, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "System Enabled to Receive startShutdown Command, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9942
@@ -508,7 +508,7 @@
 
             root.out.event.category.name = "Disk Space Status"
             root.out.object.name = ""
-            root.out.event.message = "Disk Space Low, < 50MB, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Disk Space Low, < 50MB, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9943
@@ -518,9 +518,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Connect Partner Does Not Have a Call Route, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.category.name = "Connect Route Status"
             root.out.object.name = ""
+            root.out.event.message = "Connect Partner Does Not Have a Call Route, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.category.name = "Connect Route Status"
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9944
@@ -530,9 +530,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Database Error, " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Database Status"
             root.out.object.name = ""
+            root.out.event.message = "Database Error, " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
             root.out.clarent.trapNumber = this.trap.VarBinds.index(1).Value
@@ -595,7 +595,7 @@
 
             root.out.event.category.name = "Database Clerk Status"
             root.out.object.name = ""
-            root.out.event.message = "New Database Clerk Started, " + this.trap.VarBinds.index(0).Value + " Clerks Running" + ", " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "New Database Clerk Started, " + this.trap.VarBinds.index(0).Value.string() + " Clerks Running" + ", " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.clarent.trapNumber = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9946
@@ -605,9 +605,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Distribution Service Status"
             root.out.object.name = ""
             root.out.event.message = "Distribution Service Restart Failed"
+            root.out.event.category.name = "Distribution Service Status"
     - check: this.trap.SpecificTrap == 9947
       processors:
         - label: dm_restarted
@@ -635,9 +635,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "Message Transfer Protocol Paused, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Message Transfer Protocol Status"
+            root.out.object.name = ""
+            root.out.event.message = "Message Transfer Protocol Paused, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9950
@@ -649,7 +649,7 @@
 
             root.out.event.category.name = "Message Transfer Protocol Status"
             root.out.object.name = ""
-            root.out.event.message = "Message Transfer Protocol Resumed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Message Transfer Protocol Resumed, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9951
@@ -661,7 +661,7 @@
 
             root.out.event.category.name = "Signaling Task Status"
             root.out.object.name = ""
-            root.out.event.message = "Signaling Task Started, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Signaling Task Started, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 9952
@@ -673,7 +673,7 @@
 
             root.out.event.category.name = "Account Status"
             root.out.object.name = ""
-            root.out.event.message = "Account Suspended, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "Account Suspended, " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - processors:

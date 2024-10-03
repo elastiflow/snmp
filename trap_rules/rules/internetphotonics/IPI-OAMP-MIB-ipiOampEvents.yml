@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.message = "SNMP Agent Shutting Down, " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-OAMP-MIB-nodeDown"
             root.out.event.id = "SNMPTRAP-internetphotonics-IPI-OAMP-MIB-nodeDown"
             root.out.event.category.name = "SNMP Agent Status"
             root.out.object.name = ""
-            root.out.event.message = "SNMP Agent Shutting Down, " + this.trap.VarBinds.index(0).Value
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
 
             root.out.internetphotonics.resetReason = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 2
@@ -26,13 +26,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-OAMP-MIB-hardwareStatusChange"
             root.out.event.id = "SNMPTRAP-internetphotonics-IPI-OAMP-MIB-hardwareStatusChange"
             root.out.event.category.name = "Hardware Status"
             root.out.object.name = ""
             root.out.event.message = "Base System Hardware Status Changed"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
     - processors:
         - label: default
           mapping: |

@@ -59,8 +59,8 @@
             #!blobl
             root = this
 
-            root.out.object.name = "swSensorEntry." + this.trap.VarBinds.index(1).Value
-            root.out.event.category.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.22.1.2") + " Sensor Status"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.22.1.2").string() + " Sensor Status"
+            root.out.object.name = "swSensorEntry." + this.trap.VarBinds.index(1).Value.string()
 
             root.out.brocade.swSensorStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.22.1.3")
             root.out.brocade.swSensorIndex = this.trap.VarBinds.index(1).Value
@@ -122,7 +122,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: sw_fcport_scn
@@ -131,7 +131,7 @@
             root = this
 
             root.out.event.category.name = "FC Port Status"
-            root.out.object.name = "swFCPortEntry." + this.trap.VarBinds.index(1).Value
+            root.out.object.name = "swFCPortEntry." + this.trap.VarBinds.index(1).Value.string()
 
             root.out.brocade.swFCPortOpStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.6.2.1.4")
             root.out.brocade.swFCPortIndex = this.trap.VarBinds.index(1).Value
@@ -197,8 +197,8 @@
             root = this
 
             root.out.event.category.name = "FW-ABOVE/BELOW"
-            root.out.object.name = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().re_find_all_submatch("FW-ABOVE (.*) \\(.*\\) is").index(0).index(-1)
-            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("FW-ABOVE (.*) \\(.*\\) is").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
 
             root.out.brocade.swEventIndex = this.trap.VarBinds.index(0).Value
             root.out.brocade.swEventTimeInfo = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -253,9 +253,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = "swEventEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Event-Misc."
-            root.out.object.name = "swEventEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
     - processors:
         - label: default
           mapping: |

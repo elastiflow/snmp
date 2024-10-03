@@ -14,7 +14,7 @@
             root.out.event.id = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodesInactive"
             root.out.event.category.name = "GMS Node Contact"
             root.out.object.name = ""
-            root.out.event.message = "GMS Cannot Contact " + this.trap.VarBinds.index(0).Value + " Node(s)"
+            root.out.event.message = "GMS Cannot Contact " + this.trap.VarBinds.index(0).Value.string() + " Node(s)"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -26,13 +26,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodeErrors"
             root.out.event.id = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodeErrors"
             root.out.event.category.name = "GMS Node Error"
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value + " Node(s) Reporting Errors"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string() + " Node(s) Reporting Errors"
 
             root.out.viavideo.polycomGMSNodesWithErrors = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 3
@@ -42,13 +42,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value + " Node(s) Reporting User Help Requests"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-helpRequests"
             root.out.event.id = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-helpRequests"
             root.out.event.category.name = "GMS Node Help Request"
             root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string() + " Node(s) Reporting User Help Requests"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.viavideo.polycomGMSHelpRequests = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 4
@@ -62,7 +62,7 @@
             root.out.event.id = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodeConProbs"
             root.out.event.category.name = "GMS Node Connectivity"
             root.out.object.name = ""
-            root.out.event.message = "GMS Connectivity Problems with " + this.trap.VarBinds.index(0).Value + " Node(s)"
+            root.out.event.message = "GMS Connectivity Problems with " + this.trap.VarBinds.index(0).Value.string() + " Node(s)"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -74,13 +74,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string() + " Node(s) Reporting Warnings"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodeWarnings"
             root.out.event.id = "SNMPTRAP-viavideo-POLYCOM-GMS-MIB-nodeWarnings"
             root.out.event.category.name = "GMS Node Warning"
-            root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value + " Node(s) Reporting Warnings"
 
             root.out.viavideo.polycomGMSNodesWithWarnings = this.trap.VarBinds.index(0).Value
     - processors:

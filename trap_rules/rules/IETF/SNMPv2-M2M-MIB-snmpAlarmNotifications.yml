@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Alarm Status"
-            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value + ", Exceeds " + this.trap.VarBinds.index(3).Value + "  ( " + "OID: " + this.trap.VarBinds.index(0).Value + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value.string() + ", Exceeds " + this.trap.VarBinds.index(3).Value.string() + "  ( " + "OID: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
             root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpRisingAlarm"
             root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpRisingAlarm"
+            root.out.event.category.name = "Alarm Status"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
             root.out.IETF.snmpAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.6.3.2.1.1.2.1.4")
@@ -29,13 +29,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpFallingAlarm"
             root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpFallingAlarm"
-            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value + ", Below " + this.trap.VarBinds.index(3).Value + "  ( " + "OID: " + this.trap.VarBinds.index(0).Value + " )"
             root.out.event.category.name = "Alarm Status"
-            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value.string() + ", Below " + this.trap.VarBinds.index(3).Value.string() + "  ( " + "OID: " + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
             root.out.IETF.snmpAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.6.3.2.1.1.2.1.4")
@@ -48,13 +48,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Object Status"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Monitored Variable Unavailable  ( " + "OID: " + this.trap.VarBinds.index(0).Value + " )"
             root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpObjectUnavailableAlarm"
             root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpObjectUnavailableAlarm"
+            root.out.event.category.name = "Object Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Monitored Variable Unavailable  ( " + "OID: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
     - processors:

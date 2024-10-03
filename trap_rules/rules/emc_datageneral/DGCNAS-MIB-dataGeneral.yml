@@ -10,9 +10,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = "NAS Device: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " SN " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + ", Source: " + this.trap.VarBinds.index(1).Value
-            root.out.event.message = this.trap.VarBinds.index(2).Value + "  ( " + "NAS Device: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() + " SN " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + ", Source: " + this.trap.VarBinds.index(1).Value + " )"
-            root.out.event.category.name = "Log Event ( " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.category.name = "Log Event ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.object.name = "NAS Device: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() + " SN " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + ", Source: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(2).Value.string() + "  ( " + "NAS Device: " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() + " SN " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + ", Source: " + this.trap.VarBinds.index(1).Value.string() + " )"
 
             root.out.emc_datageneral.dgNasEventLogSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.106.3.3.1.1")
             root.out.emc_datageneral.dgNasEventLogSource = this.trap.VarBinds.index(1).Value

@@ -66,9 +66,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Connectivity Unit Deleted  ( " + this.trap.VarBinds.index(0).Value + " )"
-            root.out.event.category.name = "Conn. Unit"
             root.out.object.name = "connUnitEntry."
+            root.out.event.message = "Connectivity Unit Deleted  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.category.name = "Conn. Unit"
 
             root.out.IETF.connUnitId = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 4
@@ -78,9 +78,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Conn. Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7") + " Event"
-            root.out.object.name = "connUnitEventEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Connectivity Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7") + " Event, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + "  ( " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.category.name = "Conn. Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7").string() + " Event"
+            root.out.object.name = "connUnitEventEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Connectivity Unit " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7").string() + " Event, " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + "  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.IETF.connUnitEventId = this.trap.VarBinds.index(0).Value
             root.out.IETF.connUnitEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.11.1.7")
@@ -93,8 +93,8 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Conn. Unit Sensor Status"
             root.out.object.name = "connUnitSensorEntry."
+            root.out.event.category.name = "Conn. Unit Sensor Status"
 
             root.out.IETF.connUnitSensorStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.94.1.8.1.4")
         - label: conn_unit_sensor_status_change_nested_switch
@@ -164,13 +164,6 @@
             root.out.IETF.connUnitPortState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.3.94.1.10.1.6")
         - label: conn_unit_port_status_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 10
-              processors:
-                - label: conn_unit_port_status_change_nested_switch_10
-                  mapping: |+
-                    #!blobl
-                    root = this
-
             - check: this.trap.VarBinds.index(1).Value == 2
               processors:
                 - label: conn_unit_port_status_change_nested_switch_2
@@ -227,6 +220,13 @@
             - check: this.trap.VarBinds.index(1).Value == 9
               processors:
                 - label: conn_unit_port_status_change_nested_switch_9
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(1).Value == 10
+              processors:
+                - label: conn_unit_port_status_change_nested_switch_10
                   mapping: |+
                     #!blobl
                     root = this

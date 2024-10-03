@@ -11,8 +11,8 @@
             root = this
 
             root.out.event.category.name = "Miscellaneous Message"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 2
@@ -23,8 +23,8 @@
             root = this
 
             root.out.event.category.name = "Service Status"
-            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.f5labs.ipAddressString = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -36,9 +36,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Service Status"
-            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.f5labs.ipAddressString = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -51,8 +51,8 @@
             root = this
 
             root.out.event.category.name = "System Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 5
@@ -63,8 +63,8 @@
             root = this
 
             root.out.event.category.name = "Request Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 6
@@ -74,9 +74,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Root Login"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 7
@@ -86,9 +86,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Unit Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 8
@@ -98,9 +98,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "Unit Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
 
             root.out.f5labs.loadBalTrapMessage = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - processors:

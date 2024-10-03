@@ -13,7 +13,7 @@
             root.out.event.class.name = "SNMPTRAP-IETF-DVMRP-MIB-dvmrpNeighborLoss"
             root.out.event.id = "SNMPTRAP-IETF-DVMRP-MIB-dvmrpNeighborLoss"
             root.out.event.category.name = "DVMRP Neighbor Status"
-            root.out.object.name = "dvmrpNeighborEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "dvmrpNeighborEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
 
             root.out.IETF.dvmrpInterfaceLocalAddress = this.trap.VarBinds.index(0).Value
             root.out.IETF.dvmrpNeighborIfIndex = this.trap.VarBinds.index(1).Value
@@ -58,9 +58,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "DVMRP Neighbor Down"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "DVMRP Neighbor Down"
             - processors:
                 - label: dvmrp_neighbor_loss_nested_switch_default
                   mapping: |
@@ -75,7 +75,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: dvmrp_neighbor_not_pruning
@@ -83,13 +83,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "dvmrpNeighborEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "Non-pruning DVMRP Neighbor Detected  ( Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-IETF-DVMRP-MIB-dvmrpNeighborNotPruning"
             root.out.event.id = "SNMPTRAP-IETF-DVMRP-MIB-dvmrpNeighborNotPruning"
             root.out.event.category.name = "DVMRP Neighbor Pruning Status"
-            root.out.object.name = "dvmrpNeighborEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "Non-pruning DVMRP Neighbor Detected  ( Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
 
             root.out.IETF.dvmrpInterfaceLocalAddress = this.trap.VarBinds.index(0).Value
             root.out.IETF.dvmrpNeighborIfIndex = this.trap.VarBinds.index(1).Value

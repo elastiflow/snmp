@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "cOPatchEntry.67"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-OPTICAL-PATCH-MIB-cOPatchEvent"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-OPTICAL-PATCH-MIB-cOPatchEvent"
             root.out.event.category.name = "Optical Patch Status"
-            root.out.object.name = "cOPatchEntry.67"
 
             root.out.cisco.cOPatchLowIfIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.cOPatchHighIfIndex = this.trap.VarBinds.index(1).Value
@@ -35,7 +35,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4") + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4") + ", Normal"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4").string() + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4").string() + ", Normal"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
             - check: this.trap.VarBinds.index(3).Value == 2
@@ -45,7 +45,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4") + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4") + ", Unknown Error"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4").string() + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4").string() + ", Unknown Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - check: this.trap.VarBinds.index(3).Value == 3
@@ -57,7 +57,7 @@
 
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4") + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4") + ", Wrong Interface Type"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4").string() + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4").string() + ", Wrong Interface Type"
             - check: this.trap.VarBinds.index(3).Value == 4
               processors:
                 - label: c_opatch_event_nested_switch_4
@@ -65,7 +65,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4") + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4") + ", Frequency Channel Mismatch"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4").string() + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4").string() + ", Frequency Channel Mismatch"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - processors:
@@ -76,13 +76,13 @@
 
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4") + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4") + ", Status Unknown"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.5.1.4").string() + " Optical Patch " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.67.1.4").string() + ", Status Unknown"
         - label: c_opatch_event_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Patch: " + root.out.object.name + ", Low: ifEntry." + this.trap.VarBinds.index(0).Value + ", High: ifEntry." + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Patch: " + root.out.object.name + ", Low: ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", High: ifEntry." + this.trap.VarBinds.index(1).Value.string() + " )"
     - processors:
         - label: default
           mapping: |

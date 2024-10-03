@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.message = "CMPC Subchannel Configured Direction, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.72.1.1.1.1.4").string() + ", Mismatch  ( cipCmpcSubChannelAdminEntry.9.9.72 )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CIPCMPC-MIB-cipCmpcDirectionMismatch"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-CIPCMPC-MIB-cipCmpcDirectionMismatch"
             root.out.event.category.name = "CMPC Direction Mismatch"
             root.out.object.name = "cipCmpcSubChannelAdminEntry.9.9.72"
-            root.out.event.message = "CMPC Subchannel Configured Direction, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.72.1.1.1.1.4") + ", Mismatch  ( cipCmpcSubChannelAdminEntry.9.9.72 )"
 
             root.out.cisco.cipCmpcSubChannelAdminDirection = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.72.1.1.1.1.4")
     - check: this.trap.SpecificTrap == 2
@@ -26,10 +26,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = "cipCmpcTgOperEntry."
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CIPCMPC-MIB-cipCmpcSeqNumError"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-CIPCMPC-MIB-cipCmpcSeqNumError"
             root.out.event.category.name = "CMPC TG Sequence Number Status"
+            root.out.object.name = "cipCmpcTgOperEntry."
 
             root.out.cisco.cipCmpcTgOperLastSeqNumFailureCause = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.72.1.2.1.1.2")
             root.out.cisco.cipCmpcTgOperExpectedReceiveSeqNum = this.trap.VarBinds.index(1).Value
@@ -63,18 +63,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "CMPC TG Sweep Message MPC Sequence Number Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "CMPC TG Sweep Message MPC Sequence Number Error"
             - processors:
                 - label: cip_cmpc_seq_num_error_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "CMPC TG MPC Sequence Number Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "CMPC TG MPC Sequence Number Status Unknown"
         - label: cip_cmpc_seq_num_error_after_switch
           mapping: |
             #!blobl

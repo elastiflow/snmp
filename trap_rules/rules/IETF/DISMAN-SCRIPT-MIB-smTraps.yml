@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "smRunEntry."
             root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptAbort"
             root.out.event.id = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptAbort"
             root.out.event.category.name = "Script Status"
-            root.out.object.name = "smRunEntry."
 
             root.out.IETF.smRunExitCode = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.64.1.4.2.1.7")
             root.out.IETF.smRunEndTime = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
@@ -27,9 +27,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Script Aborted, No Error"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Script Aborted, No Error"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: sm_script_abort_nested_switch_2
@@ -47,9 +47,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Script Aborted, Lifetime Exceeded"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Script Aborted, Lifetime Exceeded"
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: sm_script_abort_nested_switch_4
@@ -57,9 +57,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Script Aborted, No Resources Left"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Script Aborted, No Resources Left"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: sm_script_abort_nested_switch_5
@@ -67,9 +67,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Script Aborted, Language Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Script Aborted, Language Error"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: sm_script_abort_nested_switch_6
@@ -132,13 +132,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Script Status"
-            root.out.object.name = "smRunEntry."
-            root.out.event.message = "Script Completed, Result: " + this.trap.VarBinds.index(0).Value + "  ( smRunEntry. )"
+            root.out.event.message = "Script Completed, Result: " + this.trap.VarBinds.index(0).Value.string() + "  ( smRunEntry. )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptResult"
             root.out.event.id = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptResult"
+            root.out.event.category.name = "Script Status"
+            root.out.object.name = "smRunEntry."
 
             root.out.IETF.smRunResult = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 3
@@ -148,13 +148,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptException"
             root.out.event.id = "SNMPTRAP-IETF-DISMAN-SCRIPT-MIB-smScriptException"
             root.out.event.category.name = "Script Status"
             root.out.object.name = "smRunEntry."
-            root.out.event.message = "Script Exception, Error: " + this.trap.VarBinds.index(0).Value + "  ( smRunEntry. )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
+            root.out.event.message = "Script Exception, Error: " + this.trap.VarBinds.index(0).Value.string() + "  ( smRunEntry. )"
 
             root.out.IETF.smRunError = this.trap.VarBinds.index(0).Value
     - processors:

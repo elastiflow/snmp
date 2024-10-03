@@ -10,11 +10,11 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotification"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotification"
             root.out.event.category.name = "VoIP Quality of Voice"
             root.out.object.name = "cvVoIPCallHistoryEntry.63"
-            root.out.event.message = "Poor VoIP Quality of Voice, Coder Rate: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.55.1.2.1.1.3")
+            root.out.event.message = "Poor VoIP Quality of Voice, Coder Rate: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.10.55.1.2.1.1.3").string()
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotification"
 
             root.out.cisco.cvVoIPCallHistoryConnectionId = this.trap.VarBinds.index(0).Value
             root.out.cisco.cvVoIPCallHistoryIcpif = this.trap.VarBinds.index(1).Value
@@ -30,7 +30,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call To: " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call To: " + this.trap.VarBinds.index(2).Value.string() + " )"
             - check: this.trap.VarBinds.index(3).Value == 2
               processors:
                 - label: cvdc_poor_qo_vnotification_nested_switch_2
@@ -38,7 +38,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call From: " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call From: " + this.trap.VarBinds.index(2).Value.string() + " )"
             - check: this.trap.VarBinds.index(3).Value == 3
               processors:
                 - label: cvdc_poor_qo_vnotification_nested_switch_3
@@ -46,14 +46,14 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Callback To: " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Callback To: " + this.trap.VarBinds.index(2).Value.string() + " )"
             - processors:
                 - label: cvdc_poor_qo_vnotification_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call: " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call: " + this.trap.VarBinds.index(2).Value.string() + " )"
         - label: cvdc_poor_qo_vnotification_after_switch
           mapping: |
             #!blobl
@@ -68,11 +68,11 @@
             #!blobl
             root = this
 
+            root.out.event.message = "Poor VoIP Quality of Voice, Coder Rate: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.10.55.1.2.1.1.3").string()
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotificationRev1"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VOICE-DIAL-CONTROL-MIB-cvdcPoorQoVNotificationRev1"
             root.out.event.category.name = "VoIP Quality of Voice"
             root.out.object.name = "cvVoIPCallHistoryEntry.63"
-            root.out.event.message = "Poor VoIP Quality of Voice, Coder Rate: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.10.55.1.2.1.1.3")
 
             root.out.cisco.cvVoIPCallHistoryConnectionId = this.trap.VarBinds.index(0).Value
             root.out.cisco.cvVoIPCallHistoryIcpif = this.trap.VarBinds.index(1).Value
@@ -89,7 +89,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call To: " + this.trap.VarBinds.index(3).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call To: " + this.trap.VarBinds.index(3).Value.string() + " )"
             - check: this.trap.VarBinds.index(4).Value == 2
               processors:
                 - label: cvdc_poor_qo_vnotification_rev1_nested_switch_2
@@ -97,7 +97,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call From: " + this.trap.VarBinds.index(3).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call From: " + this.trap.VarBinds.index(3).Value.string() + " )"
             - check: this.trap.VarBinds.index(4).Value == 3
               processors:
                 - label: cvdc_poor_qo_vnotification_rev1_nested_switch_3
@@ -105,14 +105,14 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Callback To: " + this.trap.VarBinds.index(3).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Callback To: " + this.trap.VarBinds.index(3).Value.string() + " )"
             - processors:
                 - label: cvdc_poor_qo_vnotification_rev1_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + "  ( Call: " + this.trap.VarBinds.index(3).Value + " )"
+                    root.out.event.message = root.out.event.message + "  ( Call: " + this.trap.VarBinds.index(3).Value.string() + " )"
         - label: cvdc_poor_qo_vnotification_rev1_after_switch
           mapping: |
             #!blobl

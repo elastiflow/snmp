@@ -11,12 +11,12 @@
             root = this
 
             root.out.event.category.name = "SRP IPS Wrapping"
-            root.out.object.name = "srpMACSideEntry." + this.trap.VarBinds.index(0).Value + "."
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
+            root.out.event.message = "SRP Interface Wrapped  ( " + "srpMACSideEntry." + this.trap.VarBinds.index(0).Value.string() + ".lookup("", ciscoSrpInterfaceSide) (  )"_Raw + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SRP-MIB-srpTrapRingWrapped"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRP-MIB-srpTrapRingWrapped"
-            root.out.event.message = "SRP Interface Wrapped  ( " + "srpMACSideEntry." + this.trap.VarBinds.index(0).Value + "." + " )"
+            root.out.object.name = "srpMACSideEntry." + this.trap.VarBinds.index(0).Value.string() + ".lookup("", ciscoSrpInterfaceSide) (  )"_Raw
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.srpIpsState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.60.1.1.1.4")
@@ -36,9 +36,9 @@
 
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SRP-MIB-srpTrapRingRestored"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRP-MIB-srpTrapRingRestored"
-            root.out.object.name = "srpMACSideEntry." + this.trap.VarBinds.index(0).Value + "."
             root.out.event.category.name = "SRP IPS Wrapping"
-            root.out.event.message = "SRP Interface Restored  ( " + "srpMACSideEntry." + this.trap.VarBinds.index(0).Value + "." + " )"
+            root.out.object.name = "srpMACSideEntry." + this.trap.VarBinds.index(0).Value.string() + ".lookup("", ciscoSrpInterfaceSide) (  )"_Raw
+            root.out.event.message = "SRP Interface Restored  ( " + "srpMACSideEntry." + this.trap.VarBinds.index(0).Value.string() + ".lookup("", ciscoSrpInterfaceSide) (  )"_Raw + " )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
 

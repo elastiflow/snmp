@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "UPS Operating on Battery Power, ~" + this.trap.VarBinds.index(0).Value + " Minutes Remaining"
-            root.out.event.severity.code = 4
-            root.out.event.severity.level = "Warning"
             root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapOnBattery"
             root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapOnBattery"
             root.out.event.category.name = "UPS Status"
             root.out.object.name = ""
+            root.out.event.message = "UPS Operating on Battery Power, ~" + this.trap.VarBinds.index(0).Value.string() + " Minutes Remaining"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
 
             root.out.IETF.upsEstimatedMinutesRemaining = this.trap.VarBinds.index(0).Value
             root.out.IETF.upsSecondsOnBattery = this.trap.VarBinds.index(1).Value
@@ -29,7 +29,7 @@
             root = this
 
             root.out.event.category.name = "UPS Test Status"
-            root.out.object.name = "Test ID: " + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "Test ID: " + this.trap.VarBinds.index(0).Value.string()
             root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapTestCompleted"
             root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapTestCompleted"
 
@@ -48,7 +48,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
             - check: this.trap.VarBinds.index(2).Value == 2
@@ -58,9 +58,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
             - check: this.trap.VarBinds.index(2).Value == 3
               processors:
                 - label: ups_trap_test_completed_nested_switch_3
@@ -68,7 +68,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - check: this.trap.VarBinds.index(2).Value == 4
@@ -78,7 +78,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
             - check: this.trap.VarBinds.index(2).Value == 5
@@ -88,9 +88,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
             - check: this.trap.VarBinds.index(2).Value == 6
               processors:
                 - label: ups_trap_test_completed_nested_switch_6
@@ -98,7 +98,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3") + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.event.message = "UPS Test " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.33.1.7.3").string() + ", " + this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
             - processors:
@@ -120,11 +120,11 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
-            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
-            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
+            root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryAdded"
+            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value.string()
 
             root.out.IETF.upsAlarmId = this.trap.VarBinds.index(0).Value
             root.out.IETF.upsAlarmDescr = this.trap.VarBinds.index(1).Value
@@ -137,7 +137,7 @@
 
             root.out.event.class.name = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryRemoved"
             root.out.event.id = "SNMPTRAP-IETF-UPS-MIB-upsTrapAlarmEntryRemoved"
-            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "upsAlarmEntry." + this.trap.VarBinds.index(0).Value.string()
             root.out.event.message = "End of " + root.out.event.message
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"

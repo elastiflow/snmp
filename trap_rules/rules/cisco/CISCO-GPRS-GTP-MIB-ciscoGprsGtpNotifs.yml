@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = "GSN Peer Failed to Respond to GTP 'Echo Request' Message  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpGSNPathFailedNotif"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpGSNPathFailedNotif"
             root.out.event.category.name = "GSN Peer Status"
+            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "GSN Peer Failed to Respond to GTP 'Echo Request' Message  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.cisco.cgprsGtpLastGSNidNoRespToEcho = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 2
@@ -26,13 +26,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "GSN Peer Status"
-            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.message = "GSN Peer Responded to GTP 'Echo Request' Message  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpGSNPathRecoveredNotif"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpGSNPathRecoveredNotif"
+            root.out.event.category.name = "GSN Peer Status"
+            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "GSN Peer Responded to GTP 'Echo Request' Message  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.cisco.cgprsGtpLastGSNidRecovered = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 3
@@ -42,13 +42,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "PDP Context Status"
-            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + ", TID: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
-            root.out.event.message = "PDP Context Activation Rejected, " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + "  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + ", TID: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = "PDP Context Activation Rejected, " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + "  ( " + "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + ", TID: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpPDPCxtActivationRejNotif"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpPDPCxtActivationRejNotif"
+            root.out.event.category.name = "PDP Context Status"
+            root.out.object.name = "Peer: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + ", TID: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.cisco.cgprsGtpGSNidOfLastUnexpPDPCxt = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.cisco.cgprsGtpTIDOfLastUnexpPDPCxt = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -88,13 +88,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpSecondaryChargingGWUpNotif"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-GPRS-GTP-MIB-cgprsGtpSecondaryChargingGWUpNotif"
             root.out.event.category.name = "GGSN Secondary Charging Gateway Status"
             root.out.object.name = ""
             root.out.event.message = "GGSN Secondary Charging Gateway Up"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
     - check: this.trap.SpecificTrap == 7
       processors:
         - label: cgprs_gtp_secondary_charging_gwdown_notif

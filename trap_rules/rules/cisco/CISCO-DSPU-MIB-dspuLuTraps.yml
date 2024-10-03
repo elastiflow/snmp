@@ -20,7 +20,7 @@
             root.out.cisco.dspuLuOperState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.5.2.1.6")
         - label: dspu_lu_state_change_trap_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 1
+            - check: this.trap.VarBinds.index(1).Value.string() == 1
               processors:
                 - label: dspu_lu_state_change_trap_nested_switch_1
                   mapping: |
@@ -30,7 +30,7 @@
                     root.out.event.message = "DownStream Physical Unit Active"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(1).Value == 2
+            - check: this.trap.VarBinds.index(1).Value.string() == 2
               processors:
                 - label: dspu_lu_state_change_trap_nested_switch_2
                   mapping: |
@@ -46,15 +46,15 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "DownStream Physical Unit Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "DownStream Physical Unit Status Unknown"
         - label: dspu_lu_state_change_trap_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 1
       processors:
         - label: newdspu_lu_state_change_trap
@@ -62,10 +62,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Physical Unit Status"
-            root.out.object.name = "dspuPuOperEntry.24"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DSPU-MIB-newdspuPuStateChangeTrap"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-DSPU-MIB-newdspuPuStateChangeTrap"
+            root.out.event.category.name = "Physical Unit Status"
+            root.out.object.name = "dspuPuOperEntry.24"
 
             root.out.cisco.dspuPuOperName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.cisco.dspuLuOperState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.5.2.1.6")
@@ -105,7 +105,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: dspu_lu_activation_failure_trap
@@ -140,9 +140,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "DownStream Physical Unit Inactive, $dspuPuStatsLastActivationFailureReason
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "DownStream Physical Unit Inactive, $dspuPuStatsLastActivationFailureReason
             - processors:
                 - label: dspu_lu_activation_failure_trap_nested_switch_default
                   mapping: |
@@ -157,7 +157,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - processors:
         - label: default
           mapping: |

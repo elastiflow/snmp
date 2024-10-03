@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CLUSTER-MIB-ccStatusMemberStatusChange"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-CLUSTER-MIB-ccStatusMemberStatusChange"
             root.out.event.category.name = "Cluster Member Status"
             root.out.object.name = "ccMemberEntry."
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CLUSTER-MIB-ccStatusMemberStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CLUSTER-MIB-ccStatusMemberStatusChange"
 
             root.out.cisco.ccMemberOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.134.1.2.1.1.3")
         - label: cc_status_member_status_change_nested_switch
@@ -35,18 +35,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Cluster Member Inactive"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Cluster Member Inactive"
             - processors:
                 - label: cc_status_member_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Cluster Member Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Cluster Member Status Unknown"
         - label: cc_status_member_status_change_after_switch
           mapping: |
             #!blobl

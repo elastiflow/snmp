@@ -55,9 +55,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "SCSI Device Readying"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "SCSI Device Readying"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: cisco_scsi_tgt_dev_status_changed_nested_switch_5
@@ -65,9 +65,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "SCSI Device Abnormal"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "SCSI Device Abnormal"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: cisco_scsi_tgt_dev_status_changed_nested_switch_6
@@ -85,9 +85,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SCSI Non-Addressable Device Failure, Readying"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "SCSI Non-Addressable Device Failure, Readying"
             - check: this.trap.VarBinds.index(0).Value == 8
               processors:
                 - label: cisco_scsi_tgt_dev_status_changed_nested_switch_8
@@ -104,9 +104,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "SCSI Device Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "SCSI Device Status Unknown"
         - label: cisco_scsi_tgt_dev_status_changed_after_switch
           mapping: |
             #!blobl
@@ -120,10 +120,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SCSI-MIB-ciscoScsiLuStatusChanged"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-SCSI-MIB-ciscoScsiLuStatusChanged"
             root.out.event.category.name = "SCSI LUN Status"
             root.out.object.name = "ciscoScsiLuEntry.9.10.95"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SCSI-MIB-ciscoScsiLuStatusChanged"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-SCSI-MIB-ciscoScsiLuStatusChanged"
 
             root.out.cisco.ciscoScsiLuStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.10.95.1.5.1.1.8")
         - label: cisco_scsi_lu_status_changed_nested_switch
@@ -135,9 +135,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "SCSI LUN Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "SCSI LUN Status Unknown"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_scsi_lu_status_changed_nested_switch_2
@@ -175,9 +175,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "SCSI LUN Readying"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "SCSI LUN Readying"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: cisco_scsi_lu_status_changed_nested_switch_6

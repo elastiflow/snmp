@@ -25,7 +25,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value + " ) Below " + this.trap.VarBinds.index(0).Value + "  ( DHCPScopeName
+                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value.string() + " ) Below " + this.trap.VarBinds.index(0).Value.string() + "  ( DHCPScopeName
             - check: this.trap.VarBinds.index(2).Value == 2
               processors:
                 - label: cisco_net_reg_free_address_low_nested_switch_2
@@ -33,7 +33,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value + "% ) Below " + this.trap.VarBinds.index(0).Value + "%  ( DHCPScopeName
+                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value.string() + "% ) Below " + this.trap.VarBinds.index(0).Value.string() + "%  ( DHCPScopeName
             - processors:
                 - label: cisco_net_reg_free_address_low_nested_switch_default
                   mapping: |+
@@ -67,7 +67,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value + " ) Above " + this.trap.VarBinds.index(0).Value + "  ( DHCPScopeName
+                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value.string() + " ) Above " + this.trap.VarBinds.index(0).Value.string() + "  ( DHCPScopeName
             - check: this.trap.VarBinds.index(2).Value == 2
               processors:
                 - label: cisco_net_reg_free_address_high_nested_switch_2
@@ -75,7 +75,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value + "% ) Above " + this.trap.VarBinds.index(0).Value + "%  ( DHCPScopeName
+                    root.out.event.message = "Available IP Addresses ( " + this.trap.VarBinds.index(1).Value.string() + "% ) Above " + this.trap.VarBinds.index(0).Value.string() + "%  ( DHCPScopeName
             - processors:
                 - label: cisco_net_reg_free_address_high_nested_switch_default
                   mapping: |+
@@ -94,9 +94,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4"), cnrNotifServerType) + " Server started"
             root.out.event.category.name = "NetReg Server Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
+            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string()
+            root.out.event.message = lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string(), cnrNotifServerType) + " Server started"
 
             root.out.cisco.cnrNotifServerType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
     - check: this.trap.SpecificTrap == 4
@@ -106,9 +106,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string()
+            root.out.event.message = lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string(), cnrNotifServerType) + " Server stopped"
             root.out.event.category.name = "NetReg Server Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
-            root.out.event.message = lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4"), cnrNotifServerType) + " Server stopped"
 
             root.out.cisco.cnrNotifServerType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
     - check: this.trap.SpecificTrap == 5
@@ -128,9 +128,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string(), cnrNotifServerType) + " Server at " + this.trap.VarBinds.index(0).Value.string() + " Not Responding to Updates from CNR server"
             root.out.event.category.name = "NetReg Other Server Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4"), cnrNotifServerType) + " Server at " + this.trap.VarBinds.index(0).Value + " Not Responding to Updates from CNR server"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
 
             root.out.cisco.cnrNotifServer = this.trap.VarBinds.index(0).Value
             root.out.cisco.cnrNotifServerType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
@@ -142,8 +142,8 @@
             root = this
 
             root.out.event.category.name = "NetReg Duplicate Address"
-            root.out.object.name = this.trap.VarBinds.index(1).Value
-            root.out.event.message = "Duplicate IP Address ( " + this.trap.VarBinds.index(0).Value + " ) at MAC Address " + this.trap.VarBinds.index(1).Value
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "Duplicate IP Address ( " + this.trap.VarBinds.index(0).Value.string() + " ) at MAC Address " + this.trap.VarBinds.index(1).Value.string()
 
             root.out.cisco.cnrNotifDupIpAddress = this.trap.VarBinds.index(0).Value
             root.out.cisco.cnrNotifMACAddress = this.trap.VarBinds.index(1).Value
@@ -156,8 +156,8 @@
             root = this
 
             root.out.event.category.name = "NetReg Address Conflict"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Ownership of IP Address " + this.trap.VarBinds.index(0).Value + " Claimed by Two or More DHCP Servers  ( cnrNotifServer
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Ownership of IP Address " + this.trap.VarBinds.index(0).Value.string() + " Claimed by Two or More DHCP Servers  ( cnrNotifServer
 
             root.out.cisco.cnrNotifContestedIpAddress = this.trap.VarBinds.index(0).Value
             root.out.cisco.cnrNotifServer = this.trap.VarBinds.index(1).Value
@@ -171,8 +171,8 @@
             root = this
 
             root.out.event.category.name = "NetReg Other Server Status"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4"), cnrNotifServerType) + " Server at " + this.trap.VarBinds.index(0).Value + " Responding to Updates from CNR server"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4").string(), cnrNotifServerType) + " Server at " + this.trap.VarBinds.index(0).Value.string() + " Responding to Updates from CNR server"
 
             root.out.cisco.cnrNotifServer = this.trap.VarBinds.index(0).Value
             root.out.cisco.cnrNotifServerType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.120.1.2.4")
@@ -184,8 +184,8 @@
             root = this
 
             root.out.event.category.name = "NetReg Failover Config Mismatch"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Server Configuration Does Not Match Failover Peer " + this.trap.VarBinds.index(0).Value
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Server Configuration Does Not Match Failover Peer " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.cisco.cnrNotifServer = this.trap.VarBinds.index(0).Value
             root.out.cisco.cnrNotifDhcpv6Server = this.trap.VarBinds.index(1).Value

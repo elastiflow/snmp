@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-MIP-MIB-mipAuthFailure"
-            root.out.event.id = "SNMPTRAP-IETF-MIP-MIB-mipAuthFailure"
             root.out.event.category.name = "Authentication Failure"
-            root.out.object.name = "mipSecViolationEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Authentication Failure, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.44.1.2.3.1.7") + "  ( Violator's IP: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "mipSecViolationEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Authentication Failure, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.44.1.2.3.1.7").string() + "  ( Violator's IP: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-MIP-MIB-mipAuthFailure"
+            root.out.event.id = "SNMPTRAP-IETF-MIP-MIB-mipAuthFailure"
 
             root.out.IETF.mipSecViolatorAddress = this.trap.VarBinds.index(0).Value
             root.out.IETF.mipSecRecentViolationSPI = this.trap.VarBinds.index(1).Value

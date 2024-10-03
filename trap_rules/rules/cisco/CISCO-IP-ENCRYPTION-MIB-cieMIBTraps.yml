@@ -27,9 +27,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Encrypted Session Establishment In Progress"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Encrypted Session Establishment In Progress"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cie_test_completion_nested_switch_2
@@ -37,9 +37,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Encrypted Session Failed"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Encrypted Session Failed"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: cie_test_completion_nested_switch_3
@@ -74,7 +74,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Protected IP: " + this.trap.VarBinds.index(1).Value + ", Unprotected IP: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Protected IP: " + this.trap.VarBinds.index(1).Value.string() + ", Unprotected IP: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - processors:
         - label: default
           mapping: |

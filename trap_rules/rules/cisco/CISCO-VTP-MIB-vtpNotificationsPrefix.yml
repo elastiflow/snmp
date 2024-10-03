@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Configuration Revision Number"
-            root.out.event.message = "Configuration Revision Number Error, Rev. " + this.trap.VarBinds.index(0).Value + "  ( managementDomainEntry.46 )"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpConfigRevNumberError"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpConfigRevNumberError"
+            root.out.event.category.name = "Configuration Revision Number"
+            root.out.event.message = "Configuration Revision Number Error, Rev. " + this.trap.VarBinds.index(0).Value.string() + "  ( managementDomainEntry.46 )"
             root.out.object.name = "managementDomainEntry.46"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.cisco.managementDomainConfigRevNumber = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 2
@@ -29,8 +29,8 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpConfigDigestError"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpConfigDigestError"
             root.out.event.category.name = "Configuration Digest"
+            root.out.event.message = "Configuration Digest Error, Rev. " + this.trap.VarBinds.index(0).Value.string() + "  ( managementDomainEntry.46 )"
             root.out.object.name = "managementDomainEntry.46"
-            root.out.event.message = "Configuration Digest Error, Rev. " + this.trap.VarBinds.index(0).Value + "  ( managementDomainEntry.46 )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
 
@@ -42,13 +42,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "VTP Server Status"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
+            root.out.event.message = "VTP Server Disabled, Defined VLANs Exceeds vtpMaxVlanStorage ( " + this.trap.VarBinds.index(1).Value.string() + " )  ( managementDomainEntry.46 )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpServerDisabled"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpServerDisabled"
+            root.out.event.category.name = "VTP Server Status"
             root.out.object.name = "managementDomainEntry.46"
-            root.out.event.message = "VTP Server Disabled, Defined VLANs Exceeds vtpMaxVlanStorage ( " + this.trap.VarBinds.index(1).Value + " )  ( managementDomainEntry.46 )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.cisco.managementDomainConfigRevNumber = this.trap.VarBinds.index(0).Value
             root.out.cisco.vtpMaxVlanStorage = this.trap.VarBinds.index(1).Value
@@ -62,7 +62,7 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpMtuTooBig"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpMtuTooBig"
             root.out.event.category.name = "VTP MTU Status"
-            root.out.object.name = "vtpVlanEntry." + this.trap.VarBinds.index(0).Value + ".4"
+            root.out.object.name = "vtpVlanEntry." + this.trap.VarBinds.index(0).Value.string() + ".4"
 
             root.out.cisco.vlanTrunkPortManagementDomain = this.trap.VarBinds.index(0).Value
             root.out.cisco.vtpVlanState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.3.1.1.2")
@@ -105,18 +105,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "VLAN's MTU Size Too Large for Trunk"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "VLAN's MTU Size Too Large for Trunk"
             - processors:
                 - label: vtp_mtu_too_big_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "VLAN's MTU Size Too Large"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "VLAN's MTU Size Too Large"
         - label: vtp_mtu_too_big_after_switch
           mapping: |
             #!blobl
@@ -130,13 +130,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "VTP Ver.1 Device Detected in Management Domain  ( " + "managementDomainEntry." + this.trap.VarBinds.index(0).Value + " )"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVersionOneDeviceDetected"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVersionOneDeviceDetected"
             root.out.event.category.name = "VTP Version Mismatch"
-            root.out.object.name = "managementDomainEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "managementDomainEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "VTP Ver.1 Device Detected in Management Domain  ( " + "managementDomainEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.cisco.vlanTrunkPortManagementDomain = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 7
@@ -171,18 +171,18 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Trunk Port Not Trunking"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Trunk Port Not Trunking"
             - processors:
                 - label: vlan_trunk_port_dynamic_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Trunk Port Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Trunk Port Status Unknown"
         - label: vlan_trunk_port_dynamic_status_change_after_switch
           mapping: |
             #!blobl
@@ -196,13 +196,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.object.name = "managementDomainEntry.46"
+            root.out.event.message = "VTP Local Mode Changed to " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.2.1.1.3").string() + "  ( managementDomainEntry.46 )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpLocalModeChanged"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpLocalModeChanged"
             root.out.event.category.name = "VTP Local Mode"
-            root.out.event.message = "VTP Local Mode Changed to " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.2.1.1.3") + "  ( managementDomainEntry.46 )"
-            root.out.object.name = "managementDomainEntry.46"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
 
             root.out.cisco.managementDomainLocalMode = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.2.1.1.3")
     - check: this.trap.SpecificTrap == 9
@@ -212,11 +212,11 @@
             #!blobl
             root = this
 
+            root.out.object.name = "managementDomainEntry.46"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVersionInUseChanged"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVersionInUseChanged"
             root.out.event.category.name = "VTP Version"
-            root.out.object.name = "managementDomainEntry.46"
-            root.out.event.message = "VTP Version Changed to " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.2.1.1.11") + "  ( managementDomainEntry.46 )"
+            root.out.event.message = "VTP Version Changed to " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.46.1.2.1.1.11").string() + "  ( managementDomainEntry.46 )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
 
@@ -228,13 +228,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "vtpVlanEntry.9.46"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
-            root.out.event.category.name = "VLAN Create/Delete"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanCreated"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanCreated"
-            root.out.object.name = "vtpVlanEntry.9.46"
-            root.out.event.message = "VLAN Created  ( VLAN: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.category.name = "VLAN Create/Delete"
+            root.out.event.message = "VLAN Created  ( VLAN: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.cisco.vtpVlanName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 11
@@ -244,11 +244,11 @@
             #!blobl
             root = this
 
-            root.out.event.message = "VLAN Deleted  ( VLAN: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanDeleted"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanDeleted"
-            root.out.event.category.name = "VLAN Create/Delete"
             root.out.object.name = "vtpVlanEntry.9.46"
+            root.out.event.message = "VLAN Deleted  ( VLAN: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.event.category.name = "VLAN Create/Delete"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -260,13 +260,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "VLAN Ring Number Configuration"
-            root.out.object.name = "vtpVlanEntry.9.46"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanRingNumberConflict"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VTP-MIB-vtpVlanRingNumberConflict"
-            root.out.event.message = "VTP Ring #, " + this.trap.VarBinds.index(0).Value + ", Conflicts with Token Ring Segment #, " + this.trap.VarBinds.index(2).Value + ", on Port: ifEntry." + this.trap.VarBinds.index(1).Value + "  ( vtpVlanEntry.9.46 )"
+            root.out.event.message = "VTP Ring #, " + this.trap.VarBinds.index(0).Value.string() + ", Conflicts with Token Ring Segment #, " + this.trap.VarBinds.index(2).Value.string() + ", on Port: ifEntry." + this.trap.VarBinds.index(1).Value.string() + "  ( vtpVlanEntry.9.46 )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.category.name = "VLAN Ring Number Configuration"
+            root.out.object.name = "vtpVlanEntry.9.46"
 
             root.out.cisco.vtpVlanRingNumber = this.trap.VarBinds.index(0).Value
             root.out.cisco.ifIndex = this.trap.VarBinds.index(1).Value

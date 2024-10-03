@@ -38,13 +38,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Device Name Changed  ( " + "Device: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
-            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
-            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
-            root.out.object.name = "Device: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
-            root.out.event.category.name = "Device Name Change"
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.message = "Device Name Changed  ( " + "Device: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.category.name = "Device Name Change"
 
             root.out.leitch.routerSysAlarmsText = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 5
@@ -118,7 +118,7 @@
             root.out.leitch.routerSysLevelNumOutputs = this.trap.VarBinds.index(0).Value
         - label: router_sys_level_num_outputs_event_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: router_sys_level_num_outputs_event_nested_switch_1
                   mapping: |
@@ -128,7 +128,7 @@
                     root.out.event.message = "Device Communications OK"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: router_sys_level_num_outputs_event_nested_switch_2
                   mapping: |
@@ -138,7 +138,7 @@
                     root.out.event.message = "Device Communications Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 3
+            - check: this.trap.VarBinds.index(0).Value.string() == 3
               processors:
                 - label: router_sys_level_num_outputs_event_nested_switch_3
                   mapping: |
@@ -267,13 +267,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "deviceIPSettingsEntry.1"
-            root.out.event.message = "Device IP Address Changed  ( IP Address: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsIpAddressEvent"
             root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsIpAddressEvent"
             root.out.event.category.name = "Device IP Address Change"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
+            root.out.object.name = "deviceIPSettingsEntry.1"
+            root.out.event.message = "Device IP Address Changed  ( IP Address: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.leitch.routerSysLevelInputsRestrictedOutputs = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 22
@@ -283,13 +283,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Device IP Netmask Change"
-            root.out.event.message = "Device IP Subnet Mask Changed  ( Netmask: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
             root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
+            root.out.event.category.name = "Device IP Netmask Change"
             root.out.object.name = "deviceIPSettingsEntry.1"
+            root.out.event.message = "Device IP Subnet Mask Changed  ( Netmask: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.leitch.routerSysLevelInputsOutputStatus = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
     - check: this.trap.SpecificTrap == 24
@@ -299,15 +299,15 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
-            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
             root.out.event.category.name = "Link Status"
             root.out.object.name = "deviceIPSettingsEntry.1"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
 
             root.out.leitch.routerSysLevelInToPhysInDeviceID = this.trap.VarBinds.index(0).Value
         - label: router_sys_level_in_to_phys_in_device_idevent_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: router_sys_level_in_to_phys_in_device_idevent_nested_switch_1
                   mapping: |
@@ -317,7 +317,7 @@
                     root.out.event.message = "Link Connected"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: router_sys_level_in_to_phys_in_device_idevent_nested_switch_2
                   mapping: |
@@ -371,7 +371,7 @@
             root.out.leitch.routerSysLevelInToPhysInPinID = this.trap.VarBinds.index(0).Value
         - label: router_sys_level_in_to_phys_in_pin_idevent_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: router_sys_level_in_to_phys_in_pin_idevent_nested_switch_1
                   mapping: |
@@ -381,7 +381,7 @@
                     root.out.event.message = "Fan Installed"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: router_sys_level_in_to_phys_in_pin_idevent_nested_switch_2
                   mapping: |
@@ -391,7 +391,7 @@
                     root.out.event.message = "Fan Removed"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(0).Value == 3
+            - check: this.trap.VarBinds.index(0).Value.string() == 3
               processors:
                 - label: router_sys_level_in_to_phys_in_pin_idevent_nested_switch_3
                   mapping: |
@@ -445,17 +445,17 @@
             root.out.leitch.routerSysLevelOutputsName = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
         - label: router_sys_level_outputs_name_event_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 1
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == 1
               processors:
                 - label: router_sys_level_outputs_name_event_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Power Supply Installed and Working"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Power Supply Installed and Working"
-            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 2
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == 2
               processors:
                 - label: router_sys_level_outputs_name_event_nested_switch_2
                   mapping: |
@@ -465,7 +465,7 @@
                     root.out.event.message = "Power Supply Installed and Not Working"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 3
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == 3
               processors:
                 - label: router_sys_level_outputs_name_event_nested_switch_3
                   mapping: |
@@ -475,7 +475,7 @@
                     root.out.event.message = "Power Supply No Failure"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() == 4
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == 4
               processors:
                 - label: router_sys_level_outputs_name_event_nested_switch_4
                   mapping: |
@@ -491,9 +491,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Power Supply Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Power Supply Status Unknown"
         - label: router_sys_level_outputs_name_event_after_switch
           mapping: |
             #!blobl
@@ -536,9 +536,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "External Sync Present"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "External Sync Present"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: router_sys_level_outputs_sig_pres_event_nested_switch_2
@@ -556,9 +556,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "External Sync Install Status Undetermined"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "External Sync Install Status Undetermined"
             - processors:
                 - label: router_sys_level_outputs_sig_pres_event_nested_switch_default
                   mapping: |
@@ -581,10 +581,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
-            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
             root.out.event.category.name = "External Sync Status"
             root.out.object.name = "deviceSyncsEntry.1"
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
 
             root.out.leitch.routerSysLevelOutputsLockStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.11.29.1.9")
         - label: router_sys_level_outputs_lock_status_event_nested_switch
@@ -596,9 +596,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "External Sync Present and Locked"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "External Sync Present and Locked"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: router_sys_level_outputs_lock_status_event_nested_switch_2
@@ -606,9 +606,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "External Sync Present and Not Locked"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "External Sync Present and Not Locked"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: router_sys_level_outputs_lock_status_event_nested_switch_3
@@ -641,13 +641,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "deviceSyncsEntry.1"
+            root.out.event.message = "External Sync Type Changed to " + lookup(this.trap.VarBinds.index(0).Value.string(), leitchRouterDeviceSyncsType) + "  ( deviceSyncsEntry.1 )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
-            root.out.event.category.name = "External Sync Type Change"
             root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsTypeEvent"
             root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsTypeEvent"
-            root.out.object.name = "deviceSyncsEntry.1"
-            root.out.event.message = "External Sync Type Changed to " + lookup(this.trap.VarBinds.index(0).Value, leitchRouterDeviceSyncsType) + "  ( deviceSyncsEntry.1 )"
+            root.out.event.category.name = "External Sync Type Change"
 
             root.out.leitch.routerSysLevelOutputsLockOwner = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 35

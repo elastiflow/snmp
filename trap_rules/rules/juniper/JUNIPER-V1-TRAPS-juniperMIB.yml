@@ -14,7 +14,7 @@
             root.out.object.name = "bgpPeerEntry.4.1.2636.1"
         - label: bgp_established_v1_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 1
+            - check: this.trap.VarBinds.index(1).Value.string() == 1
               processors:
                 - label: bgp_established_v1_nested_switch_1
                   mapping: |
@@ -22,7 +22,7 @@
                     root = this
 
                     root.out.event.message = "BGP Peer Connection Idle  ( bgpPeerRemoteAddr: $bgpPeerRemoteAddr )"
-            - check: this.trap.VarBinds.index(1).Value == 2
+            - check: this.trap.VarBinds.index(1).Value.string() == 2
               processors:
                 - label: bgp_established_v1_nested_switch_2
                   mapping: |
@@ -30,7 +30,7 @@
                     root = this
 
                     root.out.event.message = "BGP Peer Connection Connected  ( bgpPeerRemoteAddr: $bgpPeerRemoteAddr )"
-            - check: this.trap.VarBinds.index(1).Value == 3
+            - check: this.trap.VarBinds.index(1).Value.string() == 3
               processors:
                 - label: bgp_established_v1_nested_switch_3
                   mapping: |
@@ -38,7 +38,7 @@
                     root = this
 
                     root.out.event.message = "BGP Peer Connection Active  ( bgpPeerRemoteAddr: $bgpPeerRemoteAddr )"
-            - check: this.trap.VarBinds.index(1).Value == 4
+            - check: this.trap.VarBinds.index(1).Value.string() == 4
               processors:
                 - label: bgp_established_v1_nested_switch_4
                   mapping: |
@@ -46,7 +46,7 @@
                     root = this
 
                     root.out.event.message = "BGP Peer Connection Open Sent  ( bgpPeerRemoteAddr: $bgpPeerRemoteAddr )"
-            - check: this.trap.VarBinds.index(1).Value == 5
+            - check: this.trap.VarBinds.index(1).Value.string() == 5
               processors:
                 - label: bgp_established_v1_nested_switch_5
                   mapping: |
@@ -54,7 +54,7 @@
                     root = this
 
                     root.out.event.message = "BGP Peer Connection Open Confirmed  ( bgpPeerRemoteAddr: $bgpPeerRemoteAddr )"
-            - check: this.trap.VarBinds.index(1).Value == 6
+            - check: this.trap.VarBinds.index(1).Value.string() == 6
               processors:
                 - label: bgp_established_v1_nested_switch_6
                   mapping: |
@@ -96,8 +96,8 @@
             root = this
 
             root.out.event.category.name = "Power Supply Status"
-            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
-            root.out.event.message = "Power Supply Failure, Bad DC Output  ( " + this.trap.VarBinds.index(4).Value + " )"
+            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string() + "." + this.trap.VarBinds.index(3).Value.string()
+            root.out.event.message = "Power Supply Failure, Bad DC Output  ( " + this.trap.VarBinds.index(4).Value.string() + " )"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: jnx_fan_failure_v1
@@ -106,8 +106,8 @@
             root = this
 
             root.out.event.category.name = "Fan Status"
-            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
-            root.out.event.message = "Fan Failure, Not Spinning  ( " + this.trap.VarBinds.index(4).Value + " )"
+            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string() + "." + this.trap.VarBinds.index(3).Value.string()
+            root.out.event.message = "Fan Failure, Not Spinning  ( " + this.trap.VarBinds.index(4).Value.string() + " )"
     - check: this.trap.SpecificTrap == 5
       processors:
         - label: jnx_over_temperature_v1
@@ -115,8 +115,8 @@
             #!blobl
             root = this
 
-            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value
-            root.out.event.message = "Temperature Too High  ( " + this.trap.VarBinds.index(4).Value + " )"
+            root.out.object.name = "jnxContentsEntry." + this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string() + "." + this.trap.VarBinds.index(3).Value.string()
+            root.out.event.message = "Temperature Too High  ( " + this.trap.VarBinds.index(4).Value.string() + " )"
             root.out.event.category.name = "Temperature Status"
     - check: this.trap.SpecificTrap == 6
       processors:
@@ -125,9 +125,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "MPLS LSP Up  ( " + this.trap.VarBinds.index(0).Value.string() + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value.string() + " ) )"
             root.out.event.category.name = "MPLS LSP Status"
-            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "MPLS LSP Up  ( " + this.trap.VarBinds.index(0).Value + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value + " ) )"
+            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value.string()
     - check: this.trap.SpecificTrap == 7
       processors:
         - label: mpls_lsp_down_v1
@@ -136,8 +136,8 @@
             root = this
 
             root.out.event.category.name = "MPLS LSP Status"
-            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "MPLS LSP Down  ( " + this.trap.VarBinds.index(0).Value + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value + " ) )"
+            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "MPLS LSP Down  ( " + this.trap.VarBinds.index(0).Value.string() + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value.string() + " ) )"
     - check: this.trap.SpecificTrap == 8
       processors:
         - label: mpls_lsp_change_v1
@@ -146,8 +146,8 @@
             root = this
 
             root.out.event.category.name = "MPLS LSP Path Change"
-            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "MPLS LSP Switched to New Active Path  ( " + this.trap.VarBinds.index(0).Value + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value + " ) )"
+            root.out.object.name = "mplsLspEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "MPLS LSP Switched to New Active Path  ( " + this.trap.VarBinds.index(0).Value.string() + " ( Active Path Name: " + this.trap.VarBinds.index(1).Value.string() + " ) )"
     - check: this.trap.SpecificTrap == 9
       processors:
         - label: ospf_virt_if_state_change_v1
@@ -156,25 +156,25 @@
             root = this
 
             root.out.event.category.name = "OSPF Virt IF Status"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
         - label: ospf_virt_if_state_change_v1_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(3).Value == 1
+            - check: this.trap.VarBinds.index(3).Value.string() == 1
               processors:
                 - label: ospf_virt_if_state_change_v1_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Interface Down  ( " + this.trap.VarBinds.index(1).Value + " to " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 4
+                    root.out.event.message = "OSPF Virtual Interface Down  ( " + this.trap.VarBinds.index(1).Value.string() + " to " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 4
               processors:
                 - label: ospf_virt_if_state_change_v1_nested_switch_4
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Interface Point-to-Point  ( " + this.trap.VarBinds.index(1).Value + " to " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = "OSPF Virtual Interface Point-to-Point  ( " + this.trap.VarBinds.index(1).Value.string() + " to " + this.trap.VarBinds.index(2).Value.string() + " )"
             - processors:
                 - label: ospf_virt_if_state_change_v1_nested_switch_default
                   mapping: |+
@@ -193,11 +193,11 @@
             #!blobl
             root = this
 
+            root.out.object.name = "ospfNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.category.name = "OSPF Nbr Status"
-            root.out.object.name = "ospfNbrEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
         - label: ospf_nbr_state_change_v1_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(4).Value == 1
+            - check: this.trap.VarBinds.index(4).Value.string() == 1
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_1
                   mapping: |
@@ -205,7 +205,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Down  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 2
+            - check: this.trap.VarBinds.index(4).Value.string() == 2
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_2
                   mapping: |
@@ -213,7 +213,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Attempt  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 3
+            - check: this.trap.VarBinds.index(4).Value.string() == 3
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_3
                   mapping: |
@@ -221,7 +221,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Init  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 4
+            - check: this.trap.VarBinds.index(4).Value.string() == 4
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_4
                   mapping: |
@@ -229,7 +229,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor 2-Way  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 5
+            - check: this.trap.VarBinds.index(4).Value.string() == 5
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_5
                   mapping: |
@@ -237,7 +237,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Exchange Start  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 6
+            - check: this.trap.VarBinds.index(4).Value.string() == 6
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_6
                   mapping: |
@@ -245,7 +245,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Exchange  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 7
+            - check: this.trap.VarBinds.index(4).Value.string() == 7
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_7
                   mapping: |
@@ -253,7 +253,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Neighbor Loading  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(4).Value == 8
+            - check: this.trap.VarBinds.index(4).Value.string() == 8
               processors:
                 - label: ospf_nbr_state_change_v1_nested_switch_8
                   mapping: |
@@ -281,73 +281,73 @@
             root = this
 
             root.out.event.category.name = "OSPF Virt Nbr Status"
-            root.out.object.name = "ospfVirtNbrEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfVirtNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
         - label: ospf_virt_nbr_state_change_v1_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(3).Value == 1
+            - check: this.trap.VarBinds.index(3).Value.string() == 1
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Down  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 2
+                    root.out.event.message = "OSPF Virtual Neighbor Down  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 2
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Attempt  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 3
+                    root.out.event.message = "OSPF Virtual Neighbor Attempt  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 3
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Init  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 4
+                    root.out.event.message = "OSPF Virtual Neighbor Init  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 4
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_4
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor 2-Way  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 5
+                    root.out.event.message = "OSPF Virtual Neighbor 2-Way  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 5
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_5
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Exchange Start  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 6
+                    root.out.event.message = "OSPF Virtual Neighbor Exchange Start  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 6
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_6
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Exchange  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 7
+                    root.out.event.message = "OSPF Virtual Neighbor Exchange  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 7
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_7
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Loading  ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(3).Value == 8
+                    root.out.event.message = "OSPF Virtual Neighbor Loading  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(3).Value.string() == 8
               processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_8
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor Fully Adjacent  ( " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = "OSPF Virtual Neighbor Fully Adjacent  ( " + this.trap.VarBinds.index(2).Value.string() + " )"
             - processors:
                 - label: ospf_virt_nbr_state_change_v1_nested_switch_default
                   mapping: |
@@ -367,9 +367,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.category.name = "OSPF IF Config"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value + " Packet, " + this.trap.VarBinds.index(4).Value + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.string() + " Packet, " + this.trap.VarBinds.index(4).Value.string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 13
       processors:
         - label: ospf_virt_if_config_error_v1
@@ -378,8 +378,8 @@
             root = this
 
             root.out.event.category.name = "OSPF Virt IF Config"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value + " Packet, " + this.trap.VarBinds.index(3).Value + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.string() + " Packet, " + this.trap.VarBinds.index(3).Value.string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 14
       processors:
         - label: ospf_if_auth_failure_v1
@@ -387,9 +387,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value + " Packet, " + this.trap.VarBinds.index(4).Value + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
             root.out.event.category.name = "OSPF IF Authorization"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.string() + " Packet, " + this.trap.VarBinds.index(4).Value.string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 15
       processors:
         - label: ospf_virt_if_auth_failure_v1
@@ -397,9 +397,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value + " Packet, " + this.trap.VarBinds.index(3).Value + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
             root.out.event.category.name = "OSPF Virt IF Authorization"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.string() + " Packet, " + this.trap.VarBinds.index(3).Value.string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 16
       processors:
         - label: ospf_if_rx_bad_packet_v1
@@ -407,9 +407,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(4).Value.string() + " Packet Cannot Be Parsed  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.category.name = "OSPF IF Rx Packet"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(4).Value + " Packet Cannot Be Parsed  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
     - check: this.trap.SpecificTrap == 17
       processors:
         - label: ospf_virt_if_rx_bad_packet_v1
@@ -418,8 +418,8 @@
             root = this
 
             root.out.event.category.name = "OSPF Virt IF Rx Packet"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(3).Value + " Packet Cannot Be Parsed  ( Area: " + this.trap.VarBinds.index(1).Value + ", Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(3).Value.string() + " Packet Cannot Be Parsed  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 18
       processors:
         - label: ospf_tx_retransmit_v1
@@ -427,9 +427,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.string() + " Packet Retransmitted To " + this.trap.VarBinds.index(3).Value.string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.category.name = "OSPF IF Retransmit"
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value + " Packet Retransmitted To " + this.trap.VarBinds.index(3).Value + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
     - check: this.trap.SpecificTrap == 19
       processors:
         - label: ospf_virt_if_tx_retransmit_v1
@@ -438,8 +438,8 @@
             root = this
 
             root.out.event.category.name = "OSPF Virt IF Retransmit"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(3).Value + " Packet Retransmitted  ( Area: " + this.trap.VarBinds.index(1).Value + ", Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(3).Value.string() + " Packet Retransmitted  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 20
       processors:
         - label: ospf_originate_lsa_v1
@@ -447,9 +447,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.message = "New LSA Originated  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
             root.out.event.category.name = "OSPF LSA Status"
-            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
-            root.out.event.message = "New LSA Originated  ( Area: " + this.trap.VarBinds.index(1).Value + ", Type: " + this.trap.VarBinds.index(2).Value + ", LSID: " + this.trap.VarBinds.index(3).Value + ", Router: " + this.trap.VarBinds.index(4).Value + " )"
     - check: this.trap.SpecificTrap == 21
       processors:
         - label: ospf_max_age_lsa_v1
@@ -458,8 +458,8 @@
             root = this
 
             root.out.event.category.name = "OSPF LSA Age"
-            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
-            root.out.event.message = "LSA Aged to MaxAge  ( Area: " + this.trap.VarBinds.index(1).Value + ", Type: " + this.trap.VarBinds.index(2).Value + ", LSID: " + this.trap.VarBinds.index(3).Value + ", Router: " + this.trap.VarBinds.index(4).Value + " )"
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.message = "LSA Aged to MaxAge  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
     - check: this.trap.SpecificTrap == 22
       processors:
         - label: ospf_lsdb_overflow_v1
@@ -467,9 +467,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "Number of LSAs Exceeds ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value + " )"
             root.out.event.category.name = "OSPF LSDB Status"
+            root.out.object.name = ""
+            root.out.event.message = "Number of LSAs Exceeds ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 23
       processors:
         - label: ospf_lsdb_approaching_overflow_v1
@@ -477,9 +477,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "Number of LSAs Exceeds 90% of ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value + " )"
             root.out.event.category.name = "OSPF LSDB Status"
+            root.out.object.name = ""
+            root.out.event.message = "Number of LSAs Exceeds 90% of ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 24
       processors:
         - label: ospf_if_state_change_v1
@@ -488,10 +488,10 @@
             root = this
 
             root.out.event.category.name = "OSPF IF Status"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
         - label: ospf_if_state_change_v1_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(3).Value == 1
+            - check: this.trap.VarBinds.index(3).Value.string() == 1
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_1
                   mapping: |
@@ -499,7 +499,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Down  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 2
+            - check: this.trap.VarBinds.index(3).Value.string() == 2
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_2
                   mapping: |
@@ -507,7 +507,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Loopback  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 3
+            - check: this.trap.VarBinds.index(3).Value.string() == 3
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_3
                   mapping: |
@@ -515,7 +515,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Waiting  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 4
+            - check: this.trap.VarBinds.index(3).Value.string() == 4
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_4
                   mapping: |
@@ -523,7 +523,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Point-To-Point  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 5
+            - check: this.trap.VarBinds.index(3).Value.string() == 5
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_5
                   mapping: |
@@ -531,7 +531,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Designated Router  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 6
+            - check: this.trap.VarBinds.index(3).Value.string() == 6
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_6
                   mapping: |
@@ -539,7 +539,7 @@
                     root = this
 
                     root.out.event.message = "OSPF Interface Backup Designated Router  ( $AmsPriObjText )"
-            - check: this.trap.VarBinds.index(3).Value == 7
+            - check: this.trap.VarBinds.index(3).Value.string() == 7
               processors:
                 - label: ospf_if_state_change_v1_nested_switch_7
                   mapping: |

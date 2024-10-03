@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "IPv6 Interface Status"
-            root.out.object.name = "ipv6IfEntry.55"
             root.out.event.class.name = "SNMPTRAP-IETF-IPV6-MIB-ipv6IfStateChange"
             root.out.event.id = "SNMPTRAP-IETF-IPV6-MIB-ipv6IfStateChange"
+            root.out.event.category.name = "IPv6 Interface Status"
+            root.out.object.name = "ipv6IfEntry.55"
 
             root.out.IETF.ipv6IfDescr = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.IETF.ipv6IfOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.55.1.5.1.10")
@@ -26,9 +26,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "IPv6 Interface Up"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "IPv6 Interface Up"
             - check: this.trap.VarBinds.index(1).Value == 2
               processors:
                 - label: ipv6if_state_change_nested_switch_2
@@ -36,9 +36,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "IPv6 Interface Down"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "IPv6 Interface Down"
             - check: this.trap.VarBinds.index(1).Value == 3
               processors:
                 - label: ipv6if_state_change_nested_switch_3
@@ -46,9 +46,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "IPv6 Interface Identifier Missing"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "IPv6 Interface Identifier Missing"
             - check: this.trap.VarBinds.index(1).Value == 4
               processors:
                 - label: ipv6if_state_change_nested_switch_4
@@ -66,9 +66,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "IPv6 Interface Not Present"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "IPv6 Interface Not Present"
             - processors:
                 - label: ipv6if_state_change_nested_switch_default
                   mapping: |
@@ -83,7 +83,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - processors:
         - label: default
           mapping: |

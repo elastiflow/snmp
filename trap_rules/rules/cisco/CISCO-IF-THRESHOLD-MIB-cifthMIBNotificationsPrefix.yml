@@ -28,9 +28,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = root.out.event.message + ", Interface Failed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = root.out.event.message + ", Interface Failed"
             - check: this.trap.VarBinds.index(2).Value == 2
               processors:
                 - label: cifth_if_threshold_fired_nested_switch_2
@@ -58,9 +58,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = root.out.event.message + ", Interface Warning"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = root.out.event.message + ", Interface Warning"
             - processors:
                 - label: cifth_if_threshold_fired_nested_switch_default
                   mapping: |
@@ -83,13 +83,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "cifthIfThresholdFiredEntry.9.218"
+            root.out.event.message = "Interface Threshold Cleared  ( cifthIfThresholdFiredEntry.9.218 )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IF-THRESHOLD-MIB-cifthIfThresholdCleared"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-IF-THRESHOLD-MIB-cifthIfThresholdCleared"
             root.out.event.category.name = "Interface Threshold Status"
-            root.out.object.name = "cifthIfThresholdFiredEntry.9.218"
-            root.out.event.message = "Interface Threshold Cleared  ( cifthIfThresholdFiredEntry.9.218 )"
 
             root.out.cisco.cifthIfLastThresholdFired = this.trap.VarBinds.index(0).Value
             root.out.cisco.cifthIfThresholdFiredLstChange = this.trap.VarBinds.index(1).Value
@@ -101,10 +101,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "cifthTemplateIfAssignEntry.9.218"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IF-THRESHOLD-MIB-cifthTemplateIfStatusChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-IF-THRESHOLD-MIB-cifthTemplateIfStatusChange"
             root.out.event.category.name = "Interface Threshold Template Status"
-            root.out.object.name = "cifthTemplateIfAssignEntry.9.218"
 
             root.out.cisco.cifthTemplateIfAssignOperStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.218.1.2.2.1.2")
         - label: cifth_template_if_status_change_nested_switch
@@ -126,18 +126,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Template Thresholds Down on Interface"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "Template Thresholds Down on Interface"
             - processors:
                 - label: cifth_template_if_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Template Thresholds Status Unknown on Interface"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Template Thresholds Status Unknown on Interface"
         - label: cifth_template_if_status_change_after_switch
           mapping: |
             #!blobl

@@ -30,9 +30,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "SNMP Agent Down"
             root.out.event.category.name = "SNMP Agent Status"
             root.out.object.name = ""
+            root.out.event.message = "SNMP Agent Down"
     - check: this.trap.SpecificTrap == 12
       processors:
         - label: fn_trap_agent_up
@@ -40,9 +40,9 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "SNMP Agent Status"
             root.out.object.name = ""
             root.out.event.message = "SNMP Agent Up"
-            root.out.event.category.name = "SNMP Agent Status"
     - check: this.trap.SpecificTrap == 100
       processors:
         - label: fn_trap_inf_chg
@@ -52,7 +52,7 @@
 
             root.out.event.category.name = "Interface IP Change"
             root.out.object.name = ""
-            root.out.event.message = "Interface IP Address Changed to " + this.trap.VarBinds.index(2).Value + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = "Interface IP Address Changed to " + this.trap.VarBinds.index(2).Value.string() + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.fortinet.fnTrapSysSn = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.fortinet.fnTrapIfName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -65,9 +65,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "System $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+            root.out.event.category.name = "System $AlertGroup
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -80,7 +80,7 @@
 
             root.out.event.category.name = "Firewall $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -91,9 +91,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "User $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -106,7 +106,7 @@
 
             root.out.event.category.name = "VPN $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -117,9 +117,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "NIDS $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -132,7 +132,7 @@
 
             root.out.event.category.name = "Anti-Virus $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -143,9 +143,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
             root.out.event.category.name = "Web Filter $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -156,9 +156,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
             root.out.event.category.name = "E-mail Filter $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -171,7 +171,7 @@
 
             root.out.event.category.name = "Log $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -184,7 +184,7 @@
 
             root.out.event.category.name = "Misc. $AlertGroup
             root.out.object.name = ""
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5") + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
             root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()

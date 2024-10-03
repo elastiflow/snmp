@@ -27,9 +27,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Response Time Connection Failed"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Response Time Connection Failed"
             - check: this.trap.VarBinds.index(2).Value == 2
               processors:
                 - label: rtt_mon_connection_change_notification_nested_switch_2
@@ -46,15 +46,15 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Response Time Connection Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Response Time Connection Status Unknown"
         - label: rtt_mon_connection_change_notification_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: rtt_mon_timeout_notification
@@ -62,10 +62,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "RTT Operation Status"
-            root.out.object.name = "rttMonCtrlOperEntry."
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RTTMON-MIB-rttMonTimeoutNotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-RTTMON-MIB-rttMonTimeoutNotification"
+            root.out.event.category.name = "RTT Operation Status"
+            root.out.object.name = "rttMonCtrlOperEntry."
 
             root.out.cisco.rttMonCtrlAdminTag = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.cisco.rttMonHistoryCollectionAddress = this.trap.VarBinds.index(1).Value
@@ -89,9 +89,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Response Time Operation Successful"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Response Time Operation Successful"
             - processors:
                 - label: rtt_mon_timeout_notification_nested_switch_default
                   mapping: |
@@ -106,7 +106,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: rtt_mon_threshold_notification
@@ -114,10 +114,10 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "RTT Threshold Status"
             root.out.object.name = "rttMonCtrlOperEntry."
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RTTMON-MIB-rttMonThresholdNotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-RTTMON-MIB-rttMonThresholdNotification"
-            root.out.event.category.name = "RTT Threshold Status"
 
             root.out.cisco.rttMonCtrlAdminTag = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
             root.out.cisco.rttMonHistoryCollectionAddress = this.trap.VarBinds.index(1).Value
@@ -141,9 +141,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Response Time Threshold Normal"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "Response Time Threshold Normal"
             - processors:
                 - label: rtt_mon_threshold_notification_nested_switch_default
                   mapping: |
@@ -158,7 +158,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: rtt_mon_verify_error_notification
@@ -210,7 +210,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )" + "  ( Target: " + this.trap.VarBinds.index(1).Value.string() + " )"
     - check: this.trap.SpecificTrap == 5
       processors:
         - label: rtt_mon_notification

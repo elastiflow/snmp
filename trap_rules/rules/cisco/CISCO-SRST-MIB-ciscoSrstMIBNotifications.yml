@@ -48,7 +48,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.string()
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: csrst_fail_notif
@@ -56,10 +56,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "SRST Router Status"
-            root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstFailNotif"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstFailNotif"
+            root.out.event.category.name = "SRST Router Status"
+            root.out.object.name = ""
 
             root.out.cisco.csrstSysNotifSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.441.2.2.2.1")
             root.out.cisco.csrstSysNotifReason = this.trap.VarBinds.index(1).Value
@@ -101,7 +101,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.string()
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: csrst_sip_phone_un_reg_threshold_exceed
@@ -109,11 +109,11 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "SIP Phone Registration Threshold"
-            root.out.object.name = ""
-            root.out.event.message = "Unregistered SIP Phone Fell Below " + this.trap.VarBinds.index(0).Value + ", " + this.trap.VarBinds.index(1).Value + " SIP Phone Currently Registered"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstSipPhoneUnRegThresholdExceed"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstSipPhoneUnRegThresholdExceed"
+            root.out.event.category.name = "SIP Phone Registration Threshold"
+            root.out.object.name = ""
+            root.out.event.message = "Unregistered SIP Phone Fell Below " + this.trap.VarBinds.index(0).Value.string() + ", " + this.trap.VarBinds.index(1).Value.string() + " SIP Phone Currently Registered"
 
             root.out.cisco.csrstSipPhoneUnRegThreshold = this.trap.VarBinds.index(0).Value
             root.out.cisco.csrstSipPhoneCurrentRegistered = this.trap.VarBinds.index(1).Value
@@ -124,11 +124,11 @@
             #!blobl
             root = this
 
-            root.out.object.name = "csrstSipEndpointEntry.441"
-            root.out.event.message = "SIP Phone Registration Failed  ( SIP Phone: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = "SIP Phone Registration Failed  ( SIP Phone: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstSipPhoneRegFailed"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstSipPhoneRegFailed"
             root.out.event.category.name = "SIP Phone Registration Status"
+            root.out.object.name = "csrstSipEndpointEntry.441"
 
             root.out.cisco.csrstSipEndpointIpAddress = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 5
@@ -142,7 +142,7 @@
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SRST-MIB-csrstConferenceFailed"
             root.out.event.category.name = "Three-Party Conference Threshold"
             root.out.object.name = ""
-            root.out.event.message = "Maximum Supported Number of Simultaneous Three-Party Conferences Exceeded " + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "Maximum Supported Number of Simultaneous Three-Party Conferences Exceeded " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.cisco.csrstMaxConferences = this.trap.VarBinds.index(0).Value
     - processors:

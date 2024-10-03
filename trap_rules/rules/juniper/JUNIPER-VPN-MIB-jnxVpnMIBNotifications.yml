@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.3.1.1") + " VPN Interface Up" + "  ( VPN: " + this.trap.VarBinds.index(1).Value + ", jnxVpnIfIndex: " + this.trap.VarBinds.index(2).Value + " )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnIfUp"
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnIfUp"
             root.out.event.category.name = "VPN Interface Status"
             root.out.object.name = "jnxVpnIfEntry."
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.3.1.1").string() + " VPN Interface Up" + "  ( VPN: " + this.trap.VarBinds.index(1).Value.string() + ", jnxVpnIfIndex: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.juniper.jnxVpnIfVpnType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.3.1.1")
             root.out.juniper.jnxVpnIfVpnName = this.trap.VarBinds.index(1).Value
@@ -32,7 +32,7 @@
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnIfDown"
             root.out.event.category.name = "VPN Interface Status"
             root.out.object.name = "jnxVpnIfEntry."
-            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.3.1.1") + " VPN Interface Down" + "  ( VPN: " + this.trap.VarBinds.index(1).Value + ", jnxVpnIfIndex: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.3.1.1").string() + " VPN Interface Down" + "  ( VPN: " + this.trap.VarBinds.index(1).Value.string() + ", jnxVpnIfIndex: " + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -46,13 +46,13 @@
             #!blobl
             root = this
 
+            root.out.event.message = $jnxVpnIfVpnType VPN Pseudo-Wire Up  ( VPN: " + this.trap.VarBinds.index(1).Value.string() + ", jnxVpnPwIndex: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnPwUp"
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnPwUp"
             root.out.event.category.name = "VPN Pseudo-Wire Status"
             root.out.object.name = "jnxVpnPwEntry."
-            root.out.event.message = $jnxVpnIfVpnType VPN Pseudo-Wire Up  ( VPN: " + this.trap.VarBinds.index(1).Value + ", jnxVpnPwIndex: " + this.trap.VarBinds.index(2).Value + " )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
 
             root.out.juniper.jnxVpnPwVpnType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.26.1.4.1.1")
             root.out.juniper.jnxVpnPwVpnName = this.trap.VarBinds.index(1).Value
@@ -68,7 +68,7 @@
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-VPN-MIB-jnxVpnPwDown"
             root.out.event.category.name = "VPN Pseudo-Wire Status"
             root.out.object.name = "jnxVpnPwEntry."
-            root.out.event.message = $jnxVpnIfVpnType VPN Pseudo-Wire Down  ( VPN: " + this.trap.VarBinds.index(1).Value + ", jnxVpnPwIndex: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = $jnxVpnIfVpnType VPN Pseudo-Wire Down  ( VPN: " + this.trap.VarBinds.index(1).Value.string() + ", jnxVpnPwIndex: " + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 

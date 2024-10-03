@@ -35,9 +35,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel Route Peer Closed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
+                    root.out.event.message = "Blocked Serial Tunnel Route Peer Closed"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: bstun_peer_state_change_notification_nested_switch_3
@@ -84,9 +84,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel Route Peer Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Blocked Serial Tunnel Route Peer Status Unknown"
         - label: bstun_peer_state_change_notification_after_switch
           mapping: |
             #!blobl
@@ -118,7 +118,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Dead"
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Dead"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
             - check: this.trap.VarBinds.index(0).Value == 2
@@ -128,7 +128,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Closed"
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Closed"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
             - check: this.trap.VarBinds.index(0).Value == 3
@@ -140,7 +140,7 @@
 
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Opening"
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Opening"
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: bstun_peer_state_change_notification2_nested_switch_4
@@ -148,7 +148,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Open, Waiting"
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Open, Waiting"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
             - check: this.trap.VarBinds.index(0).Value == 5
@@ -158,9 +158,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Connected"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Connected"
             - check: this.trap.VarBinds.index(0).Value == 6
               processors:
                 - label: bstun_peer_state_change_notification2_nested_switch_6
@@ -168,16 +168,16 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Direct"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Direct"
             - processors:
                 - label: bstun_peer_state_change_notification2_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3") + " Route Peer Status Unknown"
+                    root.out.event.message = "Blocked Serial Tunnel " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.35.1.4.1.1.3").string() + " Route Peer Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
         - label: bstun_peer_state_change_notification2_after_switch
@@ -221,37 +221,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
                     root.out.event.message = "BSTUN BIP Bi-Sync Device Operation Check Error"
-            - check: this.trap.VarBinds.index(3).Value == 1024
-              processors:
-                - label: bstun_custatus_change_notification_nested_switch_1024
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Unit Specify"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(3).Value == 128
-              processors:
-                - label: bstun_custatus_change_notification_nested_switch_128
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Active"
-                    root.out.event.severity.code = 1
-                    root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(3).Value == 16
-              processors:
-                - label: bstun_custatus_change_notification_nested_switch_16
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Intervention Required"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - check: this.trap.VarBinds.index(3).Value == 2
@@ -261,27 +231,37 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(3).Value == 2048
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
+            - check: this.trap.VarBinds.index(3).Value == 4
               processors:
-                - label: bstun_custatus_change_notification_nested_switch_2048
+                - label: bstun_custatus_change_notification_nested_switch_4
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Busy"
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Data Check Error"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(3).Value == 256
+            - check: this.trap.VarBinds.index(3).Value == 8
               processors:
-                - label: bstun_custatus_change_notification_nested_switch_256
+                - label: bstun_custatus_change_notification_nested_switch_8
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Equipment Check Error"
+            - check: this.trap.VarBinds.index(3).Value == 16
+              processors:
+                - label: bstun_custatus_change_notification_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Intervention Required"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - check: this.trap.VarBinds.index(3).Value == 32
@@ -294,14 +274,34 @@
                     root.out.event.message = "BSTUN BIP Bi-Sync Device Command Rejected"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(3).Value == 4
+            - check: this.trap.VarBinds.index(3).Value == 64
               processors:
-                - label: bstun_custatus_change_notification_nested_switch_4
+                - label: bstun_custatus_change_notification_nested_switch_64
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Data Check Error"
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Inactive"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(3).Value == 128
+              processors:
+                - label: bstun_custatus_change_notification_nested_switch_128
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Active"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(3).Value == 256
+              processors:
+                - label: bstun_custatus_change_notification_nested_switch_256
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - check: this.trap.VarBinds.index(3).Value == 512
@@ -314,24 +314,24 @@
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
                     root.out.event.message = "BSTUN BIP Bi-Sync Device Not Busy"
-            - check: this.trap.VarBinds.index(3).Value == 64
+            - check: this.trap.VarBinds.index(3).Value == 1024
               processors:
-                - label: bstun_custatus_change_notification_nested_switch_64
+                - label: bstun_custatus_change_notification_nested_switch_1024
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Unit Specify"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Inactive"
-            - check: this.trap.VarBinds.index(3).Value == 8
+            - check: this.trap.VarBinds.index(3).Value == 2048
               processors:
-                - label: bstun_custatus_change_notification_nested_switch_8
+                - label: bstun_custatus_change_notification_nested_switch_2048
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Equipment Check Error"
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Busy"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
             - processors:
@@ -340,15 +340,15 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BSTUN BIP Bi-Sync Device Status Unknown"
         - label: bstun_custatus_change_notification_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Peer: " + this.trap.VarBinds.index(0).Value + ", Foreign Port: " + this.trap.VarBinds.index(1).Value + ", Local Port: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Peer: " + this.trap.VarBinds.index(0).Value.string() + ", Foreign Port: " + this.trap.VarBinds.index(1).Value.string() + ", Local Port: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - processors:
         - label: default
           mapping: |

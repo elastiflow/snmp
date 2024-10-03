@@ -13,7 +13,7 @@
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfStateChange"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfStateChange"
             root.out.event.category.name = "OSPF Virtual Interface Status"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
@@ -38,9 +38,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "OSPF Virtual Interface Point-to-Point"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "OSPF Virtual Interface Point-to-Point"
             - processors:
                 - label: ospf_virt_if_state_change_nested_switch_default
                   mapping: |
@@ -55,7 +55,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: ospf_nbr_state_change
@@ -66,7 +66,7 @@
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfNbrStateChange"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfNbrStateChange"
             root.out.event.category.name = "OSPF Neighbor Status"
-            root.out.object.name = "ospfNbrEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfNbrIpAddr = this.trap.VarBinds.index(1).Value
@@ -132,9 +132,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "OSPF Neighbor Exchange"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "OSPF Neighbor Exchange"
             - check: this.trap.VarBinds.index(4).Value == 7
               processors:
                 - label: ospf_nbr_state_change_nested_switch_7
@@ -180,7 +180,7 @@
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtNbrStateChange"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtNbrStateChange"
             root.out.event.category.name = "OSPF Virtual Neighbor Status"
-            root.out.object.name = "ospfVirtNbrEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfVirtNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtNbrArea = this.trap.VarBinds.index(1).Value
@@ -225,9 +225,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Virtual Neighbor 2-Way"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "OSPF Virtual Neighbor 2-Way"
             - check: this.trap.VarBinds.index(3).Value == 5
               processors:
                 - label: ospf_virt_nbr_state_change_nested_switch_5
@@ -235,9 +235,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "OSPF Virtual Neighbor Exchange Start"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "OSPF Virtual Neighbor Exchange Start"
             - check: this.trap.VarBinds.index(3).Value == 6
               processors:
                 - label: ospf_virt_nbr_state_change_nested_switch_6
@@ -282,7 +282,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: ospf_if_config_error
@@ -290,13 +290,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "OSPF Interface Configuration"
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2") + "  ( Neighbor: " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfConfigError"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfConfigError"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "OSPF Interface Configuration"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Neighbor: " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
@@ -311,13 +311,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "OSPF Virtual Interface Configuration"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfConfigError"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfConfigError"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2") + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.category.name = "OSPF Virtual Interface Configuration"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
@@ -331,13 +331,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfAuthFailure"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfAuthFailure"
             root.out.event.category.name = "OSPF Interface Authorization"
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2") + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
@@ -352,13 +352,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "OSPF Virtual Interface Authorization"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfAuthFailure"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfAuthFailure"
-            root.out.event.category.name = "OSPF Virtual Interface Authorization"
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2") + "  ( Area: " + this.trap.VarBinds.index(1).Value + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
@@ -372,13 +372,13 @@
             #!blobl
             root = this
 
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfRxBadPacket"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfRxBadPacket"
             root.out.event.category.name = "OSPF Interface Rx Packet"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet Cannot Be Parsed  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Cannot Be Parsed  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
@@ -392,13 +392,13 @@
             #!blobl
             root = this
 
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.category.name = "OSPF Virtual Interface Rx Packet"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet Cannot Be Parsed  ( Area: " + this.trap.VarBinds.index(1).Value + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
-            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
-            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Cannot Be Parsed  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
@@ -411,13 +411,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
-            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Retransmitted to " + this.trap.VarBinds.index(3).Value.string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
             root.out.event.category.name = "OSPF Interface Retransmit"
-            root.out.event.message = "OSPF " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet Retransmitted to " + this.trap.VarBinds.index(3).Value + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
@@ -434,13 +434,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Retransmitted  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfTxRetransmit"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfTxRetransmit"
-            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
+            root.out.event.category.name = "OSPF Virtual Interface Retransmit"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "OSPF Virtual Interface Retransmit"
-            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3") + " Packet Retransmitted  ( Area: " + this.trap.VarBinds.index(1).Value + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
@@ -456,13 +456,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2") + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
+            root.out.event.message = "New LSA Originated  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.category.name = "OSPF LSA Status"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfOriginateLsa"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfOriginateLsa"
-            root.out.event.category.name = "OSPF LSA Status"
-            root.out.event.message = "New LSA Originated  ( Area: " + this.trap.VarBinds.index(1).Value + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2") + ", LSID: " + this.trap.VarBinds.index(3).Value + ", Router: " + this.trap.VarBinds.index(4).Value + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfLsdbAreaId = this.trap.VarBinds.index(1).Value
@@ -476,13 +476,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
-            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
-            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2") + "." + this.trap.VarBinds.index(3).Value + "." + this.trap.VarBinds.index(4).Value
-            root.out.event.message = "LSA Aged to MaxAge  ( Area: " + this.trap.VarBinds.index(1).Value + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2") + ", LSID: " + this.trap.VarBinds.index(3).Value + ", Router: " + this.trap.VarBinds.index(4).Value + " )"
             root.out.event.category.name = "OSPF LSA Age"
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
+            root.out.event.message = "LSA Aged to MaxAge  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfLsdbAreaId = this.trap.VarBinds.index(1).Value
@@ -500,7 +500,7 @@
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbOverflow"
             root.out.event.category.name = "OSPF LSDB Status"
             root.out.object.name = ""
-            root.out.event.message = "Number of LSAs Exceeds ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.event.message = "Number of LSAs Exceeds ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
             root.out.event.severity.code = 4
             root.out.event.severity.level = "Warning"
 
@@ -513,13 +513,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "OSPF LSDB Status"
+            root.out.object.name = ""
+            root.out.event.message = "Number of LSAs Exceeds 90% of ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbApproachingOverflow"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbApproachingOverflow"
-            root.out.event.category.name = "OSPF LSDB Status"
-            root.out.object.name = ""
-            root.out.event.message = "Number of LSAs Exceeds 90% of ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value + " )"
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfExtLsdbLimit = this.trap.VarBinds.index(1).Value
@@ -530,10 +530,10 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "OSPF Interface Status"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
             root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfStateChange"
             root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfStateChange"
-            root.out.event.category.name = "OSPF Interface Status"
-            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value + "." + this.trap.VarBinds.index(2).Value
 
             root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
             root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
@@ -568,9 +568,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "OSPF Interface Waiting"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "OSPF Interface Waiting"
             - check: this.trap.VarBinds.index(3).Value == 4
               processors:
                 - label: ospf_if_state_change_nested_switch_4
@@ -578,9 +578,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "OSPF Interface Point-To-Point"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "OSPF Interface Point-To-Point"
             - check: this.trap.VarBinds.index(3).Value == 5
               processors:
                 - label: ospf_if_state_change_nested_switch_5

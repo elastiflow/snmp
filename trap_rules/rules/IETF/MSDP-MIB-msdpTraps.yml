@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpEstablished"
             root.out.event.id = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpEstablished"
             root.out.event.category.name = "MSDP Peer Status"
             root.out.object.name = "msdpPeerEntry.6.1.3.92"
             root.out.event.message = "MSDP Peer Connection Established  ( Peer: 6.1.3.92 )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.IETF.msdpPeerFsmEstablishedTransitions = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 2
@@ -26,10 +26,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpBackwardTransition"
-            root.out.event.id = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpBackwardTransition"
             root.out.event.category.name = "MSDP Peer Status"
             root.out.object.name = "msdpPeerEntry.6.1.3.92"
+            root.out.event.class.name = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpBackwardTransition"
+            root.out.event.id = "SNMPTRAP-IETF-DRAFT-MSDP-MIB-msdpBackwardTransition"
 
             root.out.IETF.msdpPeerState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.3.92.1.1.5.1.3")
         - label: msdp_backward_transition_nested_switch
@@ -71,9 +71,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "MSDP Peer Connection Established"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "MSDP Peer Connection Established"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: msdp_backward_transition_nested_switch_5

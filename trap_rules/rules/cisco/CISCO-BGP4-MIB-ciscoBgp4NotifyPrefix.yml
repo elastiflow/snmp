@@ -21,37 +21,37 @@
             root.out.cisco.cbgpPeerPrevState = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.1.1.8")
         - label: cbgp_fsm_state_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(2).Value == 1
+            - check: this.trap.VarBinds.index(2).Value.string() == 1
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Idle"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-            - check: this.trap.VarBinds.index(2).Value == 2
+                    root.out.event.message = "BGP Peer Connection Idle"
+            - check: this.trap.VarBinds.index(2).Value.string() == 2
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Connected"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 3
+                    root.out.event.message = "BGP Peer Connection Connected"
+            - check: this.trap.VarBinds.index(2).Value.string() == 3
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Active"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 4
+                    root.out.event.message = "BGP Peer Connection Active"
+            - check: this.trap.VarBinds.index(2).Value.string() == 4
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_4
                   mapping: |
@@ -61,7 +61,7 @@
                     root.out.event.message = "BGP Peer Connection Open Sent"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 5
+            - check: this.trap.VarBinds.index(2).Value.string() == 5
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_5
                   mapping: |
@@ -71,16 +71,16 @@
                     root.out.event.message = "BGP Peer Connection Open Confirmed"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 6
+            - check: this.trap.VarBinds.index(2).Value.string() == 6
               processors:
                 - label: cbgp_fsm_state_change_nested_switch_6
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Established"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "BGP Peer Connection Established"
             - processors:
                 - label: cbgp_fsm_state_change_nested_switch_default
                   mapping: |
@@ -95,7 +95,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.15.3.1.2") + "  ( BGP Peer: $bgpPeerRemoteAddr )"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.15.3.1.2").string() + "  ( BGP Peer: $bgpPeerRemoteAddr )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cbgp_backward_transition
@@ -103,10 +103,10 @@
             #!blobl
             root = this
 
-            root.out.object.name = "bgpPeerEntry.1.9.9.187"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpBackwardTransition"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpBackwardTransition"
             root.out.event.category.name = "BGP Peer Status"
+            root.out.object.name = "bgpPeerEntry.1.9.9.187"
 
             root.out.cisco.bgpPeerLastError = this.trap.VarBinds.index(0).Value
             root.out.cisco.bgpPeerState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.15.3.1.2")
@@ -114,7 +114,7 @@
             root.out.cisco.cbgpPeerPrevState = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.1.1.8")
         - label: cbgp_backward_transition_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(2).Value == 1
+            - check: this.trap.VarBinds.index(2).Value.string() == 1
               processors:
                 - label: cbgp_backward_transition_nested_switch_1
                   mapping: |
@@ -124,27 +124,27 @@
                     root.out.event.message = "BGP Peer Connection Idle"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-            - check: this.trap.VarBinds.index(2).Value == 2
+            - check: this.trap.VarBinds.index(2).Value.string() == 2
               processors:
                 - label: cbgp_backward_transition_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Connected"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BGP Peer Connection Connected"
-            - check: this.trap.VarBinds.index(2).Value == 3
+            - check: this.trap.VarBinds.index(2).Value.string() == 3
               processors:
                 - label: cbgp_backward_transition_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Active"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BGP Peer Connection Active"
-            - check: this.trap.VarBinds.index(2).Value == 4
+            - check: this.trap.VarBinds.index(2).Value.string() == 4
               processors:
                 - label: cbgp_backward_transition_nested_switch_4
                   mapping: |
@@ -154,17 +154,17 @@
                     root.out.event.message = "BGP Peer Connection Open Sent"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 5
+            - check: this.trap.VarBinds.index(2).Value.string() == 5
               processors:
                 - label: cbgp_backward_transition_nested_switch_5
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Open Confirmed"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(2).Value == 6
+                    root.out.event.message = "BGP Peer Connection Open Confirmed"
+            - check: this.trap.VarBinds.index(2).Value.string() == 6
               processors:
                 - label: cbgp_backward_transition_nested_switch_6
                   mapping: |
@@ -180,15 +180,15 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Status Unknown"
         - label: cbgp_backward_transition_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.15.3.1.2") + "  ( BGP Peer: $bgpPeerRemoteAddr )"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.15.3.1.2").string() + "  ( BGP Peer: $bgpPeerRemoteAddr )"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: cbgp_prefix_threshold_exceeded
@@ -196,12 +196,12 @@
             #!blobl
             root = this
 
-            root.out.event.message = "BGP Peer lookup("9", InetAddressType) lookup("187", CbgpSafi) Address Family Prefix Count Exceeds " + this.trap.VarBinds.index(1).Value + "  ( BGP Peer: 1.4.1.9 )"
+            root.out.event.category.name = "BGP Peer Address Family Prefix Status"
+            root.out.event.message = "BGP Peer lookup("9", InetAddressType) lookup("187", CbgpSafi) Address Family Prefix Count Exceeds " + this.trap.VarBinds.index(1).Value.string() + "  ( BGP Peer: 1.4.1.9 )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpPrefixThresholdExceeded"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpPrefixThresholdExceeded"
-            root.out.event.category.name = "BGP Peer Address Family Prefix Status"
             root.out.object.name = "cbgpPeerAddrFamilyPrefixEntry.1.4.1.9.9.187"
 
             root.out.cisco.cbgpPeerPrefixAdminLimit = this.trap.VarBinds.index(0).Value
@@ -215,9 +215,9 @@
 
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpPrefixThresholdClear"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-BGP4-MIB-cbgpPrefixThresholdClear"
-            root.out.event.message = "BGP Peer lookup("9", InetAddressType) lookup("187", CbgpSafi) Address Family Prefix Count Below " + this.trap.VarBinds.index(1).Value + "  ( BGP Peer: 1.4.1.9 )"
-            root.out.event.category.name = "BGP Peer Address Family Prefix Status"
             root.out.object.name = "cbgpPeerAddrFamilyPrefixEntry.1.4.1.9.9.187"
+            root.out.event.category.name = "BGP Peer Address Family Prefix Status"
+            root.out.event.message = "BGP Peer lookup("9", InetAddressType) lookup("187", CbgpSafi) Address Family Prefix Count Below " + this.trap.VarBinds.index(1).Value.string() + "  ( BGP Peer: 1.4.1.9 )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
 

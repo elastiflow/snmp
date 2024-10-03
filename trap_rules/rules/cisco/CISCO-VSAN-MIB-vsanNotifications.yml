@@ -13,7 +13,7 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VSAN-MIB-vsanStatusChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VSAN-MIB-vsanStatusChange"
             root.out.event.category.name = "VSAN Status"
-            root.out.object.name = "vsanEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "vsanEntry." + this.trap.VarBinds.index(0).Value.string()
 
             root.out.cisco.notifyVsanIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.vsanAdminState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.282.1.1.3.1.4")
@@ -37,24 +37,24 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "VSAN Status Unknown, Administratively Suspended"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "VSAN Status Unknown, Administratively Suspended"
             - processors:
                 - label: vsan_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "VSAN Status Unknown, Administrative Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "VSAN Status Unknown, Administrative Status Unknown"
         - label: vsan_status_change_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( VSAN: VSAN000" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN00" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN0" + this.trap.VarBinds.index(0).Value + " )" + "  ( VSAN: VSAN" + this.trap.VarBinds.index(0).Value + " )" + "  ( " + root.out.object.name + " )"
+            root.out.event.message = root.out.event.message + "  ( VSAN: VSAN000" + this.trap.VarBinds.index(0).Value.string() + " )" + "  ( VSAN: VSAN00" + this.trap.VarBinds.index(0).Value.string() + " )" + "  ( VSAN: VSAN0" + this.trap.VarBinds.index(0).Value.string() + " )" + "  ( VSAN: VSAN" + this.trap.VarBinds.index(0).Value.string() + " )" + "  ( " + root.out.object.name + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: vsan_port_membership_change

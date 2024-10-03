@@ -11,8 +11,8 @@
             root = this
 
             root.out.event.category.name = "AP Roaming"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.9"), brzTrapSTAType) + "(" + this.trap.VarBinds.index(0).Value + ") has roamed into this Access Point"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = lookup(this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.9").string(), brzTrapSTAType) + "(" + this.trap.VarBinds.index(0).Value.string() + ") has roamed into this Access Point"
 
             root.out.lannair.brzTrapSTAMacAddr = this.trap.VarBinds.index(0).Value
             root.out.lannair.brzTrapSTAType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.9")
@@ -23,9 +23,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value + " was associated with this Access Point"
             root.out.event.category.name = "AP Associated"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value.string() + " was associated with this Access Point"
 
             root.out.lannair.brzTrapSTAMacAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 3
@@ -35,9 +35,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value + " disassociated itself with the Access Point"
             root.out.event.category.name = "AP Disassociated"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value.string() + " disassociated itself with the Access Point"
 
             root.out.lannair.brzTrapSTAMacAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 4
@@ -48,8 +48,8 @@
             root = this
 
             root.out.event.category.name = "AP Aging"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "The Access Point's association with Station " + this.trap.VarBinds.index(0).Value + " was aged out"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "The Access Point's association with Station " + this.trap.VarBinds.index(0).Value.string() + " was aged out"
 
             root.out.lannair.brzTrapSTAMacAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 5
@@ -60,8 +60,8 @@
             root = this
 
             root.out.event.category.name = "AP Roamed Out"
-            root.out.object.name = this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value + " has roamed out from this Access Point"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Station " + this.trap.VarBinds.index(0).Value.string() + " has roamed out from this Access Point"
 
             root.out.lannair.brzTrapSTAMacAddr = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 7
@@ -72,7 +72,7 @@
             root = this
 
             root.out.event.category.name = "W-LAN Status"
-            root.out.object.name = this.trap.VarBinds.index(1).Value
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
             root.out.event.message = "Wireless LAN quality has improved above the brzWlanTrapThreshold value"
 
             root.out.lannair.brzTrapToggle = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.8")
@@ -84,9 +84,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Good Wireless Connection quality"
             root.out.event.category.name = "W-LAN Status Of Station"
-            root.out.object.name = this.trap.VarBinds.index(1).Value
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "Good Wireless Connection quality"
 
             root.out.lannair.brzTrapToggle = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.8")
             root.out.lannair.brzTrapMacAddress = this.trap.VarBinds.index(1).Value
@@ -99,7 +99,7 @@
 
             root.out.event.category.name = "General Trap"
             root.out.object.name = ""
-            root.out.event.message = "General Trap: brzTrapIndex - " + this.trap.VarBinds.index(0).Value + ", brzTrapText - " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.event.message = "General Trap: brzTrapIndex - " + this.trap.VarBinds.index(0).Value.string() + ", brzTrapText - " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
 
             root.out.lannair.brzTrapIndex = this.trap.VarBinds.index(0).Value
             root.out.lannair.brzTrapText = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()

@@ -12,11 +12,11 @@
 
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapFile"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapFile"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.category.name = "File/Directory Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "File/Directory Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 2
@@ -26,11 +26,11 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Login/Logout Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapLogin"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapLogin"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
-            root.out.event.category.name = "Login/Logout Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -42,13 +42,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Bindery Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapBindery"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapBindery"
-            root.out.event.category.name = "Bindery Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 5
@@ -58,13 +58,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "Server Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapServer"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapServer"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.category.name = "Server Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 7
@@ -74,13 +74,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[[^]\\]+\\] (.*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[[^]\\]+\\] (.*)$").index(0).index(-1)
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapSystem"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapSystem"
-            root.out.event.category.name = "System Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.category.name = "System Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 9
@@ -90,11 +90,11 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "NDS Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNDS"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNDS"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.event.category.name = "NDS Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -106,13 +106,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNT"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNT"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.event.category.name = "NT Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "NT Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 11
@@ -124,11 +124,11 @@
 
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsSystem"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsSystem"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.event.category.name = "Windows System Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "Windows System Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 12
@@ -138,11 +138,11 @@
             #!blobl
             root = this
 
-            root.out.event.message = this.trap.VarBinds.index(0).Value
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsAdmin"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsAdmin"
-            root.out.event.category.name = "Windows System Administration Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.category.name = "Windows System Administration Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -154,13 +154,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
-            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
-            root.out.event.category.name = "Windows System Login Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
+            root.out.event.category.name = "Windows System Login Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 14
@@ -172,9 +172,9 @@
 
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsFile"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsFile"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
-            root.out.event.category.name = "Windows File Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.category.name = "Windows File Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -186,11 +186,11 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Windows System EFS Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
-            root.out.event.message = this.trap.VarBinds.index(0).Value
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsEFS"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsEFS"
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.category.name = "Windows System EFS Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -202,13 +202,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
-            root.out.event.message = this.trap.VarBinds.index(0).Value
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
             root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsExch"
             root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsExch"
-            root.out.event.category.name = "Windows System Exchange Status ( " + this.trap.VarBinds.index(0).Value.re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.event.category.name = "Windows System Exchange Status ( " + this.trap.VarBinds.index(0).Value.string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value
     - processors:

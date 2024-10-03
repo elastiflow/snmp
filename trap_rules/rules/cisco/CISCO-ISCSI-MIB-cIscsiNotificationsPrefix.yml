@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiTgtLoginFailure"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiTgtLoginFailure"
-            root.out.event.message = "iSCSI Login Attempt Failed by Target  ( Initiator: " + this.trap.VarBinds.index(4).Value + " )"
             root.out.event.category.name = "iSCSI Login Status"
-            root.out.object.name = "cIscsiTargetAttributesEntry.10.94"
+            root.out.event.message = "iSCSI Login Attempt Failed by Target  ( Initiator: " + this.trap.VarBinds.index(4).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiTgtLoginFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiTgtLoginFailure"
+            root.out.object.name = "cIscsiTargetAttributesEntry.10.94"
 
             root.out.cisco.cIscsiTgtLoginFailures = this.trap.VarBinds.index(0).Value
             root.out.cisco.cIscsiTgtLastFailureType = this.trap.VarBinds.index(1).Value
@@ -34,9 +34,9 @@
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiIntrLoginFailure"
             root.out.event.category.name = "iSCSI Login Status"
             root.out.object.name = "cIscsiInitiatorAttributesEntry.10.94"
-            root.out.event.message = "iSCSI Login Attempt Failed by Initiator  ( Target: " + this.trap.VarBinds.index(4).Value + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
+            root.out.event.message = "iSCSI Login Attempt Failed by Initiator  ( Target: " + this.trap.VarBinds.index(4).Value.string() + " )"
 
             root.out.cisco.cIscsiIntrLoginFailures = this.trap.VarBinds.index(0).Value
             root.out.cisco.cIscsiIntrLastFailureType = this.trap.VarBinds.index(1).Value
@@ -50,13 +50,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Active iSCSI Session Failed  ( Remote Node: " + this.trap.VarBinds.index(2).Value + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiInstSessionFailure"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISCSI-MIB-cIscsiInstSessionFailure"
             root.out.event.category.name = "iSCSI Session Status"
-            root.out.object.name = "cIscsiInstanceAttributesEntry.94"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.object.name = "cIscsiInstanceAttributesEntry.94"
+            root.out.event.message = "Active iSCSI Session Failed  ( Remote Node: " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.cisco.cIscsiInstSsnFailures = this.trap.VarBinds.index(0).Value
             root.out.cisco.cIscsiInstLastSsnFailureType = this.trap.VarBinds.index(1).Value

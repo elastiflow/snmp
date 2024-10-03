@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
-            root.out.object.name = "apsChanStatusEntry..24"
             root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventSwitchover"
             root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventSwitchover"
-            root.out.event.category.name = "APS Channel Status"
+            root.out.object.name = "apsChanStatusEntry..24"
             root.out.event.message = "APS Channel Switchover  ( Group: $String, Channel: 24 )"
+            root.out.event.category.name = "APS Channel Status"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.juniper.apsChanStatusSwitchovers = this.trap.VarBinds.index(0).Value
             root.out.juniper.apsChanStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.6.1.1")
@@ -27,13 +27,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "APS Group Status"
-            root.out.event.message = "APS Group Mode Mismatch  ( Group: $String )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventModeMismatch"
             root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventModeMismatch"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.category.name = "APS Group Status"
             root.out.object.name = "apsStatusEntry."
+            root.out.event.message = "APS Group Mode Mismatch  ( Group: $String )"
 
             root.out.juniper.apsStatusModeMismatches = this.trap.VarBinds.index(0).Value
             root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
@@ -44,11 +44,11 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "APS Group Status"
             root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventChannelMismatch"
             root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventChannelMismatch"
-            root.out.event.category.name = "APS Group Status"
+            root.out.object.name = "apsStatusEntry.$String_Raw
             root.out.event.message = "APS Group Channel Mismatch  ( Group: $String )"
-            root.out.object.name = "apsStatusEntry."
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 
@@ -65,9 +65,9 @@
             root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventPSBF"
             root.out.event.category.name = "APS Group Status"
             root.out.event.message = "APS Group Protection Switch Byte Failure  ( Group: $String )"
-            root.out.object.name = "apsStatusEntry."
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.object.name = "apsStatusEntry.$String_Raw
 
             root.out.juniper.apsStatusPSBFs = this.trap.VarBinds.index(0).Value
             root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
@@ -78,13 +78,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "apsStatusEntry."
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
             root.out.event.category.name = "APS Group Status"
             root.out.event.message = "APS Group Far-End Protection-Line Failure  ( Group: $String )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
-            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
-            root.out.object.name = "apsStatusEntry.$String_Raw
 
             root.out.juniper.apsStatusFEPLFs = this.trap.VarBinds.index(0).Value
             root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")

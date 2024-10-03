@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = $2
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-            root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapAttack"
             root.out.event.id = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapAttack"
             root.out.event.category.name = "Attack: Unknown ( $1 ): lookup($1, sonicwallFwTrapType)
+            root.out.object.name = ""
+            root.out.event.message = $2
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: warm_start
@@ -25,12 +25,12 @@
             root = this
 
             root.out.object.name = ""
-            root.out.event.message = $2
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapSysError"
             root.out.event.id = "SNMPTRAP-sonicwall-SONICWALL-FIREWALL-TRAP-MIB-swFwTrapSysError"
             root.out.event.category.name = "System Error: Unknown ( $1 ): lookup($1, sonicwallFwTrapType)
+            root.out.event.message = $2
     - check: this.trap.SpecificTrap == 5
       processors:
         - label: authentication_failure

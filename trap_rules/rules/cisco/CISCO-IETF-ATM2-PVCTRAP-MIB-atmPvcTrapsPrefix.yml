@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "ATM Interface PVCL Status"
-            root.out.object.name = "atmInterfaceConfEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = this.trap.VarBinds.index(2).Value + " PVCLs Failed on ATM Interface  ( " + "atmInterfaceConfEntry." + this.trap.VarBinds.index(0).Value + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IETF-ATM2-PVCTRAP-MIB-atmIntfPvcFailuresTrap"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-IETF-ATM2-PVCTRAP-MIB-atmIntfPvcFailuresTrap"
+            root.out.event.category.name = "ATM Interface PVCL Status"
+            root.out.object.name = "atmInterfaceConfEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(2).Value.string() + " PVCLs Failed on ATM Interface  ( " + "atmInterfaceConfEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.atmIntfPvcFailures = this.trap.VarBinds.index(1).Value

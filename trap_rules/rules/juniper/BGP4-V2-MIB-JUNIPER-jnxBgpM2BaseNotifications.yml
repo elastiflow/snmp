@@ -30,9 +30,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Idle"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "BGP Peer Connection Idle"
             - check: this.trap.VarBinds.index(5).Value == 2
               processors:
                 - label: jnx_bgp_m2established_nested_switch_2
@@ -50,9 +50,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Active"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BGP Peer Connection Active"
             - check: this.trap.VarBinds.index(5).Value == 4
               processors:
                 - label: jnx_bgp_m2established_nested_switch_4
@@ -70,9 +70,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Open Confirmed"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "BGP Peer Connection Open Confirmed"
             - check: this.trap.VarBinds.index(5).Value == 6
               processors:
                 - label: jnx_bgp_m2established_nested_switch_6
@@ -97,7 +97,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value.string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: jnx_bgp_m2backward_transition
@@ -126,9 +126,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Idle"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-                    root.out.event.message = "BGP Peer Connection Idle"
             - check: this.trap.VarBinds.index(6).Value == 2
               processors:
                 - label: jnx_bgp_m2backward_transition_nested_switch_2
@@ -136,9 +136,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Connected"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BGP Peer Connection Connected"
             - check: this.trap.VarBinds.index(6).Value == 3
               processors:
                 - label: jnx_bgp_m2backward_transition_nested_switch_3
@@ -176,24 +176,24 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "BGP Peer Connection Established"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "BGP Peer Connection Established"
             - processors:
                 - label: jnx_bgp_m2backward_transition_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "BGP Peer Connection Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "BGP Peer Connection Status Unknown"
         - label: jnx_bgp_m2backward_transition_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( BGP Peer: " + this.trap.VarBinds.index(3).Value.string() + " )"
     - processors:
         - label: default
           mapping: |

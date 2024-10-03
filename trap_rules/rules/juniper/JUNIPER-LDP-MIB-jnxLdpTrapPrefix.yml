@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "LSP FEC: " + this.trap.VarBinds.index(0).Value + ", Router ID: " + this.trap.VarBinds.index(1).Value + "VPN: $4, "
+            root.out.object.name = "LSP FEC: " + this.trap.VarBinds.index(0).Value.string() + ", Router ID: " + this.trap.VarBinds.index(1).Value.string() + "VPN: $4, "
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpLspUp"
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpLspUp"
             root.out.event.category.name = "LSP Status"
-            root.out.event.message = "Label Switched Path Up  ( " + "LSP FEC: " + this.trap.VarBinds.index(0).Value + ", Router ID: " + this.trap.VarBinds.index(1).Value + "VPN: $4, " + " )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
+            root.out.event.message = "Label Switched Path Up  ( " + "LSP FEC: " + this.trap.VarBinds.index(0).Value.string() + ", Router ID: " + this.trap.VarBinds.index(1).Value.string() + "VPN: $4, " + " )"
 
             root.out.juniper.jnxLdpLspFec = this.trap.VarBinds.index(0).Value
             root.out.juniper.jnxLdpRtrid = this.trap.VarBinds.index(1).Value
@@ -31,8 +31,8 @@
             root.out.event.category.name = "LSP Status"
             root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpLspDown"
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpLspDown"
-            root.out.object.name = "LSP FEC: " + this.trap.VarBinds.index(0).Value + ", Router ID: " + this.trap.VarBinds.index(1).Value + "VPN: $5, "
-            root.out.event.message = "Label Switched Path Down, " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2636.3.14.1.3") + "  ( " + "LSP FEC: " + this.trap.VarBinds.index(0).Value + ", Router ID: " + this.trap.VarBinds.index(1).Value + "VPN: $5, " + " )"
+            root.out.object.name = "LSP FEC: " + this.trap.VarBinds.index(0).Value.string() + ", Router ID: " + this.trap.VarBinds.index(1).Value.string() + "VPN: $5, "
+            root.out.event.message = "Label Switched Path Down, " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2636.3.14.1.3").string() + "  ( " + "LSP FEC: " + this.trap.VarBinds.index(0).Value.string() + ", Router ID: " + this.trap.VarBinds.index(1).Value.string() + "VPN: $5, " + " )"
             root.out.event.severity.code = 4
             root.out.event.severity.level = "Warning"
 
@@ -47,13 +47,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "MPLS LDP Session Up, " + lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2"), mplsLdpSessionState) + "  ( LSR: , Label Space: 1.3, Peer LSR: 1.4.1.2636, Peer Label Space: 3.14 )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
+            root.out.object.name = "mplsLdpSessionEntry..6.1.4.1.2636.3.14"
+            root.out.event.message = "MPLS LDP Session Up, " + lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2").string(), mplsLdpSessionState) + "  ( LSR: , Label Space: 1.3, Peer LSR: 1.4.1.2636, Peer Label Space: 3.14 )"
             root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesUp"
             root.out.event.id = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesUp"
-            root.out.object.name = "mplsLdpSessionEntry..6.1.4.1.2636.3.14"
             root.out.event.category.name = "MPLS LDP Session Status"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.juniper.jnxMplsLdpSesState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2")
             root.out.juniper.jnxLdpSesUpIf = this.trap.VarBinds.index(1).Value
@@ -64,13 +64,13 @@
             #!blobl
             root = this
 
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesDown"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesDown"
+            root.out.event.category.name = "MPLS LDP Session Status"
+            root.out.event.message = "MPLS LDP Session Down, " + lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2").string(), mplsLdpSessionState) + "  ( LSR: , Label Space: 1.3, Peer LSR: 1.4.1.2636, Peer Label Space: 3.14 )"
             root.out.object.name = "mplsLdpSessionEntry..6.1.4.1.2636.3.14"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
-            root.out.event.category.name = "MPLS LDP Session Status"
-            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesDown"
-            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-LDP-MIB-jnxLdpSesDown"
-            root.out.event.message = "MPLS LDP Session Down, " + lookup(this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2"), mplsLdpSessionState) + "  ( LSR: , Label Space: 1.3, Peer LSR: 1.4.1.2636, Peer Label Space: 3.14 )"
 
             root.out.juniper.jnxMplsLdpSesState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2636.3.36.1.3.3.1.2")
             root.out.juniper.jnxLdpSesDownReason = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.14.1.4")

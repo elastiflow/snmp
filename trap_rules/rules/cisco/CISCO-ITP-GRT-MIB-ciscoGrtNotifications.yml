@@ -63,11 +63,11 @@
             #!blobl
             root = this
 
+            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value.string()
+            root.out.event.message = "GRT Destination State Change, See Details [MTTrapd Probe Not in Use]"
             root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtDestStateChange"
             root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtDestStateChange"
             root.out.event.category.name = "GRT Destination Status"
-            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value
-            root.out.event.message = "GRT Destination State Change, See Details [MTTrapd Probe Not in Use]"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cisco_grt_mgmt_state_change
@@ -128,11 +128,11 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "GRT Management Route Status"
+            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value.string()
+            root.out.event.message = "GRT Management Route State Change, See Details [MTTrapd Probe Not in Use]"
             root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtMgmtStateChange"
             root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtMgmtStateChange"
-            root.out.event.category.name = "GRT Management Route Status"
-            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value
-            root.out.event.message = "GRT Management Route State Change, See Details [MTTrapd Probe Not in Use]"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: cisco_grt_route_table_load
@@ -140,10 +140,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "cgrtInstEntry."
             root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtRouteTableLoad"
             root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtRouteTableLoad"
             root.out.event.category.name = "GRT Route Table Load Status"
-            root.out.object.name = "cgrtInstEntry."
 
             root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
             root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value
@@ -204,7 +204,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Route Table: " + this.trap.VarBinds.index(3).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( Route Table: " + this.trap.VarBinds.index(3).Value.string() + " )"
     - check: this.trap.SpecificTrap == 4
       processors:
         - label: cisco_grt_dest_state_change_rev1

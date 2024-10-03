@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "H.323 GateKeeper Status"
-            root.out.object.name = "cgkHistoryEventEntry.40"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-GATEKEEPER-MIB-ciscoGatekeeperEvent"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-GATEKEEPER-MIB-ciscoGatekeeperEvent"
+            root.out.event.category.name = "H.323 GateKeeper Status"
+            root.out.object.name = "cgkHistoryEventEntry.40"
 
             root.out.cisco.cgkHistoryEventType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.2")
             root.out.cisco.cgkHistoryEventEndpointType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5")
@@ -29,9 +29,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "H.323 GateKeeper Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "H.323 GateKeeper Status Unknown"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: cisco_gatekeeper_event_nested_switch_2
@@ -39,11 +39,11 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5") + " Registered with GateKeeper"
+                    root.out.event.category.name = "H.323 Endpoint Registration"
+                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.string().replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value.string()
+                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5").string() + " Registered with GateKeeper"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.category.name = "H.323 Endpoint Registration"
-                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: cisco_gatekeeper_event_nested_switch_3
@@ -51,11 +51,11 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "H.323 Endpoint Registration"
-                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value
-                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5") + " Unregistered with GateKeeper"
+                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5").string() + " Unregistered with GateKeeper"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.category.name = "H.323 Endpoint Registration"
+                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.string().replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value.string()
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: cisco_gatekeeper_event_nested_switch_4
@@ -63,11 +63,11 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "H.323 Endpoint Registration"
-                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value
-                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5") + " Unregister Forced by GateKeeper"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.category.name = "H.323 Endpoint Registration"
+                    root.out.object.name = "Endpoint: " + this.trap.VarBinds.index(3).Value.string().replace_all("\\s+$", "") + ", H.323 ID: " + this.trap.VarBinds.index(4).Value.string()
+                    root.out.event.message = "H.323 " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.40.1.2.2.1.5").string() + " Unregister Forced by GateKeeper"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: cisco_gatekeeper_event_nested_switch_5

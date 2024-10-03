@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Content Engine Disk Status"
+            root.out.object.name = ""
             root.out.event.message = "Content Engine Disk Read Error"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineReadDiskError"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineReadDiskError"
-            root.out.event.category.name = "Content Engine Disk Status"
-            root.out.object.name = ""
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cisco_content_engine_write_disk_error
@@ -52,13 +52,13 @@
             #!blobl
             root = this
 
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineDataDiskFailed"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineDataDiskFailed"
+            root.out.event.category.name = "Content Engine Disk Status"
             root.out.object.name = ""
             root.out.event.message = "Content Engine Data Disk Failed"
             root.out.event.severity.code = 4
             root.out.event.severity.level = "Warning"
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineDataDiskFailed"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineDataDiskFailed"
-            root.out.event.category.name = "Content Engine Disk Status"
     - check: this.trap.SpecificTrap == 5
       processors:
         - label: cisco_content_engine_overload_bypass
@@ -66,13 +66,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineOverloadBypass"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-CONTENT-ENGINE-MIB-ciscoContentEngineOverloadBypass"
             root.out.event.category.name = "Content Engine Load"
             root.out.object.name = ""
             root.out.event.message = "Content Engine Overload Bypass, WCCP Requests are Rejected"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
     - check: this.trap.SpecificTrap == 6
       processors:
         - label: cisco_content_engine_disk_failed

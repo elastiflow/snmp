@@ -24,7 +24,7 @@
             root.out.cisco.cdxCmtsCmStatusValue = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.3.2.1.1")
         - label: cdx_cmts_cm_on_off_notification_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(5).Value == 1
+            - check: this.trap.VarBinds.index(5).Value.string() == 1
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_1
                   mapping: |
@@ -34,187 +34,27 @@
                     root.out.event.message = "Cable Modem Offline"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 10
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_10
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "Cable Modem KEK modem key assignment rejected"
-            - check: this.trap.VarBinds.index(5).Value == 11
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_11
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "Cable Modem TEK modem key assignment rejected"
-            - check: this.trap.VarBinds.index(5).Value == 12
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_12
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Online"
-                    root.out.event.severity.code = 1
-                    root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(5).Value == 13
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_13
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem TFTP File Transfer Started"
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value == 14
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_14
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Time of Day Request"
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value == 15
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_15
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Cable Modem Resetting"
-            - check: this.trap.VarBinds.index(5).Value == 16
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_16
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Cable Modem Ranging In Progress"
-            - check: this.trap.VarBinds.index(5).Value == 17
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_17
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Ranging Completed"
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value == 18
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_18
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 2
-                    root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Cable Modem Assigned IP Address via DHCP"
-            - check: this.trap.VarBinds.index(5).Value == 19
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_19
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Registration Refused, Stale Config"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 2
+            - check: this.trap.VarBinds.index(5).Value.string() == 2
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Cable Modem Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value == 20
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_20
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Registration Refused, IP Spoof"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 21
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_21
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Registration Refused, Class Failure"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 22
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_22
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-                    root.out.event.message = "Cable Modem Registration Failed, No Acknowledgement Recieved"
-            - check: this.trap.VarBinds.index(5).Value == 23
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_23
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem KEK modem key assignment Expired"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 24
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_24
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem TEK modem key assignment Expired"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 25
-              processors:
-                - label: cdx_cmts_cm_on_off_notification_nested_switch_25
-                  mapping: |
-                    #!blobl
-                    root = this
-
-                    root.out.event.message = "Cable Modem Shutdown"
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 3
+                    root.out.event.message = "Cable Modem Status Unknown"
+            - check: this.trap.VarBinds.index(5).Value.string() == 3
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Cable Modem Ranging Received"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Cable Modem Ranging Received"
-            - check: this.trap.VarBinds.index(5).Value == 4
+            - check: this.trap.VarBinds.index(5).Value.string() == 4
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_4
                   mapping: |
@@ -224,7 +64,7 @@
                     root.out.event.message = "Cable Modem DHCP Request Received"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(5).Value == 5
+            - check: this.trap.VarBinds.index(5).Value.string() == 5
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_5
                   mapping: |
@@ -234,7 +74,7 @@
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
                     root.out.event.message = "Cable Modem Online, Network Access Disabled"
-            - check: this.trap.VarBinds.index(5).Value == 6
+            - check: this.trap.VarBinds.index(5).Value.string() == 6
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_6
                   mapping: |
@@ -244,36 +84,196 @@
                     root.out.event.message = "Cable Modem Online, KEK Assigned"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(5).Value == 7
+            - check: this.trap.VarBinds.index(5).Value.string() == 7
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_7
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Cable Modem Online, TEK Assigned"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(5).Value == 8
+                    root.out.event.message = "Cable Modem Online, TEK Assigned"
+            - check: this.trap.VarBinds.index(5).Value.string() == 8
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_8
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Cable Modem Rejected, Bad MIC"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-            - check: this.trap.VarBinds.index(5).Value == 9
+                    root.out.event.message = "Cable Modem Rejected, Bad MIC"
+            - check: this.trap.VarBinds.index(5).Value.string() == 9
               processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_9
                   mapping: |
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Cable Modem Rejected, Bad COS"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "Cable Modem Rejected, Bad COS"
+            - check: this.trap.VarBinds.index(5).Value.string() == 10
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_10
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem KEK modem key assignment rejected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 11
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_11
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem TEK modem key assignment rejected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 12
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_12
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Online"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(5).Value.string() == 13
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_13
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Cable Modem TFTP File Transfer Started"
+            - check: this.trap.VarBinds.index(5).Value.string() == 14
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_14
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Time of Day Request"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value.string() == 15
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_15
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Resetting"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value.string() == 16
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_16
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Ranging In Progress"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(5).Value.string() == 17
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_17
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Cable Modem Ranging Completed"
+            - check: this.trap.VarBinds.index(5).Value.string() == 18
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_18
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Cable Modem Assigned IP Address via DHCP"
+            - check: this.trap.VarBinds.index(5).Value.string() == 19
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_19
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+                    root.out.event.message = "Cable Modem Registration Refused, Stale Config"
+            - check: this.trap.VarBinds.index(5).Value.string() == 20
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_20
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Refused, IP Spoof"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 21
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_21
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Refused, Class Failure"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 22
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_22
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Failed, No Acknowledgement Recieved"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 23
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_23
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem KEK modem key assignment Expired"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 24
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_24
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem TEK modem key assignment Expired"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 25
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_nested_switch_25
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Shutdown"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
             - processors:
                 - label: cdx_cmts_cm_on_off_notification_nested_switch_default
                   mapping: |
@@ -288,7 +288,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value + ", CM IP: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.127.1.3.3.1.20") + " )"
+            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value.string() + ", CM IP: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.127.1.3.3.1.20").string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cdx_cmts_cm_ch_over_notification
@@ -296,11 +296,11 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
             root.out.event.category.name = "Channel Change Status"
             root.out.object.name = "cdxCmtsCmChOverEntry."
             root.out.event.message = "Cable Modem Channel Override"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
 
             root.out.cisco.cdxCmtsCmChOverMacAddress = this.trap.VarBinds.index(0).Value
             root.out.cisco.cdxCmtsCmChOverDownFrequency = this.trap.VarBinds.index(1).Value
@@ -316,9 +316,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + ", Message Sent"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = root.out.event.message + ", Message Sent"
             - check: this.trap.VarBinds.index(4).Value == 2
               processors:
                 - label: cdx_cmts_cm_ch_over_notification_nested_switch_2
@@ -336,9 +336,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = root.out.event.message + ", No Operation Needed"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = root.out.event.message + ", No Operation Needed"
             - check: this.trap.VarBinds.index(4).Value == 4
               processors:
                 - label: cdx_cmts_cm_ch_over_notification_nested_switch_4
@@ -383,7 +383,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value.string() + " )"
     - check: this.trap.SpecificTrap == 3
       processors:
         - label: cdx_cmts_cm_dmiclock_notification

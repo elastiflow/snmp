@@ -10,11 +10,11 @@
             #!blobl
             root = this
 
-            root.out.event.message = "Physical Entity Alarm, Alarm type: " + this.trap.VarBinds.index(1).Value + "  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmAsserted"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmAsserted"
             root.out.event.category.name = "Physical Entity Status"
-            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Physical Entity Alarm, Alarm type: " + this.trap.VarBinds.index(1).Value.string() + "  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
 
             root.out.cisco.ceAlarmHistEntPhysicalIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.ceAlarmHistAlarmType = this.trap.VarBinds.index(1).Value
@@ -78,13 +78,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Physical Entity Status"
-            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Physical Entity Alarm Cleared, Alarm Type: " + this.trap.VarBinds.index(1).Value + "  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value + " )"
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmCleared"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmCleared"
+            root.out.event.category.name = "Physical Entity Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Physical Entity Alarm Cleared, Alarm Type: " + this.trap.VarBinds.index(1).Value.string() + "  ( " + "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.cisco.ceAlarmHistEntPhysicalIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.ceAlarmHistAlarmType = this.trap.VarBinds.index(1).Value

@@ -88,7 +88,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Signalling Point Link Failed, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108"), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
+                    root.out.event.message = "Signalling Point Link Failed, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108").string(), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
             - check: this.trap.VarBinds.index(1).Value == 3
               processors:
                 - label: c_itp_sp_link_state_change_nested_switch_3
@@ -96,7 +96,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Signalling Point Link Administratively Shutdown, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108"), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
+                    root.out.event.message = "Signalling Point Link Administratively Shutdown, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108").string(), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
             - check: this.trap.VarBinds.index(1).Value == 4
               processors:
                 - label: c_itp_sp_link_state_change_nested_switch_4
@@ -104,7 +104,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Signalling Point Link Unavailable, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108"), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
+                    root.out.event.message = "Signalling Point Link Unavailable, " + lookup(this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.232.1.4.1.1.108").string(), cItpSpLinkStateReason) + "  ( LinksetName.LinkSlc
             - processors:
                 - label: c_itp_sp_link_state_change_nested_switch_default
                   mapping: |+
@@ -132,38 +132,38 @@
             root.out.cisco.cItpSpLinksetAdjacentDisplayPC = this.trap.VarBinds.index(4).Value
         - label: c_itp_sp_congestion_change_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 0
+            - check: this.trap.VarBinds.index(1).Value.string() == 0
               processors:
                 - label: c_itp_sp_congestion_change_nested_switch_0
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Congestion Low on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(1).Value == 1
+                    root.out.event.message = "Congestion Low on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(1).Value.string() == 1
               processors:
                 - label: c_itp_sp_congestion_change_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Congestion Moderate on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(1).Value == 2
+                    root.out.event.message = "Congestion Moderate on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(1).Value.string() == 2
               processors:
                 - label: c_itp_sp_congestion_change_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Congestion High on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value + " )"
-            - check: this.trap.VarBinds.index(1).Value == 3
+                    root.out.event.message = "Congestion High on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value.string() + " )"
+            - check: this.trap.VarBinds.index(1).Value.string() == 3
               processors:
                 - label: c_itp_sp_congestion_change_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Congestion Excessive on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value + " )"
+                    root.out.event.message = "Congestion Excessive on Signalling Point Link ( " + this.trap.VarBinds.index(2).Value.string() + " )"
             - processors:
                 - label: c_itp_sp_congestion_change_nested_switch_default
                   mapping: |+

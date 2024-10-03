@@ -23,7 +23,7 @@
             root.out.cisco.demandNbrClearCode = this.trap.VarBinds.index(5).Value
         - label: demand_nbr_call_information_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Call is Active
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Call is Active
               processors:
                 - label: demand_nbr_call_information_nested_switch_call is active
                   mapping: |
@@ -31,7 +31,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Active"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Call rejected
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Call rejected
               processors:
                 - label: demand_nbr_call_information_nested_switch_call rejected
                   mapping: |
@@ -39,7 +39,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Rejected"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Destination out of order
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Destination out of order
               processors:
                 - label: demand_nbr_call_information_nested_switch_destination out of order
                   mapping: |
@@ -47,7 +47,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Destination Out of Order"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Interworking error; unspecified
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Interworking error; unspecified
               processors:
                 - label: demand_nbr_call_information_nested_switch_interworking error; unspecified
                   mapping: |
@@ -55,7 +55,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Interworking Error"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Invalid call reference value
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Invalid call reference value
               processors:
                 - label: demand_nbr_call_information_nested_switch_invalid call reference value
                   mapping: |
@@ -63,7 +63,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Invalid Call Reference Value"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == No user responding
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == No user responding
               processors:
                 - label: demand_nbr_call_information_nested_switch_no user responding
                   mapping: |
@@ -71,7 +71,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call No User Responding"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Normal call clearing
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Normal call clearing
               processors:
                 - label: demand_nbr_call_information_nested_switch_normal call clearing
                   mapping: |
@@ -79,7 +79,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Normal Clearing"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Normal, unspecified
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Normal, unspecified
               processors:
                 - label: demand_nbr_call_information_nested_switch_normal, unspecified
                   mapping: |
@@ -87,7 +87,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Normal, Unspecified"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Recovery on timer expiry
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Recovery on timer expiry
               processors:
                 - label: demand_nbr_call_information_nested_switch_recovery on timer expiry
                   mapping: |
@@ -95,7 +95,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Recovered on Timer Expiry"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Requested circuit/channel not available
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Requested circuit/channel not available
               processors:
                 - label: demand_nbr_call_information_nested_switch_requested circuit/channel not available
                   mapping: |
@@ -103,7 +103,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Requested Circuit/Channel Not Available"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Temporary failure
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Temporary failure
               processors:
                 - label: demand_nbr_call_information_nested_switch_temporary failure
                   mapping: |
@@ -111,7 +111,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Call Temporary Failure"
-            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string() == Unknown Cause value
+            - check: this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string() == Unknown Cause value
               processors:
                 - label: demand_nbr_call_information_nested_switch_unknown cause value
                   mapping: |
@@ -125,13 +125,13 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ISDN Call, " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+                    root.out.event.message = "ISDN Call, " + this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string().string()
         - label: demand_nbr_call_information_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + ", Clear Code: " + this.trap.VarBinds.index(5).Value + "  ( Call Address: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + ", Clear Code: " + this.trap.VarBinds.index(5).Value.string() + "  ( Call Address: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: demand_nbr_call_details
@@ -139,10 +139,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "demandNbrEntry.9.26"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallDetails"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallDetails"
             root.out.event.category.name = "ISDN Call Status"
-            root.out.object.name = "demandNbrEntry.9.26"
 
             root.out.cisco.demandNbrLogIf = this.trap.VarBinds.index(0).Value
             root.out.cisco.demandNbrName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -153,7 +153,7 @@
             root.out.cisco.demandNbrCallOrigin = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.9.26.1.1.1.1.17")
         - label: demand_nbr_call_details_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == 1
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == 1
               processors:
                 - label: demand_nbr_call_details_nested_switch_1
                   mapping: |
@@ -161,7 +161,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Outgoing Call"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == 2
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == 2
               processors:
                 - label: demand_nbr_call_details_nested_switch_2
                   mapping: |
@@ -169,7 +169,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Incoming Call"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == 3
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == 3
               processors:
                 - label: demand_nbr_call_details_nested_switch_3
                   mapping: |
@@ -177,7 +177,7 @@
                     root = this
 
                     root.out.event.message = "ISDN Callback"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Call is Active
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Call is Active
               processors:
                 - label: demand_nbr_call_details_nested_switch_call is active
                   mapping: |
@@ -185,7 +185,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Active"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Call rejected
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Call rejected
               processors:
                 - label: demand_nbr_call_details_nested_switch_call rejected
                   mapping: |
@@ -193,7 +193,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Rejected"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Destination out of order
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Destination out of order
               processors:
                 - label: demand_nbr_call_details_nested_switch_destination out of order
                   mapping: |
@@ -201,7 +201,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Destination Out of Order"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Interworking error; unspecified
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Interworking error; unspecified
               processors:
                 - label: demand_nbr_call_details_nested_switch_interworking error; unspecified
                   mapping: |
@@ -209,7 +209,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Interworking Error"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Invalid call reference value
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Invalid call reference value
               processors:
                 - label: demand_nbr_call_details_nested_switch_invalid call reference value
                   mapping: |
@@ -217,7 +217,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Invalid Call Reference Value"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == No user responding
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == No user responding
               processors:
                 - label: demand_nbr_call_details_nested_switch_no user responding
                   mapping: |
@@ -225,7 +225,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " No User Responding"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Normal call clearing
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Normal call clearing
               processors:
                 - label: demand_nbr_call_details_nested_switch_normal call clearing
                   mapping: |
@@ -233,7 +233,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Normal Clearing"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Normal, unspecified
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Normal, unspecified
               processors:
                 - label: demand_nbr_call_details_nested_switch_normal, unspecified
                   mapping: |
@@ -241,7 +241,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Normal, Unspecified"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Recovery on timer expiry
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Recovery on timer expiry
               processors:
                 - label: demand_nbr_call_details_nested_switch_recovery on timer expiry
                   mapping: |
@@ -249,7 +249,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Recovered on Timer Expiry"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Requested circuit/channel not available
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Requested circuit/channel not available
               processors:
                 - label: demand_nbr_call_details_nested_switch_requested circuit/channel not available
                   mapping: |
@@ -257,7 +257,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Requested Circuit/Channel Not Available"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Temporary failure
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Temporary failure
               processors:
                 - label: demand_nbr_call_details_nested_switch_temporary failure
                   mapping: |
@@ -265,7 +265,7 @@
                     root = this
 
                     root.out.event.message = root.out.event.message + " Temporary Failure"
-            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() == Unknown Cause value
+            - check: this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() == Unknown Cause value
               processors:
                 - label: demand_nbr_call_details_nested_switch_unknown cause value
                   mapping: |
@@ -296,7 +296,7 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrLayer2Change"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrLayer2Change"
             root.out.event.category.name = "ISDN D-Channel Status"
-            root.out.object.name = "isdnLapdEntry." + this.trap.VarBinds.index(0).Value
+            root.out.object.name = "isdnLapdEntry." + this.trap.VarBinds.index(0).Value.string()
 
             root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.isdnLapdOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.3.4.1.2")
@@ -347,8 +347,8 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCNANotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCNANotification"
             root.out.event.category.name = "ISDN Incoming Call Status"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(1).Value
-            root.out.event.message = "ISDN Incoming Call Rejected, Requested Circuit/Channel Not Available  ( " + "ifEntry." + this.trap.VarBinds.index(1).Value + " )"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "ISDN Incoming Call Rejected, Requested Circuit/Channel Not Available  ( " + "ifEntry." + this.trap.VarBinds.index(1).Value.string() + " )"
 
             root.out.cisco.isdnSignalingIfIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.ifIndex = this.trap.VarBinds.index(1).Value

@@ -10,9 +10,9 @@
             #!blobl
             root = this
 
+            root.out.event.message = "Printer Error: see details  ( " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
             root.out.event.category.name = "Printer Status"
-            root.out.object.name = "portEntry." + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Printer Error: see details  ( " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.object.name = "portEntry." + this.trap.VarBinds.index(0).Value.string()
 
             root.out.axis.portIndex = this.trap.VarBinds.index(0).Value
             root.out.axis.portDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -27,9 +27,9 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "IP Address Changed by RARP or 'arp -s', was " + this.trap.VarBinds.index(0).Value
             root.out.event.category.name = "IP Address Change"
+            root.out.object.name = ""
+            root.out.event.message = "IP Address Changed by RARP or 'arp -s', was " + this.trap.VarBinds.index(0).Value.string()
 
             root.out.axis.adminOldIntAddr = this.trap.VarBinds.index(0).Value
     - processors:

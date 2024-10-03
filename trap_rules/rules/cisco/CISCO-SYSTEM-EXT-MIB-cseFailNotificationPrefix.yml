@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "Service: $2
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SYSTEM-EXT-MIB-cseHaRestartNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SYSTEM-EXT-MIB-cseHaRestartNotify"
             root.out.event.category.name = "Service Status"
+            root.out.object.name = "Service: $2
             root.out.event.message = "Service Restarted on Active Supervisor, lookup($1, CseHaRestartReason)  ( Service: $2 )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: cse_fail_sw_core_notify_extended

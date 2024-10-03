@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "RMON Alarm: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.16.3.1.1.4") + " of " + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(3).Value + ", Crossed " + this.trap.VarBinds.index(4).Value
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IETF-RMON-MIB-risingAlarm"
             root.out.event.id = "SNMPTRAP-IETF-RMON-MIB-risingAlarm"
             root.out.event.category.name = "RMON Alarm"
-            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "RMON Alarm: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.16.3.1.1.4").string() + " of " + this.trap.VarBinds.index(1).Value.string() + ", " + this.trap.VarBinds.index(3).Value.string() + ", Crossed " + this.trap.VarBinds.index(4).Value.string()
+            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.IETF.alarmIndex = this.trap.VarBinds.index(0).Value
             root.out.IETF.alarmVariable = this.trap.VarBinds.index(1).Value
@@ -30,13 +30,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "RMON Alarm Cleared: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.16.3.1.1.4") + " of " + this.trap.VarBinds.index(1).Value + ", " + this.trap.VarBinds.index(3).Value + ", Crossed " + this.trap.VarBinds.index(4).Value
-            root.out.event.severity.code = 1
-            root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-IETF-RMON-MIB-fallingAlarm"
             root.out.event.id = "SNMPTRAP-IETF-RMON-MIB-fallingAlarm"
+            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value.string()
             root.out.event.category.name = "RMON Alarm"
-            root.out.object.name = "alarmEntry." + this.trap.VarBinds.index(0).Value
+            root.out.event.message = "RMON Alarm Cleared: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.16.3.1.1.4").string() + " of " + this.trap.VarBinds.index(1).Value.string() + ", " + this.trap.VarBinds.index(3).Value.string() + ", Crossed " + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.severity.code = 1
+            root.out.event.severity.level = "Alert"
 
             root.out.IETF.alarmIndex = this.trap.VarBinds.index(0).Value
             root.out.IETF.alarmVariable = this.trap.VarBinds.index(1).Value

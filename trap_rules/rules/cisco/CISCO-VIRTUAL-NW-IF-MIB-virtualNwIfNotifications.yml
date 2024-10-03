@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "virtualNwIfEntry.9.9.290"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VIRTUAL-NW-IF-MIB-virtualNwIfCreateEntryNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VIRTUAL-NW-IF-MIB-virtualNwIfCreateEntryNotify"
             root.out.event.category.name = "Virtual Interface Status"
-            root.out.object.name = "virtualNwIfEntry.9.9.290"
-            root.out.event.message = lookup("9", virtualNwIfType) Virtual Interface Created  ( lookup("9", virtualNwIfType): 290, Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = lookup("9", virtualNwIfType) Virtual Interface Created  ( lookup("9", virtualNwIfType): 290, Interface: " + this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string() + " )"
 
             root.out.cisco.virtualNwIfIndex = this.trap.VarBinds.index(0).Value
             root.out.cisco.ifName = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -27,11 +27,11 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Virtual Interface Status"
-            root.out.object.name = "virtualNwIfEntry.9.9.290"
-            root.out.event.message = lookup("9", virtualNwIfType)Virtual Interface Deleted  ( lookup("9", virtualNwIfType): 290 )"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VIRTUAL-NW-IF-MIB-virtualNwIfDeleteEntryNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-VIRTUAL-NW-IF-MIB-virtualNwIfDeleteEntryNotify"
+            root.out.event.message = lookup("9", virtualNwIfType)Virtual Interface Deleted  ( lookup("9", virtualNwIfType): 290 )"
+            root.out.event.category.name = "Virtual Interface Status"
+            root.out.object.name = "virtualNwIfEntry.9.9.290"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 

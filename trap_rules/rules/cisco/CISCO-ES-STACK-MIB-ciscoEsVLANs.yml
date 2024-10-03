@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Stack Configuration Change"
+            root.out.event.message = "Number of Switches in Stack Changed to $3
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ES-STACK-MIB-ciscoEsStackCfgChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ES-STACK-MIB-ciscoEsStackCfgChange"
             root.out.object.name = ""
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
-            root.out.event.message = "Number of Switches in Stack Changed to $3
-            root.out.event.category.name = "Stack Configuration Change"
 
             root.out.cisco.ciscoEsVLANInfoVLANNumber = this.trap.VarBinds.index(0).Value
     - check: this.trap.SpecificTrap == 2
@@ -26,10 +26,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Stack Active Matrix Status"
             root.out.object.name = ""
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ES-STACK-MIB-ciscoEsStackProStackMatrixChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ES-STACK-MIB-ciscoEsStackProStackMatrixChange"
+            root.out.event.category.name = "Stack Active Matrix Status"
 
             root.out.cisco.ciscoEsVLANInfoVLANNumber = this.trap.VarBinds.index(0).Value
         - label: cisco_es_vlantopology_change_nested_switch
@@ -41,9 +41,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Stack Active Matrix Module Switched to Primary"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = "Stack Active Matrix Module Switched to Primary"
             - check: ' == 2'
               processors:
                 - label: cisco_es_vlantopology_change_nested_switch_2
@@ -61,9 +61,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Stack Active Matrix Module Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Stack Active Matrix Module Status Unknown"
             - check: ' == 4'
               processors:
                 - label: cisco_es_vlantopology_change_nested_switch_4
@@ -80,9 +80,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Stack Active Matrix Module Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Stack Active Matrix Module Status Unknown"
         - label: cisco_es_vlantopology_change_after_switch
           mapping: |+
             #!blobl

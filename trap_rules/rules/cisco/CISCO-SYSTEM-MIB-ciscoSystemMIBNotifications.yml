@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "System Clock Changed"
             root.out.object.name = ""
-            root.out.event.message = "System Clock Local Date and Time Manually Changed to " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.event.message = "System Clock Local Date and Time Manually Changed to " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli().string()
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SYSTEM-MIB-ciscoSystemClockChanged"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-SYSTEM-MIB-ciscoSystemClockChanged"
-            root.out.event.category.name = "System Clock Changed"
 
             root.out.cisco.csyClockDateAndTime = this.trap.VarBinds.index(0).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
     - processors:

@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.message = "STA Sent Disassociation Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
             root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
             root.out.event.category.name = "802.11 Disassociation"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "STA Sent Disassociation Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
 
             root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
             root.out.ieee.dot11DisassociateReason = this.trap.VarBinds.index(1).Value
@@ -31,8 +31,8 @@
             root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
             root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
             root.out.event.category.name = "802.11 Deauthentication"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "STA Sent Deauthentication Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "STA Sent Deauthentication Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.string() + " )"
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
 
@@ -46,13 +46,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value + ", Station MAC: " + this.trap.VarBinds.index(2).Value
-            root.out.event.message = "STA Sent Authentication Failure Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
             root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
             root.out.event.category.name = "802.11 Authentication Failure"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "STA Sent Authentication Failure Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
 
             root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
             root.out.ieee.dot11AuthenticateFailStatus = this.trap.VarBinds.index(1).Value

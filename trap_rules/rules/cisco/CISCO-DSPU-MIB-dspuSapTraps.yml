@@ -22,7 +22,7 @@
             root.out.cisco.dspuSapOperState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.6.1.1.6")
         - label: dspu_sap_state_change_trap_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(1).Value == 1
+            - check: this.trap.VarBinds.index(1).Value.string() == 1
               processors:
                 - label: dspu_sap_state_change_trap_nested_switch_1
                   mapping: |
@@ -32,7 +32,7 @@
                     root.out.event.message = "DownStream Physical Unit Active"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-            - check: this.trap.VarBinds.index(1).Value == 2
+            - check: this.trap.VarBinds.index(1).Value.string() == 2
               processors:
                 - label: dspu_sap_state_change_trap_nested_switch_2
                   mapping: |
@@ -48,15 +48,15 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "DownStream Physical Unit Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "DownStream Physical Unit Status Unknown"
         - label: dspu_sap_state_change_trap_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.6.1.1.3") + " )"
+            root.out.event.message = root.out.event.message + "  ( PU: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.6.1.1.3").string() + " )"
     - processors:
         - label: default
           mapping: |

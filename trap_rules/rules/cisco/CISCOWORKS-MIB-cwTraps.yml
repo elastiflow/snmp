@@ -18,33 +18,33 @@
             root.out.cisco.cwLogMsg = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
         - label: cw_app_log_trap_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() == 1
+            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() == 1
               processors:
                 - label: cw_app_log_trap_nested_switch_1
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.object.name = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+                    root.out.object.name = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
                     root.out.event.message = $5
-            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() == 2
+            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() == 2
               processors:
                 - label: cw_app_log_trap_nested_switch_2
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.object.name = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
-                    root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + ": $5
-            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string() == 3
+                    root.out.object.name = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + ": $5
+            - check: this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() == 3
               processors:
                 - label: cw_app_log_trap_nested_switch_3
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.object.name = ""
                     root.out.event.message = $5
+                    root.out.object.name = ""
             - processors:
                 - label: cw_app_log_trap_nested_switch_default
                   mapping: |+

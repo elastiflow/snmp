@@ -49,10 +49,10 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "PMon Interface Bits/Sec."
-                    root.out.event.message = "PMon Interface Bits/Sec. Overload"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.category.name = "PMon Interface Bits/Sec."
+                    root.out.event.message = "PMon Interface Bits/Sec. Overload"
             - check: this.trap.VarBinds.index(1).Value == 8
               processors:
                 - label: jnx_pmon_overload_set_nested_switch_8
@@ -70,16 +70,16 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "PMon Interface Status"
-                    root.out.event.message = "PMon Interface Overload"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.category.name = "PMon Interface Status"
+                    root.out.event.message = "PMon Interface Overload"
         - label: jnx_pmon_overload_set_after_switch
           mapping: |
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - check: this.trap.SpecificTrap == 2
       processors:
         - label: jnx_pmon_overload_cleared
@@ -115,10 +115,10 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "PMon Interface Packets/Sec."
-                    root.out.event.message = "End of PMon Interface Packets/Sec. Overload"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.category.name = "PMon Interface Packets/Sec."
+                    root.out.event.message = "End of PMon Interface Packets/Sec. Overload"
             - check: this.trap.VarBinds.index(1).Value == 4
               processors:
                 - label: jnx_pmon_overload_cleared_nested_switch_4
@@ -126,10 +126,10 @@
                     #!blobl
                     root = this
 
-                    root.out.event.category.name = "PMon Interface Bits/Sec."
-                    root.out.event.message = "End of PMon Interface Bits/Sec. Overload"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.category.name = "PMon Interface Bits/Sec."
+                    root.out.event.message = "End of PMon Interface Bits/Sec. Overload"
             - check: this.trap.VarBinds.index(1).Value == 8
               processors:
                 - label: jnx_pmon_overload_cleared_nested_switch_8
@@ -137,10 +137,10 @@
                     #!blobl
                     root = this
 
-                    root.out.event.severity.code = 1
-                    root.out.event.severity.level = "Alert"
                     root.out.event.category.name = "PMon Interface Memory Status"
                     root.out.event.message = "End of PMon Interface Memory Load Warning"
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
             - processors:
                 - label: jnx_pmon_overload_cleared_nested_switch_default
                   mapping: |
@@ -156,7 +156,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string() + " )"
+            root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
     - processors:
         - label: default
           mapping: |

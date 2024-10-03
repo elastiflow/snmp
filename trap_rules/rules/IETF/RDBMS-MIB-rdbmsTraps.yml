@@ -55,9 +55,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Database Restricted, Administratively Unavailable"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "Database Restricted, Administratively Unavailable"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: rdbms_state_change_nested_switch_5
@@ -74,9 +74,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "Database Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "Database Status Unknown"
         - label: rdbms_state_change_after_switch
           mapping: |
             #!blobl
@@ -90,13 +90,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = "rdbmsSrvInfoEntry.39"
             root.out.event.message = "Database Server Unable to Allocate Disk Space"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.category.name = "Disk Space Availability"
             root.out.event.class.name = "SNMPTRAP-IETF-RDBMS-MIB-rdbmsOutOfSpace"
             root.out.event.id = "SNMPTRAP-IETF-RDBMS-MIB-rdbmsOutOfSpace"
-            root.out.event.category.name = "Disk Space Availability"
-            root.out.object.name = "rdbmsSrvInfoEntry.39"
 
             root.out.IETF.rdbmsSrvInfoDiskOutOfSpaces = this.trap.VarBinds.index(0).Value
     - processors:

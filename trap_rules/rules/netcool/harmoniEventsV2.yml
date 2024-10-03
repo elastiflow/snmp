@@ -1,0 +1,1319 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "URLAVAILABILITY-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: sla_violation
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.4.1.1.8").string() + " SLA Status"
+            root.out.object.name = "slaDataEntry."
+            root.out.event.message = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.4.1.1.8").string() + "SLA Violated: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + "  ( " + this.trap.VarBinds.index(1).Value.string() + " )"
+
+            root.out.netcool.slaDataSLAVPercentage = this.trap.VarBinds.index(0).Value
+            root.out.netcool.slaDataServerAddr = this.trap.VarBinds.index(1).Value
+            root.out.netcool.slaControlDescription = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.netcool.slaControlProtocolDesc = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+            root.out.netcool.slaControlSLAType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.4.1.1.8")
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: availability_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability"
+            root.out.object.name = "availabilityControlEntry.6"
+            root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability Test Failed"
+
+            root.out.netcool.availabilityControlDestAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.availabilityControlPort = this.trap.VarBinds.index(1).Value
+            root.out.netcool.availabilityControlMethod = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4")
+            root.out.netcool.availabilityDataTime = this.trap.VarBinds.index(3).Value
+            root.out.netcool.availabilityDataPercentage = this.trap.VarBinds.index(4).Value
+        - label: availability_failure_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: availability_failure_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + ":" + this.trap.VarBinds.index(1).Value.string() + " )"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: availability_failure_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+            - processors:
+                - label: availability_failure_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: availability_failure_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: trace_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Traceroute Status"
+            root.out.object.name = "tracerouteDestEntry.1977.5"
+            root.out.event.message = "Traceroute Complete  ( to " + this.trap.VarBinds.index(0).Value.string() + " )"
+
+            root.out.netcool.tracerouteDestName = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: timer_expiry
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Timer Status"
+            root.out.object.name = ""
+            root.out.event.message = "Timer Expired"
+
+            root.out.netcool.timerInfoSecond = this.trap.VarBinds.index(0).Value
+            root.out.netcool.timerInfoMinute = this.trap.VarBinds.index(1).Value
+            root.out.netcool.timerInfoHour = this.trap.VarBinds.index(2).Value
+            root.out.netcool.timerInfoDay = this.trap.VarBinds.index(3).Value
+            root.out.netcool.timerInfoDayOfWeek = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.8.1.5")
+            root.out.netcool.timerInfoMonth = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1977.8.1.6")
+            root.out.netcool.timerInfoYear = this.trap.VarBinds.index(6).Value
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: program_complete
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Program " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.2.3.1.2").string() + ": Return Code " + this.trap.VarBinds.index(1).Value.string() + "  ( programmableControlEntry.2 )"
+            root.out.event.category.name = "Program Status"
+            root.out.object.name = "programmableControlEntry.2"
+
+            root.out.netcool.programmableControlProgramStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.2.3.1.2")
+            root.out.netcool.programmableControlReturnCode = this.trap.VarBinds.index(1).Value
+        - label: program_complete_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: program_complete_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: program_complete_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: program_complete_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: program_complete_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(0).Value == 5
+              processors:
+                - label: program_complete_nested_switch_5
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: program_complete_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: program_complete_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: appflow_summary_rising_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "appflowAlarmEntry.7"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3").string() + " Summary Alarm ( Connection Established: " + this.trap.VarBinds.index(2).Value.string() + "%, Terminated: " + this.trap.VarBinds.index(3).Value.string() + "% )"
+            root.out.event.category.name = "Summary Status"
+
+            root.out.netcool.appflowAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3")
+            root.out.netcool.appflowAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.appflowSummarySetupPercentage = this.trap.VarBinds.index(2).Value
+            root.out.netcool.appflowSummaryReleasePercentage = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: appflow_summary_falling_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Summary Status"
+            root.out.object.name = "appflowAlarmEntry.7"
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3").string() + " Summary Alarm Cleared ( Connection Established: " + this.trap.VarBinds.index(2).Value.string() + "%, Terminated: " + this.trap.VarBinds.index(3).Value.string() + "% )"
+
+            root.out.netcool.appflowAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3")
+            root.out.netcool.appflowAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.appflowSummarySetupPercentage = this.trap.VarBinds.index(2).Value
+            root.out.netcool.appflowSummaryReleasePercentage = this.trap.VarBinds.index(3).Value
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: appflow_connection_rising_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "appflowConnEntry."
+            root.out.event.message = "Connection $ConnStatus  ( " + this.trap.VarBinds.index(2).Value.string() + ":" + this.trap.VarBinds.index(3).Value.string() + " to " + this.trap.VarBinds.index(4).Value.string() + ":" + this.trap.VarBinds.index(5).Value.string() + " )"
+
+            root.out.netcool.appflowAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3")
+            root.out.netcool.appflowAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.appflowConnClientAddr = this.trap.VarBinds.index(2).Value
+            root.out.netcool.appflowConnClientPort = this.trap.VarBinds.index(3).Value
+            root.out.netcool.appflowConnServerAddr = this.trap.VarBinds.index(4).Value
+            root.out.netcool.appflowConnServerPort = this.trap.VarBinds.index(5).Value
+            root.out.netcool.appflowConnStatus = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.7.4.1.6")
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: appflow_connection_falling_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "appflowConnEntry."
+            root.out.event.message = "Connection $ConnStatus  ( " + this.trap.VarBinds.index(2).Value.string() + ":" + this.trap.VarBinds.index(3).Value.string() + " to " + this.trap.VarBinds.index(4).Value.string() + ":" + this.trap.VarBinds.index(5).Value.string() + " )"
+
+            root.out.netcool.appflowAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.7.6.1.3")
+            root.out.netcool.appflowAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.appflowConnClientAddr = this.trap.VarBinds.index(2).Value
+            root.out.netcool.appflowConnClientPort = this.trap.VarBinds.index(3).Value
+            root.out.netcool.appflowConnServerAddr = this.trap.VarBinds.index(4).Value
+            root.out.netcool.appflowConnServerPort = this.trap.VarBinds.index(5).Value
+            root.out.netcool.appflowConnStatus = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.7.4.1.6")
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: dns_availability_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DNS Availability"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Failed to Reach DNS server  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+
+            root.out.netcool.dnsAvailabilityControlServer = this.trap.VarBinds.index(0).Value
+            root.out.netcool.dnsAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: url_availability_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "URL Availability"
+            root.out.object.name = "urlAvailabilityControlEntry.12"
+            root.out.event.message = "URL Unavailable  ( Server: " + this.trap.VarBinds.index(0).Value.string() + ", URL: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
+
+            root.out.netcool.urlAvailabilityControlServerAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.urlAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+            root.out.netcool.urlAvailabilityControlURL = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: event_pulsed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "RMON Event Pulse"
+            root.out.object.name = "eventEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "RMON Event Pulsed  ( " + "eventEntry." + this.trap.VarBinds.index(0).Value.string() + " )"
+
+            root.out.netcool.agentControlPulseEvent = this.trap.VarBinds.index(0).Value
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: log_file_match
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Log Monitor: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.object.name = "srLogMonEntry.0.13"
+            root.out.event.message = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+
+            root.out.netcool.srLogMonControlLogFile = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.srLogMonLine = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.netcool.srLogMonLevel = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.9.4.3.1.4")
+            root.out.netcool.srLogMonControlDescription = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+        - label: log_file_match_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: log_file_match_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: log_file_match_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: log_file_match_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: log_file_match_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: log_file_match_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: log_file_match_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: log_file_error
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "srLogMonStatsEntry.9"
+            root.out.event.message = "Log File Read Error: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+            root.out.event.category.name = "Log Monitor Status"
+
+            root.out.netcool.srLogMonStatsLastError = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.srLogMonControlDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: log_file_created
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Log File Created  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+            root.out.event.category.name = "Log File Status"
+            root.out.object.name = "srLogMonControlEntry.9"
+
+            root.out.netcool.srLogMonControlLogFile = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.srLogMonControlDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: log_file_removed
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Log File Status"
+            root.out.object.name = "srLogMonControlEntry.9"
+            root.out.event.message = "Log File Removed  ( " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() + " )"
+
+            root.out.netcool.srLogMonControlLogFile = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.srLogMonControlDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: dt_help_query
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DTHELP Query"
+            root.out.object.name = ""
+            root.out.event.message = "dtHelpControlStatus set to Active: " + this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()
+
+            root.out.netcool.dtHelpControlSummary = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: dt_help_answer
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DTHELP Answer"
+            root.out.object.name = ""
+            root.out.event.message = "dtHelpControlAnswerFlag set to True: Answer Time
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: agent_heart_beat
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "Agent Heartbeat"
+
+            root.out.netcool.agentIdUniqueId = this.trap.VarBinds.index(0).Value
+            root.out.netcool.agentIdAddress = this.trap.VarBinds.index(1).Value
+            root.out.netcool.agentIdName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: ps_exception
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Process Status ( " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " )"
+
+            root.out.netcool.psControlStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2")
+            root.out.netcool.psControlOwner = this.trap.VarBinds.index(1).Value
+            root.out.netcool.psControlDescription = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.netcool.psControlFilterType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.5")
+            root.out.netcool.psControlFilterPattern = this.trap.VarBinds.index(4).Value.snmp_v2_tc_display_string()
+            root.out.netcool.psControlSampleInterval = this.trap.VarBinds.index(5).Value
+            root.out.netcool.psControlSampleType = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8")
+            root.out.netcool.psControlTestAttribute = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9")
+            root.out.netcool.psControlTestOperator = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10")
+            root.out.netcool.psControlTestThreshold = this.trap.VarBinds.index(9).Value
+            root.out.netcool.psExceptionMatch = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string()
+            root.out.netcool.psExceptionValue = this.trap.VarBinds.index(11).Value
+        - label: ps_exception_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(11).Value.string() == -1
+              processors:
+                - label: ps_exception_nested_switch_-1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " Dead"
+            - check: this.trap.VarBinds.index(11).Value.string() == 0
+              processors:
+                - label: ps_exception_nested_switch_0
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " Dead"
+            - check: this.trap.VarBinds.index(11).Value.string() == 1
+              processors:
+                - label: ps_exception_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " Alive"
+            - check: this.trap.VarBinds.index(11).Value.string() == 2
+              processors:
+                - label: ps_exception_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 3
+              processors:
+                - label: ps_exception_nested_switch_3
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(9).Value.string() + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 4
+              processors:
+                - label: ps_exception_nested_switch_4
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 5
+              processors:
+                - label: ps_exception_nested_switch_5
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 6
+              processors:
+                - label: ps_exception_nested_switch_6
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(9).Value.string() + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 7
+              processors:
+                - label: ps_exception_nested_switch_7
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " Context Switch Rate for Last " + this.trap.VarBinds.index(5).Value.string() + " was " + int(this.trap.VarBinds.index(11).Value.string())/int(this.trap.VarBinds.index(5).Value.string()) + "/sec.  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 8
+              processors:
+                - label: ps_exception_nested_switch_8
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 9
+              processors:
+                - label: ps_exception_nested_switch_9
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 10
+              processors:
+                - label: ps_exception_nested_switch_10
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 11
+              processors:
+                - label: ps_exception_nested_switch_11
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 12
+              processors:
+                - label: ps_exception_nested_switch_12
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 13
+              processors:
+                - label: ps_exception_nested_switch_13
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(11).Value.string() + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(9).Value.string() + "  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == 14
+              processors:
+                - label: ps_exception_nested_switch_14
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " Average CPU Usage for Last " + this.trap.VarBinds.index(5).Value.string() + " was " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()2 + "%  ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(11).Value.string() == Health Data
+              processors:
+                - label: ps_exception_nested_switch_health data
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string()
+                    root.out.event.message = "DO NOT DELETE!!! Netcool/OMNIbus Health Data"
+            - check: this.trap.VarBinds.index(11).Value.string() == Netcool/OMNIbus Health Data
+              processors:
+                - label: ps_exception_nested_switch_netcool/omnibus health data
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(11).Value.string() == Netcool/OMNIbus Process
+              processors:
+                - label: ps_exception_nested_switch_netcool/omnibus process
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(11).Value.string() == adduser
+              processors:
+                - label: ps_exception_nested_switch_adduser
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == admin
+              processors:
+                - label: ps_exception_nested_switch_admin
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == confpack
+              processors:
+                - label: ps_exception_nested_switch_confpack
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_confpack.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == event
+              processors:
+                - label: ps_exception_nested_switch_event
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == g
+              processors:
+                - label: ps_exception_nested_switch_g
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_g_" + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(".*nco_g_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == gate
+              processors:
+                - label: ps_exception_nested_switch_gate
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_gate.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == gwconv
+              processors:
+                - label: ps_exception_nested_switch_gwconv
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Process: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch("(nco_gwconv.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == igen
+              processors:
+                - label: ps_exception_nested_switch_igen
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == m
+              processors:
+                - label: ps_exception_nested_switch_m
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_m_" + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(".*nco_m_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == migrate
+              processors:
+                - label: ps_exception_nested_switch_migrate
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_migrate.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == objserv
+              processors:
+                - label: ps_exception_nested_switch_objserv
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch("(nco_objserv.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == ov
+              processors:
+                - label: ps_exception_nested_switch_ov
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == ove
+              processors:
+                - label: ps_exception_nested_switch_ove
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == p
+              processors:
+                - label: ps_exception_nested_switch_p
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_p_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_p_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == pa
+              processors:
+                - label: ps_exception_nested_switch_pa
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_pa_.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == pad
+              processors:
+                - label: ps_exception_nested_switch_pad
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_pad.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == patch
+              processors:
+                - label: ps_exception_nested_switch_patch
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch("(nco_.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == proxyserv
+              processors:
+                - label: ps_exception_nested_switch_proxyserv
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("(nco_proxyserv.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == removeuser
+              processors:
+                - label: ps_exception_nested_switch_removeuser
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_" + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()1.re_find_all_submatch(".*nco_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == ssladmin
+              processors:
+                - label: ps_exception_nested_switch_ssladmin
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_ssladmin"
+            - check: this.trap.VarBinds.index(11).Value.string() == t
+              processors:
+                - label: ps_exception_nested_switch_t
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_t_" + this.trap.VarBinds.index(10).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(".*nco_t_([A-Za-z0-9_\\-]+).*").index(0).index(-1)
+            - check: this.trap.VarBinds.index(11).Value.string() == xprops
+              processors:
+                - label: ps_exception_nested_switch_xprops
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "nco_xprops"
+            - processors:
+                - label: ps_exception_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.9").string() + " " + this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.8").string() + ", " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()2 + ", " + this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.10").string() + " " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.20.2.1.1.2").string()0 + "  ( " + root.out.object.name + " )"
+        - label: ps_exception_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: svr_security_alert
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Security Alert"
+
+            root.out.netcool.svrSecurityDetectorDescription = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.svrSecurityLogTimeStamp = this.trap.VarBinds.index(1).Value.snmp_v2_tc_date_and_time().ts_unix_milli()
+            root.out.netcool.svrSecurityLogLogMessage = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+        - label: svr_security_alert_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == Login monitor
+              processors:
+                - label: svr_security_alert_nested_switch_login monitor
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Excessive Login Failures  ( " + "User: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(" user \\((.*)\\)").index(0).index(-1) + " )"
+                    root.out.object.name = "User: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch(" user \\((.*)\\)").index(0).index(-1)
+                    root.out.event.category.name = root.out.event.category.name + " ( Login Monitor )"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == Ping flood
+              processors:
+                - label: svr_security_alert_nested_switch_ping flood
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "From: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("from host\\(s\\):(.*):").index(0).index(-1)
+                    root.out.event.message = "Ping Flood  ( " + "From: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("from host\\(s\\):(.*):").index(0).index(-1) + " )"
+                    root.out.event.category.name = root.out.event.category.name + " ( Ping Flood )"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == Port Scan
+              processors:
+                - label: svr_security_alert_nested_switch_port scan
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = root.out.event.category.name + " ( Port Scan )"
+                    root.out.object.name = "From: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("; from (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("; Type: (.*); from ").index(0).index(-1) + " Port Scan  ( " + "From: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("; from (.*)$").index(0).index(-1) + " )"
+            - check: this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string() == SYN flood
+              processors:
+                - label: svr_security_alert_nested_switch_syn flood
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = root.out.event.category.name + " ( SYN Flood )"
+                    root.out.object.name = "Port: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("flood; on (.*)$").index(0).index(-1)
+                    root.out.event.message = "SYN Flood  ( " + "Port: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string().re_find_all_submatch("flood; on (.*)$").index(0).index(-1) + " )"
+            - processors:
+                - label: svr_security_alert_nested_switch_default
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " ( Unknown )"
+                    root.out.event.message = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string()
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: availability_success_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability"
+            root.out.object.name = "availabilityControlEntry.6"
+            root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability Test Successful"
+
+            root.out.netcool.availabilityControlDestAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.availabilityControlPort = this.trap.VarBinds.index(1).Value
+            root.out.netcool.availabilityControlMethod = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4")
+            root.out.netcool.availabilityDataTime = this.trap.VarBinds.index(3).Value
+            root.out.netcool.availabilityDataPercentage = this.trap.VarBinds.index(4).Value
+            root.out.netcool.availabilityDataAvailable = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1977.6.2.1.2")
+        - label: availability_success_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: availability_success_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + ":" + this.trap.VarBinds.index(1).Value.string() + " )"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: availability_success_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+            - processors:
+                - label: availability_success_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: availability_success_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: availability_failure_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability"
+            root.out.object.name = "availabilityControlEntry.6"
+            root.out.event.message = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4").string() + " Availability Test Failed"
+
+            root.out.netcool.availabilityControlDestAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.availabilityControlPort = this.trap.VarBinds.index(1).Value
+            root.out.netcool.availabilityControlMethod = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1977.6.1.1.4")
+            root.out.netcool.availabilityDataTime = this.trap.VarBinds.index(3).Value
+            root.out.netcool.availabilityDataPercentage = this.trap.VarBinds.index(4).Value
+            root.out.netcool.availabilityDataAvailable = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1977.6.2.1.2")
+        - label: availability_failure_change_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: availability_failure_change_nested_switch_1
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + ":" + this.trap.VarBinds.index(1).Value.string() + " )"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: availability_failure_change_nested_switch_2
+                  mapping: |
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+            - processors:
+                - label: availability_failure_change_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: availability_failure_change_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: dns_availability_success_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Successfully Reached DNS server  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.category.name = "DNS Availability"
+
+            root.out.netcool.dnsAvailabilityControlServer = this.trap.VarBinds.index(0).Value
+            root.out.netcool.dnsAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: dns_availability_failure_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DNS Availability"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Failed to Reach DNS server  ( " + this.trap.VarBinds.index(0).Value.string() + " )"
+
+            root.out.netcool.dnsAvailabilityControlServer = this.trap.VarBinds.index(0).Value
+            root.out.netcool.dnsAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: url_availability_success_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "URL Availability"
+            root.out.object.name = "urlAvailabilityControlEntry.12"
+            root.out.event.message = "URL Available  ( Server: " + this.trap.VarBinds.index(0).Value.string() + ", URL: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
+
+            root.out.netcool.urlAvailabilityControlServerAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.urlAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+            root.out.netcool.urlAvailabilityControlURL = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: url_availability_failure_change
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "URL Availability"
+            root.out.object.name = "urlAvailabilityControlEntry.12"
+            root.out.event.message = "URL Unavailable  ( Server: " + this.trap.VarBinds.index(0).Value.string() + ", URL: " + this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string().string() + " )"
+
+            root.out.netcool.urlAvailabilityControlServerAddress = this.trap.VarBinds.index(0).Value
+            root.out.netcool.urlAvailabilityDataTime = this.trap.VarBinds.index(1).Value
+            root.out.netcool.urlAvailabilityControlURL = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: agent_license_corrupt
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Agent License"
+            root.out.object.name = ""
+            root.out.event.message = "License File Corrupt"
+
+            root.out.netcool.agentIdUniqueId = this.trap.VarBinds.index(0).Value
+            root.out.netcool.agentIdAddress = this.trap.VarBinds.index(1).Value
+            root.out.netcool.agentIdName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: agent_license_invalid
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Key: $5
+            root.out.event.message = "Invalid License Key  ( Key: $5 )"
+            root.out.event.category.name = "Agent License"
+
+            root.out.netcool.agentIdUniqueId = this.trap.VarBinds.index(0).Value
+            root.out.netcool.agentIdAddress = this.trap.VarBinds.index(1).Value
+            root.out.netcool.agentIdName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.netcool.agentLicenseControlKey = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: agent_license_expiry
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "Key: $5
+            root.out.event.message = "Trial License Expired  ( Key: $5 )"
+            root.out.event.category.name = "Agent Trial License"
+
+            root.out.netcool.agentIdUniqueId = this.trap.VarBinds.index(0).Value
+            root.out.netcool.agentIdAddress = this.trap.VarBinds.index(1).Value
+            root.out.netcool.agentIdName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+            root.out.netcool.agentLicenseControlKey = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: gen_alarm_rising_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string().string()
+
+            root.out.netcool.genAlarmControlVariable = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmControlVariableDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmDataInstance = this.trap.VarBinds.index(2).Value
+            root.out.netcool.genAlarmControlSampleType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.7")
+            root.out.netcool.genAlarmControlAlarmMode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.9")
+            root.out.netcool.genAlarmDataValue = this.trap.VarBinds.index(5).Value
+            root.out.netcool.genAlarmControlRisingThreshold = this.trap.VarBinds.index(6).Value
+            root.out.netcool.genAlarmControlRisingDuration = this.trap.VarBinds.index(7).Value
+            root.out.netcool.genAlarmControlRisingSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.16")
+            root.out.netcool.genAlarmControlRisingDescription = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+        - label: gen_alarm_rising_alarm_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 1
+              processors:
+                - label: gen_alarm_rising_alarm_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 2
+              processors:
+                - label: gen_alarm_rising_alarm_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 3
+              processors:
+                - label: gen_alarm_rising_alarm_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 4
+              processors:
+                - label: gen_alarm_rising_alarm_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: gen_alarm_rising_alarm_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: gen_alarm_rising_alarm_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: gen_alarm_falling_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()0
+
+            root.out.netcool.genAlarmControlVariable = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmControlVariableDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmDataInstance = this.trap.VarBinds.index(2).Value
+            root.out.netcool.genAlarmControlSampleType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.7")
+            root.out.netcool.genAlarmControlAlarmMode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.9")
+            root.out.netcool.genAlarmDataValue = this.trap.VarBinds.index(5).Value
+            root.out.netcool.genAlarmControlFallingThreshold = this.trap.VarBinds.index(6).Value
+            root.out.netcool.genAlarmControlFallingDuration = this.trap.VarBinds.index(7).Value
+            root.out.netcool.genAlarmControlFallingSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.17")
+            root.out.netcool.genAlarmControlFallingDescription = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+        - label: gen_alarm_falling_alarm_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 1
+              processors:
+                - label: gen_alarm_falling_alarm_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 2
+              processors:
+                - label: gen_alarm_falling_alarm_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 3
+              processors:
+                - label: gen_alarm_falling_alarm_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 4
+              processors:
+                - label: gen_alarm_falling_alarm_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: gen_alarm_falling_alarm_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: gen_alarm_falling_alarm_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: gen_alarm_match_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string().string()0
+
+            root.out.netcool.genAlarmControlVariable = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmControlVariableDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmDataInstance = this.trap.VarBinds.index(2).Value
+            root.out.netcool.genAlarmControlSampleType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.7")
+            root.out.netcool.genAlarmControlAlarmMode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.9")
+            root.out.netcool.genAlarmDataValue = this.trap.VarBinds.index(5).Value
+            root.out.netcool.genAlarmControlMatchValue = this.trap.VarBinds.index(6).Value
+            root.out.netcool.genAlarmControlMatchDuration = this.trap.VarBinds.index(7).Value
+            root.out.netcool.genAlarmControlMatchSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.24")
+            root.out.netcool.genAlarmControlMatchDescription = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+        - label: gen_alarm_match_alarm_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 1
+              processors:
+                - label: gen_alarm_match_alarm_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 2
+              processors:
+                - label: gen_alarm_match_alarm_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 3
+              processors:
+                - label: gen_alarm_match_alarm_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 4
+              processors:
+                - label: gen_alarm_match_alarm_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: gen_alarm_match_alarm_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: gen_alarm_match_alarm_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 37
+      processors:
+        - label: gen_alarm_push_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string().string()
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string().string()
+
+            root.out.netcool.genAlarmControlVariable = this.trap.VarBinds.index(0).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmControlVariableDescription = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
+            root.out.netcool.genAlarmDataInstance = this.trap.VarBinds.index(2).Value
+            root.out.netcool.genAlarmControlSampleType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.7")
+            root.out.netcool.genAlarmControlAlarmMode = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.9")
+            root.out.netcool.genAlarmDataValue = this.trap.VarBinds.index(5).Value
+            root.out.netcool.genAlarmControlMatchValue = this.trap.VarBinds.index(6).Value
+            root.out.netcool.genAlarmControlMatchDuration = this.trap.VarBinds.index(7).Value
+            root.out.netcool.genAlarmControlMatchSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1977.25.1.1.24")
+            root.out.netcool.genAlarmControlMatchDescription = this.trap.VarBinds.index(9).Value.snmp_v2_tc_display_string()
+        - label: gen_alarm_push_alarm_nested_switch
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 1
+              processors:
+                - label: gen_alarm_push_alarm_nested_switch_1
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 2
+              processors:
+                - label: gen_alarm_push_alarm_nested_switch_2
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 3
+              processors:
+                - label: gen_alarm_push_alarm_nested_switch_3
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - check: this.trap.VarBinds.index(8).Value == 4
+              processors:
+                - label: gen_alarm_push_alarm_nested_switch_4
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+            - processors:
+                - label: gen_alarm_push_alarm_nested_switch_default
+                  mapping: |+
+                    #!blobl
+                    root = this
+
+        - label: gen_alarm_push_alarm_after_switch
+          mapping: |+
+            #!blobl
+            root = this
+
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: agent_termination
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "Agent Terminating"
+
+            root.out.netcool.agentIdUniqueId = this.trap.VarBinds.index(0).Value
+            root.out.netcool.agentIdAddress = this.trap.VarBinds.index(1).Value
+            root.out.netcool.agentIdName = this.trap.VarBinds.index(2).Value.snmp_v2_tc_display_string()
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: traceroute_rising_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Traceroute Status"
+            root.out.object.name = "tracerouteDestEntry."
+            root.out.event.message = "Traceroute Failed: Hop Delay
+
+            root.out.netcool.tracerouteAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.5.5.1.3")
+            root.out.netcool.tracerouteAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.tracerouteDestAddr = this.trap.VarBinds.index(2).Value
+            root.out.netcool.tracerouteDataDelay = this.trap.VarBinds.index(3).Value
+            root.out.netcool.tracerouteDataAddress = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 41
+      processors:
+        - label: traceroute_falling_alarm
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Traceroute Status"
+            root.out.object.name = "tracerouteDestEntry."
+            root.out.event.message = "Traceroute Complete: Hop Delay
+
+            root.out.netcool.tracerouteAlarmVariable = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1977.5.5.1.3")
+            root.out.netcool.tracerouteAlarmControlIndex = this.trap.VarBinds.index(1).Value
+            root.out.netcool.tracerouteDestAddr = this.trap.VarBinds.index(2).Value
+            root.out.netcool.tracerouteDataDelay = this.trap.VarBinds.index(3).Value
+            root.out.netcool.tracerouteDataAddress = this.trap.VarBinds.index(4).Value
+    - check: this.trap.SpecificTrap == 55
+      processors:
+        - label: agent_authentication_failure
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "From: $5
+            root.out.event.message = "Authentication Failure  ( From: $5 )"
+            root.out.event.category.name = "Agent Authentication"
+
+            root.out.netcool.agentAuthLastBadIPAddress = this.trap.VarBinds.index(0).Value
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl,
+            root = this
+            root.out.event.category.name = "Unknown Trap"

@@ -25,9 +25,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ALPS Peer Connection Closed"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "ALPS Peer Connection Closed"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: alps_peer_status_change_nested_switch_2
@@ -115,9 +115,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = root.out.event.message + " Opened"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
-                    root.out.event.message = root.out.event.message + " Opened"
             - check: this.trap.VarBinds.index(0).Value == 5
               processors:
                 - label: alps_ckt_status_change_nested_switch_5
@@ -135,9 +135,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = root.out.event.message + " Peer Busy"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = root.out.event.message + " Peer Busy"
             - check: this.trap.VarBinds.index(0).Value == 7
               processors:
                 - label: alps_ckt_status_change_nested_switch_7
@@ -185,9 +185,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "ALPS ASCU Disabled"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-                    root.out.event.message = "ALPS ASCU Disabled"
             - check: this.trap.VarBinds.index(0).Value == 2
               processors:
                 - label: alps_ascu_status_change_nested_switch_2
@@ -215,18 +215,18 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ALPS ASCU Up"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "ALPS ASCU Up"
             - processors:
                 - label: alps_ascu_status_change_nested_switch_default
                   mapping: |
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ALPS ASCU Status Unknown"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "ALPS ASCU Status Unknown"
         - label: alps_ascu_status_change_after_switch
           mapping: |
             #!blobl
@@ -240,10 +240,10 @@
             #!blobl
             root = this
 
+            root.out.object.name = "alpsRemPeerConnEntry."
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ALPS-MIB-alpsPeerConnStatusChange"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-ALPS-MIB-alpsPeerConnStatusChange"
             root.out.event.category.name = "ALPS Peer Connection Status"
-            root.out.object.name = "alpsRemPeerConnEntry."
 
             root.out.cisco.alpsRemPeerConnState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.95.1.2.4.1.5")
         - label: alps_peer_conn_status_change_nested_switch
@@ -265,9 +265,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ALPS Peer Connection Opening"
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
+                    root.out.event.message = "ALPS Peer Connection Opening"
             - check: this.trap.VarBinds.index(0).Value == 3
               processors:
                 - label: alps_peer_conn_status_change_nested_switch_3
@@ -275,9 +275,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "ALPS Peer Connection Opened"
                     root.out.event.severity.code = 1
                     root.out.event.severity.level = "Alert"
+                    root.out.event.message = "ALPS Peer Connection Opened"
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: alps_peer_conn_status_change_nested_switch_4
@@ -285,9 +285,9 @@
                     #!blobl
                     root = this
 
+                    root.out.event.message = "ALPS Peer Connection Busy"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
-                    root.out.event.message = "ALPS Peer Connection Busy"
             - processors:
                 - label: alps_peer_conn_status_change_nested_switch_default
                   mapping: |
@@ -362,9 +362,9 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + " Open Failure, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.95.1.3.1.1.14") + "  ( Circuit: $alpsCktBaseName )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
+            root.out.event.message = root.out.event.message + " Open Failure, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.95.1.3.1.1.14").string() + "  ( Circuit: $alpsCktBaseName )"
     - check: this.trap.SpecificTrap == 6
       processors:
         - label: alps_ckt_partial_reject
@@ -425,7 +425,7 @@
             #!blobl
             root = this
 
-            root.out.event.message = root.out.event.message + "  ( Circuit: $alpsCktAscuCktName, ASCU: alpsAscuEntry." + this.trap.VarBinds.index(0).Value + "." + this.trap.VarBinds.index(1).Value + " ) "
+            root.out.event.message = root.out.event.message + "  ( Circuit: $alpsCktAscuCktName, ASCU: alpsAscuEntry." + this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.string() + " ) "
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
     - processors:

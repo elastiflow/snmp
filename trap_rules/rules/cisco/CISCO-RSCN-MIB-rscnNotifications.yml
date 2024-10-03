@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RSCN-MIB-rscnElsRejectReqNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-RSCN-MIB-rscnElsRejectReqNotify"
             root.out.event.category.name = "SCR/RSCN Request Status"
-            root.out.object.name = "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value
-            root.out.event.message = "SCR or RSCN Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.292.1.3.2") + "  ( " + "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
+            root.out.object.name = "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "SCR or RSCN Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.292.1.3.2").string() + "  ( " + "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value.string() + " )"
 
             root.out.cisco.rscnElsRejReasonCode = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.292.1.3.2")
             root.out.cisco.rscnNotifyFcId = this.trap.VarBinds.index(1).Value
@@ -30,8 +30,8 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RSCN-MIB-rscnIlsRejectReqNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-RSCN-MIB-rscnIlsRejectReqNotify"
             root.out.event.category.name = "SW_RSCN Request Status"
-            root.out.object.name = "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value
-            root.out.event.message = "SW_RSCN Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.292.1.3.1") + "  ( " + "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value + " )"
+            root.out.object.name = "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "SW_RSCN Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.292.1.3.1").string() + "  ( " + "Fibre Channel ID: " + this.trap.VarBinds.index(1).Value.string() + " )"
             root.out.event.severity.code = 3
             root.out.event.severity.level = "Error"
 

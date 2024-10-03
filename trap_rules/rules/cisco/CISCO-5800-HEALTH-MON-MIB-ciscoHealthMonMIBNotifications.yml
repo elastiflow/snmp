@@ -12,9 +12,9 @@
 
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-5800-HEALTH-MON-MIB-ciscoHealthMonNotification"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-5800-HEALTH-MON-MIB-ciscoHealthMonNotification"
-            root.out.event.category.name = this.trap.VarBinds.index(0).Value
+            root.out.event.category.name = this.trap.VarBinds.index(0).Value.string()
             root.out.object.name = "ciscoHealthMonStatusEntry.10.28"
-            root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string() + ", " + this.trap.VarBinds.index(4).Value + ", Exceeds " + this.trap.VarBinds.index(5).Value + "  ( Shelf: " + this.trap.VarBinds.index(1).Value + ", IP Address: " + this.trap.VarBinds.index(2).Value + " )"
+            root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_v2_tc_display_string().string() + ", " + this.trap.VarBinds.index(4).Value.string() + ", Exceeds " + this.trap.VarBinds.index(5).Value.string() + "  ( Shelf: " + this.trap.VarBinds.index(1).Value.string() + ", IP Address: " + this.trap.VarBinds.index(2).Value.string() + " )"
 
             root.out.cisco.ciscoHealthMonStatusType = this.trap.VarBinds.index(0).Value
             root.out.cisco.ciscoHealthMonShelfId = this.trap.VarBinds.index(1).Value
@@ -24,7 +24,7 @@
             root.out.cisco.ciscoHealthMonThreshold = this.trap.VarBinds.index(5).Value
         - label: cisco_health_mon_notification_nested_switch
           switch:
-            - check: this.trap.VarBinds.index(0).Value == 1
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
               processors:
                 - label: cisco_health_mon_notification_nested_switch_1
                   mapping: |
@@ -33,7 +33,7 @@
 
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(0).Value == 2
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
               processors:
                 - label: cisco_health_mon_notification_nested_switch_2
                   mapping: |
@@ -42,7 +42,7 @@
 
                     root.out.event.severity.code = 2
                     root.out.event.severity.level = "Critical"
-            - check: this.trap.VarBinds.index(0).Value == 3
+            - check: this.trap.VarBinds.index(0).Value.string() == 3
               processors:
                 - label: cisco_health_mon_notification_nested_switch_3
                   mapping: |

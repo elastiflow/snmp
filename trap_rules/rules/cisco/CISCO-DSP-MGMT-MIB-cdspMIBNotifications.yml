@@ -10,10 +10,10 @@
             #!blobl
             root = this
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DSP-MGMT-MIB-cdspMIBCardStateNotification"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-DSP-MGMT-MIB-cdspMIBCardStateNotification"
             root.out.event.category.name = "DSP Card State"
             root.out.object.name = "cdspCardStatusEntry.86"
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DSP-MGMT-MIB-cdspMIBCardStateNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-DSP-MGMT-MIB-cdspMIBCardStateNotification"
 
             root.out.cisco.cdspCardState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.86.1.1.1.1.2")
         - label: cdsp_mibcard_state_notification_nested_switch
@@ -45,9 +45,9 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "DSP Card Major Alarm"
                     root.out.event.severity.code = 3
                     root.out.event.severity.level = "Error"
+                    root.out.event.message = "DSP Card Major Alarm"
             - check: this.trap.VarBinds.index(0).Value == 4
               processors:
                 - label: cdsp_mibcard_state_notification_nested_switch_4

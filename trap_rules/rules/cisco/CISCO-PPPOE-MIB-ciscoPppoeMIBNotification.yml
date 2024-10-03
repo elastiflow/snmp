@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
-            root.out.event.message = "PPPoE Active Sessions, " + this.trap.VarBinds.index(0).Value + ", Exceeds " + this.trap.VarBinds.index(2).Value
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeSystemSessionThresholdTrap"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeSystemSessionThresholdTrap"
             root.out.event.category.name = "PPPoE Session Threshold"
+            root.out.object.name = ""
+            root.out.event.message = "PPPoE Active Sessions, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeds " + this.trap.VarBinds.index(2).Value.string()
 
             root.out.cisco.cPppoeSystemCurrSessions = this.trap.VarBinds.index(0).Value
             root.out.cisco.cPppoeSystemMaxAllowedSessions = this.trap.VarBinds.index(1).Value
@@ -28,13 +28,13 @@
             #!blobl
             root = this
 
+            root.out.object.name = ""
+            root.out.event.message = "PPPoE Active VC Sessions, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeds " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeVcSessionThresholdTrap"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeVcSessionThresholdTrap"
             root.out.event.category.name = "PPPoE VC Session Threshold"
-            root.out.object.name = ""
-            root.out.event.message = "PPPoE Active VC Sessions, " + this.trap.VarBinds.index(0).Value + ", Exceeds " + this.trap.VarBinds.index(2).Value
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
 
             root.out.cisco.cPppoeVcCurrSessions = this.trap.VarBinds.index(0).Value
             root.out.cisco.cPppoeVcMaxAllowedSessions = this.trap.VarBinds.index(1).Value

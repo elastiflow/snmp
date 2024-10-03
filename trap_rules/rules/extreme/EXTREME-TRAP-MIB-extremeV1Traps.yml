@@ -24,9 +24,9 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Fan Status"
             root.out.object.name = ""
             root.out.event.message = "One or more of the Cooling Fans has Failed"
-            root.out.event.category.name = "Fan Status"
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -52,9 +52,9 @@
             #!blobl
             root = this
 
+            root.out.object.name = ""
             root.out.event.message = "User login via telnet Refused: Incorrect username or password"
             root.out.event.category.name = "Login"
-            root.out.object.name = ""
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -93,9 +93,9 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Redundant Power Supply Status"
             root.out.object.name = ""
             root.out.event.message = "Redundant Power Supply device indicating an Alarm"
+            root.out.event.category.name = "Redundant Power Supply Status"
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -106,9 +106,9 @@
             #!blobl
             root = this
 
+            root.out.event.category.name = "Redundant Power Supply Status"
             root.out.object.name = ""
             root.out.event.message = "Redundant Power Supply device no longer indicating an Alarm"
-            root.out.event.category.name = "Redundant Power Supply Status"
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -132,8 +132,8 @@
             #!blobl
             root = this
 
-            root.out.object.name = this.trap.VarBinds.index(1).Value
             root.out.event.category.name = "Module Status"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.extremeSlotNumber = this.trap.VarBinds.index(1).Value
@@ -149,7 +149,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Not Present"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Not Present"
             - check: this.trap.VarBinds.index(4).Value == 2
               processors:
                 - label: extreme_module_state_changed_nested_switch_2
@@ -157,7 +157,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Testing"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Testing"
             - check: this.trap.VarBinds.index(4).Value == 3
               processors:
                 - label: extreme_module_state_changed_nested_switch_3
@@ -165,7 +165,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Mismatch"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Mismatch"
             - check: this.trap.VarBinds.index(4).Value == 4
               processors:
                 - label: extreme_module_state_changed_nested_switch_4
@@ -173,7 +173,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Failed"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Failed"
             - check: this.trap.VarBinds.index(4).Value == 5
               processors:
                 - label: extreme_module_state_changed_nested_switch_5
@@ -181,7 +181,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Operational"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Operational"
             - check: this.trap.VarBinds.index(4).Value == 6
               processors:
                 - label: extreme_module_state_changed_nested_switch_6
@@ -189,7 +189,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Power Down"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Power Down"
             - check: this.trap.VarBinds.index(4).Value == 7
               processors:
                 - label: extreme_module_state_changed_nested_switch_7
@@ -197,7 +197,7 @@
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value + " Unknown"
+                    root.out.event.message = "Module ( $Module ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Unknown"
             - processors:
                 - label: extreme_module_state_changed_nested_switch_default
                   mapping: |+
@@ -216,8 +216,8 @@
             #!blobl
             root = this
 
-            root.out.object.name = ""
             root.out.event.category.name = "ESRP Status"
+            root.out.object.name = ""
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()
@@ -296,8 +296,8 @@
             root = this
 
             root.out.event.category.name = "Extreme Discovery Protocol"
-            root.out.object.name = this.trap.VarBinds.index(2).Value
-            root.out.event.message = "Node discovers a new neighbor ( " + this.trap.VarBinds.index(2).Value + " ) via Extreme Discovery Protocol(EDP)"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "Node discovers a new neighbor ( " + this.trap.VarBinds.index(2).Value.string() + " ) via Extreme Discovery Protocol(EDP)"
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.extremeEdpPortIfIndex = this.trap.VarBinds.index(1).Value
@@ -313,8 +313,8 @@
             root = this
 
             root.out.event.category.name = "Extreme Discovery Protocol"
-            root.out.object.name = this.trap.VarBinds.index(2).Value
-            root.out.event.message = "No EDP updates received, neighbor ( " + this.trap.VarBinds.index(2).Value + " ) entry is aged out by the device"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "No EDP updates received, neighbor ( " + this.trap.VarBinds.index(2).Value.string() + " ) entry is aged out by the device"
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.extremeEdpPortIfIndex = this.trap.VarBinds.index(1).Value
@@ -331,7 +331,7 @@
 
             root.out.event.message = "CPU HealthCheck has failed"
             root.out.event.category.name = "CPU Health"
-            root.out.object.name = this.trap.VarBinds.index(2).Value
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
 
             root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
             root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_v2_tc_display_string()

@@ -10,13 +10,13 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "FCS Request Status"
             root.out.object.name = ""
-            root.out.event.message = "Fabric Configuration Server Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.297.1.3.1")
+            root.out.event.message = "Fabric Configuration Server Request Rejected, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.297.1.3.1").string()
             root.out.event.severity.code = 2
             root.out.event.severity.level = "Critical"
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-FCS-MIB-fcsReqRejNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-FCS-MIB-fcsReqRejNotify"
+            root.out.event.category.name = "FCS Request Status"
 
             root.out.cisco.fcsRejReasonCode = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.297.1.3.1")
             root.out.cisco.fcsRejReasonCodeExplanation = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.297.1.3.2")
@@ -30,8 +30,8 @@
             root.out.event.class.name = "SNMPTRAP-cisco-CISCO-FCS-MIB-fcsDiscoveryCompleteNotify"
             root.out.event.id = "SNMPTRAP-cisco-CISCO-FCS-MIB-fcsDiscoveryCompleteNotify"
             root.out.event.category.name = "Discovery Cycle Status"
-            root.out.object.name = "Discovery: " + this.trap.VarBinds.index(0).Value
-            root.out.event.message = "Discover Cycle Complete  ( " + "Discovery: " + this.trap.VarBinds.index(0).Value + " )"
+            root.out.object.name = "Discovery: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Discover Cycle Complete  ( " + "Discovery: " + this.trap.VarBinds.index(0).Value.string() + " )"
             root.out.event.severity.code = 1
             root.out.event.severity.level = "Alert"
 
