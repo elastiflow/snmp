@@ -1,0 +1,128 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CLARIION-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: event_monitor_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.emc_clariion.hostName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.emc_clariion.deviceID = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.emc_clariion.eventID = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.emc_clariion.eventText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.emc_clariion.storageSystem = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: event_monitor_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "CLARiiON Message ( Event ID: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.object.name = "Storage System: " + this.trap.VarBinds.index(4).Value.snmp_display_string().string()
+            root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: event_monitor_trap_info_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.emc_clariion.hostName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.emc_clariion.deviceID = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.emc_clariion.eventID = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.emc_clariion.eventText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.emc_clariion.storageSystem = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: event_monitor_trap_info_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: event_monitor_trap_warn_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.emc_clariion.hostName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.emc_clariion.deviceID = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.emc_clariion.eventID = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.emc_clariion.eventText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.emc_clariion.storageSystem = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: event_monitor_trap_warn_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: event_monitor_trap_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.emc_clariion.hostName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.emc_clariion.deviceID = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.emc_clariion.eventID = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.emc_clariion.eventText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.emc_clariion.storageSystem = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: event_monitor_trap_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: event_monitor_trap_fault_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.emc_clariion.hostName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.emc_clariion.deviceID = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.emc_clariion.eventID = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.emc_clariion.eventText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.emc_clariion.storageSystem = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: event_monitor_trap_fault_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

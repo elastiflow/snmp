@@ -1,0 +1,357 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "HDSL2-SHDSL-LINE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: hdsl2shdsl_loop_atten_crossing_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrAtn = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshLoopAttenuation = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_loop_atten_crossing_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLoopAttenCrossing"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLoopAttenCrossing"
+            root.out.event.category.name = "HDSL2/SHDSL Loop Attenuation Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint Loop Attenuation, " + this.trap.VarBinds.index(0).Value.string() + "dB, Exceeded " + this.trap.VarBinds.index(1).Value.string() + "dB  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: hdsl2shdsl_snrmargin_crossing_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrSnrMgn = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshSNRMargin = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_snrmargin_crossing_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslSNRMarginCrossing"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslSNRMarginCrossing"
+            root.out.event.category.name = "HDSL2/SHDSL SNR Margin Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint SNR Margin, " + this.trap.VarBinds.index(0).Value.string() + "dB, Exceeded " + this.trap.VarBinds.index(1).Value.string() + "dB  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: hdsl2shdsl_perf_esthresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurr15MinES = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshES = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_perf_esthresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfESThresh"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfESThresh"
+            root.out.event.category.name = "HDSL2/SHDSL ES 15 Min. Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint Errored Seconds, " + this.trap.VarBinds.index(0).Value.string() + " secs., Exceeded " + this.trap.VarBinds.index(1).Value.string() + " secs.  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: hdsl2shdsl_perf_sesthresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurr15MinSES = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshSES = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_perf_sesthresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfSESThresh"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfSESThresh"
+            root.out.event.category.name = "HDSL2/SHDSL SES 15 Min. Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint Severely Errored Seconds, " + this.trap.VarBinds.index(0).Value.string() + " secs., Exceeded " + this.trap.VarBinds.index(1).Value.string() + " secs.  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: hdsl2shdsl_perf_crcanomalies_thresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurr15MinCRCanomalies = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshCRCanomalies = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_perf_crcanomalies_thresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfCRCanomaliesThresh"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfCRCanomaliesThresh"
+            root.out.event.category.name = "HDSL2/SHDSL CRC 15 Min. Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint CRC Anomalies, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeded " + this.trap.VarBinds.index(1).Value.string() + "  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: hdsl2shdsl_perf_loswsthresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurr15MinLOSWS = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshLOSWS = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_perf_loswsthresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfLOSWSThresh"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfLOSWSThresh"
+            root.out.event.category.name = "HDSL2/SHDSL LOSW Secs. 15 Min. Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint Loss of Sync Word Seconds, " + this.trap.VarBinds.index(0).Value.string() + " secs., Exceeded " + this.trap.VarBinds.index(1).Value.string() + " secs.  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: hdsl2shdsl_perf_uasthresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurr15MinUAS = this.trap.VarBinds.index(0).Value
+            root.out.IETF.hdsl2ShdslEndpointThreshUAS = this.trap.VarBinds.index(1).Value
+        - label: hdsl2shdsl_perf_uasthresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfUASThresh"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslPerfUASThresh"
+            root.out.event.category.name = "HDSL2/SHDSL Unavailable Secs. 15 Min. Threshold"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Segment Endpoint Unavailable Seconds, " + this.trap.VarBinds.index(0).Value.string() + " secs., Exceeded " + this.trap.VarBinds.index(1).Value.string() + " secs.  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: hdsl2shdsl_span_invalid_num_repeaters_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslSpanConfNumRepeaters = this.trap.VarBinds.index(0).Value
+        - label: hdsl2shdsl_span_invalid_num_repeaters_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslSpanInvalidNumRepeaters"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslSpanInvalidNumRepeaters"
+            root.out.event.category.name = "HDSL2/SHDSL Repeater/Regenerator Configuration Mismatch"
+            root.out.object.name = "hdsl2ShdslSpanConfEntry.48"
+            root.out.event.message = "HDSL2/SHDSL Configured Repeater/Regenerator Units Differs from EOC Discovery  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: hdsl2shdsl_loopback_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslMaintLoopbackConfig = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.8.1.1")
+        - label: hdsl2shdsl_loopback_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLoopbackFailure"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLoopbackFailure"
+            root.out.event.category.name = "HDSL2/SHDSL Loopback Status"
+            root.out.object.name = "hdsl2ShdslEndpointMaintEntry.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Loopback Failure  ( Interface: ifEntry.1, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: hdsl2shdslpower_backoff_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdslpower_backoff_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslpowerBackoff"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslpowerBackoff"
+            root.out.event.category.name = "HDSL2/SHDSL Power Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Power Backoff  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: hdsl2shdsldevice_fault_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdsldevice_fault_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdsldeviceFault"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdsldeviceFault"
+            root.out.event.category.name = "HDSL2/SHDSL Device Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Device Fault  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: hdsl2shdsldc_continuity_fault_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdsldc_continuity_fault_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdsldcContinuityFault"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdsldcContinuityFault"
+            root.out.event.category.name = "HDSL2/SHDSL DC Continuity Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL DC Continuity Fault  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: hdsl2shdslconfig_init_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdslconfig_init_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslconfigInitFailure"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslconfigInitFailure"
+            root.out.event.category.name = "HDSL2/SHDSL Configuration Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Endpoint Initialization Failed, Configuration Not Supported  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: hdsl2shdslprotocol_init_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdslprotocol_init_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslprotocolInitFailure"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslprotocolInitFailure"
+            root.out.event.category.name = "HDSL2/SHDSL Protocol Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Endpoint Initialization Failed, Protocol Incompatible  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: hdsl2shdslno_neighbor_present_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslEndpointCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.48.1.5.1.3")
+        - label: hdsl2shdslno_neighbor_present_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslnoNeighborPresent"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslnoNeighborPresent"
+            root.out.event.category.name = "HDSL2/SHDSL Neighbor Status"
+            root.out.object.name = "hdsl2ShdslEndpointCurrEntry.2.1.10.48"
+            root.out.event.message = "HDSL2/SHDSL Neighbor Not Present  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId), Side: lookup($hdsl2ShdslEndpointSide_Raw, Hdsl2ShdslUnitSide), Pair: lookup($hdsl2ShdslEndpointWirePair_Raw, Hdsl2ShdslWirePair) )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: hdsl2shdsl_local_power_loss_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.hdsl2ShdslInvVendorID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: hdsl2shdsl_local_power_loss_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLocalPowerLoss"
+            root.out.event.id = "SNMPTRAP-IETF-HDSL2-SHDSL-LINE-MIB-hdsl2ShdslLocalPowerLoss"
+            root.out.event.category.name = "HDSL2/SHDSL Local Power Status"
+            root.out.object.name = "hdsl2ShdslInventoryEntry.2.1"
+            root.out.event.message = "HDSL2/SHDSL Local Power Loss, Impending Unit Failure  ( Interface: ifEntry.2, Unit ID: lookup($hdsl2ShdslInvIndex_Raw, Hdsl2ShdslUnitId) )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

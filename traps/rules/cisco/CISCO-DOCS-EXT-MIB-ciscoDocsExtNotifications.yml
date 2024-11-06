@@ -1,0 +1,589 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-DOCS-EXT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cdx_cmts_cm_on_off_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.cisco.docsIfCmtsCmStatusInetAddressType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.127.1.3.3.1.20")
+            root.out.cisco.docsIfCmtsCmStatusInetAddress = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.docsIfCmtsCmStatusDownChannelIfIndex = this.trap.VarBinds.index(3).Value
+            root.out.cisco.docsIfCmtsCmStatusUpChannelIfIndex = this.trap.VarBinds.index(4).Value
+            root.out.cisco.cdxCmCpeCmtsServiceId = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cdxCmtsCmStatusValue = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.3.2.1.1")
+        - label: cdx_cmts_cm_on_off_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmOnOffNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmOnOffNotification"
+            root.out.event.category.name = "Cable Modem Status"
+            root.out.object.name = "docsIfCmtsCmStatusEntry."
+        - label: cdx_cmts_cm_on_off_notification_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(5).Value.string() == 1
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Offline"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 2
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 3
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Ranging Received"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 4
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem DHCP Request Received"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 5
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Online, Network Access Disabled"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 6
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Online, KEK Assigned"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value.string() == 7
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Online, TEK Assigned"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value.string() == 8
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_8
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Rejected, Bad MIC"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 9
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_9
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Rejected, Bad COS"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 10
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_10
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem KEK modem key assignment rejected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 11
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_11
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem TEK modem key assignment rejected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 12
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_12
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Online"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value.string() == 13
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_13
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem TFTP File Transfer Started"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 14
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_14
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Time of Day Request"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 15
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_15
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Resetting"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 16
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_16
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Ranging In Progress"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 17
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_17
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Ranging Completed"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 18
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_18
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Assigned IP Address via DHCP"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value.string() == 19
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_19
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Refused, Stale Config"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 20
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_20
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Refused, IP Spoof"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 21
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_21
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Refused, Class Failure"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 22
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_22
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Registration Failed, No Acknowledgement Recieved"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 23
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_23
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem KEK modem key assignment Expired"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 24
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_24
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem TEK modem key assignment Expired"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(5).Value.string() == 25
+              processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_25
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Shutdown"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cdx_cmts_cm_on_off_notification_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Cable Modem Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cdx_cmts_cm_on_off_notification_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string() + ", CM IP: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.127.1.3.3.1.20").string() + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cdx_cmts_cm_ch_over_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cdxCmtsCmChOverMacAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.cisco.cdxCmtsCmChOverDownFrequency = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cdxCmtsCmChOverUpChannelId = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cdxCmtsCmChOverOpInitiatedTime = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cdxCmtsCmChOverState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.3.5.1.7")
+        - label: cdx_cmts_cm_ch_over_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-DOCS-EXT-MIB-cdxCmtsCmChOverNotification"
+            root.out.event.category.name = "Channel Change Status"
+            root.out.object.name = "cdxCmtsCmChOverEntry."
+            root.out.event.message = "Cable Modem Channel Override"
+        - label: cdx_cmts_cm_ch_over_notification_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Message Sent"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Command Not Active"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", No Operation Needed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Modem Not Found"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Wait To Send Message"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Time Out"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cdx_cmts_cm_ch_over_notification_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cdx_cmts_cm_ch_over_notification_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( CM MAC: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string() + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cdx_cmts_cm_dmiclock_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: cdx_cmts_cm_dmiclock_notification_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cdx_wbresil_rfdown_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+        - label: cdx_wbresil_rfdown_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cdx_wbresil_rfup_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+        - label: cdx_wbresil_rfup_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cdx_wbresil_cmpartial_service_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+            root.out.cisco.docsIfCmtsCmStatusDownChannelIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+            root.out.cisco.cdxWBResilUpdateTime = this.trap.VarBinds.index(4).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cdxWBResilCmImpairedDsChIndex = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cdx_wbresil_cmpartial_service_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cdx_wbresil_cmfull_service_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+            root.out.cisco.docsIfCmtsCmStatusDownChannelIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+            root.out.cisco.cdxWBResilUpdateTime = this.trap.VarBinds.index(4).Value.snmp_date_and_time().ts_unix_milli()
+        - label: cdx_wbresil_cmfull_service_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: cdx_wbresil_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.cisco.cdxWBResilEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.8")
+            root.out.cisco.cdxWBResilUpdateTime = this.trap.VarBinds.index(2).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cdxWBResilEventTotalCount = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cdxWBResilEventTotalDupCount = this.trap.VarBinds.index(4).Value
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+        - label: cdx_wbresil_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: cdx_wbresil_us_partial_service_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+            root.out.cisco.docsIfCmtsCmStatusUpChannelIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cdxUsResilEventType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.12")
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+            root.out.cisco.cdxWBResilUpdateTime = this.trap.VarBinds.index(5).Value.snmp_date_and_time().ts_unix_milli()
+        - label: cdx_wbresil_us_partial_service_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: cdx_wbresil_us_full_service_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.docsIfCmtsCmStatusMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+            root.out.cisco.docsIfCmtsCmStatusUpChannelIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cdxUsResilEventType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.12")
+            root.out.cisco.cdxWBResilEventLevel = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.116.1.5.7")
+            root.out.cisco.cdxWBResilUpdateTime = this.trap.VarBinds.index(5).Value.snmp_date_and_time().ts_unix_milli()
+        - label: cdx_wbresil_us_full_service_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

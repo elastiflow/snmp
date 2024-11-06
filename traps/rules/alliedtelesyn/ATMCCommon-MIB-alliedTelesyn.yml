@@ -1,0 +1,273 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ATMCCommon-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 101
+      processors:
+        - label: new_root_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-newRoot"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-newRoot"
+            root.out.event.category.name = "New Root"
+            root.out.object.name = ""
+            root.out.event.message = @Node is New Root of Spanning Tree"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 102
+      processors:
+        - label: topology_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-topologyChange"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-topologyChange"
+            root.out.event.category.name = "Topology Change"
+            root.out.object.name = ""
+            root.out.event.message = "Port Transitioned <Learning to Forwarding> or <Forwarding to Blocking>"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 103
+      processors:
+        - label: over_temperature_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fstswitchFanStopTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fstswitchFanStopTrap"
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Fan Failure  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2FanStopTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2FanStopTrap"
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Fan Failure  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-overTemperature"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-overTemperature"
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = ""
+            root.out.event.message = "Overheat Condition"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 104
+      processors:
+        - label: fan_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fanFailure"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fanFailure"
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Temperature Abnormal  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2TemperatureAbnormalTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2TemperatureAbnormalTrap"
+            root.out.event.category.name = "Temperature Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Temperature Abnormal  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fanFailure"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fanFailure"
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan Failure"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 105
+      processors:
+        - label: intruder_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fstswitchPowerSupplyOutage"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-fstswitchPowerSupplyOutage"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Power Supply Failure  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2PowerSupplyOutage"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2PowerSupplyOutage"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = "Module: $1
+            root.out.event.message = "Power Supply Failure  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-intruderTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-intruderTrap"
+            root.out.event.category.name = "Intruder Protection"
+            root.out.object.name = ""
+            root.out.event.message = "Intruder Detected"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 106
+      processors:
+        - label: powersupply_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: powersupply_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2IntruderAlert"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-atiL2IntruderAlert"
+            root.out.event.category.name = "Intruder Protection"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string() + ", Port: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+            root.out.event.message = "Intruder Detected  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyFailure"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyFailure"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply Failure"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 107
+      processors:
+        - label: powersupply_installed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: powersupply_installed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyInstalled"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyInstalled"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply Installed"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 108
+      processors:
+        - label: powersupply_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyRemoved"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-powersupplyRemoved"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Power Supply Removed"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 109
+      processors:
+        - label: module_installed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: module_installed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-moduleInstalled"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-moduleInstalled"
+            root.out.event.category.name = "Module Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Module Installed  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 110
+      processors:
+        - label: module_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: module_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-moduleRemoved"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-moduleRemoved"
+            root.out.event.category.name = "Module Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Module Removed  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 111
+      processors:
+        - label: mc_link_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapPortNumber = this.trap.VarBinds.index(1).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: mc_link_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-mcLinkDown"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-mcLinkDown"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string() + ", Port: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "Link Down  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 112
+      processors:
+        - label: mc_link_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.mcTrapModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.mcTrapPortNumber = this.trap.VarBinds.index(1).Value
+            root.out.alliedtelesyn.mcTrapDisplayString = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: mc_link_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-mcLinkUp"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATMCCommon-MIB--AtiL2-MIB-mcLinkUp"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string() + ", Port: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "Link Up  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

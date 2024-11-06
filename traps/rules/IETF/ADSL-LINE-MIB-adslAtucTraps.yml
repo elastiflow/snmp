@@ -1,0 +1,159 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ADSL-LINE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: adsl_atuc_perf_lofs_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucPerfCurr15MinLofs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucThresh15MinLofs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_perf_lofs_thresh_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLofsThreshTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLofsThreshTrap"
+            root.out.event.category.name = "ATUC Loss of Framing"
+            root.out.object.name = "adslAtucPerfDataEntry.1"
+            root.out.event.message = "ATUC Loss of Framing, " + this.trap.VarBinds.index(0).Value.string() + " LOF Seconds Crossed Threshold, " + this.trap.VarBinds.index(1).Value.string() + ", in 15 Min. Interval  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: adsl_atuc_perf_loss_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucPerfCurr15MinLoss = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucThresh15MinLoss = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_perf_loss_thresh_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLossThreshTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLossThreshTrap"
+            root.out.event.category.name = "ATUC Loss of Signal"
+            root.out.object.name = "adslAtucPerfDataEntry.1"
+            root.out.event.message = "ATUC Loss of Signal, " + this.trap.VarBinds.index(0).Value.string() + " LOS Seconds Crossed Threshold, " + this.trap.VarBinds.index(1).Value.string() + ", in 15 Min. Interval  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: adsl_atuc_perf_lprs_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucPerfCurr15MinLprs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucThresh15MinLprs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_perf_lprs_thresh_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLprsThreshTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLprsThreshTrap"
+            root.out.event.category.name = "ATUC Loss of Power"
+            root.out.object.name = "adslAtucPerfDataEntry.1"
+            root.out.event.message = "ATUC Loss of Power, " + this.trap.VarBinds.index(0).Value.string() + " LOP Seconds Crossed Threshold, " + this.trap.VarBinds.index(1).Value.string() + ", in 15 Min. Interval  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: adsl_atuc_perf_ess_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucPerfCurr15MinESs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucThresh15MinESs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_perf_ess_thresh_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfESsThreshTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfESsThreshTrap"
+            root.out.event.category.name = "ATUC Errored Second"
+            root.out.object.name = "adslAtucPerfDataEntry.1"
+            root.out.event.message = "ATUC Errored Second, " + this.trap.VarBinds.index(0).Value.string() + " ES Seconds Crossed Threshold, " + this.trap.VarBinds.index(1).Value.string() + ", in 15 Min. Interval  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: adsl_atuc_rate_change_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucChanCurrTxRate = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucChanPrevTxRate = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_rate_change_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucRateChangeTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucRateChangeTrap"
+            root.out.event.category.name = "ATUC Transmit Rate"
+            root.out.object.name = "adslAtucChanEntry.1"
+            root.out.event.message = "ATUC Transmit Rate, " + this.trap.VarBinds.index(0).Value.string() + ", Changed, was " + this.trap.VarBinds.index(1).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: adsl_atuc_perf_lols_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucPerfCurr15MinLols = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAtucThresh15MinLols = this.trap.VarBinds.index(1).Value
+        - label: adsl_atuc_perf_lols_thresh_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLolsThreshTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucPerfLolsThreshTrap"
+            root.out.event.category.name = "ATUC Loss of Link"
+            root.out.object.name = "adslAtucPerfDataEntry.1"
+            root.out.event.message = "ATUC Loss of Link, " + this.trap.VarBinds.index(0).Value.string() + " LOL Seconds Crossed Threshold, " + this.trap.VarBinds.index(1).Value.string() + ", in 15 Min. Interval  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: adsl_atuc_init_failure_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAtucCurrStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.94.1.1.2.1.6")
+        - label: adsl_atuc_init_failure_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucInitFailureTrap"
+            root.out.event.id = "SNMPTRAP-IETF-ADSL-LINE-MIB-adslAtucInitFailureTrap"
+            root.out.event.category.name = "ATUC Initialization"
+            root.out.object.name = "adslAtucPhysEntry.1"
+            root.out.event.message = "ATUC Initialization Failed, Multiple Alarms, adslAtucCurrStatus: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.94.1.1.2.1.6").string() + "  ( " + root.out.object.name + " )"
+            root.out.event.message = "ATUC Initialization Failed, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.94.1.1.2.1.6").string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

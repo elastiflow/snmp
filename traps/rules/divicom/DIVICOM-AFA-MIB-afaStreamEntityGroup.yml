@@ -1,0 +1,822 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DIVICOM-AFA-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: afa_sync_error_threshold_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_sync_error_threshold_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: afa_crc_error_threshold_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_crc_error_threshold_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: afa_pdu_error_threshold_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_pdu_error_threshold_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: afa_cell_error_threshold_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_cell_error_threshold_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: afa_channel_ovf_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_channel_ovf_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: afa_channel_exceed_max_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_channel_exceed_max_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: afa_channel_underflow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_channel_underflow_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: afa_no_pcrwith_program_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_no_pcrwith_program_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: afa_psirebuild_needed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_psirebuild_needed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: afa_bandwidth_overflow_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_bandwidth_overflow_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: afa_dro_pool_overload_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_dro_pool_overload_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: afa_output_stream_stopped_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_output_stream_stopped_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: afa_internal_program_processing_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_internal_program_processing_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: afa_gb_esocket_not_active_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_esocket_not_active_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: afa_channel_sustained_overflow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_channel_sustained_overflow_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: afa_gb_esocket_not_transmitted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_esocket_not_transmitted_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: afa_gb_esocket_invalid_destination_mac_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_esocket_invalid_destination_mac_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: afa_invalid_multicast_address_port_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_invalid_multicast_address_port_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: afa_register_monitor_piderror_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_register_monitor_piderror_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: afa_gb_eprimary_socket_not_active_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_eprimary_socket_not_active_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: afa_gb_ebackup_socket_not_active_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_ebackup_socket_not_active_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: afa_gb_ebackup_socket_activated_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_ebackup_socket_activated_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: afa_gb_esocket_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_esocket_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: afa_excessive_network_jitter_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_excessive_network_jitter_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: afa_packet_too_late_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_packet_too_late_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: afa_packet_too_early_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_packet_too_early_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: afa_gb_emptssocket_oversubscribed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_emptssocket_oversubscribed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: afa_gb_esptssocket_oversubscribed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_gb_esptssocket_oversubscribed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: afa_dpisplice_command_sent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_dpisplice_command_sent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: afa_dpicommunication_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.divicom.afaAlarmID = this.trap.VarBinds.index(0).Value
+            root.out.divicom.afaDeviceName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.divicom.afaSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.6")
+            root.out.divicom.afaInfoString = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.divicom.afaAssertTime = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.divicom.afaAlarmState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.898.8.2.2.1.14")
+            root.out.divicom.afaAcknowledgeTime = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.divicom.afaObjectName = this.trap.VarBinds.index(7).Value.snmp_display_string()
+        - label: afa_dpicommunication_failure_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

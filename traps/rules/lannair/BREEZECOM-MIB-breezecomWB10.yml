@@ -1,0 +1,98 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BREEZECOM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: brz_wbassociated_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.lannair.brzLastAPMacAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.lannair.brzTrapAPMacAddr = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+            root.out.lannair.brzTrapLastRssiQuality = this.trap.VarBinds.index(2).Value
+            root.out.lannair.brzTrapRssiQuality = this.trap.VarBinds.index(3).Value
+        - label: brz_wbassociated_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: brz_wbwlan_status_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.lannair.brzTrapToggle = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.710.3.2.5.8")
+            root.out.lannair.brzTrapMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+        - label: brz_wbwlan_status_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: brz_general_wb_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.lannair.brzTrapIndex = this.trap.VarBinds.index(0).Value
+            root.out.lannair.brzTrapText = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: brz_general_wb_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: brz_event_log_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.lannair.brzTrapIndex = this.trap.VarBinds.index(0).Value
+            root.out.lannair.brzTrapText = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: brz_event_log_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

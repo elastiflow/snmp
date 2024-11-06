@@ -1,0 +1,260 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "FORTINET-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: fn_trap_cold_start_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Status"
+            root.out.object.name = ""
+            root.out.event.message = "Cold Start, System Rebooted"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: fn_trap_system_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Status"
+            root.out.object.name = ""
+            root.out.event.message = "System Down, SIGTERM"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: fn_trap_agent_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SNMP Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "SNMP Agent Down"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: fn_trap_agent_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SNMP Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "SNMP Agent Up"
+    - check: this.trap.SpecificTrap == 100
+      processors:
+        - label: fn_trap_inf_chg_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapSysSn = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.fortinet.fnTrapIfName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.fortinet.fnTrapIfNetmask = this.trap.VarBinds.index(2).Value
+            root.out.fortinet.fnTrapSysSn = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: fn_trap_inf_chg_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Interface IP Change"
+            root.out.object.name = ""
+            root.out.event.message = "Interface IP Address Changed to " + this.trap.VarBinds.index(2).Value.string() + "  ( Interface: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+    - check: this.trap.SpecificTrap == 101
+      processors:
+        - label: fn_trap_system_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_system_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 200
+      processors:
+        - label: fn_trap_firewall_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_firewall_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Firewall $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 300
+      processors:
+        - label: fn_trap_user_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_user_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "User $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 400
+      processors:
+        - label: fn_trap_vpn_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_vpn_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "VPN $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 500
+      processors:
+        - label: fn_trap_nids_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_nids_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "NIDS $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 600
+      processors:
+        - label: fn_trap_anti_virus_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_anti_virus_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Anti-Virus $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 700
+      processors:
+        - label: fn_trap_web_filter_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_web_filter_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Web Filter $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 800
+      processors:
+        - label: fn_trap_email_filter_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_email_filter_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "E-mail Filter $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 900
+      processors:
+        - label: fn_trap_log_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_log_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Log $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 1000
+      processors:
+        - label: fn_trap_misc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5")
+            root.out.fortinet.fnTrapDesc = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: fn_trap_misc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Misc. $AlertGroup
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.12356.10.5").string() + ", " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 10000
+      processors:
+        - label: fn_trap_demo_update_config_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.fortinet.fnTrapSysSn = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.fortinet.fnTrapIfName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.fortinet.fnTrapIfNetmask = this.trap.VarBinds.index(2).Value
+            root.out.fortinet.fnTrapSysSn = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: fn_trap_demo_update_config_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FGT Configuration Status"
+            root.out.object.name = ""
+            root.out.event.message = "FGT Requests New Configuration"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

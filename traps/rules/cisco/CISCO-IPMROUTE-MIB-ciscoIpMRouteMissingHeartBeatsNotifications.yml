@@ -1,0 +1,35 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-IPMROUTE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_ip_mroute_missing_heart_beats_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoIpMRouteHeartBeatSourceAddr = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoIpMRouteHeartBeatInterval = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ciscoIpMRouteHeartBeatWindowSize = this.trap.VarBinds.index(2).Value
+            root.out.cisco.ciscoIpMRouteHeartBeatCount = this.trap.VarBinds.index(3).Value
+        - label: cisco_ip_mroute_missing_heart_beats_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPMROUTE-MIB-ciscoIpMRouteMissingHeartBeats"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPMROUTE-MIB-ciscoIpMRouteMissingHeartBeats"
+            root.out.event.category.name = "IPM Heartbeat Status"
+            root.out.object.name = "ciscoIpMRouteHeartBeatEntry.10.2.3.1"
+            root.out.event.message = "Failed to Receive IP Multicast Router Heartbeat  ( From: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

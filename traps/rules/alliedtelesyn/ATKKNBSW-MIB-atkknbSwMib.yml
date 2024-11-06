@@ -1,0 +1,26 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ATKKNBSW-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: too_many_errors_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATKKNBSW-MIB-tooManyErrors"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATKKNBSW-MIB-tooManyErrors"
+            root.out.event.category.name = "NBase Switch Status"
+            root.out.object.name = ""
+            root.out.event.message = "Excessive Errors Detected"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

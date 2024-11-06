@@ -1,0 +1,127 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "MPLS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: mpls_lsp_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.mplsLspName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.juniper.mplsPathName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: mpls_lsp_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-MPLS-MIB-mplsLspUp"
+            root.out.event.id = "SNMPTRAP-juniper-MPLS-MIB-mplsLspUp"
+            root.out.event.category.name = "MPLS LSP Status"
+            root.out.object.name = "mplsLspEntry."
+            root.out.event.message = "MPLS LSP Up"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + " )"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + ", Active Path: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mpls_lsp_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.mplsLspName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.juniper.mplsPathName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: mpls_lsp_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-MPLS-MIB-mplsLspDown"
+            root.out.event.id = "SNMPTRAP-juniper-MPLS-MIB-mplsLspDown"
+            root.out.event.category.name = "MPLS LSP Status"
+            root.out.object.name = "mplsLspEntry."
+            root.out.event.message = "MPLS LSP Down"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + " )"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + ", Active Path: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: mpls_lsp_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.mplsLspName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.juniper.mplsPathName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: mpls_lsp_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-MPLS-MIB-mplsLspChange"
+            root.out.event.id = "SNMPTRAP-juniper-MPLS-MIB-mplsLspChange"
+            root.out.event.category.name = "MPLS LSP Path Change"
+            root.out.object.name = "mplsLspEntry."
+            root.out.event.message = "MPLS LSP Switched to New Active Path"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + " )"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + ", Active Path: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: mpls_lsp_path_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.mplsLspName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.juniper.mplsPathName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: mpls_lsp_path_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-MPLS-MIB-mplsLspPathDown"
+            root.out.event.id = "SNMPTRAP-juniper-MPLS-MIB-mplsLspPathDown"
+            root.out.event.category.name = "MPLS LSP Path Status"
+            root.out.object.name = "mplsLspEntry."
+            root.out.event.message = "MPLS LSP Path Down"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + " )"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + ", Active Path: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: mpls_lsp_path_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.mplsLspName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.juniper.mplsPathName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: mpls_lsp_path_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-MPLS-MIB-mplsLspPathUp"
+            root.out.event.id = "SNMPTRAP-juniper-MPLS-MIB-mplsLspPathUp"
+            root.out.event.category.name = "MPLS LSP Path Status"
+            root.out.object.name = "mplsLspEntry."
+            root.out.event.message = "MPLS LSP Path Up"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + " )"
+            root.out.event.message = root.out.event.message + "  ( LSP: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + ", Active Path: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

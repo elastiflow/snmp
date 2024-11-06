@@ -1,0 +1,41 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-FCPING-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: fc_ping_completion_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.fcPingAddress = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.cisco.fcPingTxPackets = this.trap.VarBinds.index(1).Value
+            root.out.cisco.fcPingRxPackets = this.trap.VarBinds.index(2).Value
+        - label: fc_ping_completion_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-FCPING-MIB-fcPingCompletionNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-FCPING-MIB-fcPingCompletionNotify"
+            root.out.event.category.name = "Fibre Channel Ping Status"
+            root.out.object.name = "fcPingEntry.3"
+            root.out.event.message = "Fibre Channel Ping Successful, Received " + this.trap.VarBinds.index(2).Value.string() + " of " + this.trap.VarBinds.index(1).Value.string() + "Sent Packets"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+            root.out.event.message = "Fibre Channel Ping Failed, Received " + this.trap.VarBinds.index(2).Value.string() + " of " + this.trap.VarBinds.index(1).Value.string() + "Sent Packets"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+            root.out.event.message = "Fibre Channel Ping Errors, Received " + this.trap.VarBinds.index(2).Value.string() + " of " + this.trap.VarBinds.index(1).Value.string() + "Sent Packets"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+            root.out.event.message = root.out.event.message + "  ( Target: " + this.trap.VarBinds.index(2).Value.string() + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-REPEATER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_rptr_illegal_src_addr_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoRptrPortLastIllegalSrcAddr = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: cisco_rptr_illegal_src_addr_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-REPEATER-MIB-ciscoRptrIllegalSrcAddrTrap"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-REPEATER-MIB-ciscoRptrIllegalSrcAddrTrap"
+            root.out.event.category.name = "Repeater Port Status"
+            root.out.object.name = "ciscoRptrPortEntry.22.3"
+            root.out.event.message = "Illegal MAC Source Address Violation  ( MAC: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string() + ", Group: 22, Port: 3 )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

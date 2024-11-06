@@ -1,0 +1,34 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ES-STACK-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_es_stack_temp_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.cisco.sysLocation = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.ciscoEsStackSwitchTemperature = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.5.14.2.1.1.8")
+        - label: cisco_es_stack_temp_change_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WLAN-VLAN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_wlan_vlan_wep_change_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cwvlWlanNUcastKeyValue = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: cisco_wlan_vlan_wep_change_notif_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WLAN-VLAN-MIB-ciscoWlanVlanWepChangeNotif"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WLAN-VLAN-MIB-ciscoWlanVlanWepChangeNotif"
+            root.out.event.category.name = "WEP Key Change"
+            root.out.object.name = "cwvlWlanNUcastKeyEntry.9.268"
+            root.out.event.message = "WEP Key Changed, New Key: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string() + "  ( VLAN: 9 )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

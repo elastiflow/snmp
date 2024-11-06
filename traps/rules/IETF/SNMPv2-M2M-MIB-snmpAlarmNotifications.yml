@@ -1,0 +1,78 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SNMPv2-M2M-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: snmp_rising_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
+            root.out.IETF.snmpAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.6.3.2.1.1.2.1.4")
+            root.out.IETF.snmpAlarmValue = this.trap.VarBinds.index(2).Value
+            root.out.IETF.snmpAlarmRisingThreshold = this.trap.VarBinds.index(3).Value
+        - label: snmp_rising_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpRisingAlarm"
+            root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpRisingAlarm"
+            root.out.event.category.name = "Alarm Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value.string() + ", Exceeds " + this.trap.VarBinds.index(3).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: snmp_falling_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
+            root.out.IETF.snmpAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.6.3.2.1.1.2.1.4")
+            root.out.IETF.snmpAlarmValue = this.trap.VarBinds.index(2).Value
+            root.out.IETF.snmpAlarmFallingThreshold = this.trap.VarBinds.index(3).Value
+        - label: snmp_falling_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpFallingAlarm"
+            root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpFallingAlarm"
+            root.out.event.category.name = "Alarm Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Monitored Variable $SampleType, " + this.trap.VarBinds.index(2).Value.string() + ", Below " + this.trap.VarBinds.index(3).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: snmp_object_unavailable_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.snmpAlarmVariable = this.trap.VarBinds.index(0).Value
+        - label: snmp_object_unavailable_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpObjectUnavailableAlarm"
+            root.out.event.id = "SNMPTRAP-IETF-SNMPv2-M2M-MIB-snmpObjectUnavailableAlarm"
+            root.out.event.category.name = "Object Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Monitored Variable Unavailable  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

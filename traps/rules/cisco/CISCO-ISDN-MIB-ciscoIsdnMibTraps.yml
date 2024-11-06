@@ -1,0 +1,664 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ISDN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: demand_nbr_call_information_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.demandNbrLogIf = this.trap.VarBinds.index(0).Value
+            root.out.cisco.demandNbrName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.demandNbrAddress = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.cisco.demandNbrLastDuration = this.trap.VarBinds.index(3).Value
+            root.out.cisco.demandNbrClearReason = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.cisco.demandNbrClearCode = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: demand_nbr_call_information_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallInformation"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallInformation"
+            root.out.event.category.name = "ISDN Call Status"
+            root.out.object.name = "demandNbrEntry.26.2"
+        - label: demand_nbr_call_information_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call is Active
+              processors:
+                - label: demand_nbr_call_information_rules_2_call is active
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Active"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call rejected
+              processors:
+                - label: demand_nbr_call_information_rules_2_call rejected
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Rejected"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Destination out of order
+              processors:
+                - label: demand_nbr_call_information_rules_2_destination out of order
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Destination Out of Order"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Interworking error; unspecified
+              processors:
+                - label: demand_nbr_call_information_rules_2_interworking error; unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Interworking Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Invalid call reference value
+              processors:
+                - label: demand_nbr_call_information_rules_2_invalid call reference value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Invalid Call Reference Value"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == No user responding
+              processors:
+                - label: demand_nbr_call_information_rules_2_no user responding
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call No User Responding"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal call clearing
+              processors:
+                - label: demand_nbr_call_information_rules_2_normal call clearing
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Normal Clearing"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal, unspecified
+              processors:
+                - label: demand_nbr_call_information_rules_2_normal, unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Normal, Unspecified"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Recovery on timer expiry
+              processors:
+                - label: demand_nbr_call_information_rules_2_recovery on timer expiry
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Recovered on Timer Expiry"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Requested circuit/channel not available
+              processors:
+                - label: demand_nbr_call_information_rules_2_requested circuit/channel not available
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Requested Circuit/Channel Not Available"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Temporary failure
+              processors:
+                - label: demand_nbr_call_information_rules_2_temporary failure
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Temporary Failure"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Unknown Cause value
+              processors:
+                - label: demand_nbr_call_information_rules_2_unknown cause value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call Cleared, Unknown Cause"
+            - processors:
+                - label: demand_nbr_call_information_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call, " + this.trap.VarBinds.index(4).Value.snmp_display_string().string()
+        - label: demand_nbr_call_information_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", Clear Code: " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string() + "  ( Call Address: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: demand_nbr_call_details_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.demandNbrLogIf = this.trap.VarBinds.index(0).Value
+            root.out.cisco.demandNbrName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.demandNbrAddress = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.cisco.demandNbrLastDuration = this.trap.VarBinds.index(3).Value
+            root.out.cisco.demandNbrClearReason = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.cisco.demandNbrClearCode = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.cisco.demandNbrCallOrigin = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.9.26.1.1.1.1.17")
+        - label: demand_nbr_call_details_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallDetails"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCallDetails"
+            root.out.event.category.name = "ISDN Call Status"
+            root.out.object.name = "demandNbrEntry.26.2"
+        - label: demand_nbr_call_details_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(6).Value == 1
+              processors:
+                - label: demand_nbr_call_details_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Outgoing Call"
+            - check: this.trap.VarBinds.index(6).Value == 2
+              processors:
+                - label: demand_nbr_call_details_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Incoming Call"
+            - check: this.trap.VarBinds.index(6).Value == 3
+              processors:
+                - label: demand_nbr_call_details_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Callback"
+            - processors:
+                - label: demand_nbr_call_details_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call"
+        - label: demand_nbr_call_details_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call is Active
+              processors:
+                - label: demand_nbr_call_details_rules_3_call is active
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Active"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call rejected
+              processors:
+                - label: demand_nbr_call_details_rules_3_call rejected
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Rejected"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Destination out of order
+              processors:
+                - label: demand_nbr_call_details_rules_3_destination out of order
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Destination Out of Order"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Interworking error; unspecified
+              processors:
+                - label: demand_nbr_call_details_rules_3_interworking error; unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Interworking Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Invalid call reference value
+              processors:
+                - label: demand_nbr_call_details_rules_3_invalid call reference value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Invalid Call Reference Value"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == No user responding
+              processors:
+                - label: demand_nbr_call_details_rules_3_no user responding
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " No User Responding"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal call clearing
+              processors:
+                - label: demand_nbr_call_details_rules_3_normal call clearing
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Normal Clearing"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal, unspecified
+              processors:
+                - label: demand_nbr_call_details_rules_3_normal, unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Normal, Unspecified"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Recovery on timer expiry
+              processors:
+                - label: demand_nbr_call_details_rules_3_recovery on timer expiry
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Recovered on Timer Expiry"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Requested circuit/channel not available
+              processors:
+                - label: demand_nbr_call_details_rules_3_requested circuit/channel not available
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Requested Circuit/Channel Not Available"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Temporary failure
+              processors:
+                - label: demand_nbr_call_details_rules_3_temporary failure
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Temporary Failure"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Unknown Cause value
+              processors:
+                - label: demand_nbr_call_details_rules_3_unknown cause value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Cleared, Unknown Cause"
+            - processors:
+                - label: demand_nbr_call_details_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(4).Value.snmp_display_string().string()
+                    root.out.event.message = root.out.event.message + ", Clear Code: " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string()
+        - label: demand_nbr_call_details_rules_4
+          switch:
+            - check: this.trap.VarBinds.index(6).Value == 1
+              processors:
+                - label: demand_nbr_call_details_rules_4_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( to Call Address: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(6).Value == 2
+              processors:
+                - label: demand_nbr_call_details_rules_4_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( from Call Address: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(6).Value == 3
+              processors:
+                - label: demand_nbr_call_details_rules_4_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( from Call Address: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - processors:
+                - label: demand_nbr_call_details_rules_4_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( Call Address: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+        - label: demand_nbr_call_details_rules_5
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "demandNbrEntry.26.2"
+        - label: demand_nbr_call_details_rules_6
+          switch:
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 1
+              processors:
+                - label: demand_nbr_call_details_rules_6_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Outgoing Call"
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 2
+              processors:
+                - label: demand_nbr_call_details_rules_6_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Incoming Call"
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 3
+              processors:
+                - label: demand_nbr_call_details_rules_6_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Callback"
+            - processors:
+                - label: demand_nbr_call_details_rules_6_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call"
+        - label: demand_nbr_call_details_rules_7
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call is Active
+              processors:
+                - label: demand_nbr_call_details_rules_7_call is active
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Active"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Call rejected
+              processors:
+                - label: demand_nbr_call_details_rules_7_call rejected
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Rejected"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Destination out of order
+              processors:
+                - label: demand_nbr_call_details_rules_7_destination out of order
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Destination Out of Order"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Interworking error; unspecified
+              processors:
+                - label: demand_nbr_call_details_rules_7_interworking error; unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Interworking Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Invalid call reference value
+              processors:
+                - label: demand_nbr_call_details_rules_7_invalid call reference value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Invalid Call Reference Value"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == No user responding
+              processors:
+                - label: demand_nbr_call_details_rules_7_no user responding
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " No User Responding"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal call clearing
+              processors:
+                - label: demand_nbr_call_details_rules_7_normal call clearing
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Normal Clearing"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Normal, unspecified
+              processors:
+                - label: demand_nbr_call_details_rules_7_normal, unspecified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Normal, Unspecified"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Recovery on timer expiry
+              processors:
+                - label: demand_nbr_call_details_rules_7_recovery on timer expiry
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Recovered on Timer Expiry"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Requested circuit/channel not available
+              processors:
+                - label: demand_nbr_call_details_rules_7_requested circuit/channel not available
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Requested Circuit/Channel Not Available"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Temporary failure
+              processors:
+                - label: demand_nbr_call_details_rules_7_temporary failure
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Temporary Failure"
+            - check: this.trap.VarBinds.index(4).Value.snmp_display_string().string() == Unknown Cause value
+              processors:
+                - label: demand_nbr_call_details_rules_7_unknown cause value
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Cleared, Unknown Cause"
+            - processors:
+                - label: demand_nbr_call_details_rules_7_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(4).Value.snmp_display_string().string()
+                    root.out.event.message = root.out.event.message + ", Clear Code: " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string()
+        - label: demand_nbr_call_details_rules_8
+          switch:
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 1
+              processors:
+                - label: demand_nbr_call_details_rules_8_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( to Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 2
+              processors:
+                - label: demand_nbr_call_details_rules_8_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( from Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(5).Value.snmp_octet_string().string() == 3
+              processors:
+                - label: demand_nbr_call_details_rules_8_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( from Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - processors:
+                - label: demand_nbr_call_details_rules_8_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + "  ( Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+        - label: demand_nbr_call_details_rules_9
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "demandNbrEntry.26.2"
+        - label: demand_nbr_call_details_rules_10
+          switch:
+            - check: this.trap.VarBinds.index(2).Value.snmp_display_string().string() == 1
+              processors:
+                - label: demand_nbr_call_details_rules_10_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Outgoing Call  ( to Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_display_string().string() == 2
+              processors:
+                - label: demand_nbr_call_details_rules_10_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Incoming Call  ( from Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_display_string().string() == 3
+              processors:
+                - label: demand_nbr_call_details_rules_10_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Callback  ( from Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+            - processors:
+                - label: demand_nbr_call_details_rules_10_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call  ( Call Address: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+        - label: demand_nbr_call_details_rules_11
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = "demandNbrEntry.26.2"
+        - label: demand_nbr_call_details_rules_12
+          switch:
+            - check: this.trap.VarBinds.index(1).Value.snmp_display_string().string() == 1
+              processors:
+                - label: demand_nbr_call_details_rules_12_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Outgoing Call"
+            - check: this.trap.VarBinds.index(1).Value.snmp_display_string().string() == 2
+              processors:
+                - label: demand_nbr_call_details_rules_12_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Incoming Call"
+            - check: this.trap.VarBinds.index(1).Value.snmp_display_string().string() == 3
+              processors:
+                - label: demand_nbr_call_details_rules_12_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Callback"
+            - processors:
+                - label: demand_nbr_call_details_rules_12_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN Call"
+                    root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: demand_nbr_layer2change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.isdnLapdOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.3.4.1.2")
+        - label: demand_nbr_layer2change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrLayer2Change"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrLayer2Change"
+            root.out.event.category.name = "ISDN D-Channel Status"
+            root.out.object.name = "isdnLapdEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: demand_nbr_layer2change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: demand_nbr_layer2change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN D-Channel All Layers Inactive"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: demand_nbr_layer2change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN D-Channel Layer-1 Activated, Layer-2 Datalink Not Established"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: demand_nbr_layer2change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "ISDN D-Channel Layer-1 Activated, Layer-2 Datalink Established"
+        - label: demand_nbr_layer2change_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: demand_nbr_cnanotification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.isdnSignalingIfIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(1).Value
+        - label: demand_nbr_cnanotification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCNANotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ISDN-MIB-demandNbrCNANotification"
+            root.out.event.category.name = "ISDN Incoming Call Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "ISDN Incoming Call Rejected, Requested Circuit/Channel Not Available  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

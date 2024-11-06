@@ -1,0 +1,272 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-PPPOE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: c_pppoe_system_session_threshold_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemCurrSessions = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cPppoeSystemMaxAllowedSessions = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cPppoeSystemThresholdSessions = this.trap.VarBinds.index(2).Value
+        - label: c_pppoe_system_session_threshold_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeSystemSessionThresholdTrap"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeSystemSessionThresholdTrap"
+            root.out.event.category.name = "PPPoE Session Threshold"
+            root.out.object.name = ""
+            root.out.event.message = "PPPoE Active Sessions, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeds " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: c_pppoe_vc_session_threshold_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeVcCurrSessions = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cPppoeVcMaxAllowedSessions = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cPppoeVcThresholdSessions = this.trap.VarBinds.index(2).Value
+        - label: c_pppoe_vc_session_threshold_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeVcSessionThresholdTrap"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-PPPOE-MIB-cPppoeVcSessionThresholdTrap"
+            root.out.event.category.name = "PPPoE VC Session Threshold"
+            root.out.object.name = ""
+            root.out.event.message = "PPPoE Active VC Sessions, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeds " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: c_pppoe_system_session_per_maclimit_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerMacSessionlimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cPppoeSystemSessionClientMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+        - label: c_pppoe_system_session_per_maclimit_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: c_pppoe_system_session_per_macthrottle_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerMacThrottleRatelimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cPppoeSystemSessionClientMacAddress = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+        - label: c_pppoe_system_session_per_macthrottle_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: c_pppoe_system_session_per_vlanlimit_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerVLANlimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cPppoeSystemSessionVlanID = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cPppoeSystemSessionInnerVlanID = this.trap.VarBinds.index(3).Value
+        - label: c_pppoe_system_session_per_vlanlimit_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: c_pppoe_system_session_per_vlanthrottle_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerVLANthrottleRatelimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cPppoeSystemSessionVlanID = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cPppoeSystemSessionInnerVlanID = this.trap.VarBinds.index(3).Value
+        - label: c_pppoe_system_session_per_vlanthrottle_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: c_pppoe_system_session_per_vclimit_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerVClimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cPppoeSystemSessionVci = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cPppoeSystemSessionVpi = this.trap.VarBinds.index(3).Value
+        - label: c_pppoe_system_session_per_vclimit_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: c_pppoe_system_session_per_vcthrottle_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemPerVCThrottleRatelimit = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cPppoeSystemSessionVci = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cPppoeSystemSessionVpi = this.trap.VarBinds.index(3).Value
+        - label: c_pppoe_system_session_per_vcthrottle_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: c_pppoe_system_session_loss_threshold_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemSessionLossThreshold = this.trap.VarBinds.index(0).Value
+        - label: c_pppoe_system_session_loss_threshold_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: c_pppoe_per_interface_session_loss_threshold_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.cisco.cPppoePerInterfaceSessionLossThreshold = this.trap.VarBinds.index(1).Value
+        - label: c_pppoe_per_interface_session_loss_threshold_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: c_pppoe_system_session_loss_percent_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cPppoeSystemSessionLossPercent = this.trap.VarBinds.index(0).Value
+        - label: c_pppoe_system_session_loss_percent_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: c_pppoe_per_interface_session_loss_percent_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.cisco.cPppoePerInterfaceSessionLossPercent = this.trap.VarBinds.index(1).Value
+        - label: c_pppoe_per_interface_session_loss_percent_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

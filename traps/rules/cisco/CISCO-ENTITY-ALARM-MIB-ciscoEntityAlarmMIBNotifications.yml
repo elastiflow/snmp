@@ -1,0 +1,106 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ENTITY-ALARM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ce_alarm_asserted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ceAlarmHistEntPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ceAlarmHistAlarmType = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ceAlarmHistSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.138.1.3.3.1.5")
+            root.out.cisco.ceAlarmHistTimeStamp = this.trap.VarBinds.index(3).Value
+        - label: ce_alarm_asserted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmAsserted"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmAsserted"
+            root.out.event.category.name = "Physical Entity Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Physical Entity Alarm, Alarm type: " + this.trap.VarBinds.index(1).Value.string() + "  ( " + root.out.object.name + " )"
+        - label: ce_alarm_asserted_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: ce_alarm_asserted_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: ce_alarm_asserted_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: ce_alarm_asserted_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: ce_alarm_asserted_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: ce_alarm_asserted_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: ce_alarm_asserted_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ce_alarm_cleared_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ceAlarmHistEntPhysicalIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ceAlarmHistAlarmType = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ceAlarmHistSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.138.1.3.3.1.5")
+            root.out.cisco.ceAlarmHistTimeStamp = this.trap.VarBinds.index(3).Value
+        - label: ce_alarm_cleared_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmCleared"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ENTITY-ALARM-MIB-ceAlarmCleared"
+            root.out.event.category.name = "Physical Entity Status"
+            root.out.object.name = "entPhysicalEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Physical Entity Alarm Cleared, Alarm Type: " + this.trap.VarBinds.index(1).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALLIEDTELESYN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: swi_intrusion_detection_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.ifIndex = this.trap.VarBinds.index(0).Value
+        - label: swi_intrusion_detection_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

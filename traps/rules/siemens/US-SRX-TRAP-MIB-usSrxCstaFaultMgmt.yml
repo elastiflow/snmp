@@ -1,0 +1,204 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "US-SRX-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: us_srx_csta_started_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_started_up_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: us_srx_csta_shut_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_shut_down_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: us_srx_csta_caplink_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_caplink_failure_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: us_srx_csta_caplink_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_caplink_up_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: us_srx_csta_ttudregistration_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_ttudregistration_failure_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: us_srx_csta_ttudregistration_success_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.siemens.rtpEvtSequenceNumberIndex = this.trap.VarBinds.index(0).Value
+            root.out.siemens.rtpEvtCurrId = this.trap.VarBinds.index(1).Value
+            root.out.siemens.rtpEvtSet = this.trap.VarBinds.index(2).Value
+            root.out.siemens.rtpEvtNum = this.trap.VarBinds.index(3).Value
+            root.out.siemens.rtpEvtSeverity = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.5")
+            root.out.siemens.rtpEvtAlarmType = this.trap.VarBinds.index(5).Value
+            root.out.siemens.rtpEvtEventTime = this.trap.VarBinds.index(6).Value
+            root.out.siemens.rtpEvtShortText = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtReportingObject = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtFaultyObject = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtEndkey = this.trap.VarBinds.index(10).Value.enum_enrich(".1.3.6.1.4.1.4329.2.1.2.1.1.1.1.9")
+            root.out.siemens.rtpEvtFormatText = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+            root.out.siemens.rtpEvtParameters = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+        - label: us_srx_csta_ttudregistration_success_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

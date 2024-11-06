@@ -1,0 +1,52 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "RSVP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: new_flow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.intSrvFlowStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.52.1.2.1.25")
+            root.out.IETF.rsvpSessionDestAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.IETF.rsvpResvFwdStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.51.1.5.1.28")
+            root.out.IETF.rsvpResvStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.51.1.4.1.28")
+            root.out.IETF.rsvpSenderStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.51.1.2.1.44")
+        - label: new_flow_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "RSVP Flow Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.52.1.2.1.25").string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "New Flow Installed in Classifier"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: lost_flow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.intSrvFlowStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.52.1.2.1.25")
+            root.out.IETF.rsvpSessionDestAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.IETF.rsvpResvFwdStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.51.1.5.1.28")
+            root.out.IETF.rsvpResvStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.51.1.4.1.28")
+            root.out.IETF.rsvpSenderStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.51.1.2.1.44")
+        - label: lost_flow_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "RSVP Flow Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.52.1.2.1.25").string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "Flow Removed from Classifier"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,252 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "UPTIME-ROOT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 101
+      processors:
+        - label: sh2sensor1high_critical_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor1high_critical_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1HighCritical"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1HighCritical"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.101"
+            root.out.event.message = "Sensor Detects High " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 102
+      processors:
+        - label: sh2sensor1high_warning_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor1high_warning_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1HighWarning"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1HighWarning"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.102"
+            root.out.event.message = "Sensor Detects High " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 103
+      processors:
+        - label: sh2sensor1low_warning_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor1low_warning_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1LowWarning"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1LowWarning"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.103"
+            root.out.event.message = "Sensor Detects Low " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 104
+      processors:
+        - label: sh2sensor1low_critical_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor1low_critical_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1LowCritical"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1LowCritical"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.104"
+            root.out.event.message = "Sensor Detects Low " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 105
+      processors:
+        - label: sh2sensor1normal_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor1normal_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1Normal"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor1Normal"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.105"
+            root.out.event.message = "Sensor Detects Normal " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 106
+      processors:
+        - label: sh2sensor2high_critical_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor2high_critical_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2HighCritical"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2HighCritical"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.106"
+            root.out.event.message = "Sensor Detects High " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 107
+      processors:
+        - label: sh2sensor2high_warning_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor2high_warning_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2HighWarning"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2HighWarning"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.107"
+            root.out.event.message = "Sensor Detects High " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 108
+      processors:
+        - label: sh2sensor2low_warning_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor2low_warning_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2LowWarning"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2LowWarning"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.108"
+            root.out.event.message = "Sensor Detects Low " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 109
+      processors:
+        - label: sh2sensor2low_critical_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor2low_critical_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2LowCritical"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2LowCritical"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.109"
+            root.out.event.message = "Sensor Detects Low " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 110
+      processors:
+        - label: sh2sensor2normal_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.uptimedevices.sysDescr = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorType = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.uptimedevices.sh2SensorCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.uptimedevices.sh2SensorState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.13045.1.1.2.2.1.6")
+        - label: sh2sensor2normal_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2Normal"
+            root.out.event.id = "SNMPTRAP-uptimedevices-UPTIME-ROOT-MIB-sh2Sensor2Normal"
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " Status"
+            root.out.object.name = "sh2SensorEntry.110"
+            root.out.event.message = "Sensor Detects Normal " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Currently: " + this.trap.VarBinds.index(3).Value.string() + "  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

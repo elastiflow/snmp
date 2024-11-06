@@ -1,0 +1,117 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ADSL-LINE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: adsl_atur_perf_lofs_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAturPerfCurr15MinLofs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAturThresh15MinLofs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atur_perf_lofs_thresh_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: adsl_atur_perf_loss_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAturPerfCurr15MinLoss = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAturThresh15MinLoss = this.trap.VarBinds.index(1).Value
+        - label: adsl_atur_perf_loss_thresh_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: adsl_atur_perf_lprs_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAturPerfCurr15MinLprs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAturThresh15MinLprs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atur_perf_lprs_thresh_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: adsl_atur_perf_ess_thresh_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAturPerfCurr15MinESs = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAturThresh15MinESs = this.trap.VarBinds.index(1).Value
+        - label: adsl_atur_perf_ess_thresh_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: adsl_atur_rate_change_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.adslAturChanCurrTxRate = this.trap.VarBinds.index(0).Value
+            root.out.IETF.adslAturChanPrevTxRate = this.trap.VarBinds.index(1).Value
+        - label: adsl_atur_rate_change_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

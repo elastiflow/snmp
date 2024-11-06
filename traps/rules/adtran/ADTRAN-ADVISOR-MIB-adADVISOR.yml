@@ -1,0 +1,52 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ADTRAN-ADVISOR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 101
+      processors:
+        - label: ad_advisorpoll_link_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_advisorpoll_link_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkUp"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkUp"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "Link Up  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 102
+      processors:
+        - label: ad_advisorpoll_link_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_advisorpoll_link_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkDown"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-ADVISOR-MIB-adADVISORPollLinkDown"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "Link Down  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

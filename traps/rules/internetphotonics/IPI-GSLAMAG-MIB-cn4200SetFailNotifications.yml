@@ -1,0 +1,432 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IPI-GSLAMAG-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: gslam_agset_fail_notification_ent_crs_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationCktID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(4).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+        - label: gslam_agset_fail_notification_ent_crs_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cn4200set_fail_notification_del_crs_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationCktID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(4).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_del_crs_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cn4200set_fail_notification_ed_crs_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationCktID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(4).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_ed_crs_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cn4200set_fail_notification_ent_prot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_ent_prot_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cn4200set_fail_notification_del_prot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_del_prot_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cn4200set_fail_notification_ed_prot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_ed_prot_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cn4200set_fail_notification_prot_switch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_prot_switch_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: cn4200set_fail_notification_alw_sw_dx_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_alw_sw_dx_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: cn4200set_fail_notification_inh_sw_dx_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationLPID = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationSourceEqptAddr = this.trap.VarBinds.index(2).Value
+            root.out.internetphotonics.cn4200NotificationDestEqptAddr = this.trap.VarBinds.index(3).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_inh_sw_dx_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: cn4200set_fail_notification_init_sys_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_init_sys_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: cn4200set_fail_notification_ent_eqpt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_ent_eqpt_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: cn4200set_fail_notification_del_eqpt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_del_eqpt_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: cn4200set_fail_notification_ed_eqpt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_ed_eqpt_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: cn4200set_fail_notification_rmv_eqpt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_rmv_eqpt_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: cn4200set_fail_notification_rst_eqpt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_rst_eqpt_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: cn4200set_fail_notification_opr_lpbk_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_opr_lpbk_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: cn4200set_fail_notification_rls_lpbk_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.cn4200NotificationHelperPEType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.7737.7.2.9.3.1.2")
+            root.out.internetphotonics.cn4200NotificationHelperPEOID = this.trap.VarBinds.index(1).Value
+            root.out.internetphotonics.cn4200NotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationFailureReason = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.internetphotonics.cn4200NotificationHelperPEAID = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cn4200set_fail_notification_rls_lpbk_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

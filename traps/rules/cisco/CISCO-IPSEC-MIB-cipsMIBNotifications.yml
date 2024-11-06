@@ -1,0 +1,155 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-IPSEC-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cips_isakmp_policy_added_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsNumIsakmpPolicies = this.trap.VarBinds.index(0).Value
+        - label: cips_isakmp_policy_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsIsakmpPolicyAdded"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsIsakmpPolicyAdded"
+            root.out.event.category.name = "ISAKMP Policy Status"
+            root.out.object.name = ""
+            root.out.event.message = "ISAKMP Policy Element Added"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cips_isakmp_policy_deleted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsNumIsakmpPolicies = this.trap.VarBinds.index(0).Value
+        - label: cips_isakmp_policy_deleted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsIsakmpPolicyDeleted"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsIsakmpPolicyDeleted"
+            root.out.event.category.name = "ISAKMP Policy Status"
+            root.out.object.name = ""
+            root.out.event.message = "ISAKMP Policy Element Deleted"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cips_cryptomap_added_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsStaticCryptomapType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.10.62.1.2.3.3.1.2")
+            root.out.cisco.cipsStaticCryptomapSetSize = this.trap.VarBinds.index(1).Value
+        - label: cips_cryptomap_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapAdded"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapAdded"
+            root.out.event.category.name = "Cryptomap Status"
+            root.out.object.name = "cipsStaticCryptomapSetEntry."
+            root.out.event.message = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.10.62.1.2.3.3.1.2").string() + "Cryptomap Added to Cryptomap Set  ( Cryptomap Set: $String )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cips_cryptomap_deleted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsStaticCryptomapSetSize = this.trap.VarBinds.index(0).Value
+        - label: cips_cryptomap_deleted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapDeleted"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapDeleted"
+            root.out.event.category.name = "Cryptomap Status"
+            root.out.object.name = "cipsStaticCryptomapSetEntry."
+            root.out.event.message = "Cryptomap Deleted from Cryptomap Set  ( Cryptomap Set: $String )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cips_cryptomap_set_attached_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsStaticCryptomapSetSize = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cipsStaticCryptomapSetNumIsakmp = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cipsStaticCryptomapSetNumDynamic = this.trap.VarBinds.index(2).Value
+        - label: cips_cryptomap_set_attached_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapSetAttached"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapSetAttached"
+            root.out.event.category.name = "Cryptomap Attachment Status"
+            root.out.object.name = "cipsStaticCryptomapSetEntry."
+            root.out.event.message = "Cryptomap Set Attached to an Interface  ( Cryptomap Set: $String )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cips_cryptomap_set_detached_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsStaticCryptomapSetSize = this.trap.VarBinds.index(0).Value
+        - label: cips_cryptomap_set_detached_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapSetDetached"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsCryptomapSetDetached"
+            root.out.event.category.name = "Cryptomap Attachment Status"
+            root.out.object.name = "cipsStaticCryptomapSetEntry."
+            root.out.event.message = "Cryptomap Set Detached from an Interface  ( Cryptomap Set: $String )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cips_too_many_sas_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cipsMaxSAs = this.trap.VarBinds.index(0).Value
+        - label: cips_too_many_sas_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsTooManySAs"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IPSEC-MIB-cipsTooManySAs"
+            root.out.event.category.name = "Security Association Status"
+            root.out.object.name = ""
+            root.out.event.message = "Security Association Setup Failed, SAs, " + this.trap.VarBinds.index(0).Value.string() + ", Exceeded " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

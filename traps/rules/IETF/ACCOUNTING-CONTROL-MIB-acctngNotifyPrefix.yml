@@ -1,0 +1,57 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ACCOUNTING-CONTROL-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: acctng_file_nearly_full_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.acctngFileName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.IETF.acctngFileMaximumSize = this.trap.VarBinds.index(1).Value
+            root.out.IETF.acctngControlTrapThreshold = this.trap.VarBinds.index(2).Value
+            root.out.IETF.acctngFileNameSuffix = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: acctng_file_nearly_full_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileNearlyFull"
+            root.out.event.id = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileNearlyFull"
+            root.out.event.category.name = "Accounting File Status"
+            root.out.object.name = "acctngFileEntry.2"
+            root.out.event.message = "Accounting File Over " + this.trap.VarBinds.index(2).Value.string() + "% Full  ( " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + this.trap.VarBinds.index(3).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: acctng_file_full_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.acctngFileName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.IETF.acctngFileMaximumSize = this.trap.VarBinds.index(1).Value
+            root.out.IETF.acctngFileNameSuffix = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: acctng_file_full_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileFull"
+            root.out.event.id = "SNMPTRAP-IETF-ACCOUNTING-CONTROL-MIB-acctngFileFull"
+            root.out.event.category.name = "Accounting File Status"
+            root.out.object.name = "acctngFileEntry.2"
+            root.out.event.message = "Accounting File Full  ( " + this.trap.VarBinds.index(0).Value.snmp_display_string().string() + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

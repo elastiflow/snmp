@@ -1,0 +1,64 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SCTE-HMS-COMMON-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: hms_cold_start_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.scte.commonPhysAddress = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.scte.commonLogicalID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: hms_cold_start_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SCTE-HMS"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.message = "Cold Start: ( PhysAddress
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: hms_alarm_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.scte.commonPhysAddress = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.scte.commonLogicalID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.scte.alarmLogInformation = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: hms_alarm_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SCTE-HMS Alarm"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.message = "Alarm Event found ( alarmLogIndex
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: hms_warm_start_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.scte.commonPhysAddress = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            root.out.scte.commonLogicalID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: hms_warm_start_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SCTE-HMS"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.message = "Warm Start: ( PhysAddress
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

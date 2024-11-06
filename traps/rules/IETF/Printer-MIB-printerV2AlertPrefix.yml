@@ -1,0 +1,996 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Printer-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: printer_v2alert_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.prtAlertIndex = this.trap.VarBinds.index(0).Value
+            root.out.IETF.prtAlertSeverityLevel = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.2")
+            root.out.IETF.prtAlertGroup = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.4")
+            root.out.IETF.prtAlertGroupIndex = this.trap.VarBinds.index(3).Value
+            root.out.IETF.prtAlertLocation = this.trap.VarBinds.index(4).Value
+            root.out.IETF.prtAlertCode = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.7")
+        - label: printer_v2alert_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-Printer-MIB-printerV2Alert"
+            root.out.event.id = "SNMPTRAP-IETF-Printer-MIB-printerV2Alert"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.4").string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.4").string() + " " + this.trap.VarBinds.index(3).Value.string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.43.18.1.1.4").string() + ", Location " + this.trap.VarBinds.index(4).Value.string()
+        - label: printer_v2alert_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: printer_v2alert_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: printer_v2alert_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: printer_v2alert_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: printer_v2alert_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: printer_v2alert_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: printer_v2alert_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(5).Value == 1
+              processors:
+                - label: printer_v2alert_rules_3_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Other Printer Status"
+            - check: this.trap.VarBinds.index(5).Value == 2
+              processors:
+                - label: printer_v2alert_rules_3_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Status Unknown"
+            - check: this.trap.VarBinds.index(5).Value == 3
+              processors:
+                - label: printer_v2alert_rules_3_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Cover Status"
+                    root.out.event.message = "Printer Cover Open"
+            - check: this.trap.VarBinds.index(5).Value == 4
+              processors:
+                - label: printer_v2alert_rules_3_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Cover Status"
+                    root.out.event.message = "Printer Cover Closed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 5
+              processors:
+                - label: printer_v2alert_rules_3_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interlock Status"
+                    root.out.event.message = "Printer Interlock Open"
+            - check: this.trap.VarBinds.index(5).Value == 6
+              processors:
+                - label: printer_v2alert_rules_3_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interlock Status"
+                    root.out.event.message = "Printer Interlock Closed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 7
+              processors:
+                - label: printer_v2alert_rules_3_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Interlock"
+                    root.out.event.message = "Printer Configuration Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 8
+              processors:
+                - label: printer_v2alert_rules_3_8
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Jam"
+            - check: this.trap.VarBinds.index(5).Value == 9
+              processors:
+                - label: printer_v2alert_rules_3_9
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Missing"
+            - check: this.trap.VarBinds.index(5).Value == 10
+              processors:
+                - label: printer_v2alert_rules_3_10
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Life Almost Over"
+            - check: this.trap.VarBinds.index(5).Value == 11
+              processors:
+                - label: printer_v2alert_rules_3_11
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Life Over"
+            - check: this.trap.VarBinds.index(5).Value == 12
+              processors:
+                - label: printer_v2alert_rules_3_12
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Full/Empty"
+                    root.out.event.message = "Printer Sub-Unit Almost Empty"
+            - check: this.trap.VarBinds.index(5).Value == 13
+              processors:
+                - label: printer_v2alert_rules_3_13
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Full/Empty"
+                    root.out.event.message = "Printer Sub-Unit Empty"
+            - check: this.trap.VarBinds.index(5).Value == 14
+              processors:
+                - label: printer_v2alert_rules_3_14
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Full/Empty"
+                    root.out.event.message = "Printer Sub-Unit Almost Full"
+            - check: this.trap.VarBinds.index(5).Value == 15
+              processors:
+                - label: printer_v2alert_rules_3_15
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Full/Empty"
+                    root.out.event.message = "Printer Sub-Unit Full"
+            - check: this.trap.VarBinds.index(5).Value == 16
+              processors:
+                - label: printer_v2alert_rules_3_16
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Limit"
+                    root.out.event.message = "Printer Sub-Unit Near Limit"
+            - check: this.trap.VarBinds.index(5).Value == 17
+              processors:
+                - label: printer_v2alert_rules_3_17
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Limit"
+                    root.out.event.message = "Printer Sub-Unit At Limit"
+            - check: this.trap.VarBinds.index(5).Value == 18
+              processors:
+                - label: printer_v2alert_rules_3_18
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Open/Close"
+                    root.out.event.message = "Printer Sub-Unit Opened"
+            - check: this.trap.VarBinds.index(5).Value == 19
+              processors:
+                - label: printer_v2alert_rules_3_19
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Open/Close"
+                    root.out.event.message = "Printer Sub-Unit Closed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 20
+              processors:
+                - label: printer_v2alert_rules_3_20
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit On/Off"
+                    root.out.event.message = "Printer Sub-Unit Turned On"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 21
+              processors:
+                - label: printer_v2alert_rules_3_21
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit On/Off"
+                    root.out.event.message = "Printer Sub-Unit Turned Off"
+            - check: this.trap.VarBinds.index(5).Value == 22
+              processors:
+                - label: printer_v2alert_rules_3_22
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Offline"
+            - check: this.trap.VarBinds.index(5).Value == 23
+              processors:
+                - label: printer_v2alert_rules_3_23
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Power Saver"
+            - check: this.trap.VarBinds.index(5).Value == 24
+              processors:
+                - label: printer_v2alert_rules_3_24
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Warming Up"
+            - check: this.trap.VarBinds.index(5).Value == 25
+              processors:
+                - label: printer_v2alert_rules_3_25
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Add/Remove"
+                    root.out.event.message = "Printer Sub-Unit Added"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 26
+              processors:
+                - label: printer_v2alert_rules_3_26
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Add/Remove"
+                    root.out.event.message = "Printer Sub-Unit Removed"
+            - check: this.trap.VarBinds.index(5).Value == 27
+              processors:
+                - label: printer_v2alert_rules_3_27
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Resource Add/Remove"
+                    root.out.event.message = "Printer Sub-Unit Resource Added"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 28
+              processors:
+                - label: printer_v2alert_rules_3_28
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Resource Add/Remove"
+                    root.out.event.message = "Printer Sub-Unit Resource Removed"
+            - check: this.trap.VarBinds.index(5).Value == 29
+              processors:
+                - label: printer_v2alert_rules_3_29
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Recoverable Failure"
+            - check: this.trap.VarBinds.index(5).Value == 30
+              processors:
+                - label: printer_v2alert_rules_3_30
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Unrecoverable Failure"
+            - check: this.trap.VarBinds.index(5).Value == 31
+              processors:
+                - label: printer_v2alert_rules_3_31
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Storage Status"
+                    root.out.event.message = "Printer Sub-Unit Recoverable Storage Error"
+            - check: this.trap.VarBinds.index(5).Value == 32
+              processors:
+                - label: printer_v2alert_rules_3_32
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Storage Status"
+                    root.out.event.message = "Printer Sub-Unit Unrecoverable Storage Error"
+            - check: this.trap.VarBinds.index(5).Value == 33
+              processors:
+                - label: printer_v2alert_rules_3_33
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Motor Failure"
+            - check: this.trap.VarBinds.index(5).Value == 34
+              processors:
+                - label: printer_v2alert_rules_3_34
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Memory Exhausted"
+            - check: this.trap.VarBinds.index(5).Value == 35
+              processors:
+                - label: printer_v2alert_rules_3_35
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Temperature"
+                    root.out.event.message = "Printer Sub-Unit Under Temperature"
+            - check: this.trap.VarBinds.index(5).Value == 36
+              processors:
+                - label: printer_v2alert_rules_3_36
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Temperature"
+                    root.out.event.message = "Printer Sub-Unit Over Temperature"
+            - check: this.trap.VarBinds.index(5).Value == 37
+              processors:
+                - label: printer_v2alert_rules_3_37
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Timing Failure"
+            - check: this.trap.VarBinds.index(5).Value == 38
+              processors:
+                - label: printer_v2alert_rules_3_38
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Sub-Unit Status"
+                    root.out.event.message = "Printer Sub-Unit Thermistor Failure"
+            - check: this.trap.VarBinds.index(5).Value == 501
+              processors:
+                - label: printer_v2alert_rules_3_501
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Door Status"
+                    root.out.event.message = "Printer Door Open"
+            - check: this.trap.VarBinds.index(5).Value == 502
+              processors:
+                - label: printer_v2alert_rules_3_502
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Door Status"
+                    root.out.event.message = "Printer Door Closed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 503
+              processors:
+                - label: printer_v2alert_rules_3_503
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Power Status"
+                    root.out.event.message = "Printer Power Up"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 504
+              processors:
+                - label: printer_v2alert_rules_3_504
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Power Status"
+                    root.out.event.message = "Printer Power Down"
+            - check: this.trap.VarBinds.index(5).Value == 505
+              processors:
+                - label: printer_v2alert_rules_3_505
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Reset by NMS"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 506
+              processors:
+                - label: printer_v2alert_rules_3_506
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Reset Manually"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 507
+              processors:
+                - label: printer_v2alert_rules_3_507
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Ready To Print"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 801
+              processors:
+                - label: printer_v2alert_rules_3_801
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Status"
+                    root.out.event.message = "Printer Input Media Tray Missing"
+            - check: this.trap.VarBinds.index(5).Value == 802
+              processors:
+                - label: printer_v2alert_rules_3_802
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Size Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 803
+              processors:
+                - label: printer_v2alert_rules_3_803
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Weight Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 804
+              processors:
+                - label: printer_v2alert_rules_3_804
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Type Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 805
+              processors:
+                - label: printer_v2alert_rules_3_805
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Color Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 806
+              processors:
+                - label: printer_v2alert_rules_3_806
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Form Parts Change"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 807
+              processors:
+                - label: printer_v2alert_rules_3_807
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Status"
+                    root.out.event.message = "Printer Input Media Supply Low"
+            - check: this.trap.VarBinds.index(5).Value == 808
+              processors:
+                - label: printer_v2alert_rules_3_808
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Status"
+                    root.out.event.message = "Printer Input Media Supply Empty"
+            - check: this.trap.VarBinds.index(5).Value == 809
+              processors:
+                - label: printer_v2alert_rules_3_809
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Change"
+                    root.out.event.message = "Printer Input Media Change Request"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 810
+              processors:
+                - label: printer_v2alert_rules_3_810
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Manual Input"
+                    root.out.event.message = "Printer Manual Input Request"
+            - check: this.trap.VarBinds.index(5).Value == 811
+              processors:
+                - label: printer_v2alert_rules_3_811
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Tray Status"
+                    root.out.event.message = "Printer Input Tray Position Failure"
+            - check: this.trap.VarBinds.index(5).Value == 812
+              processors:
+                - label: printer_v2alert_rules_3_812
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Tray Status"
+                    root.out.event.message = "Printer Input Tray Elevation Failure"
+            - check: this.trap.VarBinds.index(5).Value == 813
+              processors:
+                - label: printer_v2alert_rules_3_813
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Input Media Status"
+                    root.out.event.message = "Printer Cannot Feed Size Selected"
+            - check: this.trap.VarBinds.index(5).Value == 901
+              processors:
+                - label: printer_v2alert_rules_3_901
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Output Media Status"
+                    root.out.event.message = "Printer Output Media Tray Missing"
+            - check: this.trap.VarBinds.index(5).Value == 902
+              processors:
+                - label: printer_v2alert_rules_3_902
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Output Media Status"
+                    root.out.event.message = "Printer Output Media Tray Almost Full"
+            - check: this.trap.VarBinds.index(5).Value == 903
+              processors:
+                - label: printer_v2alert_rules_3_903
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Output Media Status"
+                    root.out.event.message = "Printer Output Media Tray Full"
+            - check: this.trap.VarBinds.index(5).Value == 904
+              processors:
+                - label: printer_v2alert_rules_3_904
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Output Mailbox Status"
+                    root.out.event.message = "Printer Output Mailbox Select Failure"
+            - check: this.trap.VarBinds.index(5).Value == 1001
+              processors:
+                - label: printer_v2alert_rules_3_1001
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Fuser Status"
+                    root.out.event.message = "Printer Fuser Under Temperature"
+            - check: this.trap.VarBinds.index(5).Value == 1002
+              processors:
+                - label: printer_v2alert_rules_3_1002
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Fuser Status"
+                    root.out.event.message = "Printer Fuser Over Temperature"
+            - check: this.trap.VarBinds.index(5).Value == 1003
+              processors:
+                - label: printer_v2alert_rules_3_1003
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Fuser Status"
+                    root.out.event.message = "Printer Fuser Timing Failure"
+            - check: this.trap.VarBinds.index(5).Value == 1004
+              processors:
+                - label: printer_v2alert_rules_3_1004
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Fuser Status"
+                    root.out.event.message = "Printer Fuser Thermistor Failure"
+            - check: this.trap.VarBinds.index(5).Value == 1005
+              processors:
+                - label: printer_v2alert_rules_3_1005
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Marker Status"
+                    root.out.event.message = "Printer Marker Adjusting Print Quality"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(5).Value == 1101
+              processors:
+                - label: printer_v2alert_rules_3_1101
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Toner Status"
+                    root.out.event.message = "Printer Toner Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1102
+              processors:
+                - label: printer_v2alert_rules_3_1102
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Ink Status"
+                    root.out.event.message = "Printer Ink Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1103
+              processors:
+                - label: printer_v2alert_rules_3_1103
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Print Ribbon Status"
+                    root.out.event.message = "Printer Ribbon Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1104
+              processors:
+                - label: printer_v2alert_rules_3_1104
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Toner Status"
+                    root.out.event.message = "Printer Toner Almost Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1105
+              processors:
+                - label: printer_v2alert_rules_3_1105
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Ink Status"
+                    root.out.event.message = "Printer Ink Almost Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1106
+              processors:
+                - label: printer_v2alert_rules_3_1106
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Print Ribbon Status"
+                    root.out.event.message = "Printer Ribbon Almost Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1107
+              processors:
+                - label: printer_v2alert_rules_3_1107
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Waste Toner Status"
+                    root.out.event.message = "Printer Waste Toner Receptacle Almost Full"
+            - check: this.trap.VarBinds.index(5).Value == 1108
+              processors:
+                - label: printer_v2alert_rules_3_1108
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Waste Ink Status"
+                    root.out.event.message = "Printer Waste Ink Receptacle Almost Full"
+            - check: this.trap.VarBinds.index(5).Value == 1109
+              processors:
+                - label: printer_v2alert_rules_3_1109
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Waste Toner Status"
+                    root.out.event.message = "Printer Waste Toner Receptacle Full"
+            - check: this.trap.VarBinds.index(5).Value == 1110
+              processors:
+                - label: printer_v2alert_rules_3_1110
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Waste Ink Status"
+                    root.out.event.message = "Printer Waste Ink Receptacle Full"
+            - check: this.trap.VarBinds.index(5).Value == 1111
+              processors:
+                - label: printer_v2alert_rules_3_1111
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "OPC Status"
+                    root.out.event.message = "Printer OPC Life Almost Over"
+            - check: this.trap.VarBinds.index(5).Value == 1112
+              processors:
+                - label: printer_v2alert_rules_3_1112
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "OPC Status"
+                    root.out.event.message = "Printer OPC Life Over"
+            - check: this.trap.VarBinds.index(5).Value == 1113
+              processors:
+                - label: printer_v2alert_rules_3_1113
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Developer Status"
+                    root.out.event.message = "Printer Developer Almost Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1114
+              processors:
+                - label: printer_v2alert_rules_3_1114
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Developer Status"
+                    root.out.event.message = "Printer Developer Empty"
+            - check: this.trap.VarBinds.index(5).Value == 1115
+              processors:
+                - label: printer_v2alert_rules_3_1115
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Toner Status"
+                    root.out.event.message = "Printer Toner Cartridge Missing"
+            - check: this.trap.VarBinds.index(5).Value == 1301
+              processors:
+                - label: printer_v2alert_rules_3_1301
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Media Path Media Status"
+                    root.out.event.message = "Printer Media Path Media Tray Missing"
+            - check: this.trap.VarBinds.index(5).Value == 1302
+              processors:
+                - label: printer_v2alert_rules_3_1302
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Media Path Media Status"
+                    root.out.event.message = "Printer Media Path Media Tray Almost Full"
+            - check: this.trap.VarBinds.index(5).Value == 1303
+              processors:
+                - label: printer_v2alert_rules_3_1303
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Media Path Media Status"
+                    root.out.event.message = "Printer Media Path Media Tray Full"
+            - check: this.trap.VarBinds.index(5).Value == 1304
+              processors:
+                - label: printer_v2alert_rules_3_1304
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Media Path Media Status"
+                    root.out.event.message = "Printer Media Path Cannot Select Duplex Media"
+            - check: this.trap.VarBinds.index(5).Value == 1501
+              processors:
+                - label: printer_v2alert_rules_3_1501
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Memory Status"
+                    root.out.event.message = "Printer Interpreter Memory Increase"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 1502
+              processors:
+                - label: printer_v2alert_rules_3_1502
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Memory Status"
+                    root.out.event.message = "Printer Interpreter Memory Decrease"
+            - check: this.trap.VarBinds.index(5).Value == 1503
+              processors:
+                - label: printer_v2alert_rules_3_1503
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Cartridge Status"
+                    root.out.event.message = "Printer Interpreter Cartridge Added"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 1504
+              processors:
+                - label: printer_v2alert_rules_3_1504
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Cartridge Status"
+                    root.out.event.message = "Printer Interpreter Cartridge Deleted"
+            - check: this.trap.VarBinds.index(5).Value == 1505
+              processors:
+                - label: printer_v2alert_rules_3_1505
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Resource Status"
+                    root.out.event.message = "Printer Interpreter Resource Added"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(5).Value == 1506
+              processors:
+                - label: printer_v2alert_rules_3_1506
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Resource Status"
+                    root.out.event.message = "Printer Interpreter Resource Deleted"
+            - check: this.trap.VarBinds.index(5).Value == 1507
+              processors:
+                - label: printer_v2alert_rules_3_1507
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Resource Status"
+                    root.out.event.message = "Printer Interpreter Resource Unavailable"
+            - check: this.trap.VarBinds.index(5).Value == 1509
+              processors:
+                - label: printer_v2alert_rules_3_1509
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Interpreter Resource Status"
+                    root.out.event.message = "Insufficient Printer Interpreter Resources, Complex Page"
+            - check: this.trap.VarBinds.index(5).Value == 1801
+              processors:
+                - label: printer_v2alert_rules_3_1801
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Alert Status"
+                    root.out.event.message = "Printer Alert Removal Of Binary Change Entry"
+            - processors:
+                - label: printer_v2alert_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = "Printer Status"
+                    root.out.event.message = "Printer Status Unknown  ( " + root.out.object.name + " )"
+        - label: printer_v2alert_rules_4
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"
