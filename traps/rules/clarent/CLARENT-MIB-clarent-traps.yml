@@ -1,0 +1,679 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CLARENT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 9901
+      processors:
+        - label: gateway_is_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Down"
+    - check: this.trap.SpecificTrap == 9902
+      processors:
+        - label: restart_gwsuccess_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Restart Successful"
+    - check: this.trap.SpecificTrap == 9903
+      processors:
+        - label: restart_gwfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Restart Failed"
+    - check: this.trap.SpecificTrap == 9904
+      processors:
+        - label: cc_is_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center Status"
+            root.out.object.name = ""
+            root.out.event.message = "Command Center Down"
+    - check: this.trap.SpecificTrap == 9905
+      processors:
+        - label: restart_ccsuccess_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center Status"
+            root.out.object.name = ""
+            root.out.event.message = "Command Center Restart Successful"
+    - check: this.trap.SpecificTrap == 9906
+      processors:
+        - label: restart_ccfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center Status"
+            root.out.object.name = ""
+            root.out.event.message = "Command Center Restart Failed"
+    - check: this.trap.SpecificTrap == 9907
+      processors:
+        - label: lost_cc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
+        - label: lost_cc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "gwEntry.4"
+            root.out.event.message = "Gateway Lost Connecton to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 9908
+      processors:
+        - label: connect_ccfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
+        - label: connect_ccfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "gwEntry.4"
+            root.out.event.message = "Gateway Cannot Connect to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 9911
+      processors:
+        - label: port_out_of_service_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.portIndex = this.trap.VarBinds.index(0).Value
+        - label: port_out_of_service_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Port Status"
+            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Port Out of Service  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9912
+      processors:
+        - label: port_in_service_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.portIndex = this.trap.VarBinds.index(0).Value
+        - label: port_in_service_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Port Status"
+            root.out.object.name = "gwPortEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Port In Service  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9913
+      processors:
+        - label: dial_up_no_voice_port_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Voice Port Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Cannot Dial Up, No Voice Port"
+    - check: this.trap.SpecificTrap == 9914
+      processors:
+        - label: connect_no_voice_port_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Voice Port Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Cannot Connect to Other Gateway, No Voice Port"
+    - check: this.trap.SpecificTrap == 9915
+      processors:
+        - label: gateway_connect_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
+        - label: gateway_connect_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "gwEntry.4"
+            root.out.event.message = "Gateway Connected to Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 9916
+      processors:
+        - label: gateway_disconnect_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.serverIpAddr = this.trap.VarBinds.index(0).Value
+        - label: gateway_disconnect_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "gwEntry.4"
+            root.out.event.message = "Gateway Disconnected from Command Center  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 9917
+      processors:
+        - label: gw_not_registered_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.gwId = this.trap.VarBinds.index(0).Value
+        - label: gw_not_registered_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Registration"
+            root.out.object.name = "gwEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Gateway Not Registered  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9918
+      processors:
+        - label: call_rating_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: call_rating_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Call Rating Status"
+            root.out.object.name = ""
+            root.out.event.message = "Call Rating Failed"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9919
+      processors:
+        - label: invalid_cclicense_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center License Status"
+            root.out.object.name = ""
+            root.out.event.message = "Invalid Command Center License"
+    - check: this.trap.SpecificTrap == 9920
+      processors:
+        - label: valid_cctmp_license_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center License Status"
+            root.out.object.name = ""
+            root.out.event.message = "Valid Temporary Command Center License"
+    - check: this.trap.SpecificTrap == 9921
+      processors:
+        - label: ss7link_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SS7 Link Status"
+            root.out.object.name = ""
+            root.out.event.message = "SS7 Link Up"
+    - check: this.trap.SpecificTrap == 9922
+      processors:
+        - label: ss7link_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SS7 Link Status"
+            root.out.object.name = ""
+            root.out.event.message = "SS7 Link Down"
+    - check: this.trap.SpecificTrap == 9927
+      processors:
+        - label: gw_app_shutdown_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: gw_app_shutdown_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Status"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Shutdown"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9928
+      processors:
+        - label: resetting_dspbrd_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: resetting_dspbrd_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DSP Board Status"
+            root.out.object.name = ""
+            root.out.event.message = "DSP Board Resetting"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9929
+      processors:
+        - label: clr_hse_credit_schg_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: clr_hse_credit_schg_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Clearing House Credit Status"
+            root.out.object.name = ""
+            root.out.event.message = "Clearing House Credit Status Changed"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9930
+      processors:
+        - label: cc_credit_schg_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cc_credit_schg_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Clarent Connect Credit Status"
+            root.out.object.name = ""
+            root.out.event.message = "Clarent Connect Credit Status Changed"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9931
+      processors:
+        - label: validate_egerr_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: validate_egerr_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Gateway Validation"
+            root.out.object.name = ""
+            root.out.event.message = "Gateway Validate Egress Error"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9932
+      processors:
+        - label: lic_roll_back_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Command Center License Status"
+            root.out.object.name = ""
+            root.out.event.message = "Command Center License Key Change Rolled Back"
+    - check: this.trap.SpecificTrap == 9933
+      processors:
+        - label: clarent_info_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
+            root.out.clarent.trapClass = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.48.2")
+            root.out.clarent.trapNumber = this.trap.VarBinds.index(2).Value
+            root.out.clarent.trapCount = this.trap.VarBinds.index(3).Value
+            root.out.clarent.trapText = this.trap.VarBinds.index(4).Value.snmp_display_string()
+        - label: clarent_info_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.48.2").string() + " Error"
+            root.out.object.name = ""
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_display_string().string()
+        - label: clarent_info_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 9934
+      processors:
+        - label: software_update_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.packageName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.clarent.packageOperation = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.99999")
+            root.out.clarent.packageStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.2.1.2")
+        - label: software_update_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Software Update Status"
+            root.out.object.name = "Package: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.event.message = "Software " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2858.100.1.99999").string() + " Operation Error  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9935
+      processors:
+        - label: number_intercept_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: number_intercept_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Number Intercept"
+            root.out.object.name = ""
+            root.out.event.message = "Call Placed to Intercept Number"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9936
+      processors:
+        - label: tp_is_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "ThroughPacket Server Status"
+            root.out.object.name = ""
+            root.out.event.message = "ThroughPacket Server Down"
+    - check: this.trap.SpecificTrap == 9937
+      processors:
+        - label: restart_tpfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "ThroughPacket Server Status"
+            root.out.object.name = ""
+            root.out.event.message = "ThroughPacket Server Restart Failed"
+    - check: this.trap.SpecificTrap == 9938
+      processors:
+        - label: tp_restarted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "ThroughPacket Server Status"
+            root.out.object.name = ""
+            root.out.event.message = "ThroughPacket Server Restart Successful"
+    - check: this.trap.SpecificTrap == 9939
+      processors:
+        - label: thresh_hold_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
+            root.out.clarent.trapAppName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.clarent.threshHoldName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.clarent.threshHoldValue = this.trap.VarBinds.index(3).Value
+            root.out.clarent.currentValue = this.trap.VarBinds.index(4).Value
+            root.out.clarent.threshHoldAction = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2858.48.10")
+        - label: thresh_hold_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Application Threshold ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.object.name = "Application: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+            root.out.event.message = ""
+        - label: thresh_hold_trap_rules_4
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "Threshold " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2858.48.10").string() + ": " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + ", " + this.trap.VarBinds.index(4).Value.string() + ", Crossed " + this.trap.VarBinds.index(3).Value.string() + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9940
+      processors:
+        - label: system_reboot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: system_reboot_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Reboot"
+            root.out.object.name = ""
+            root.out.event.message = "System Rebooting, startShutdown Command"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9941
+      processors:
+        - label: reboot_command_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: reboot_command_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Reboot"
+            root.out.object.name = ""
+            root.out.event.message = "System Enabled to Receive startShutdown Command"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9942
+      processors:
+        - label: c_disk_space_low_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: c_disk_space_low_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Disk Space Status"
+            root.out.object.name = ""
+            root.out.event.message = "Disk Space Low, < 50MB"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9943
+      processors:
+        - label: c_no_connect_route_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: c_no_connect_route_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Connect Route Status"
+            root.out.object.name = ""
+            root.out.event.message = "Connect Partner Does Not Have a Call Route"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9944
+      processors:
+        - label: db_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapSeverity = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.2858.48.1")
+            root.out.clarent.trapNumber = this.trap.VarBinds.index(1).Value
+            root.out.clarent.trapText = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.clarent.trapCount = this.trap.VarBinds.index(3).Value
+        - label: db_error_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Database Status"
+            root.out.object.name = ""
+            root.out.event.message = "Database Error"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+        - label: db_error_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 9945
+      processors:
+        - label: db_clerk_started_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapNumber = this.trap.VarBinds.index(0).Value
+        - label: db_clerk_started_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Database Clerk Status"
+            root.out.object.name = ""
+            root.out.event.message = "New Database Clerk Started, " + this.trap.VarBinds.index(0).Value.string() + " Clerks Running"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.string()
+    - check: this.trap.SpecificTrap == 9946
+      processors:
+        - label: restart_dmfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Distribution Service Status"
+            root.out.object.name = ""
+            root.out.event.message = "Distribution Service Restart Failed"
+    - check: this.trap.SpecificTrap == 9947
+      processors:
+        - label: dm_restarted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Distribution Service Status"
+            root.out.object.name = ""
+            root.out.event.message = "Distribution Service Restart Successful"
+    - check: this.trap.SpecificTrap == 9948
+      processors:
+        - label: dm_is_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Distribution Service Status"
+            root.out.object.name = ""
+            root.out.event.message = "Distribution Service Down"
+    - check: this.trap.SpecificTrap == 9949
+      processors:
+        - label: sig_gwmtppause_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: sig_gwmtppause_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Message Transfer Protocol Status"
+            root.out.object.name = ""
+            root.out.event.message = "Message Transfer Protocol Paused"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9950
+      processors:
+        - label: sig_gwmtpresume_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: sig_gwmtpresume_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Message Transfer Protocol Status"
+            root.out.object.name = ""
+            root.out.event.message = "Message Transfer Protocol Resumed"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9951
+      processors:
+        - label: sig_gwtask_active_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: sig_gwtask_active_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Signaling Task Status"
+            root.out.object.name = ""
+            root.out.event.message = "Signaling Task Started"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - check: this.trap.SpecificTrap == 9952
+      processors:
+        - label: pin_suspended_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.clarent.trapText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: pin_suspended_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Account Status"
+            root.out.object.name = ""
+            root.out.event.message = "Account Suspended"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

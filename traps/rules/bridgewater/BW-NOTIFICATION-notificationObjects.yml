@@ -1,0 +1,341 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BW-NOTIFICATION"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: notification_generic_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: notification_generic_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationGeneric"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationGeneric"
+            root.out.event.category.name = "Generic Notification"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: notification_process_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationProcessState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.2")
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: notification_process_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationProcess"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationProcess"
+            root.out.event.category.name = "Process Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: notification_process_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: notification_process_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Process Starting"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: notification_process_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Process Stopping"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: notification_process_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Process Restarting"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: notification_process_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Process Stopped"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - processors:
+                - label: notification_process_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Process Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: notification_process_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: notification_connection_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationConnectionState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.3")
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: notification_connection_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationConnection"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationConnection"
+            root.out.event.category.name = "Connection Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: notification_connection_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: notification_connection_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connection Up"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: notification_connection_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connection Down"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: notification_connection_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Connection Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: notification_connection_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: notification_threshold_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationThresholdState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.4")
+            root.out.bridgewater.notificationThresholdValue = this.trap.VarBinds.index(2).Value
+            root.out.bridgewater.notificationCurrentValue = this.trap.VarBinds.index(3).Value
+            root.out.bridgewater.notificationInterval = this.trap.VarBinds.index(4).Value
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+        - label: notification_threshold_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationThreshold"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationThreshold"
+            root.out.event.category.name = "Threshold Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: notification_threshold_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: notification_threshold_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Threshold Crossed: " + this.trap.VarBinds.index(3).Value.string() + " Crossed " + this.trap.VarBinds.index(2).Value.string()
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: notification_threshold_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Threshold Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: notification_threshold_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: notification_db_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationDbErrorState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.6")
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: notification_db_error_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationDbError"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationDbError"
+            root.out.event.category.name = "Database Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: notification_db_error_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: notification_db_error_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Database Recoverable Operation"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: notification_db_error_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Database Fatal Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: notification_db_error_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Database Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: notification_db_error_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: notification_auth_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationIPAddress = this.trap.VarBinds.index(1).Value
+            root.out.bridgewater.notificationPort = this.trap.VarBinds.index(2).Value
+        - label: notification_auth_error_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationAuthError"
+            root.out.event.id = "SNMPTRAP-bridgewater-BW-NOTIFICATION-notificationAuthError"
+            root.out.event.category.name = "Authentication Status"
+            root.out.object.name = "OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Security Breach, Unexpected Message Received  ( From IP: " + this.trap.VarBinds.index(1).Value.string() + ", Port: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: notification_plugin_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationOID = this.trap.VarBinds.index(0).Value
+            root.out.bridgewater.notificationPluginName = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.bridgewater.notificationPluginEventType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.14")
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: notification_plugin_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: notification_monitor_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bridgewater.notificationFacility = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3631.1.4.15")
+            root.out.bridgewater.notificationFacilityType = this.trap.VarBinds.index(1).Value
+            root.out.bridgewater.notificationGenericInfo = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: notification_monitor_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALLIEDTELESYN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: config_file_exist_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.configFileExist = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.207.8.4.4.4.49.6")
+        - label: config_file_exist_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

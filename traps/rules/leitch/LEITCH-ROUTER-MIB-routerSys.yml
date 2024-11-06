@@ -1,0 +1,752 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LEITCH-ROUTER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: router_sys_alarms_type_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysAlarmsType = this.trap.VarBinds.index(0).Value
+        - label: router_sys_alarms_type_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: router_sys_alarms_state_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysAlarmsState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.11.1.1.5")
+        - label: router_sys_alarms_state_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: router_sys_alarms_text_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysAlarmsText = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_alarms_text_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: router_sys_alarms_device_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysAlarmsDeviceID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_alarms_device_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: router_sys_level_by_name_level_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelByNameLevelID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_by_name_level_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: router_sys_level_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_name_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: router_sys_level_num_inputs_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelNumInputs = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_num_inputs_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: router_sys_level_num_outputs_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelNumOutputs = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_num_outputs_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: router_sys_level_starting_input_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelStartingInput = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_starting_input_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: router_sys_level_starting_output_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelStartingOutput = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_starting_output_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: router_sys_level_inputs_by_name_input_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsByNameInputID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_inputs_by_name_input_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: router_sys_level_inputs_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_inputs_name_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: router_sys_level_inputs_status_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsStatusName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_inputs_status_name_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: router_sys_level_inputs_sig_pres_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsSigPres = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.11.16.1.7")
+        - label: router_sys_level_inputs_sig_pres_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: router_sys_level_inputs_input_alarm_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsInputAlarm = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_inputs_input_alarm_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: router_sys_level_inputs_restricted_outputs_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsRestrictedOutputs = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_inputs_restricted_outputs_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: router_sys_level_inputs_output_status_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInputsOutputStatus = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_inputs_output_status_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: router_sys_level_in_to_phys_in_device_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInToPhysInDeviceID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_in_to_phys_in_device_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: router_sys_level_in_to_phys_in_matrix_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInToPhysInMatrixID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_in_to_phys_in_matrix_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: router_sys_level_in_to_phys_in_pin_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelInToPhysInPinID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_in_to_phys_in_pin_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: router_sys_level_outputs_by_name_output_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsByNameOutputID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_outputs_by_name_output_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: router_sys_level_outputs_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_outputs_name_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: router_sys_level_outputs_input_status_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsInputStatus = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_outputs_input_status_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: router_sys_level_outputs_sig_pres_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsSigPres = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.11.29.1.7")
+        - label: router_sys_level_outputs_sig_pres_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: router_sys_level_outputs_lock_status_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsLockStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.11.29.1.9")
+        - label: router_sys_level_outputs_lock_status_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: router_sys_level_outputs_lock_owner_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsLockOwner = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_outputs_lock_owner_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: router_sys_level_outputs_restricted_inputs_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsRestrictedInputs = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_outputs_restricted_inputs_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: router_sys_level_outputs_output_alarms_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutputsOutputAlarms = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_level_outputs_output_alarms_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: router_sys_level_out_to_phys_out_device_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutToPhysOutDeviceID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_out_to_phys_out_device_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 39
+      processors:
+        - label: router_sys_level_out_to_phys_out_matrix_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutToPhysOutMatrixID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_out_to_phys_out_matrix_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: router_sys_level_out_to_phys_out_pout_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysLevelOutToPhysOutPoutID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_level_out_to_phys_out_pout_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 42
+      processors:
+        - label: router_sys_salvos_by_name_salvo_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvosByNameSalvoID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_salvos_by_name_salvo_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: router_sys_salvos_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvosName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_sys_salvos_name_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: router_sys_salvos_active_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvosActive = this.trap.VarBinds.index(0).Value.bool()
+        - label: router_sys_salvos_active_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 47
+      processors:
+        - label: router_sys_salvo_xpts_level_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvoXptsLevelID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_salvo_xpts_level_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 48
+      processors:
+        - label: router_sys_salvo_xpts_input_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvoXptsInputID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_salvo_xpts_input_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 49
+      processors:
+        - label: router_sys_salvo_xpts_output_idevent_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerSysSalvoXptsOutputID = this.trap.VarBinds.index(0).Value
+        - label: router_sys_salvo_xpts_output_idevent_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

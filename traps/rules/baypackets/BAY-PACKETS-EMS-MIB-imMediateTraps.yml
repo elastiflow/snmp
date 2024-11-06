@@ -1,0 +1,67 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BAY-PACKETS-EMS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: im_alarm_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.baypackets.imAlarmId = this.trap.VarBinds.index(0).Value
+            root.out.baypackets.imAlarmSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7186.3.1.1.4.1.2")
+            root.out.baypackets.imAlarmTime = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.baypackets.imAlarmErrorCode = this.trap.VarBinds.index(3).Value
+            root.out.baypackets.imAlarmContent = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.baypackets.imAlarmSubsystemType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.7186.3.1.1.4.1.6")
+            root.out.baypackets.imAlarmSubsystemId = this.trap.VarBinds.index(6).Value
+            root.out.baypackets.imAlarmSubsystemName = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.baypackets.imAlarmStatus = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.7186.3.1.1.4.1.9")
+            root.out.baypackets.imAlarmClearedBy = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+        - label: im_alarm_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.7186.3.1.1.4.1.6").string() + " Alarm"
+            root.out.object.name = "Alarm ID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + ", Error Code: " + this.trap.VarBinds.index(3).Value.string() + "  ( Subsystem: " + this.trap.VarBinds.index(7).Value.snmp_octet_string().string() + ", ID: " + this.trap.VarBinds.index(6).Value.string() + " )"
+        - label: im_alarm_trap_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 3
+              processors:
+                - label: im_alarm_trap_rules_3_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + ", Cleared by " + this.trap.VarBinds.index(9).Value.snmp_octet_string().string() + "  ( Subsystem: " + this.trap.VarBinds.index(7).Value.snmp_octet_string().string() + ", ID: " + this.trap.VarBinds.index(6).Value.string() + " )"
+        - label: im_alarm_trap_rules_4
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: im_unacked_alarms_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.baypackets.imAlarmId = this.trap.VarBinds.index(0).Value
+        - label: im_unacked_alarms_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unacknowledged Alarms"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Unsent Alarms Exist  ( Alarm ID: " + this.trap.VarBinds.index(0).Value.string() + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

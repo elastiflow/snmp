@@ -1,0 +1,68 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-HC-ALARM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: c_hc_rising_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cHcAlarmVariable = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cHcAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4")
+            root.out.cisco.cHcAlarmAbsValue = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cHcAlarmValueStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.6")
+            root.out.cisco.cHcAlarmRisingThreshAbsValueLo = this.trap.VarBinds.index(4).Value
+            root.out.cisco.cHcAlarmRisingThreshAbsValueHi = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cHcAlarmRisingThresholdValStatus = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.10")
+            root.out.cisco.cHcAlarmRisingEventIndex = this.trap.VarBinds.index(7).Value
+        - label: c_hc_rising_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "High Capacity RMON Alarm"
+            root.out.object.name = "cHcAlarmEntry.2"
+        - label: c_hc_rising_alarm_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "HC RMON Alarm: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4").string() + " of " + this.trap.VarBinds.index(0).Value.string() + " Crossed [Error Sign of Value Unknown]"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: c_hc_falling_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cHcAlarmVariable = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cHcAlarmSampleType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4")
+            root.out.cisco.cHcAlarmAbsValue = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cHcAlarmValueStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.6")
+            root.out.cisco.cHcAlarmFallingThreshAbsValueLo = this.trap.VarBinds.index(4).Value
+            root.out.cisco.cHcAlarmFallingThreshAbsValueHi = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cHcAlarmFallingThrsholdValStatus = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.13")
+            root.out.cisco.cHcAlarmFallingEventIndex = this.trap.VarBinds.index(7).Value
+        - label: c_hc_falling_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "High Capacity RMON Alarm"
+            root.out.object.name = "cHcAlarmEntry.2"
+        - label: c_hc_falling_alarm_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "HC RMON Alarm Cleared: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.10.93.1.1.1.1.4").string() + " of " + this.trap.VarBinds.index(0).Value.string() + " Crossed [Error Sign of Value Unknown]"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

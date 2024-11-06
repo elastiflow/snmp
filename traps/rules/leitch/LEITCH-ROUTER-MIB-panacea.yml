@@ -1,0 +1,72 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LEITCH-ROUTER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: router_command_type_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerCommandType = this.trap.VarBinds.index(0).Value
+        - label: router_command_type_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: router_command_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerCommand = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_command_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: router_result_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.routerResult = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: router_result_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,105 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DISMAN-PING-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ping_probe_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.IETF.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.IETF.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.IETF.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.IETF.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.IETF.pingResultsMinRtt = this.trap.VarBinds.index(5).Value
+            root.out.IETF.pingResultsMaxRtt = this.trap.VarBinds.index(6).Value
+            root.out.IETF.pingResultsAverageRtt = this.trap.VarBinds.index(7).Value
+            root.out.IETF.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.IETF.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.IETF.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.IETF.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+        - label: ping_probe_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingProbeFailed"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingProbeFailed"
+            root.out.event.category.name = "Ping Probe Status"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Probe Failed, see details  ( from @NodeAlias )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ping_test_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.IETF.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.IETF.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.IETF.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.IETF.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.IETF.pingResultsMinRtt = this.trap.VarBinds.index(5).Value
+            root.out.IETF.pingResultsMaxRtt = this.trap.VarBinds.index(6).Value
+            root.out.IETF.pingResultsAverageRtt = this.trap.VarBinds.index(7).Value
+            root.out.IETF.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.IETF.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.IETF.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.IETF.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+        - label: ping_test_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingTestFailed"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingTestFailed"
+            root.out.event.category.name = "Ping Test Status"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Test Failed, see details  ( from @NodeAlias )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ping_test_completed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.IETF.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.IETF.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.IETF.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.IETF.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.IETF.pingResultsMinRtt = this.trap.VarBinds.index(5).Value
+            root.out.IETF.pingResultsMaxRtt = this.trap.VarBinds.index(6).Value
+            root.out.IETF.pingResultsAverageRtt = this.trap.VarBinds.index(7).Value
+            root.out.IETF.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.IETF.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.IETF.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.IETF.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+        - label: ping_test_completed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingTestCompleted"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-PING-MIB-pingTestCompleted"
+            root.out.event.category.name = "Ping Test Status"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Test Complete, see details  ( from @NodeAlias )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

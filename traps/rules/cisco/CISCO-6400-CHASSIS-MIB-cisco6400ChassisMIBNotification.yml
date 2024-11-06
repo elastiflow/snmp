@@ -1,0 +1,80 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-6400-CHASSIS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco6400chassis_failure_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.c64ChassisFacilityAlarmStatus = this.trap.VarBinds.index(0).Value
+        - label: cisco6400chassis_failure_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-6400-CHASSIS-MIB-cisco6400ChassisFailureNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-6400-CHASSIS-MIB-cisco6400ChassisFailureNotification"
+            root.out.event.category.name = "Cisco 6400 Chassis Status"
+            root.out.object.name = ""
+            root.out.event.message = "Cisco 6400 Chassis Failure, Poll the c64ChassisAlarmTable for Alarm Information"
+        - label: cisco6400chassis_failure_notification_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.string() == 0
+              processors:
+                - label: cisco6400chassis_failure_notification_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value.string() == 1
+              processors:
+                - label: cisco6400chassis_failure_notification_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value.string() == 2
+              processors:
+                - label: cisco6400chassis_failure_notification_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(0).Value.string() == 4
+              processors:
+                - label: cisco6400chassis_failure_notification_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 1
+                    root.out.event.severity.level = "Alert"
+            - processors:
+                - label: cisco6400chassis_failure_notification_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cisco6400chassis_failure_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

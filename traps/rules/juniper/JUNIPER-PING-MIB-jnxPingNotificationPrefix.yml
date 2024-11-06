@@ -1,0 +1,337 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "JUNIPER-PING-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: jnx_ping_rtt_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinRttUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxRttUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgRttUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlRttThreshold = this.trap.VarBinds.index(12).Value
+            root.out.juniper.jnxPingResultsRttUs = this.trap.VarBinds.index(13).Value
+        - label: jnx_ping_rtt_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttThresholdExceeded"
+            root.out.event.category.name = "Ping RTT Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Round Trip Time, " + this.trap.VarBinds.index(13).Value.string() + ", Exceeded " + this.trap.VarBinds.index(12).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: jnx_ping_rtt_std_dev_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinRttUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxRttUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgRttUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlRttStdDevThreshold = this.trap.VarBinds.index(12).Value
+            root.out.juniper.jnxPingResultsStdDevRttUs = this.trap.VarBinds.index(13).Value
+        - label: jnx_ping_rtt_std_dev_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttStdDevThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttStdDevThresholdExceeded"
+            root.out.event.category.name = "Ping RTT Std. Dev. Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Round Trip Time Standard Deviation, " + this.trap.VarBinds.index(13).Value.string() + ", Exceeded " + this.trap.VarBinds.index(12).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: jnx_ping_rtt_jitter_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinRttUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxRttUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgRttUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlRttJitterThreshold = this.trap.VarBinds.index(12).Value
+            root.out.juniper.jnxPingResultsJitterRttUs = this.trap.VarBinds.index(13).Value
+        - label: jnx_ping_rtt_jitter_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttJitterThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingRttJitterThresholdExceeded"
+            root.out.event.category.name = "Ping RTT Jitter Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Round Trip Time Jitter, int($7) - int($6)us, Exceeded $jnxPingCtlRttStdDevThreshold  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: jnx_ping_egress_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinEgressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxEgressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgEgressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlEgressTimeThreshold = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingResultsEgressUs = this.trap.VarBinds.index(12).Value
+        - label: jnx_ping_egress_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressThresholdExceeded"
+            root.out.event.category.name = "Ping Egress Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Egress Time, " + this.trap.VarBinds.index(12).Value.string() + ", Exceeded " + this.trap.VarBinds.index(11).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: jnx_ping_egress_std_dev_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinEgressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxEgressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgEgressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingResultsStddevEgressUs = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingCtlEgressStdDevThreshold = this.trap.VarBinds.index(12).Value
+            root.out.juniper.jnxPingResultsStddevEgressUs = this.trap.VarBinds.index(13).Value
+        - label: jnx_ping_egress_std_dev_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressStdDevThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressStdDevThresholdExceeded"
+            root.out.event.category.name = "Ping Egress Std. Dev. Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Egress Time Standard Deviation, " + this.trap.VarBinds.index(13).Value.string() + ", Exceeded " + this.trap.VarBinds.index(12).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: jnx_ping_egress_jitter_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinEgressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxEgressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgEgressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlEgressJitterThreshold = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingResultsJitterEgressUs = this.trap.VarBinds.index(12).Value
+        - label: jnx_ping_egress_jitter_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressJitterThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingEgressJitterThresholdExceeded"
+            root.out.event.category.name = "Ping Egress Jitter Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Egress Time Jitter, int($7) - int($6)us, Exceeded " + this.trap.VarBinds.index(11).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: jnx_ping_ingress_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinIngressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxIngressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgIngressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlIngressTimeThreshold = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingResultsIngressUs = this.trap.VarBinds.index(12).Value
+        - label: jnx_ping_ingress_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressThresholdExceeded"
+            root.out.event.category.name = "Ping Ingress Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Ingress Time, " + this.trap.VarBinds.index(12).Value.string() + ", Exceeded " + this.trap.VarBinds.index(11).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: jnx_ping_ingress_stddev_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinIngressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxIngressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgIngressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlIngressStddevThreshold = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingResultsStddevIngressUs = this.trap.VarBinds.index(12).Value
+        - label: jnx_ping_ingress_stddev_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressStddevThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressStddevThresholdExceeded"
+            root.out.event.category.name = "Ping Ingress Std. Dev. Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Ingress Time Standard Deviation, " + this.trap.VarBinds.index(12).Value.string() + ", Exceeded " + this.trap.VarBinds.index(11).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: jnx_ping_ingress_jitter_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinIngressUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxIngressUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgIngressUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(10).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlIngressJitterThreshold = this.trap.VarBinds.index(11).Value
+            root.out.juniper.jnxPingResultsJitterIngressUs = this.trap.VarBinds.index(12).Value
+        - label: jnx_ping_ingress_jitter_threshold_exceeded_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressJitterThresholdExceeded"
+            root.out.event.id = "SNMPTRAP-juniper-JUNIPER-PING-MIB-jnxPingIngressJitterThresholdExceeded"
+            root.out.event.category.name = "Ping Ingress Jitter Threshold"
+            root.out.object.name = "pingCtlEntry."
+            root.out.event.message = "Ping Ingress Time Jitter, int($7) - int($6)us, Exceeded " + this.trap.VarBinds.index(11).Value.string() + "  ( Target: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: jnx_ping_max_rtt_threshold_exceeded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.pingCtlTargetAddressType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.80.1.2.1.3")
+            root.out.juniper.pingCtlTargetAddress = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.juniper.pingResultsOperStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.1")
+            root.out.juniper.pingResultsIpTargetAddressType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.80.1.3.1.2")
+            root.out.juniper.pingResultsIpTargetAddress = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.juniper.jnxPingResultsMinRttUs = this.trap.VarBinds.index(5).Value
+            root.out.juniper.jnxPingResultsMaxRttUs = this.trap.VarBinds.index(6).Value
+            root.out.juniper.jnxPingResultsAvgRttUs = this.trap.VarBinds.index(7).Value
+            root.out.juniper.pingResultsProbeResponses = this.trap.VarBinds.index(8).Value
+            root.out.juniper.pingResultsSentProbes = this.trap.VarBinds.index(9).Value
+            root.out.juniper.pingResultsRttSumOfSquares = this.trap.VarBinds.index(10).Value
+            root.out.juniper.pingResultsLastGoodProbe = this.trap.VarBinds.index(11).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.juniper.jnxPingCtlRttThreshold = this.trap.VarBinds.index(12).Value
+            root.out.juniper.jnxPingResultsRttUs = this.trap.VarBinds.index(13).Value
+        - label: jnx_ping_max_rtt_threshold_exceeded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

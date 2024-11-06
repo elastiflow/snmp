@@ -1,0 +1,746 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "LEITCH-ROUTER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: device_name_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: device_name_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceNameEvent"
+            root.out.event.category.name = "Device Name Change"
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.event.message = "Device Name Changed  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: device_config_state_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceConfigState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.6")
+        - label: device_config_state_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceConfigStateEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceConfigStateEvent"
+            root.out.event.category.name = "Device Configuration Status"
+            root.out.object.name = ""
+        - label: device_config_state_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_config_state_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Configuration OK"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_config_state_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Configuration Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_config_state_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Configuration Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_config_state_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Configuration Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_config_state_event_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: device_comm_state_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceCommState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.9")
+        - label: device_comm_state_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceCommStateEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceCommStateEvent"
+            root.out.event.category.name = "Device Communications Status"
+            root.out.object.name = ""
+        - label: device_comm_state_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_comm_state_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications OK"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_comm_state_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_comm_state_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_comm_state_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Communications Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_comm_state_event_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: device_control_state_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceControlState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.12")
+        - label: device_control_state_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceControlStateEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceControlStateEvent"
+            root.out.event.category.name = "Device Control Status"
+            root.out.object.name = ""
+        - label: device_control_state_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_control_state_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control OK"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_control_state_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_control_state_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Status Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_control_state_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Device Control Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_control_state_event_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: device_ipsettings_ip_address_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceIPSettingsIpAddress = this.trap.VarBinds.index(0).Value
+        - label: device_ipsettings_ip_address_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsIpAddressEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsIpAddressEvent"
+            root.out.event.category.name = "Device IP Address Change"
+            root.out.object.name = "deviceIPSettingsEntry.10"
+            root.out.event.message = "Device IP Address Changed  ( IP Address: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: device_ipsettings_netmask_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceIPSettingsNetMask = this.trap.VarBinds.index(0).Value
+        - label: device_ipsettings_netmask_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsNetmaskEvent"
+            root.out.event.category.name = "Device IP Netmask Change"
+            root.out.object.name = "deviceIPSettingsEntry.10"
+            root.out.event.message = "Device IP Subnet Mask Changed  ( Netmask: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: device_ipsettings_gateway_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceIPSettingsGateway = this.trap.VarBinds.index(0).Value
+        - label: device_ipsettings_gateway_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsGatewayEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsGatewayEvent"
+            root.out.event.category.name = "Device IP Gateway Change"
+            root.out.object.name = "deviceIPSettingsEntry.10"
+            root.out.event.message = "Device IP Default Gateway Changed  ( Gateway: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: device_ipsettings_link_enabled_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceIPSettingsLinkEnabled = this.trap.VarBinds.index(0).Value.bool()
+        - label: device_ipsettings_link_enabled_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceIPSettingsLinkEnabledEvent"
+            root.out.event.category.name = "Link Status"
+            root.out.object.name = "deviceIPSettingsEntry.10"
+        - label: device_ipsettings_link_enabled_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value.bool().string() == 1
+              processors:
+                - label: device_ipsettings_link_enabled_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Connected"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value.bool().string() == 2
+              processors:
+                - label: device_ipsettings_link_enabled_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Not Connected"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: device_ipsettings_link_enabled_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Link Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_ipsettings_link_enabled_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: device_fans_installed_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceFansInstalled = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.25.1.2")
+        - label: device_fans_installed_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansInstalledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansInstalledEvent"
+            root.out.event.category.name = "Fan Install Status"
+            root.out.object.name = "deviceFansEntry.10"
+        - label: device_fans_installed_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_fans_installed_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Installed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_fans_installed_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Removed"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_fans_installed_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Install Status Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_fans_installed_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Install Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_fans_installed_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: device_fans_status_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceFansStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.25.1.4")
+        - label: device_fans_status_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceFansStatusEvent"
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = "deviceFansEntry.10"
+        - label: device_fans_status_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_fans_status_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan OK"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_fans_status_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_fans_status_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Status Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_fans_status_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Fan Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_fans_status_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: device_psuinstalled_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.devicePSUInstalled = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.28.1.2")
+        - label: device_psuinstalled_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUInstalledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUInstalledEvent"
+            root.out.event.category.name = "Power Supply Install Status"
+            root.out.object.name = "devicePSUEntry.10"
+        - label: device_psuinstalled_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_psuinstalled_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_psuinstalled_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Removed"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_psuinstalled_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Install Status Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_psuinstalled_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Install Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_psuinstalled_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: device_psustatus_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.devicePSUStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.28.1.4")
+        - label: device_psustatus_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-devicePSUStatusEvent"
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = "devicePSUEntry.10"
+        - label: device_psustatus_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_psustatus_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed and Working"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_psustatus_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Installed and Not Working"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_psustatus_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply No Failure"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: device_psustatus_event_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Failure"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: device_psustatus_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Power Supply Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_psustatus_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: device_syncs_installed_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceSyncsInstalled = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.31.1.2")
+        - label: device_syncs_installed_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsInstalledEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsInstalledEvent"
+            root.out.event.category.name = "External Sync Install Status"
+            root.out.object.name = "deviceSyncsEntry.10"
+        - label: device_syncs_installed_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_syncs_installed_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Present"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_syncs_installed_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Not Present"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_syncs_installed_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Install Status Undetermined"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: device_syncs_installed_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Install Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_syncs_installed_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: device_syncs_status_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceSyncsStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3142.2.5.1.10.31.1.4")
+        - label: device_syncs_status_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsStatusEvent"
+            root.out.event.category.name = "External Sync Status"
+            root.out.object.name = "deviceSyncsEntry.10"
+        - label: device_syncs_status_event_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: device_syncs_status_event_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Present and Locked"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: device_syncs_status_event_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Present and Not Locked"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: device_syncs_status_event_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Not Present"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: device_syncs_status_event_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "External Sync Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: device_syncs_status_event_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: device_syncs_type_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.leitch.deviceSyncsType = this.trap.VarBinds.index(0).Value
+        - label: device_syncs_type_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsTypeEvent"
+            root.out.event.id = "SNMPTRAP-leitch-LEITCH-ROUTER-MIB-deviceSyncsTypeEvent"
+            root.out.event.category.name = "External Sync Type Change"
+            root.out.object.name = "deviceSyncsEntry.10"
+            root.out.event.message = "External Sync Type Changed to " + this.trap.VarBinds.index(0).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

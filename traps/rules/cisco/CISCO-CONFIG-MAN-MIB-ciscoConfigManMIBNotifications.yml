@@ -1,0 +1,71 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-CONFIG-MAN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_config_man_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ccmHistoryEventCommandSource = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.3")
+            root.out.cisco.ccmHistoryEventConfigSource = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.4")
+            root.out.cisco.ccmHistoryEventConfigDestination = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.5")
+            root.out.cisco.ccmHistoryEventTerminalUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: cisco_config_man_event_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONFIG-MAN-MIB-ciscoConfigManEvent"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CONFIG-MAN-MIB-ciscoConfigManEvent"
+            root.out.event.category.name = "Configuration Change"
+            root.out.object.name = "ccmHistoryEventEntry.2"
+            root.out.event.message = "Configuration Changed via " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.3").string() + "  ( Source: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.4").string() + ", Destination: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.5").string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ccm_clirunning_config_changed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ccmHistoryRunningLastChanged = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ccmHistoryEventTerminalType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.43.1.1.6.1.6")
+            root.out.cisco.ccmHistoryEventTerminalUser = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: ccm_clirunning_config_changed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ccm_ctidrolled_over_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

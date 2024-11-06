@@ -1,0 +1,54 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-SYSLOG-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: clog_message_generated_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.clogHistFacility = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.cisco.clogHistSeverity = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.41.1.2.3.1.3")
+            root.out.cisco.clogHistMsgName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.cisco.clogHistMsgText = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.cisco.clogHistTimestamp = this.trap.VarBinds.index(4).Value
+        - label: clog_message_generated_rules_1
+          mapping: |
+            #!blobl
+            root = this
+        - label: clog_message_generated_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "--"
+            root.out.event.category.name = "-"
+            root.out.event.message = this.trap.VarBinds.index(3).Value.snmp_display_string().string()
+            root.out.event.class.name = "SYSLOG-cisco-ios-" + root.out.event.category.name
+            root.out.event.id = "SYSLOG-cisco-ios-" + root.out.event.category.name
+        - label: clog_message_generated_rules_5
+          mapping: |
+            #!blobl
+            root = this
+        - label: clog_message_generated_rules_6
+          mapping: |
+            #!blobl
+            root = this
+        - label: clog_message_generated_rules_7
+          mapping: |
+            #!blobl
+            root = this
+        - label: clog_message_generated_rules_8
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

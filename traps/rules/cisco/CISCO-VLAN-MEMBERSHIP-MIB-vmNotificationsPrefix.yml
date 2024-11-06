@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-VLAN-MEMBERSHIP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: vm_vmps_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.vmVmpsIpAddress = this.trap.VarBinds.index(0).Value
+        - label: vm_vmps_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-VLAN-MEMBERSHIP-MIB-vmVmpsChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-VLAN-MEMBERSHIP-MIB-vmVmpsChange"
+            root.out.event.category.name = "VMPS Change"
+            root.out.object.name = "vmVmpsEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "VLAN Membership Policy Server (VMPS) Changed  ( New VMPS: " + this.trap.VarBinds.index(0).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

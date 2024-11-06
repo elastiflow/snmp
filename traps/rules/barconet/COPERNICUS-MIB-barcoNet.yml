@@ -1,0 +1,266 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "COPERNICUS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: cop_msg_new_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.trpMsgID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.trpMsgGenTime = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.barconet.trpMsgSourceName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.barconet.trpMsgSourceLocation = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.barconet.trpMsgSourceType = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.barconet.trpMsgText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.barconet.trpMsgPending = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1482.2.2.1.7")
+            root.out.barconet.trpMsgType = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1482.2.2.1.8")
+            root.out.barconet.trpMsgPerceivedSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1482.2.2.1.9")
+            root.out.barconet.trpMsgSubject = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.barconet.trpMsgRegTime = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.barconet.trpMsgProcessed = this.trap.VarBinds.index(11).Value.enum_enrich(".1.3.6.1.4.1.1482.2.2.1.14")
+            root.out.barconet.trpMsgTypeID = this.trap.VarBinds.index(12).Value
+        - label: cop_msg_new_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1482.2.2.1.8").string() + " ( " + this.trap.VarBinds.index(12).Value.string() + " )"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " ( " + this.trap.VarBinds.index(9).Value.snmp_display_string().string() + " )"
+            root.out.event.message = this.trap.VarBinds.index(4).Value.snmp_display_string().string() + " " + this.trap.VarBinds.index(5).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+        - label: cop_msg_new_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(8).Value == 5
+              processors:
+                - label: cop_msg_new_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "End of " + root.out.event.message
+        - label: cop_msg_new_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cop_msg_ack_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.trpMsgID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.trpMsgAckTime = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.barconet.trpMsgAckSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: cop_msg_ack_rules_1
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cop_msg_del_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.trpMsgID = this.trap.VarBinds.index(0).Value
+        - label: cop_msg_del_rules_1
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cop_msg_clr_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.trpMsgID = this.trap.VarBinds.index(0).Value
+        - label: cop_msg_clr_rules_1
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cop_log_off_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.trpClientInfoResourceID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.trpClientInfoAppName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.barconet.trpClientInfoHostName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: cop_log_off_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Client Status"
+            root.out.object.name = ""
+            root.out.object.name = this.trap.VarBinds.index(1).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " on " + this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+            root.out.event.message = "Client Logged Off  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cop_resource_added_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.resID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.resName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.barconet.resLocation = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.barconet.resObjectTypeID = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1482.2.3.1.3.1.6")
+        - label: cop_resource_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Resource"
+            root.out.object.name = "resEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Resource Added: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1482.2.3.1.3.1.6").string() + " at " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + "  ( " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cop_resource_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.resID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.resName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cop_resource_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Resource"
+            root.out.object.name = "resEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Resource Removed  ( " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + " )"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cop_resource_responding_status_changed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.resID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.resRespondingStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1482.2.3.1.3.1.12")
+            root.out.barconet.resName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: cop_resource_responding_status_changed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Resource Response Status"
+            root.out.object.name = "resEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cop_resource_responding_status_changed_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 0
+              processors:
+                - label: cop_resource_responding_status_changed_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Not Responding  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cop_resource_responding_status_changed_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Responding  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+        - label: cop_resource_responding_status_changed_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: cop_resource_alarm_status_changed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.barconet.resID = this.trap.VarBinds.index(0).Value
+            root.out.barconet.resAlarmStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1482.2.3.1.3.1.13")
+            root.out.barconet.resName = this.trap.VarBinds.index(2).Value.snmp_display_string()
+        - label: cop_resource_alarm_status_changed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Resource Alarm Status"
+            root.out.object.name = "resEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cop_resource_alarm_status_changed_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Critical  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Major  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Minor  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Warning  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Cleared  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: cop_resource_alarm_status_changed_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Information  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            - processors:
+                - label: cop_resource_alarm_status_changed_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Resource Alarm Status Indeterminate  ( " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+        - label: cop_resource_alarm_status_changed_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

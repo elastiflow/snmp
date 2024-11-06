@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-OAM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: oam_loopback_ping_completion_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.oamLoopbackPingCompleted = this.trap.VarBinds.index(0).Value.bool()
+        - label: oam_loopback_ping_completion_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-OAM-MIB-oamLoopbackPingCompletionTrap"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-OAM-MIB-oamLoopbackPingCompletionTrap"
+            root.out.event.category.name = "OAM Loopback Ping Completion"
+            root.out.object.name = "oamLoopbackPingEntry.2"
+            root.out.event.message = "Loopback Ping Completed for Sequence of OAM Loopback Cells  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

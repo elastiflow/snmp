@@ -1,0 +1,274 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IPI-MEMMGMT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: rfile_xfer_action_report_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.memMgmtNotificationHelperPEOID = this.trap.VarBinds.index(0).Value
+            root.out.internetphotonics.memMgmtNotificationActionState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.6.2.15.3.1.1")
+            root.out.internetphotonics.memMgmtNotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: rfile_xfer_action_report_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-rfileXferActionReport"
+            root.out.event.id = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-rfileXferActionReport"
+            root.out.event.category.name = "Remote File Upload/Download Status"
+            root.out.object.name = "PE OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: rfile_xfer_action_report_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: rfile_xfer_action_report_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: rfile_xfer_action_report_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: rfile_xfer_action_report_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: rfile_xfer_action_report_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Alarm"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: rfile_xfer_action_report_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Alarm Cleared"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: rfile_xfer_action_report_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 7
+              processors:
+                - label: rfile_xfer_action_report_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Alarm Cleared"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: rfile_xfer_action_report_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Remote File Upload/Download Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: rfile_xfer_action_report_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mem_copy_action_report_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.memMgmtNotificationHelperPEOID = this.trap.VarBinds.index(0).Value
+            root.out.internetphotonics.memMgmtNotificationActionState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.7737.6.2.15.3.1.1")
+            root.out.internetphotonics.memMgmtNotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: mem_copy_action_report_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-memCopyActionReport"
+            root.out.event.id = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-memCopyActionReport"
+            root.out.event.category.name = "Memory Activation Status"
+            root.out.object.name = "PE OID: " + this.trap.VarBinds.index(0).Value.string()
+        - label: mem_copy_action_report_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: mem_copy_action_report_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: mem_copy_action_report_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: mem_copy_action_report_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: mem_copy_action_report_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Alarm"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(1).Value == 5
+              processors:
+                - label: mem_copy_action_report_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Alarm Cleared"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 6
+              processors:
+                - label: mem_copy_action_report_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 7
+              processors:
+                - label: mem_copy_action_report_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Alarm Cleared"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: mem_copy_action_report_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Memory Activation Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: mem_copy_action_report_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: rfile_xfer_status_report_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.memMgmtNotificationHelperPEOID = this.trap.VarBinds.index(0).Value
+            root.out.internetphotonics.memMgmtNotificationFileName = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.internetphotonics.memMgmtNotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: rfile_xfer_status_report_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-rfileXferStatusReport"
+            root.out.event.id = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-rfileXferStatusReport"
+            root.out.event.category.name = "Remote File Transfer Status"
+            root.out.object.name = "File: " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "Remote File Transfer"
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: sw_download_status_report_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.internetphotonics.memMgmtNotificationHelperPEOID = this.trap.VarBinds.index(0).Value
+            root.out.internetphotonics.memMgmtNotificationFileName = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.internetphotonics.memMgmtNotificationDesc = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: sw_download_status_report_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-swDownloadStatusReport"
+            root.out.event.id = "SNMPTRAP-internetphotonics-IPI-MEMMGMT-MIB-swDownloadStatusReport"
+            root.out.event.category.name = "Software Download Status"
+            root.out.object.name = "PE OID: " + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Software Download "
+            root.out.event.message = root.out.event.message + ", " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

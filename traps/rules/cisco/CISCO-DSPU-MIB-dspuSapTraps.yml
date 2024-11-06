@@ -1,0 +1,36 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-DSPU-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: dspu_sap_state_change_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.dspuSapDlcType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.6.1.1.3")
+            root.out.cisco.dspuSapDlcUnit = this.trap.VarBinds.index(1).Value
+            root.out.cisco.dspuSapDlcPort = this.trap.VarBinds.index(2).Value
+            root.out.cisco.dspuSapAddress = this.trap.VarBinds.index(3).Value
+            root.out.cisco.dspuSapOperState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.24.1.6.1.1.6")
+        - label: dspu_sap_state_change_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

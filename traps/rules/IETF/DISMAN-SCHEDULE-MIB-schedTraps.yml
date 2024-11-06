@@ -1,0 +1,55 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "DISMAN-SCHEDULE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: sched_action_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.schedLastFailure = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.63.1.2.1.17")
+            root.out.IETF.schedLastFailed = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
+        - label: sched_action_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-DISMAN-SCHEDULE-MIB-schedActionFailure"
+            root.out.event.id = "SNMPTRAP-IETF-DISMAN-SCHEDULE-MIB-schedActionFailure"
+            root.out.event.category.name = "Scheduled Action Status"
+            root.out.object.name = "schedEntry."
+        - label: sched_action_failure_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 0
+              processors:
+                - label: sched_action_failure_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Scheduled Action Successful  ( " + root.out.object.name + " )"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: sched_action_failure_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Scheduled Action Failed, " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.63.1.2.1.17").string() + "  ( " + root.out.object.name + " )"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+        - label: sched_action_failure_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,66 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "RLE-FALCON-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: falcon_alarm_entry_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = $5
+            root.out.event.message = lookup(extract($2, "3184\.1\.1\.1\.5\.3\.([0-9]+)"), falconWellKnownAlarms), currently $3 $4  ( " + root.out.object.name + " )"
+            root.out.object.name = $3
+            root.out.event.message = lookup(extract($2, "3184\.1\.1\.1\.5\.3\.([0-9]+)"), falconWellKnownAlarms)  ( " + root.out.object.name + " )"
+            root.out.event.category.name = "Falcon Alarm"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: falcon_alarm_entry_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.object.name = $5
+            root.out.event.message = lookup(extract($2, "3184\.1\.1\.1\.5\.3\.([0-9]+)"), falconWellKnownAlarms), currently $3 $4  ( " + root.out.object.name + " )"
+            root.out.object.name = $3
+            root.out.event.message = "End of lookup(extract($2, "3184\.1\.1\.1\.5\.3\.([0-9]+)"), falconWellKnownAlarms)  ( " + root.out.object.name + " )"
+            root.out.event.category.name = "Falcon Alarm"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: falcon_access_granted_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Falcon Access"
+            root.out.object.name = "User: $1, Keypad: int(extract($OID1, "3184\.1\.1\.1\.2\.3\.([0-9]+)"))/2
+            root.out.event.message = "Access Granted  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: falcon_access_denied_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Falcon Access"
+            root.out.object.name = ""
+            root.out.event.message = "Keypad Access Denied"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: falcon_page_unsuccessful_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Falcon Page"
+            root.out.object.name = ""
+            root.out.event.message = "Page Unsuccessful"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

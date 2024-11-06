@@ -1,0 +1,92 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WWNMGR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: wwnm_type1wwn_shortage_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.wwnmType1AvailableWwns = this.trap.VarBinds.index(0).Value
+        - label: wwnm_type1wwn_shortage_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnShortageNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnShortageNotify"
+            root.out.event.category.name = "NAA Type 1 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWN Shortage, " + this.trap.VarBinds.index(0).Value.string() + " NAA Type 1 WWNs Available"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: wwnm_type1wwn_available_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.wwnmType1AvailableWwns = this.trap.VarBinds.index(0).Value
+        - label: wwnm_type1wwn_available_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnAvailableNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmType1WwnAvailableNotify"
+            root.out.event.category.name = "NAA Type 1 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWNs Available, " + this.trap.VarBinds.index(0).Value.string() + " NAA Type 1 WWNs Available"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: wwnm_type_other_wwn_shortage_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.wwnmTypeOtherAvailableWwns = this.trap.VarBinds.index(0).Value
+        - label: wwnm_type_other_wwn_shortage_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnShortageNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnShortageNotify"
+            root.out.event.category.name = "NAA Type 2&5 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWN Shortage, " + this.trap.VarBinds.index(0).Value.string() + " NAA Type 2&5 WWNs Available"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: wwnm_type_other_wwn_available_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.wwnmTypeOtherAvailableWwns = this.trap.VarBinds.index(0).Value
+        - label: wwnm_type_other_wwn_available_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnAvailableNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WWNMGR-MIB-wwnmTypeOtherWwnAvailableNotify"
+            root.out.event.category.name = "NAA Type 2&5 WWN Availablity"
+            root.out.object.name = ""
+            root.out.event.message = "WWNs Available, " + this.trap.VarBinds.index(0).Value.string() + " NAA Type 2&5 WWNs Available"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

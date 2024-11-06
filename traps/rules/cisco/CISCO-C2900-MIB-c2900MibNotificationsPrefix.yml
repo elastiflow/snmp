@@ -1,0 +1,72 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-C2900-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: c2900address_violation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.c2900PortIfIndex = this.trap.VarBinds.index(0).Value
+        - label: c2900address_violation_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900AddressViolation"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900AddressViolation"
+            root.out.event.category.name = "Port Status"
+            root.out.object.name = "c2900PortEntry.87.2"
+            root.out.event.message = "Secured Port Address Violation  ( Slot: 87, Port: 2 )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: c2900broadcast_storm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.c2900PortBroadcastRisingThreshold = this.trap.VarBinds.index(0).Value
+        - label: c2900broadcast_storm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900BroadcastStorm"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900BroadcastStorm"
+            root.out.event.category.name = "Port Status"
+            root.out.object.name = "c2900PortEntry.87.2"
+            root.out.event.message = "Port Broadcast Packets Exceeds " + this.trap.VarBinds.index(0).Value.string() + " frames/sec.  ( Slot: 87, Port: 2 )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: c2900rps_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: c2900rps_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900RpsFailed"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-C2900-MIB-c2900RpsFailed"
+            root.out.event.category.name = "Redundant Power System Status"
+            root.out.object.name = ""
+            root.out.event.message = "Redundant Power System Failure"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

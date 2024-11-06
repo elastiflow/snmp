@@ -1,0 +1,30 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-PING-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_ping_completion_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoPingCompleted = this.trap.VarBinds.index(0).Value.bool()
+            root.out.cisco.ciscoPingSentPackets = this.trap.VarBinds.index(1).Value
+            root.out.cisco.ciscoPingReceivedPackets = this.trap.VarBinds.index(2).Value
+        - label: cisco_ping_completion_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Ping Completion"
+            root.out.object.name = "2"
+            root.out.event.message = "Ping Sequence Completed: SentPackets
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

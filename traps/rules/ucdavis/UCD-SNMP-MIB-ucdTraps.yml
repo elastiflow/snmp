@@ -1,0 +1,32 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "UCD-SNMP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ucd_start_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "UCD SNMP Agent Started"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ucd_shutdown_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Agent Status"
+            root.out.object.name = ""
+            root.out.event.message = "UCD SNMP Agent Shutdown"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

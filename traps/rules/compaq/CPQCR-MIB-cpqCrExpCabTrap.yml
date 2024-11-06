@@ -1,0 +1,152 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CPQCR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: cpq_cr_exp_cab_fan_failure_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_fan_failure_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: cpq_cr_exp_cab_fan_information_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_fan_information_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: cpq_cr_exp_cab_power_supply_failure_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_power_supply_failure_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: cpq_cr_exp_cab_power_supply_information_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_power_supply_information_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: cpq_cr_exp_cab_temperature_warning_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_temperature_warning_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: cpq_cr_exp_cab_temperature_critical_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_temperature_critical_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: cpq_cr_exp_cab_temperature_information_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: cpq_cr_exp_cab_temperature_information_trap_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

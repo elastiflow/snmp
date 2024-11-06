@@ -1,0 +1,1817 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ALLENTELECOM-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: err_gpsrom_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsrom_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSROM"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSROM"
+            root.out.event.category.name = "errGPSROM"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has a ROM").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: err_gpsram_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsram_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSRAM"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSRAM"
+            root.out.event.category.name = "errGPSRAM"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has a RAM").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: err_gpsfpga_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsfpga_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSFPGA"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSFPGA"
+            root.out.event.category.name = "errGPSFPGA"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: err_gpspower_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpspower_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSPower"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSPower"
+            root.out.event.category.name = "errGPSPower"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has a power").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: err_gpsosc_rail_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsosc_rail_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscRail"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscRail"
+            root.out.event.category.name = "errGPSOscRail"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has an oscillator").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: err_gpsosc_near_rail_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsosc_near_rail_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscNearRail"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscNearRail"
+            root.out.event.category.name = "errGPSOscNearRail"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has an oscillator").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: err_gpsopen_ant_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsopen_ant_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOpenAnt"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOpenAnt"
+            root.out.event.category.name = "errGPSOpenAnt"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: err_gpsshort_ant_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsshort_ant_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSShortAnt"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSShortAnt"
+            root.out.event.category.name = "errGPSShortAnt"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) has a shorted").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: err_gpsnot_tracking_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsnot_tracking_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSNotTracking"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSNotTracking"
+            root.out.event.category.name = "errGPSNotTracking"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) is not").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: err_gpsosc_discipline_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsosc_discipline_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscDiscipline"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSOscDiscipline"
+            root.out.event.category.name = "errGPSOscDiscipline"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) is not disciplining").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: err_gpstest_mode_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpstest_mode_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSTestMode"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSTestMode"
+            root.out.event.category.name = "errGPSTestMode"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: err_gpsno_status_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsno_status_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSNoStatus"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSNoStatus"
+            root.out.event.category.name = "errGPSNoStatus"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: err_rfdown_fail_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_rfdown_fail_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRFDownFail"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRFDownFail"
+            root.out.event.category.name = "errRFDownFail"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: err_rfsynth_unlocked_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_rfsynth_unlocked_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRFSynthUnlocked"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRFSynthUnlocked"
+            root.out.event.category.name = "errRFSynthUnlocked"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: err_aoacal_unlocked_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_aoacal_unlocked_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errAOACalUnlocked"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errAOACalUnlocked"
+            root.out.event.category.name = "errAOACalUnlocked"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: err_pos7dcfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_pos7dcfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos7DCFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos7DCFailed"
+            root.out.event.category.name = "errPos7DCFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: err_neg7dcfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_neg7dcfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNeg7DCFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNeg7DCFailed"
+            root.out.event.category.name = "errNeg7DCFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: err_pos5dcfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_pos5dcfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos5DCFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos5DCFailed"
+            root.out.event.category.name = "errPos5DCFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("power supply in (.*) has failed").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: err_pos12dcfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_pos12dcfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos12DCFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPos12DCFailed"
+            root.out.event.category.name = "errPos12DCFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: err_bpuhwstatus_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_bpuhwstatus_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errBPUHWStatusFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errBPUHWStatusFailed"
+            root.out.event.category.name = "errBPUHWStatusFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: err39osc_unlocked_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err39osc_unlocked_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-err39OscUnlocked"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-err39OscUnlocked"
+            root.out.event.category.name = "err39OscUnlocked"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: err_no10mhz_ref_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_no10mhz_ref_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNo10MhzRef"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNo10MhzRef"
+            root.out.event.category.name = "errNo10MhzRef"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: err_bpuctrl_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_bpuctrl_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errBPUCtrlFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errBPUCtrlFailed"
+            root.out.event.category.name = "errBPUCtrlFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("status on (.*)$").index(0).index(-1) + ", " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("The (controller processor .*) is not responding").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: err_mez_load_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_mez_load_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMezLoadFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMezLoadFailed"
+            root.out.event.category.name = "errMezLoadFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: err_sharcload_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_sharcload_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errSHARCLoadFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errSHARCLoadFailed"
+            root.out.event.category.name = "errSHARCLoadFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: err_flashfull_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_flashfull_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFLASHFull"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFLASHFull"
+            root.out.event.category.name = "errFLASHFull"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: err_alg_proc_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_alg_proc_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errAlgProcFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errAlgProcFailed"
+            root.out.event.category.name = "errAlgProcFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("status on (.*)$").index(0).index(-1) + ", " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("The (algorithm processor .*) is not responding").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: err_no_watchdog_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_no_watchdog_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoWatchdog"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoWatchdog"
+            root.out.event.category.name = "errNoWatchdog"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: err_wlsover_temp_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlsover_temp_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSOverTemp"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSOverTemp"
+            root.out.event.category.name = "errWLSOverTemp"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(WLS .*) has an over temperature alarm").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: err_wlshwstatus_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlshwstatus_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSHWStatusFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSHWStatusFailed"
+            root.out.event.category.name = "errWLSHWStatusFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: err_gcswlscomms_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gcswlscomms_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGCSWLSCommsFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGCSWLSCommsFailed"
+            root.out.event.category.name = "errGCSWLSCommsFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) cannot communicate").index(0).index(-1) + " to " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("communicate with (.*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: err_wlscheck_sum_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlscheck_sum_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSCheckSumFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSCheckSumFailed"
+            root.out.event.category.name = "errWLSCheckSumFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: err_del_msg_qfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_del_msg_qfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errDelMsgQFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errDelMsgQFailed"
+            root.out.event.category.name = "errDelMsgQFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: err_create_msg_qfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_create_msg_qfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errCreateMsgQFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errCreateMsgQFailed"
+            root.out.event.category.name = "errCreateMsgQFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: err_post_msg_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_post_msg_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPostMsgFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errPostMsgFailed"
+            root.out.event.category.name = "errPostMsgFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: err_create_thread_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_create_thread_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errCreateThreadFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errCreateThreadFailed"
+            root.out.event.category.name = "errCreateThreadFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 37
+      processors:
+        - label: err_run_thread_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_run_thread_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRunThreadFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errRunThreadFailed"
+            root.out.event.category.name = "errRunThreadFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: err_fetch_msg_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_fetch_msg_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFetchMsgFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFetchMsgFailed"
+            root.out.event.category.name = "errFetchMsgFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 39
+      processors:
+        - label: err_lock_actfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_lock_actfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errLockACTFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errLockACTFailed"
+            root.out.event.category.name = "errLockACTFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: err_unlock_actfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_unlock_actfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errUnlockACTFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errUnlockACTFailed"
+            root.out.event.category.name = "errUnlockACTFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 41
+      processors:
+        - label: err_inv_msg_type_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_inv_msg_type_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvMsgType"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvMsgType"
+            root.out.event.category.name = "errInvMsgType"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 42
+      processors:
+        - label: err_mem_alloc_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_mem_alloc_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMemAllocFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMemAllocFailed"
+            root.out.event.category.name = "errMemAllocFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 43
+      processors:
+        - label: err_proc_init_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_proc_init_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errProcInitFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errProcInitFailed"
+            root.out.event.category.name = "errProcInitFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: err_mutex_lock_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_mutex_lock_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMutexLockFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMutexLockFailed"
+            root.out.event.category.name = "errMutexLockFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: err_mutex_unlock_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_mutex_unlock_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMutexUnlockFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMutexUnlockFailed"
+            root.out.event.category.name = "errMutexUnlockFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 46
+      processors:
+        - label: err_inv_ptr_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_inv_ptr_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvPtr"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvPtr"
+            root.out.event.category.name = "errInvPtr"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 47
+      processors:
+        - label: err_get_cfg_wlsfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_get_cfg_wlsfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGetCfgWLSFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGetCfgWLSFailed"
+            root.out.event.category.name = "errGetCfgWLSFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 48
+      processors:
+        - label: err_get_cfg_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_get_cfg_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGetCfgFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGetCfgFailed"
+            root.out.event.category.name = "errGetCfgFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 49
+      processors:
+        - label: err_unknown_cell_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_unknown_cell_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errUnknownCell"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errUnknownCell"
+            root.out.event.category.name = "errUnknownCell"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GCS (.*) Unknown cell").index(0).index(-1) + ", " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("Unknown (cell site .*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 50
+      processors:
+        - label: err_no_coverage_for_cell_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_no_coverage_for_cell_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoCoverageForCell"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoCoverageForCell"
+            root.out.event.category.name = "errNoCoverageForCell"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) Insufficient WLS").index(0).index(-1) + ", " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("WLS coverage for (.*)").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 51
+      processors:
+        - label: err_wlsconnect_refused_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlsconnect_refused_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSConnectRefused"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSConnectRefused"
+            root.out.event.category.name = "errWLSConnectRefused"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) IO_EXEC_RCV").index(0).index(-1) + ", , From: " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("Connection from (.*) refused").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 52
+      processors:
+        - label: err_max_call_init_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_max_call_init_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMaxCallInit"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMaxCallInit"
+            root.out.event.category.name = "errMaxCallInit"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 53
+      processors:
+        - label: err_gcsdisk_full_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gcsdisk_full_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGCSDiskFull"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGCSDiskFull"
+            root.out.event.category.name = "errGCSDiskFull"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 54
+      processors:
+        - label: err_no_location_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_no_location_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoLocation"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoLocation"
+            root.out.event.category.name = "errNoLocation"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 55
+      processors:
+        - label: err_file_open_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_file_open_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFileOpen"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errFileOpen"
+            root.out.event.category.name = "errFileOpen"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 56
+      processors:
+        - label: err_msg_reg_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_msg_reg_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMsgRegFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errMsgRegFailed"
+            root.out.event.category.name = "errMsgRegFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 57
+      processors:
+        - label: err_wlssite_alloc_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlssite_alloc_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSSiteAllocFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSSiteAllocFailed"
+            root.out.event.category.name = "errWLSSiteAllocFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 58
+      processors:
+        - label: err_no_mobile_idin_table_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_no_mobile_idin_table_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoMobileIDInTable"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errNoMobileIDInTable"
+            root.out.event.category.name = "errNoMobileIDInTable"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 59
+      processors:
+        - label: err_inv_mpcmsg_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_inv_mpcmsg_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvMPCMsg"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errInvMPCMsg"
+            root.out.event.category.name = "errInvMPCMsg"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GCS (.*) IO_EXEC_RCV_READ_TIC").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 60
+      processors:
+        - label: err_gpsjam_sync_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_gpsjam_sync_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSJamSync"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errGPSJamSync"
+            root.out.event.category.name = "errGPSJamSync"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .* WLS .*): Jam Sync").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 61
+      processors:
+        - label: err_wlsavail_less_min_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlsavail_less_min_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSAvailLessMin"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSAvailLessMin"
+            root.out.event.category.name = "errWLSAvailLessMin"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) Number of WLS Sites").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 62
+      processors:
+        - label: err_terminating_call_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_terminating_call_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errTerminatingCall"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errTerminatingCall"
+            root.out.event.category.name = "errTerminatingCall"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 63
+      processors:
+        - label: err_wlsalive_timed_out_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: err_wlsalive_timed_out_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSAliveTimedOut"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-errWLSAliveTimedOut"
+            root.out.event.category.name = "errWLSAliveTimedOut"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) STATUS_WLS_ALIVE_TIMED_OUT").index(0).index(-1) + ", " + this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("STATUS_WLS_ALIVE_TIMED_OUT (.*)- closing").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 64
+      processors:
+        - label: gcsheart_beat_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gcsheart_beat_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GCSHeartBeat"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GCSHeartBeat"
+            root.out.event.category.name = "GCSHeartBeat"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("(GCS .*) is alive").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 65
+      processors:
+        - label: wlscoords_out_of_range_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: wlscoords_out_of_range_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-WLSCoordsOutOfRange"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-WLSCoordsOutOfRange"
+            root.out.event.category.name = "WLSCoordsOutOfRange"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("For (.*), the distance between").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 66
+      processors:
+        - label: pmsite_reboot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsite_reboot_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteReboot"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteReboot"
+            root.out.event.category.name = "PMSiteReboot"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 67
+      processors:
+        - label: pmsite_timeout_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsite_timeout_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteTimeout"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteTimeout"
+            root.out.event.category.name = "PMSiteTimeout"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 68
+      processors:
+        - label: pmsite_ttag_mismatch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsite_ttag_mismatch_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteTTagMismatch"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSiteTTagMismatch"
+            root.out.event.category.name = "PMSiteTTagMismatch"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 69
+      processors:
+        - label: pmsharc_problems_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsharc_problems_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSharcProblems"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSharcProblems"
+            root.out.event.category.name = "PMSharcProblems"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 70
+      processors:
+        - label: pmdflate_early_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmdflate_early_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMDFLateEarly"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMDFLateEarly"
+            root.out.event.category.name = "PMDFLateEarly"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 71
+      processors:
+        - label: pmlarge_task_result_time_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmlarge_task_result_time_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMLargeTaskResultTime"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMLargeTaskResultTime"
+            root.out.event.category.name = "PMLargeTaskResultTime"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 72
+      processors:
+        - label: pmprimary_low_qual_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmprimary_low_qual_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryLowQual"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryLowQual"
+            root.out.event.category.name = "PMPrimaryLowQual"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 73
+      processors:
+        - label: pmprimary_high_errs_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmprimary_high_errs_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryHighErrs"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryHighErrs"
+            root.out.event.category.name = "PMPrimaryHighErrs"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 74
+      processors:
+        - label: pmprimary_invalid_slot_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmprimary_invalid_slot_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryInvalidSlot"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryInvalidSlot"
+            root.out.event.category.name = "PMPrimaryInvalidSlot"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 75
+      processors:
+        - label: pmprimary_no_signal_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmprimary_no_signal_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryNoSignal"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimaryNoSignal"
+            root.out.event.category.name = "PMPrimaryNoSignal"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 76
+      processors:
+        - label: pmsecondary_low_qual_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsecondary_low_qual_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSecondaryLowQual"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSecondaryLowQual"
+            root.out.event.category.name = "PMSecondaryLowQual"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 77
+      processors:
+        - label: pmhigh_icqual_diff_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmhigh_icqual_diff_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMHighICQualDiff"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMHighICQualDiff"
+            root.out.event.category.name = "PMHighICQualDiff"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 78
+      processors:
+        - label: pmsig_interference_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmsig_interference_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSigInterference"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMSigInterference"
+            root.out.event.category.name = "PMSigInterference"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 79
+      processors:
+        - label: pmfoarange_edge_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmfoarange_edge_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMFOARangeEdge"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMFOARangeEdge"
+            root.out.event.category.name = "PMFOARangeEdge"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 80
+      processors:
+        - label: pmbad_cdmachan_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmbad_cdmachan_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMBadCDMAChan"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMBadCDMAChan"
+            root.out.event.category.name = "PMBadCDMAChan"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 81
+      processors:
+        - label: pmprimary_selection_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmprimary_selection_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimarySelectionFailed"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPrimarySelectionFailed"
+            root.out.event.category.name = "PMPrimarySelectionFailed"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 82
+      processors:
+        - label: pmpilot_offset_mapping_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmpilot_offset_mapping_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPilotOffsetMapping"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMPilotOffsetMapping"
+            root.out.event.category.name = "PMPilotOffsetMapping"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 83
+      processors:
+        - label: pmlow_sector_participation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: pmlow_sector_participation_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMLowSectorParticipation"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-PMLowSectorParticipation"
+            root.out.event.category.name = "PMLowSectorParticipation"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 84
+      processors:
+        - label: gpsbad_ppsqual_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsbad_ppsqual_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadPPSQual"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadPPSQual"
+            root.out.event.category.name = "GPSBadPPSQual"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 85
+      processors:
+        - label: gpsno_rtcsync_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsno_rtcsync_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSNoRTCSync"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSNoRTCSync"
+            root.out.event.category.name = "GPSNoRTCSync"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("no RTC Sync on (.*)\\.?$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 86
+      processors:
+        - label: gpsself_survey_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsself_survey_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSSelfSurvey"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSSelfSurvey"
+            root.out.event.category.name = "GPSSelfSurvey"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 87
+      processors:
+        - label: gpsbad_decode_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsbad_decode_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadDecode"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadDecode"
+            root.out.event.category.name = "GPSBadDecode"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("Bad Decode Status on (.*)\\.?$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 88
+      processors:
+        - label: gpsbad_pps_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsbad_pps_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadPPS"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSBadPPS"
+            root.out.event.category.name = "GPSBadPPS"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("PPS Error on (.*)\\.?$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 89
+      processors:
+        - label: gpsposition_accuracy_err_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsposition_accuracy_err_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSPositionAccuracyErr"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSPositionAccuracyErr"
+            root.out.event.category.name = "GPSPositionAccuracyErr"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("GPS receiver on (.*) is using a").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 90
+      processors:
+        - label: gpscorrupt_eepromon_reset_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpscorrupt_eepromon_reset_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSCorruptEEPROMonReset"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSCorruptEEPROMonReset"
+            root.out.event.category.name = "GPSCorruptEEPROMonReset"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 91
+      processors:
+        - label: gpsalmanac_err_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsalmanac_err_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSAlmanacErr"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSAlmanacErr"
+            root.out.event.category.name = "GPSAlmanacErr"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("current or complete on (.*)").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 92
+      processors:
+        - label: low_wlscomms_time_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: low_wlscomms_time_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-LowWLScommsTime"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-LowWLScommsTime"
+            root.out.event.category.name = "LowWLScommsTime"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 93
+      processors:
+        - label: gcsant_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gcsant_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GCSAntChange"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GCSAntChange"
+            root.out.event.category.name = "GCSAntChange"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 94
+      processors:
+        - label: gpsself_survey_complete_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: gpsself_survey_complete_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSSelfSurveyComplete"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-GPSSelfSurveyComplete"
+            root.out.event.category.name = "GPSSelfSurveyComplete"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string().re_find_all_submatch("completed for (.*)\\.  [0-9\\.\\-]+ latitude and").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - check: this.trap.SpecificTrap == 95
+      processors:
+        - label: wlsself_survey_reject_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.allentelecom.errSeverity = this.trap.VarBinds.index(0).Value
+            root.out.allentelecom.errText = this.trap.VarBinds.index(1).Value
+        - label: wlsself_survey_reject_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-UnknownTrapName_95"
+            root.out.event.id = "SNMPTRAP-allentelecom-ALLENTELECOM-MIB-UnknownTrapName_95"
+            root.out.event.category.name = "UnknownTrapName ( 95 )"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.string()
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"
