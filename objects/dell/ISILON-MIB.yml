@@ -2,8 +2,8 @@
 ISILON-MIB::clusterStatus:
   mib: ISILON-MIB
   object: clusterStatus
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: clusterName
+  attributes:
     clusterName:
       oid: .1.3.6.1.4.1.12124.1.1.1
       name: dell.clusterName
@@ -36,8 +36,8 @@ ISILON-MIB::clusterStatus:
 ISILON-MIB::clusterIfsPerf:
   mib: ISILON-MIB
   object: clusterIfsPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: clusterIfsInBytes
+  attributes:
     clusterIfsInBytes:
       oid: .1.3.6.1.4.1.12124.1.2.1.1
       name: dell.clusterIfsInBytes
@@ -58,8 +58,8 @@ ISILON-MIB::clusterIfsPerf:
 ISILON-MIB::clusterNetworkPerf:
   mib: ISILON-MIB
   object: clusterNetworkPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: clusterNetworkInBytes
+  attributes:
     clusterNetworkInBytes:
       oid: .1.3.6.1.4.1.12124.1.2.2.1
       name: dell.clusterNetworkInBytes
@@ -80,8 +80,8 @@ ISILON-MIB::clusterNetworkPerf:
 ISILON-MIB::clusterCPUPerf:
   mib: ISILON-MIB
   object: clusterCPUPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: clusterCPUUser
+  attributes:
     clusterCPUUser:
       oid: .1.3.6.1.4.1.12124.1.2.3.1
       name: dell.clusterCPUUser
@@ -106,8 +106,8 @@ ISILON-MIB::clusterCPUPerf:
 ISILON-MIB::ifsFilesystem:
   mib: ISILON-MIB
   object: ifsFilesystem
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: ifsTotalBytes
+  attributes:
     ifsTotalBytes:
       oid: .1.3.6.1.4.1.12124.1.3.1
       name: dell.ifsTotalBytes
@@ -160,7 +160,7 @@ ISILON-MIB::quotaEntry:
   mib: ISILON-MIB
   object: quotaEntry
   index:
-    - type: DisplayString
+    - type: OctetString
       oid: .1.3.6.1.4.1.12124.1.12.1.1.1
       name: dell.quotaDomainID # quotaDomainID
       syntax: DisplayString
@@ -230,8 +230,8 @@ ISILON-MIB::quotaEntry:
 ISILON-MIB::snapshotSettings:
   mib: ISILON-MIB
   object: snapshotSettings
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: snapshotScheduledCreateEnabled
+  attributes:
     snapshotScheduledCreateEnabled:
       oid: .1.3.6.1.4.1.12124.1.13.1.1
       name: dell.snapshotScheduledCreateEnabled
@@ -358,8 +358,8 @@ ISILON-MIB::snapshotEntry:
 ISILON-MIB::nodeStatus:
   mib: ISILON-MIB
   object: nodeStatus
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: nodeName
+  attributes:
     nodeName:
       oid: .1.3.6.1.4.1.12124.2.1.1
       name: dell.nodeName
@@ -380,8 +380,8 @@ ISILON-MIB::nodeStatus:
 ISILON-MIB::nodeIfsPerf:
   mib: ISILON-MIB
   object: nodeIfsPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: nodeIfsInBytes
+  attributes:
     nodeIfsInBytes:
       oid: .1.3.6.1.4.1.12124.2.2.1.1
       name: dell.nodeIfsInBytes
@@ -402,8 +402,8 @@ ISILON-MIB::nodeIfsPerf:
 ISILON-MIB::nodeNetworkPerf:
   mib: ISILON-MIB
   object: nodeNetworkPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: nodeNetworkInBytes
+  attributes:
     nodeNetworkInBytes:
       oid: .1.3.6.1.4.1.12124.2.2.2.1
       name: dell.nodeNetworkInBytes
@@ -424,8 +424,8 @@ ISILON-MIB::nodeNetworkPerf:
 ISILON-MIB::nodeCPUPerf:
   mib: ISILON-MIB
   object: nodeCPUPerf
-  discovery_attribute: 
-  attributes: 
+  discovery_attribute: nodeCPUUser
+  attributes:
     nodeCPUUser:
       oid: .1.3.6.1.4.1.12124.2.2.3.1
       name: dell.nodeCPUUser
@@ -451,12 +451,16 @@ ISILON-MIB::nodeCPUPerfEntry:
   mib: ISILON-MIB
   object: nodeCPUPerfEntry
   index:
-    - type: Gauge32
+    - type: Integer
+      oid: .1.3.6.1.4.1.12124.2.2.3.10.1.6
+      name: dell.nodePerCPUID # nodePerCPUID
+      syntax: Integer
+  discovery_attribute: nodePerCPUNice
+  attributes:
+    nodePerCPUUser:
       oid: .1.3.6.1.4.1.12124.2.2.3.10.1.1
       name: dell.nodePerCPUUser # nodePerCPUUser
       syntax: Gauge32
-  discovery_attribute: nodePerCPUNice
-  attributes:
     nodePerCPUNice:
       oid: .1.3.6.1.4.1.12124.2.2.3.10.1.2
       name: dell.nodePerCPUNice
@@ -473,16 +477,12 @@ ISILON-MIB::nodeCPUPerfEntry:
       oid: .1.3.6.1.4.1.12124.2.2.3.10.1.5
       name: dell.nodePerCPUIdle
       syntax: Gauge32
-    nodePerCPUID:
-      oid: .1.3.6.1.4.1.12124.2.2.3.10.1.6
-      name: dell.nodePerCPUID
-      syntax: Integer32
 
 ISILON-MIB::nodeProtocolPerfEntry:
   mib: ISILON-MIB
   object: nodeProtocolPerfEntry
   index:
-    - type: DisplayString
+    - type: OctetString
       oid: .1.3.6.1.4.1.12124.2.2.10.1.1
       name: dell.protocolName # protocolName
       syntax: DisplayString
@@ -557,16 +557,16 @@ ISILON-MIB::diskPerfEntry:
   mib: ISILON-MIB
   object: diskPerfEntry
   index:
-    - type: Integer32
+    - type: OctetString
+      oid: .1.3.6.1.4.1.12124.2.2.52.1.2
+      name: dell.diskPerfDeviceName # diskPerfDeviceName
+      syntax: DisplayString
+  discovery_attribute: diskPerfBay
+  attributes:
+    diskPerfBay:
       oid: .1.3.6.1.4.1.12124.2.2.52.1.1
       name: dell.diskPerfBay # diskPerfBay
       syntax: Integer32
-  discovery_attribute: diskPerfDeviceName
-  attributes:
-    diskPerfDeviceName:
-      oid: .1.3.6.1.4.1.12124.2.2.52.1.2
-      name: dell.diskPerfDeviceName
-      syntax: DisplayString
     diskPerfOpsPerSecond:
       oid: .1.3.6.1.4.1.12124.2.2.52.1.3
       name: dell.diskPerfOpsPerSecond
