@@ -1,3 +1,3 @@
 # snmp
 
-Definitions for the SNMP Poller input of the ElastiFlow&trade; Unified Collector.
+Definitions for the ElastiFlow&trade; SNMP Poller and SNMP Trap Collectors.
