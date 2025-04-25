@@ -2,38 +2,38 @@ CISCO-CDP-MIB::cdpInterfaceEntry:
   mib: CISCO-CDP-MIB
   object: cdpInterfaceEntry
   index:
-    - type: Integer32
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.1
-      name: netif # cdpInterfaceIfIndex
-      syntax: InterfaceIndex
+      name: cdpInterfaceIfIndex
+      syntax: Integer32
   discovery_attribute: cdpInterfaceEnable
   attributes:
     cdpInterfaceEnable:
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.2
-      name: cisco.cdpInterfaceEnable
+      name: cdpInterfaceEnable
       syntax: TruthValue
     cdpInterfaceMessageInterval:
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.3
-      name: cisco.cdpInterfaceMessageInterval
-      syntax: Integer
+      name: cdpInterfaceMessageInterval
+      syntax: TicksSec # TODO_TicksSec
     cdpInterfaceGroup:
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.4
-      name: cisco.cdpInterfaceGroup
+      name: cdpInterfaceGroup
       syntax: Integer32
     cdpInterfacePort:
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.5
-      name: cisco.cdpInterfacePort
+      name: cdpInterfacePort
       syntax: Integer32
     cdpInterfaceName:
       oid: .1.3.6.1.4.1.9.9.23.1.1.1.1.6
-      name: cisco.cdpInterfaceName
+      name: cdpInterfaceName
       syntax: DisplayString
 
 CISCO-CDP-MIB::cdpInterfaceExtEntry:
   mib: CISCO-CDP-MIB
   object: cdpInterfaceExtEntry
-  augments: CISCO-CDP-MIB::cdpInterfaceEntry
-  discovery_attribute: cdpInterfaceExtendedTrust
+  index:
+  discovery_attribute: cdpInterfaceCosForUntrustedPort
   attributes:
     cdpInterfaceExtendedTrust:
       oid: .1.3.6.1.4.1.9.9.23.1.1.2.1.1
@@ -48,131 +48,131 @@ CISCO-CDP-MIB::cdpCacheEntry:
   mib: CISCO-CDP-MIB
   object: cdpCacheEntry
   index:
-    - type: Integer32
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.1
-      name: netif # cdpCacheIfIndex
-      syntax: InterfaceIndex
-    - type: Integer32
+      name: cdpCacheIfIndex
+      syntax: Integer32
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.2
-      name:  cisco.cdpCacheDeviceIndex
-      syntax: UnsignedAsID
-  discovery_attribute: cdpCacheAddress
+      name: cdpCacheDeviceIndex
+      syntax: Integer32
+  discovery_attribute: cdpCacheAddressType
   attributes:
     cdpCacheAddressType:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.3
-      name: cisco.cdpCacheAddressType
+      name: cdpCacheAddressType
       syntax: EnumInteger
     cdpCacheAddress:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.4
-      name: cisco.cdpCacheAddress
-      syntax: OctetString
+      name: cdpCacheAddress
+      syntax: CiscoNetworkAddress
     cdpCacheVersion:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.5
-      name: cisco.cdpCacheVersion
+      name: cdpCacheVersion
       syntax: DisplayString
     cdpCacheDeviceId:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.6
-      name: cisco.cdpCacheDeviceId
+      name: cdpCacheDeviceId
       syntax: DisplayString
     cdpCacheDevicePort:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.7
-      name: cisco.cdpCacheDevicePort
+      name: cdpCacheDevicePort
       syntax: DisplayString
     cdpCachePlatform:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.8
-      name: cisco.cdpCachePlatform
+      name: cdpCachePlatform
       syntax: DisplayString
     cdpCacheCapabilities:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.9
-      name: cisco.cdpCacheCapabilities
-      syntax: EnumBitmap
+      name: cdpCacheCapabilities
+      syntax: OctetString
     cdpCacheVTPMgmtDomain:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.10
-      name: cisco.cdpCacheVTPMgmtDomain
+      name: cdpCacheVTPMgmtDomain
       syntax: DisplayString
     cdpCacheNativeVLAN:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.11
-      name: cisco.cdpCacheNativeVLAN
-      syntax: Integer32
+      name: cdpCacheNativeVLAN
+      syntax: VlanIndex
     cdpCacheDuplex:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.12
-      name: cisco.cdpCacheDuplex
+      name: cdpCacheDuplex
       syntax: EnumInteger
     cdpCacheApplianceID:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.13
-      name: cisco.cdpCacheApplianceID
+      name: cdpCacheApplianceID
       syntax: Unsigned32
     cdpCacheVlanID:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.14
-      name: cisco.cdpCacheVlanID
+      name: cdpCacheVlanID
       syntax: Unsigned32
     cdpCachePowerConsumption:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.15
-      name: cisco.cdpCachePowerConsumption
+      name: cdpCachePowerConsumption
       syntax: Unsigned32
     cdpCacheMTU:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.16
-      name: cisco.cdpCacheMTU
+      name: cdpCacheMTU
       syntax: Unsigned32
     cdpCacheSysName:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.17
-      name: cisco.cdpCacheSysName
+      name: cdpCacheSysName
       syntax: DisplayString
     cdpCacheSysObjectID:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.18
-      name: cisco.cdpCacheSysObjectID
+      name: cdpCacheSysObjectID
       syntax: ObjectIdentifier
     cdpCachePrimaryMgmtAddrType:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.19
-      name: cisco.cdpCachePrimaryMgmtAddrType
+      name: cdpCachePrimaryMgmtAddrType
       syntax: EnumInteger
     cdpCachePrimaryMgmtAddr:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.20
-      name: cisco.cdpCachePrimaryMgmtAddr
-      syntax: OctetString
+      name: cdpCachePrimaryMgmtAddr
+      syntax: CiscoNetworkAddress
     cdpCacheSecondaryMgmtAddrType:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.21
-      name: cisco.cdpCacheSecondaryMgmtAddrType
+      name: cdpCacheSecondaryMgmtAddrType
       syntax: EnumInteger
     cdpCacheSecondaryMgmtAddr:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.22
-      name: cisco.cdpCacheSecondaryMgmtAddr
-      syntax: OctetString
+      name: cdpCacheSecondaryMgmtAddr
+      syntax: CiscoNetworkAddress
     cdpCachePhysLocation:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.23
-      name: cisco.cdpCachePhysLocation
+      name: cdpCachePhysLocation
       syntax: DisplayString
     cdpCacheLastChange:
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.24
-      name: cisco.cdpCacheLastChange
+      name: cdpCacheLastChange
       syntax: TimeStamp
 
 CISCO-CDP-MIB::cdpCtAddressEntry:
   mib: CISCO-CDP-MIB
   object: cdpCtAddressEntry
   index:
-    - type: Integer32
+    - type: Integer
       oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.1
-      name: netif # cdpCacheIfIndex
-      syntax: InterfaceIndex
-    - type: Integer32
-      oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.2
-      name: cisco.cdpCacheDeviceIndex
-      syntax: UnsignedAsID
-    - type: Integer32
-      oid: .1.3.6.1.4.1.9.9.23.1.2.2.1.3
-      name: cisco.cdpCtAddressIndex
+      name: cdpCacheIfIndex
       syntax: Integer32
-  discovery_attribute: cdpCtAddress
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.23.1.2.1.1.2
+      name: cdpCacheDeviceIndex
+      syntax: Integer32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.23.1.2.2.1.3
+      name: cdpCtAddressIndex
+      syntax: Integer32
+  discovery_attribute: cdpCtAddressType
   attributes:
     cdpCtAddressType:
       oid: .1.3.6.1.4.1.9.9.23.1.2.2.1.4
-      name: cisco.cdpCtAddressType
+      name: cdpCtAddressType
       syntax: EnumInteger
     cdpCtAddress:
       oid: .1.3.6.1.4.1.9.9.23.1.2.2.1.5
-      name: cisco.cdpCtAddress
-      syntax: OctetString
+      name: cdpCtAddress
+      syntax: CiscoNetworkAddress
 
 CISCO-CDP-MIB::cdpGlobal:
   mib: CISCO-CDP-MIB
@@ -181,29 +181,30 @@ CISCO-CDP-MIB::cdpGlobal:
   attributes:
     cdpGlobalRun:
       oid: .1.3.6.1.4.1.9.9.23.1.3.1
-      name: cisco.cdpGlobalRun
+      name: cdpGlobalRun
       syntax: TruthValue
     cdpGlobalMessageInterval:
       oid: .1.3.6.1.4.1.9.9.23.1.3.2
-      name: cisco.cdpGlobalMessageInterval
-      syntax: TicksSec
+      name: cdpGlobalMessageInterval
+      syntax: TicksSec # TODO_TicksSec
     cdpGlobalHoldTime:
       oid: .1.3.6.1.4.1.9.9.23.1.3.3
-      name: cisco.cdpGlobalHoldTime
-      syntax: TicksSec
+      name: cdpGlobalHoldTime
+      syntax: TicksSec # TODO_TicksSec
     cdpGlobalDeviceId:
       oid: .1.3.6.1.4.1.9.9.23.1.3.4
-      name: cisco.cdpGlobalDeviceId
+      name: cdpGlobalDeviceId
       syntax: DisplayString
     cdpGlobalLastChange:
       oid: .1.3.6.1.4.1.9.9.23.1.3.5
-      name: cisco.cdpGlobalLastChange
+      name: cdpGlobalLastChange
       syntax: TimeStamp
     cdpGlobalDeviceIdFormatCpb:
       oid: .1.3.6.1.4.1.9.9.23.1.3.6
-      name: cisco.cdpGlobalDeviceIdFormatCpb
+      name: cdpGlobalDeviceIdFormatCpb
       syntax: EnumBitmap
     cdpGlobalDeviceIdFormat:
       oid: .1.3.6.1.4.1.9.9.23.1.3.7
-      name: cisco.cdpGlobalDeviceIdFormat
+      name: cdpGlobalDeviceIdFormat
       syntax: EnumInteger
+
