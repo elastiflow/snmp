@@ -1,0 +1,177 @@
+CISCO-ENTITY-ALARM-MIB::ceAlarmDescrMapEntry:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmDescrMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.138.1.1.1.1.1
+      name: ceAlarmDescrIndex
+      syntax: Unsigned32
+  discovery_attribute: ceAlarmDescrVendorType
+  attributes:
+    ceAlarmDescrVendorType:
+      oid: .1.3.6.1.4.1.9.9.138.1.1.1.1.2
+      name: ceAlarmDescrVendorType
+      syntax: AutonomousType
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmDescrEntry:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmDescrEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.138.1.1.1.1.1
+      name: ceAlarmDescrIndex
+      syntax: Unsigned32
+    - type: AlarmType
+      oid: .1.3.6.1.4.1.9.9.138.1.1.2.1.1
+      name: ceAlarmDescrAlarmType
+      syntax: AlarmType
+  discovery_attribute: ceAlarmDescrSeverity
+  attributes:
+    ceAlarmDescrSeverity:
+      oid: .1.3.6.1.4.1.9.9.138.1.1.2.1.2
+      name: ceAlarmDescrSeverity
+      syntax: AlarmSeverityOrZero
+    ceAlarmDescrText:
+      oid: .1.3.6.1.4.1.9.9.138.1.1.2.1.3
+      name: ceAlarmDescrText
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmMonitoring:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmMonitoring
+  discovery_attribute: ceAlarmCriticalCount
+  attributes:
+    ceAlarmCriticalCount:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.1
+      name: ceAlarmCriticalCount
+      syntax: Gauge32
+    ceAlarmMajorCount:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.2
+      name: ceAlarmMajorCount
+      syntax: Gauge32
+    ceAlarmMinorCount:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.3
+      name: ceAlarmMinorCount
+      syntax: Gauge32
+    ceAlarmCutOff:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.4
+      name: ceAlarmCutOff
+      syntax: TruthValue
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmEntry:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+  discovery_attribute: ceAlarmSeverity
+  attributes:
+    ceAlarmFilterProfile:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.5.1.1
+      name: ceAlarmFilterProfile
+      syntax: AlarmFilterProfileType
+    ceAlarmSeverity:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.5.1.2
+      name: ceAlarmSeverity
+      syntax: AlarmSeverityOrZero
+    ceAlarmList:
+      oid: .1.3.6.1.4.1.9.9.138.1.2.5.1.3
+      name: ceAlarmList
+      syntax: AlarmList
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmHistory:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmHistory
+  discovery_attribute: ceAlarmHistTableSize
+  attributes:
+    ceAlarmHistTableSize:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.1
+      name: ceAlarmHistTableSize
+      syntax: Integer32
+    ceAlarmHistLastIndex:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.2
+      name: ceAlarmHistLastIndex
+      syntax: Unsigned32
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmHistEntry:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmHistEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.1
+      name: ceAlarmHistIndex
+      syntax: Unsigned32
+  discovery_attribute: ceAlarmHistType
+  attributes:
+    ceAlarmHistType:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.2
+      name: ceAlarmHistType
+      syntax: EnumInteger
+    ceAlarmHistEntPhysicalIndex:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.3
+      name: ceAlarmHistEntPhysicalIndex
+      syntax: PhysicalIndex
+    ceAlarmHistAlarmType:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.4
+      name: ceAlarmHistAlarmType
+      syntax: AlarmType
+    ceAlarmHistSeverity:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.5
+      name: ceAlarmHistSeverity
+      syntax: EnumInteger
+    ceAlarmHistTimeStamp:
+      oid: .1.3.6.1.4.1.9.9.138.1.3.3.1.6
+      name: ceAlarmHistTimeStamp
+      syntax: TimeStamp
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmFiltering:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmFiltering
+  discovery_attribute: ceAlarmNotifiesEnable
+  attributes:
+    ceAlarmNotifiesEnable:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.1
+      name: ceAlarmNotifiesEnable
+      syntax: AlarmSeverityOrZero
+    ceAlarmSyslogEnable:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.2
+      name: ceAlarmSyslogEnable
+      syntax: AlarmSeverityOrZero
+    ceAlarmFilterProfileIndexNext:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.3
+      name: ceAlarmFilterProfileIndexNext
+      syntax: AlarmFilterProfileType
+
+CISCO-ENTITY-ALARM-MIB::ceAlarmFilterProfileEntry:
+  mib: CISCO-ENTITY-ALARM-MIB
+  object: ceAlarmFilterProfileEntry
+  index:
+    - type: AlarmFilterProfileType
+      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.1
+      name: ceAlarmFilterIndex
+      syntax: AlarmFilterProfileType
+  discovery_attribute: ceAlarmFilterStatus
+  attributes:
+#    ceAlarmFilterStatus:
+#      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.2
+#      name: ceAlarmFilterStatus
+#      syntax: RowStatus
+    ceAlarmFilterAlias:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.3
+      name: ceAlarmFilterAlias
+      syntax: DisplayString
+    ceAlarmFilterAlarmsEnabled:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.4
+      name: ceAlarmFilterAlarmsEnabled
+      syntax: AlarmList
+    ceAlarmFilterNotifiesEnabled:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.5
+      name: ceAlarmFilterNotifiesEnabled
+      syntax: AlarmList
+    ceAlarmFilterSyslogEnabled:
+      oid: .1.3.6.1.4.1.9.9.138.1.4.4.1.6
+      name: ceAlarmFilterSyslogEnabled
+      syntax: AlarmList
+

@@ -1,0 +1,242 @@
+MSDP-MIB::msdp:
+  mib: MSDP-MIB
+  object: msdp
+  discovery_attribute: msdpEnabled
+  attributes:
+    msdpEnabled:
+      oid: .1.3.6.1.3.92.1.1.1
+      name: msdpEnabled
+      syntax: TruthValue
+    msdpCacheLifetime:
+      oid: .1.3.6.1.3.92.1.1.2
+      name: msdpCacheLifetime
+      syntax: TimeTicks
+    msdpNumSACacheEntries:
+      oid: .1.3.6.1.3.92.1.1.3
+      name: msdpNumSACacheEntries
+      syntax: Gauge32
+    msdpRPAddress:
+      oid: .1.3.6.1.3.92.1.1.11
+      name: msdpRPAddress
+      syntax: IpAddressNoSuffix # IpAddress
+
+MSDP-MIB::msdpRequestsEntry:
+  mib: MSDP-MIB
+  object: msdpRequestsEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.4.1.1
+      name: msdpRequestsGroupAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.4.1.2
+      name: msdpRequestsGroupMask
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: msdpRequestsPeer
+  attributes:
+    msdpRequestsPeer:
+      oid: .1.3.6.1.3.92.1.1.4.1.3
+      name: msdpRequestsPeer
+      syntax: IpAddressNoSuffix # IpAddress
+#    msdpRequestsStatus:
+#      oid: .1.3.6.1.3.92.1.1.4.1.4
+#      name: msdpRequestsStatus
+#      syntax: RowStatus
+
+MSDP-MIB::msdpPeerEntry:
+  mib: MSDP-MIB
+  object: msdpPeerEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.5.1.1
+      name: msdpPeerRemoteAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: msdpPeerState
+  attributes:
+    msdpPeerState:
+      oid: .1.3.6.1.3.92.1.1.5.1.2
+      name: msdpPeerState
+      syntax: EnumInteger
+    msdpPeerRPFFailures:
+      oid: .1.3.6.1.3.92.1.1.5.1.3
+      name: msdpPeerRPFFailures
+      syntax: Counter32
+    msdpPeerInSAs:
+      oid: .1.3.6.1.3.92.1.1.5.1.4
+      name: msdpPeerInSAs
+      syntax: Counter32
+    msdpPeerOutSAs:
+      oid: .1.3.6.1.3.92.1.1.5.1.6
+      name: msdpPeerOutSAs
+      syntax: Counter32
+    msdpPeerInSARequests:
+      oid: .1.3.6.1.3.92.1.1.5.1.7
+      name: msdpPeerInSARequests
+      syntax: Counter32
+    msdpPeerOutSARequests:
+      oid: .1.3.6.1.3.92.1.1.5.1.8
+      name: msdpPeerOutSARequests
+      syntax: Counter32
+    msdpPeerInSAResponses:
+      oid: .1.3.6.1.3.92.1.1.5.1.9
+      name: msdpPeerInSAResponses
+      syntax: Counter32
+    msdpPeerOutSAResponses:
+      oid: .1.3.6.1.3.92.1.1.5.1.10
+      name: msdpPeerOutSAResponses
+      syntax: Counter32
+    msdpPeerInControlMessages:
+      oid: .1.3.6.1.3.92.1.1.5.1.11
+      name: msdpPeerInControlMessages
+      syntax: Counter32
+    msdpPeerOutControlMessages:
+      oid: .1.3.6.1.3.92.1.1.5.1.12
+      name: msdpPeerOutControlMessages
+      syntax: Counter32
+    msdpPeerInDataPackets:
+      oid: .1.3.6.1.3.92.1.1.5.1.13
+      name: msdpPeerInDataPackets
+      syntax: Counter32
+    msdpPeerOutDataPackets:
+      oid: .1.3.6.1.3.92.1.1.5.1.14
+      name: msdpPeerOutDataPackets
+      syntax: Counter32
+    msdpPeerFsmEstablishedTransitions:
+      oid: .1.3.6.1.3.92.1.1.5.1.15
+      name: msdpPeerFsmEstablishedTransitions
+      syntax: Counter32
+    msdpPeerFsmEstablishedTime:
+      oid: .1.3.6.1.3.92.1.1.5.1.16
+      name: msdpPeerFsmEstablishedTime
+      syntax: TimeStamp
+    msdpPeerInMessageTime:
+      oid: .1.3.6.1.3.92.1.1.5.1.17
+      name: msdpPeerInMessageTime
+      syntax: TimeStamp
+    msdpPeerLocalAddress:
+      oid: .1.3.6.1.3.92.1.1.5.1.18
+      name: msdpPeerLocalAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    msdpPeerConnectRetryInterval:
+      oid: .1.3.6.1.3.92.1.1.5.1.20
+      name: msdpPeerConnectRetryInterval
+      syntax: TicksSec # TODO_TicksSec
+    msdpPeerHoldTimeConfigured:
+      oid: .1.3.6.1.3.92.1.1.5.1.21
+      name: msdpPeerHoldTimeConfigured
+      syntax: TicksSec # TODO_TicksSec
+    msdpPeerKeepAliveConfigured:
+      oid: .1.3.6.1.3.92.1.1.5.1.22
+      name: msdpPeerKeepAliveConfigured
+      syntax: TicksSec # TODO_TicksSec
+    msdpPeerDataTtl:
+      oid: .1.3.6.1.3.92.1.1.5.1.23
+      name: msdpPeerDataTtl
+      syntax: Integer32
+    msdpPeerProcessRequestsFrom:
+      oid: .1.3.6.1.3.92.1.1.5.1.24
+      name: msdpPeerProcessRequestsFrom
+      syntax: TruthValue
+#    msdpPeerStatus:
+#      oid: .1.3.6.1.3.92.1.1.5.1.25
+#      name: msdpPeerStatus
+#      syntax: RowStatus
+    msdpPeerRemotePort:
+      oid: .1.3.6.1.3.92.1.1.5.1.26
+      name: msdpPeerRemotePort
+      syntax: Integer32
+    msdpPeerLocalPort:
+      oid: .1.3.6.1.3.92.1.1.5.1.27
+      name: msdpPeerLocalPort
+      syntax: Integer32
+    msdpPeerEncapsulationType:
+      oid: .1.3.6.1.3.92.1.1.5.1.29
+      name: msdpPeerEncapsulationType
+      syntax: EnumInteger
+    msdpPeerConnectionAttempts:
+      oid: .1.3.6.1.3.92.1.1.5.1.30
+      name: msdpPeerConnectionAttempts
+      syntax: Counter32
+    msdpPeerInNotifications:
+      oid: .1.3.6.1.3.92.1.1.5.1.31
+      name: msdpPeerInNotifications
+      syntax: Counter32
+    msdpPeerOutNotifications:
+      oid: .1.3.6.1.3.92.1.1.5.1.32
+      name: msdpPeerOutNotifications
+      syntax: Counter32
+    msdpPeerLastError:
+      oid: .1.3.6.1.3.92.1.1.5.1.33
+      name: msdpPeerLastError
+      syntax: TODO_OctetString # OctetString
+    msdpPeerDiscontinuityTime:
+      oid: .1.3.6.1.3.92.1.1.5.1.34
+      name: msdpPeerDiscontinuityTime
+      syntax: TimeStamp
+
+MSDP-MIB::msdpSACacheEntry:
+  mib: MSDP-MIB
+  object: msdpSACacheEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.6.1.1
+      name: msdpSACacheGroupAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.6.1.2
+      name: msdpSACacheSourceAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.6.1.3
+      name: msdpSACacheOriginRP
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: msdpSACachePeerLearnedFrom
+  attributes:
+    msdpSACachePeerLearnedFrom:
+      oid: .1.3.6.1.3.92.1.1.6.1.4
+      name: msdpSACachePeerLearnedFrom
+      syntax: IpAddressNoSuffix # IpAddress
+    msdpSACacheRPFPeer:
+      oid: .1.3.6.1.3.92.1.1.6.1.5
+      name: msdpSACacheRPFPeer
+      syntax: IpAddressNoSuffix # IpAddress
+    msdpSACacheInSAs:
+      oid: .1.3.6.1.3.92.1.1.6.1.6
+      name: msdpSACacheInSAs
+      syntax: Counter32
+    msdpSACacheInDataPackets:
+      oid: .1.3.6.1.3.92.1.1.6.1.7
+      name: msdpSACacheInDataPackets
+      syntax: Counter32
+    msdpSACacheUpTime:
+      oid: .1.3.6.1.3.92.1.1.6.1.8
+      name: msdpSACacheUpTime
+      syntax: TimeTicks
+    msdpSACacheExpiryTime:
+      oid: .1.3.6.1.3.92.1.1.6.1.9
+      name: msdpSACacheExpiryTime
+      syntax: TimeTicks
+#    msdpSACacheStatus:
+#      oid: .1.3.6.1.3.92.1.1.6.1.10
+#      name: msdpSACacheStatus
+#      syntax: RowStatus
+
+MSDP-MIB::msdpMeshGroupEntry:
+  mib: MSDP-MIB
+  object: msdpMeshGroupEntry
+  index:
+    - type: DisplayString
+      oid: .1.3.6.1.3.92.1.1.12.1.1
+      name: msdpMeshGroupName
+      syntax: DisplayString
+    - type: IpAddress
+      oid: .1.3.6.1.3.92.1.1.12.1.2
+      name: msdpMeshGroupPeerAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: msdpMeshGroupStatus
+  attributes:
+#    msdpMeshGroupStatus:
+#      oid: .1.3.6.1.3.92.1.1.12.1.3
+#      name: msdpMeshGroupStatus
+#      syntax: RowStatus
+

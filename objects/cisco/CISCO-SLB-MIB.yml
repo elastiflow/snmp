@@ -1,0 +1,978 @@
+CISCO-SLB-MIB::slbStatsTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbStatsTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+  discovery_attribute: slbStatsUnassistedSwitchingPkts
+  attributes:
+    slbStatsUnassistedSwitchingPkts:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.2
+      name: slbStatsUnassistedSwitchingPkts
+      syntax: Counter32
+    slbStatsUnassistedSwitchingHCPks:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.3
+      name: slbStatsUnassistedSwitchingHCPks
+      syntax: Counter64
+    slbStatsAssistedSwitchingPkts:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.4
+      name: slbStatsAssistedSwitchingPkts
+      syntax: Counter32
+    slbStatsAssistedSwitchingHCPkts:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.5
+      name: slbStatsAssistedSwitchingHCPkts
+      syntax: Counter64
+    slbStatsCreatedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.6
+      name: slbStatsCreatedConnections
+      syntax: Counter32
+    slbStatsCreatedHCConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.7
+      name: slbStatsCreatedHCConnections
+      syntax: Counter64
+    slbStatsEstablishedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.8
+      name: slbStatsEstablishedConnections
+      syntax: Counter32
+    slbStatsEstablishedHCConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.9
+      name: slbStatsEstablishedHCConnections
+      syntax: Counter64
+    slbStatsDestroyedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.10
+      name: slbStatsDestroyedConnections
+      syntax: Counter32
+    slbStatsDestroyedHCConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.11
+      name: slbStatsDestroyedHCConnections
+      syntax: Counter64
+    slbStatsReassignedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.12
+      name: slbStatsReassignedConnections
+      syntax: Counter32
+    slbStatsReassignedHCConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.13
+      name: slbStatsReassignedHCConnections
+      syntax: Counter64
+    slbStatsZombies:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.14
+      name: slbStatsZombies
+      syntax: Counter32
+    slbStatsHCZombies:
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.15
+      name: slbStatsHCZombies
+      syntax: Counter64
+
+CISCO-SLB-MIB::slbServerFarmTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbServerFarmTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: SlbServerString
+      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.1
+      name: slbServerFarmName
+      syntax: SlbServerString
+  discovery_attribute: slbServerFarmPredictor
+  attributes:
+    slbServerFarmPredictor:
+      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.2
+      name: slbServerFarmPredictor
+      syntax: EnumInteger
+    slbServerFarmNat:
+      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.3
+      name: slbServerFarmNat
+      syntax: EnumInteger
+    slbServerFarmNumberOfRealServers:
+      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.4
+      name: slbServerFarmNumberOfRealServers
+      syntax: Unsigned32
+    slbServerFarmBindId:
+      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.5
+      name: slbServerFarmBindId
+      syntax: Unsigned32
+#    slbServerFarmRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.2.1.1.6
+#      name: slbServerFarmRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbRealTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbRealTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: SlbServerString
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.1
+      name: slbRealServerFarmName
+      syntax: SlbServerString
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.2
+      name: slbRealIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: CiscoPort
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.3
+      name: slbRealPort
+      syntax: CiscoPort
+  discovery_attribute: slbRealState
+  attributes:
+    slbRealState:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.4
+      name: slbRealState
+      syntax: EnumInteger
+    slbRealNumberOfConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.5
+      name: slbRealNumberOfConnections
+      syntax: Gauge32
+    slbRealNumberOfDummyConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.6
+      name: slbRealNumberOfDummyConnections
+      syntax: Unsigned32
+    slbRealMaxConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.7
+      name: slbRealMaxConnections
+      syntax: Unsigned32
+    slbRealAdminWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.8
+      name: slbRealAdminWeight
+      syntax: Unsigned32
+    slbRealOperWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.9
+      name: slbRealOperWeight
+      syntax: Gauge32
+    slbRealMetric:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.10
+      name: slbRealMetric
+      syntax: Gauge32
+    slbRealReassign:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.11
+      name: slbRealReassign
+      syntax: Unsigned32
+    slbRealRetryInterval:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.12
+      name: slbRealRetryInterval
+      syntax: TimeInterval
+    slbRealFailedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.13
+      name: slbRealFailedConnections
+      syntax: Unsigned32
+    slbRealFailedClients:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.14
+      name: slbRealFailedClients
+      syntax: Unsigned32
+    slbRealConsecutiveFails:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.15
+      name: slbRealConsecutiveFails
+      syntax: Gauge32
+    slbRealTotalFails:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.16
+      name: slbRealTotalFails
+      syntax: Counter32
+#    slbRealRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.17
+#      name: slbRealRowStatus
+#      syntax: RowStatus
+    slbRealTotalConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.18
+      name: slbRealTotalConnections
+      syntax: Counter32
+    slbRealHCTotalConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.3.1.1.19
+      name: slbRealHCTotalConnections
+      syntax: Counter64
+
+CISCO-SLB-MIB::slbVirtualServerTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbVirtualServerTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: SlbServerString
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.1
+      name: slbVirtualServerName
+      syntax: SlbServerString
+  discovery_attribute: slbVirtualServerState
+  attributes:
+    slbVirtualServerState:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.2
+      name: slbVirtualServerState
+      syntax: EnumInteger
+    slbVirtualIndex:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.3
+      name: slbVirtualIndex
+      syntax: Unsigned32
+    slbVirtualIpAddress:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.4
+      name: slbVirtualIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    slbVirtualPort:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.5
+      name: slbVirtualPort
+      syntax: CiscoPort
+    slbVirtualProtocol:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.6
+      name: slbVirtualProtocol
+      syntax: CiscoIpProtocol
+    slbVirtualService:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.7
+      name: slbVirtualService
+      syntax: EnumInteger
+    slbVirtualAdvertise:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.8
+      name: slbVirtualAdvertise
+      syntax: TruthValue
+    slbVirtualFarmName:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.9
+      name: slbVirtualFarmName
+      syntax: SlbServerString
+    slbVirtualDelayTimer:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.10
+      name: slbVirtualDelayTimer
+      syntax: TicksSec # TODO_TicksSec
+    slbVirtualIdleTimer:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.11
+      name: slbVirtualIdleTimer
+      syntax: TicksSec # TODO_TicksSec
+    slbVirtualStickyTimer:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.12
+      name: slbVirtualStickyTimer
+      syntax: TimeInterval
+    slbVirtualStickyGroup:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.13
+      name: slbVirtualStickyGroup
+      syntax: Unsigned32
+    slbVirtualSynguardCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.14
+      name: slbVirtualSynguardCount
+      syntax: Unsigned32
+    slbVirtualSynguardPeriod:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.15
+      name: slbVirtualSynguardPeriod
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+#    slbVirtualRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.16
+#      name: slbVirtualRowStatus
+#      syntax: RowStatus
+    slbVirtualNumberOfConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.17
+      name: slbVirtualNumberOfConnections
+      syntax: Gauge32
+    slbVirtualTotalConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.18
+      name: slbVirtualTotalConnections
+      syntax: Counter32
+    slbVirtualHCTotalConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.19
+      name: slbVirtualHCTotalConnections
+      syntax: Counter64
+    slbVirtualMask:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.20
+      name: slbVirtualMask
+      syntax: IpAddressNoSuffix # IpAddress
+
+CISCO-SLB-MIB::slbVServerInfoTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbVServerInfoTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.1
+      name: slbVServerIndex
+      syntax: Unsigned32
+  discovery_attribute: slbVServerClassMap
+  attributes:
+    slbVServerClassMap:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.2
+      name: slbVServerClassMap
+      syntax: DisplayString # SnmpAdminString
+    slbVServerPolicyMap:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.3
+      name: slbVServerPolicyMap
+      syntax: DisplayString # SnmpAdminString
+    slbVServerState:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.4
+      name: slbVServerState
+      syntax: EnumInteger
+    slbVServerStateChangeDescr:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.5
+      name: slbVServerStateChangeDescr
+      syntax: DisplayString # SnmpAdminString
+    slbVServerNumberOfConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.6
+      name: slbVServerNumberOfConnections
+      syntax: Gauge32
+    slbVServerTotalConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.7
+      name: slbVServerTotalConnections
+      syntax: Counter32
+    slbVServerDroppedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.8
+      name: slbVServerDroppedConnections
+      syntax: Counter32
+    slbVServerClientPacketCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.9
+      name: slbVServerClientPacketCounts
+      syntax: Counter32
+    slbVServerPacketCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.10
+      name: slbVServerPacketCounts
+      syntax: Counter32
+    slbVServerClientByteCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.11
+      name: slbVServerClientByteCounts
+      syntax: Counter64
+    slbVServerByteCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.12
+      name: slbVServerByteCounts
+      syntax: Counter64
+    slbVServerMaxConnLimitDropCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.13
+      name: slbVServerMaxConnLimitDropCounts
+      syntax: Counter32
+    slbVServerConnRateLimitDropCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.14
+      name: slbVServerConnRateLimitDropCounts
+      syntax: Counter32
+    slbVServerBWRateLimitDropCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.15
+      name: slbVServerBWRateLimitDropCounts
+      syntax: Counter32
+    slbVServerBandWidthRateLimitDropCounts:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.16
+      name: slbVServerBandWidthRateLimitDropCounts
+      syntax: Counter32
+    slbVServerL4Decisions:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.17
+      name: slbVServerL4Decisions
+      syntax: Counter32
+    slbVServerL7Decisions:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.18
+      name: slbVServerL7Decisions
+      syntax: Counter32
+    slbVServerEstablishedConnections:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.19
+      name: slbVServerEstablishedConnections
+      syntax: Gauge32
+    slbVServerConnectionRate:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.20
+      name: slbVServerConnectionRate
+      syntax: Gauge32
+
+CISCO-SLB-MIB::slbVServerIPTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbVServerIPTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.1
+      name: slbVServerIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.1
+      name: slbVServerObjectIndex
+      syntax: Unsigned32
+  discovery_attribute: slbVServerIpAddressType
+  attributes:
+    slbVServerIpAddressType:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.2
+      name: slbVServerIpAddressType
+      syntax: EnumInteger
+    slbVServerIpAddress:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.3
+      name: slbVServerIpAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    slbVServerIpMask:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.4
+      name: slbVServerIpMask
+      syntax: InetAddressPrefixLength
+    slbVServerProtocol:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.5
+      name: slbVServerProtocol
+      syntax: CiscoIpProtocol
+    slbVServerPortLow:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.6
+      name: slbVServerPortLow
+      syntax: Integer32 # InetPortNumber
+    slbVServerPortHigh:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.7
+      name: slbVServerPortHigh
+      syntax: Integer32 # InetPortNumber
+    slbVServerStorageType:
+      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.8
+      name: slbVServerStorageType
+      syntax: EnumInteger
+#    slbVServerRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.4.3.1.9
+#      name: slbVServerRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbConnectionTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbConnectionTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.1
+      name: slbConnectionIndex
+      syntax: Unsigned32
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.2
+      name: slbConnectionVirtualIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: CiscoPort
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.3
+      name: slbConnectionVirtualPort
+      syntax: CiscoPort
+    - type: CiscoIpProtocol
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.4
+      name: slbConnectionProtocol
+      syntax: CiscoIpProtocol
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.5
+      name: slbConnectionClientIpAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: CiscoPort
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.6
+      name: slbConnectionClientPort
+      syntax: CiscoPort
+  discovery_attribute: slbConnectionState
+  attributes:
+    slbConnectionState:
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.7
+      name: slbConnectionState
+      syntax: EnumInteger
+    slbConnectionRealIpAddr:
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.8
+      name: slbConnectionRealIpAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    slbConnectionServerPort:
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.9
+      name: slbConnectionServerPort
+      syntax: CiscoPort
+    slbConnectionNumCacheEntries:
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.10
+      name: slbConnectionNumCacheEntries
+      syntax: Gauge32
+    slbConnectionSynCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.5.1.1.11
+      name: slbConnectionSynCount
+      syntax: Counter32
+
+CISCO-SLB-MIB::slbVirtualClientTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbVirtualClientTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: SlbServerString
+      oid: .1.3.6.1.4.1.9.9.161.1.4.1.1.1
+      name: slbVirtualServerName
+      syntax: SlbServerString
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.6.1.1.1
+      name: slbVirtualClientIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.6.1.1.2
+      name: slbVirtualClientMask
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: slbVirtualClientExclude
+  attributes:
+    slbVirtualClientExclude:
+      oid: .1.3.6.1.4.1.9.9.161.1.6.1.1.3
+      name: slbVirtualClientExclude
+      syntax: TruthValue
+#    slbVirtualClientRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.6.1.1.4
+#      name: slbVirtualClientRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbStickyObjectTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbStickyObjectTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.1
+      name: slbStickyObjectGroupId
+      syntax: Unsigned32
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.2
+      name: slbStickyObjectClientIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: slbStickyObjectRealIpAddress
+  attributes:
+    slbStickyObjectRealIpAddress:
+      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.3
+      name: slbStickyObjectRealIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    slbStickyObjectConnectionCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.4
+      name: slbStickyObjectConnectionCount
+      syntax: Gauge32
+    slbStickyObjectFtpControlCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.5
+      name: slbStickyObjectFtpControlCount
+      syntax: Gauge32
+#    slbStickyObjectRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.7.1.1.6
+#      name: slbStickyObjectRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbNotificationObjects:
+  mib: CISCO-SLB-MIB
+  object: slbNotificationObjects
+  discovery_attribute: cSlbVirtStateChangeNotifEnabled
+  attributes:
+    cSlbVirtStateChangeNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.8.1
+      name: cSlbVirtStateChangeNotifEnabled
+      syntax: TruthValue
+    cSlbRealStateChangeNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.8.2
+      name: cSlbRealStateChangeNotifEnabled
+      syntax: TruthValue
+    cSlbVServerStateChangeNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.8.3
+      name: cSlbVServerStateChangeNotifEnabled
+      syntax: TruthValue
+    cSlbVirtualServerStateChangeNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.8.4
+      name: cSlbVirtualServerStateChangeNotifEnabled
+      syntax: TruthValue
+    cSlbRealServerStateChangeNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.8.5
+      name: cSlbRealServerStateChangeNotifEnabled
+      syntax: TruthValue
+
+CISCO-SLB-MIB::slbDfpPasswordTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbDfpPasswordTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+  discovery_attribute: slbDfpPasswordTimeout
+  attributes:
+    slbDfpPasswordPending:
+      oid: .1.3.6.1.4.1.9.9.161.1.9.1.1.1
+      name: slbDfpPasswordPending
+      syntax: SlbPasswordString
+    slbDfpPasswordTimeout:
+      oid: .1.3.6.1.4.1.9.9.161.1.9.1.1.2
+      name: slbDfpPasswordTimeout
+      syntax: TimeInterval
+#    slbDfpPasswordRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.9.1.1.3
+#      name: slbDfpPasswordRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbDfpAgentTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbDfpAgentTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.1
+      name: slbDfpAgentIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: CiscoPort
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.2
+      name: slbDfpAgentPort
+      syntax: CiscoPort
+  discovery_attribute: slbDfpAgentState
+  attributes:
+    slbDfpAgentState:
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.3
+      name: slbDfpAgentState
+      syntax: EnumInteger
+    slbDfpAgentTimeout:
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.4
+      name: slbDfpAgentTimeout
+      syntax: TimeInterval
+    slbDfpAgentRetryCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.5
+      name: slbDfpAgentRetryCount
+      syntax: Unsigned32
+    slbDfpAgentInterval:
+      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.6
+      name: slbDfpAgentInterval
+      syntax: TimeInterval
+#    slbDfpAgentRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.10.1.1.7
+#      name: slbDfpAgentRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbDfpRealTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbDfpRealTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.1
+      name: slbDfpRealIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: CiscoIpProtocol
+      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.2
+      name: slbDfpRealProtocol
+      syntax: CiscoIpProtocol
+    - type: CiscoPort
+      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.3
+      name: slbDfpRealPort
+      syntax: CiscoPort
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.4
+      name: slbDfpRealBindId
+      syntax: Unsigned32
+  discovery_attribute: slbDfpRealWeight
+  attributes:
+    slbDfpRealWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.5
+      name: slbDfpRealWeight
+      syntax: Unsigned32
+#    slbDfpRealRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.11.1.1.6
+#      name: slbDfpRealRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbSaspTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbSaspTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+  discovery_attribute: slbSaspEnabled
+  attributes:
+    slbSaspIdentifier:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.1
+      name: slbSaspIdentifier
+      syntax: DisplayString # SnmpAdminString
+    slbSaspEnabled:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.2
+      name: slbSaspEnabled
+      syntax: TruthValue
+    slbSaspHealth:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.3
+      name: slbSaspHealth
+      syntax: EnumInteger
+    slbSaspRedundancy:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.4
+      name: slbSaspRedundancy
+      syntax: EnumInteger
+    slbSaspMaxAgents:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.5
+      name: slbSaspMaxAgents
+      syntax: Unsigned32
+    slbSaspMaxLbWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.12.1.1.6
+      name: slbSaspMaxLbWeight
+      syntax: Unsigned32
+
+CISCO-SLB-MIB::slbSaspAgentTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbSaspAgentTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.1
+      name: slbSaspAgentIpAddressType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.2
+      name: slbSaspAgentIpAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetPortNumber
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.3
+      name: slbSaspAgentPort
+      syntax: Integer32 # InetPortNumber
+  discovery_attribute: slbSaspAgentLabel
+  attributes:
+    slbSaspAgentLabel:
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.4
+      name: slbSaspAgentLabel
+      syntax: DisplayString # SnmpAdminString
+    slbSaspAgentState:
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.5
+      name: slbSaspAgentState
+      syntax: EnumInteger
+    slbSaspAgentLastStateChange:
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.6
+      name: slbSaspAgentLastStateChange
+      syntax: DateAndTime
+#    slbSaspAgentRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.7
+#      name: slbSaspAgentRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbSaspGroupTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbSaspGroupTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.161.1.14.1.1.1
+      name: slbSaspGroupName
+      syntax: DisplayString # SnmpAdminString
+  discovery_attribute: slbSaspGroupRowStatus
+  attributes:
+#    slbSaspGroupRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.14.1.1.2
+#      name: slbSaspGroupRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbSaspMemberTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbSaspMemberTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.1
+      name: slbSaspAgentIpAddressType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.2
+      name: slbSaspAgentIpAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetPortNumber
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.3
+      name: slbSaspAgentPort
+      syntax: Integer32 # InetPortNumber
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.161.1.14.1.1.1
+      name: slbSaspGroupName
+      syntax: DisplayString # SnmpAdminString
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.1
+      name: slbSaspMemberIpAddressType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.2
+      name: slbSaspMemberIpAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetPortNumber
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.3
+      name: slbSaspMemberPort
+      syntax: Integer32 # InetPortNumber
+    - type: CiscoIpProtocol
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.4
+      name: slbSaspMemberProtocol
+      syntax: CiscoIpProtocol
+  discovery_attribute: slbSaspMemberSaspWeight
+  attributes:
+    slbSaspMemberSaspWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.5
+      name: slbSaspMemberSaspWeight
+      syntax: Unsigned32
+    slbSaspMemberConfidentWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.6
+      name: slbSaspMemberConfidentWeight
+      syntax: TruthValue
+    slbSaspMemberConvertedWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.7
+      name: slbSaspMemberConvertedWeight
+      syntax: Unsigned32
+    slbSaspMemberDefaultWeight:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.8
+      name: slbSaspMemberDefaultWeight
+      syntax: Unsigned32
+    slbSaspMemberWeightChanges:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.9
+      name: slbSaspMemberWeightChanges
+      syntax: Counter32
+    slbSaspMemberLastWeightChange:
+      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.10
+      name: slbSaspMemberLastWeightChange
+      syntax: DateAndTime
+#    slbSaspMemberRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.15.1.1.11
+#      name: slbSaspMemberRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbSaspStatsTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbSaspStatsTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.1
+      name: slbSaspAgentIpAddressType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.2
+      name: slbSaspAgentIpAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetPortNumber
+      oid: .1.3.6.1.4.1.9.9.161.1.13.1.1.3
+      name: slbSaspAgentPort
+      syntax: Integer32 # InetPortNumber
+  discovery_attribute: slbSaspStatsTxDeregMsgs
+  attributes:
+    slbSaspStatsTxRegMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.1
+      name: slbSaspStatsTxRegMsgs
+      syntax: Counter32
+    slbSaspStatsTxDeregMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.2
+      name: slbSaspStatsTxDeregMsgs
+      syntax: Counter32
+    slbSaspStatsTxGetWeightMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.3
+      name: slbSaspStatsTxGetWeightMsgs
+      syntax: Counter32
+    slbSaspStatsTxSetLBStateMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.4
+      name: slbSaspStatsTxSetLBStateMsgs
+      syntax: Counter32
+    slbSaspStatsTxSetMemStateMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.5
+      name: slbSaspStatsTxSetMemStateMsgs
+      syntax: Counter32
+    slbSaspStatsRxSendWeightMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.6
+      name: slbSaspStatsRxSendWeightMsgs
+      syntax: Counter32
+    slbSaspStatsRxRegMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.7
+      name: slbSaspStatsRxRegMsgs
+      syntax: Counter32
+    slbSaspStatsRxDeregMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.8
+      name: slbSaspStatsRxDeregMsgs
+      syntax: Counter32
+    slbSaspStatsRxGetWeightMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.9
+      name: slbSaspStatsRxGetWeightMsgs
+      syntax: Counter32
+    slbSaspStatsRxSetLBStateMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.10
+      name: slbSaspStatsRxSetLBStateMsgs
+      syntax: Counter32
+    slbSaspStatsRxSetMemStateMsgs:
+      oid: .1.3.6.1.4.1.9.9.161.1.16.1.1.11
+      name: slbSaspStatsRxSetMemStateMsgs
+      syntax: Counter32
+
+CISCO-SLB-MIB::slbUriClassmapTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbUriClassmapTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.17.1.1.1
+      name: slbClassmapIndex
+      syntax: Unsigned32
+  discovery_attribute: slbClassmapName
+  attributes:
+    slbClassmapName:
+      oid: .1.3.6.1.4.1.9.9.161.1.17.1.1.2
+      name: slbClassmapName
+      syntax: DisplayString # SnmpAdminString
+    slbClassmapStorageType:
+      oid: .1.3.6.1.4.1.9.9.161.1.17.1.1.3
+      name: slbClassmapStorageType
+      syntax: EnumInteger
+#    slbClassmapRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.17.1.1.4
+#      name: slbClassmapRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbUriMatchCmdTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbUriMatchCmdTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.17.2.1.1
+      name: slbMatchCmdIndex
+      syntax: Unsigned32
+  discovery_attribute: slbUrlString
+  attributes:
+    slbUrlString:
+      oid: .1.3.6.1.4.1.9.9.161.1.17.2.1.2
+      name: slbUrlString
+      syntax: DisplayString # SnmpAdminString
+    slbUriMatchCmdStorageType:
+      oid: .1.3.6.1.4.1.9.9.161.1.17.2.1.3
+      name: slbUriMatchCmdStorageType
+      syntax: EnumInteger
+#    slbUriMatchCmdRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.161.1.17.2.1.4
+#      name: slbUriMatchCmdRowStatus
+#      syntax: RowStatus
+
+CISCO-SLB-MIB::slbUriHitCountTableEntry:
+  mib: CISCO-SLB-MIB
+  object: slbUriHitCountTableEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.1.1.1.1
+      name: slbEntity
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.4.2.1.1
+      name: slbVServerIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.17.1.1.1
+      name: slbClassmapIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.161.1.17.2.1.1
+      name: slbMatchCmdIndex
+      syntax: Unsigned32
+  discovery_attribute: slbUriHitCount
+  attributes:
+    slbUriHitCount:
+      oid: .1.3.6.1.4.1.9.9.161.1.18.1.1.1
+      name: slbUriHitCount
+      syntax: Counter32
+

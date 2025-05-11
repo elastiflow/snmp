@@ -1,0 +1,386 @@
+MPLS-VPN-MIB::mplsVpnScalars:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnScalars
+  discovery_attribute: mplsVpnConfiguredVrfs
+  attributes:
+    mplsVpnConfiguredVrfs:
+      oid: .1.3.6.1.3.118.1.1.1
+      name: mplsVpnConfiguredVrfs
+      syntax: Unsigned32
+    mplsVpnActiveVrfs:
+      oid: .1.3.6.1.3.118.1.1.2
+      name: mplsVpnActiveVrfs
+      syntax: Unsigned32
+    mplsVpnConnectedInterfaces:
+      oid: .1.3.6.1.3.118.1.1.3
+      name: mplsVpnConnectedInterfaces
+      syntax: Unsigned32
+    mplsVpnNotificationEnable:
+      oid: .1.3.6.1.3.118.1.1.4
+      name: mplsVpnNotificationEnable
+      syntax: TruthValue
+    mplsVpnVrfConfMaxPossibleRoutes:
+      oid: .1.3.6.1.3.118.1.1.5
+      name: mplsVpnVrfConfMaxPossibleRoutes
+      syntax: Unsigned32
+    mplsVpnVrfConfRouteMaxThreshTime:
+      oid: .1.3.6.1.3.118.1.1.6
+      name: mplsVpnVrfConfRouteMaxThreshTime
+      syntax: TicksSec # TODO_TicksSec
+
+MPLS-VPN-MIB::mplsVpnIfConfEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnIfConfEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+    - type: InterfaceIndex
+      oid: .1.3.6.1.3.118.1.2.1.1.1
+      name: mplsVpnIfConfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: mplsVpnIfLabelEdgeType
+  attributes:
+    mplsVpnIfLabelEdgeType:
+      oid: .1.3.6.1.3.118.1.2.1.1.2
+      name: mplsVpnIfLabelEdgeType
+      syntax: EnumInteger
+    mplsVpnIfVpnClassification:
+      oid: .1.3.6.1.3.118.1.2.1.1.3
+      name: mplsVpnIfVpnClassification
+      syntax: EnumInteger
+    mplsVpnIfVpnRouteDistProtocol:
+      oid: .1.3.6.1.3.118.1.2.1.1.4
+      name: mplsVpnIfVpnRouteDistProtocol
+      syntax: EnumBitmap
+    mplsVpnIfConfStorageType:
+      oid: .1.3.6.1.3.118.1.2.1.1.5
+      name: mplsVpnIfConfStorageType
+      syntax: EnumInteger
+#    mplsVpnIfConfRowStatus:
+#      oid: .1.3.6.1.3.118.1.2.1.1.6
+#      name: mplsVpnIfConfRowStatus
+#      syntax: RowStatus
+
+MPLS-VPN-MIB::mplsVpnVrfEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+  discovery_attribute: mplsVpnVrfVpnId
+  attributes:
+    mplsVpnVrfVpnId:
+      oid: .1.3.6.1.3.118.1.2.2.1.2
+      name: mplsVpnVrfVpnId
+      syntax: VPNId
+    mplsVpnVrfDescription:
+      oid: .1.3.6.1.3.118.1.2.2.1.3
+      name: mplsVpnVrfDescription
+      syntax: DisplayString # SnmpAdminString
+    mplsVpnVrfRouteDistinguisher:
+      oid: .1.3.6.1.3.118.1.2.2.1.4
+      name: mplsVpnVrfRouteDistinguisher
+      syntax: MplsVpnRouteDistinguisher
+    mplsVpnVrfCreationTime:
+      oid: .1.3.6.1.3.118.1.2.2.1.5
+      name: mplsVpnVrfCreationTime
+      syntax: TimeStamp
+    mplsVpnVrfOperStatus:
+      oid: .1.3.6.1.3.118.1.2.2.1.6
+      name: mplsVpnVrfOperStatus
+      syntax: EnumInteger
+    mplsVpnVrfActiveInterfaces:
+      oid: .1.3.6.1.3.118.1.2.2.1.7
+      name: mplsVpnVrfActiveInterfaces
+      syntax: Unsigned32
+    mplsVpnVrfAssociatedInterfaces:
+      oid: .1.3.6.1.3.118.1.2.2.1.8
+      name: mplsVpnVrfAssociatedInterfaces
+      syntax: Unsigned32
+    mplsVpnVrfConfMidRouteThreshold:
+      oid: .1.3.6.1.3.118.1.2.2.1.9
+      name: mplsVpnVrfConfMidRouteThreshold
+      syntax: Unsigned32
+    mplsVpnVrfConfHighRouteThreshold:
+      oid: .1.3.6.1.3.118.1.2.2.1.10
+      name: mplsVpnVrfConfHighRouteThreshold
+      syntax: Unsigned32
+    mplsVpnVrfConfMaxRoutes:
+      oid: .1.3.6.1.3.118.1.2.2.1.11
+      name: mplsVpnVrfConfMaxRoutes
+      syntax: Unsigned32
+    mplsVpnVrfConfLastChanged:
+      oid: .1.3.6.1.3.118.1.2.2.1.12
+      name: mplsVpnVrfConfLastChanged
+      syntax: TimeStamp
+#    mplsVpnVrfConfRowStatus:
+#      oid: .1.3.6.1.3.118.1.2.2.1.13
+#      name: mplsVpnVrfConfRowStatus
+#      syntax: RowStatus
+    mplsVpnVrfConfStorageType:
+      oid: .1.3.6.1.3.118.1.2.2.1.14
+      name: mplsVpnVrfConfStorageType
+      syntax: EnumInteger
+
+MPLS-VPN-MIB::mplsVpnVrfRouteTargetEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfRouteTargetEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+    - type: Unsigned32
+      oid: .1.3.6.1.3.118.1.2.3.1.2
+      name: mplsVpnVrfRouteTargetIndex
+      syntax: Unsigned32
+    - type: Integer32
+      oid: .1.3.6.1.3.118.1.2.3.1.3
+      name: mplsVpnVrfRouteTargetType
+      syntax: EnumInteger
+  discovery_attribute: mplsVpnVrfRouteTarget
+  attributes:
+    mplsVpnVrfRouteTarget:
+      oid: .1.3.6.1.3.118.1.2.3.1.4
+      name: mplsVpnVrfRouteTarget
+      syntax: MplsVpnRouteDistinguisher
+    mplsVpnVrfRouteTargetDescr:
+      oid: .1.3.6.1.3.118.1.2.3.1.5
+      name: mplsVpnVrfRouteTargetDescr
+      syntax: DisplayString
+#    mplsVpnVrfRouteTargetRowStatus:
+#      oid: .1.3.6.1.3.118.1.2.3.1.6
+#      name: mplsVpnVrfRouteTargetRowStatus
+#      syntax: RowStatus
+
+MPLS-VPN-MIB::mplsVpnVrfBgpNbrAddrEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfBgpNbrAddrEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+    - type: InterfaceIndex
+      oid: .1.3.6.1.3.118.1.2.1.1.1
+      name: mplsVpnIfConfIndex
+      syntax: InterfaceIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.3.118.1.2.4.1.1
+      name: mplsVpnVrfBgpNbrIndex
+      syntax: Unsigned32
+  discovery_attribute: mplsVpnVrfBgpNbrRole
+  attributes:
+    mplsVpnVrfBgpNbrRole:
+      oid: .1.3.6.1.3.118.1.2.4.1.2
+      name: mplsVpnVrfBgpNbrRole
+      syntax: EnumInteger
+    mplsVpnVrfBgpNbrType:
+      oid: .1.3.6.1.3.118.1.2.4.1.3
+      name: mplsVpnVrfBgpNbrType
+      syntax: EnumInteger
+    mplsVpnVrfBgpNbrAddr:
+      oid: .1.3.6.1.3.118.1.2.4.1.4
+      name: mplsVpnVrfBgpNbrAddr
+      syntax: IpAddressNoSuffix # InetAddress
+#    mplsVpnVrfBgpNbrRowStatus:
+#      oid: .1.3.6.1.3.118.1.2.4.1.5
+#      name: mplsVpnVrfBgpNbrRowStatus
+#      syntax: RowStatus
+    mplsVpnVrfBgpNbrStorageType:
+      oid: .1.3.6.1.3.118.1.2.4.1.6
+      name: mplsVpnVrfBgpNbrStorageType
+      syntax: EnumInteger
+
+MPLS-VPN-MIB::mplsVpnVrfBgpNbrPrefixEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfBgpNbrPrefixEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+  discovery_attribute: mplsVpnVrfBgpPAtrIpAddrPrefixLen
+  attributes:
+    mplsVpnVrfBgpPAtrOrigin:
+      oid: .1.3.6.1.3.118.1.2.5.1.4
+      name: mplsVpnVrfBgpPAtrOrigin
+      syntax: EnumInteger
+    mplsVpnVrfBgpPAtrASPathSegment:
+      oid: .1.3.6.1.3.118.1.2.5.1.5
+      name: mplsVpnVrfBgpPAtrASPathSegment
+      syntax: TODO_OctetString # OctetString
+    mplsVpnVrfBgpPAtrNextHop:
+      oid: .1.3.6.1.3.118.1.2.5.1.6
+      name: mplsVpnVrfBgpPAtrNextHop
+      syntax: IpAddressNoSuffix # InetAddress
+    mplsVpnVrfBgpPAtrMultiExitDisc:
+      oid: .1.3.6.1.3.118.1.2.5.1.7
+      name: mplsVpnVrfBgpPAtrMultiExitDisc
+      syntax: Integer32
+    mplsVpnVrfBgpPAtrLocalPref:
+      oid: .1.3.6.1.3.118.1.2.5.1.8
+      name: mplsVpnVrfBgpPAtrLocalPref
+      syntax: Integer32
+    mplsVpnVrfBgpPAtrAtomicAggregate:
+      oid: .1.3.6.1.3.118.1.2.5.1.9
+      name: mplsVpnVrfBgpPAtrAtomicAggregate
+      syntax: EnumInteger
+    mplsVpnVrfBgpPAtrAggregatorAS:
+      oid: .1.3.6.1.3.118.1.2.5.1.10
+      name: mplsVpnVrfBgpPAtrAggregatorAS
+      syntax: Integer32
+    mplsVpnVrfBgpPAtrAggregatorAddr:
+      oid: .1.3.6.1.3.118.1.2.5.1.11
+      name: mplsVpnVrfBgpPAtrAggregatorAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    mplsVpnVrfBgpPAtrCalcLocalPref:
+      oid: .1.3.6.1.3.118.1.2.5.1.12
+      name: mplsVpnVrfBgpPAtrCalcLocalPref
+      syntax: Integer32
+    mplsVpnVrfBgpPAtrBest:
+      oid: .1.3.6.1.3.118.1.2.5.1.13
+      name: mplsVpnVrfBgpPAtrBest
+      syntax: EnumInteger
+    mplsVpnVrfBgpPAtrUnknown:
+      oid: .1.3.6.1.3.118.1.2.5.1.14
+      name: mplsVpnVrfBgpPAtrUnknown
+      syntax: TODO_OctetString # OctetString
+
+MPLS-VPN-MIB::mplsVpnVrfSecEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfSecEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+  discovery_attribute: mplsVpnVrfSecIllegalLblRcvThrsh
+  attributes:
+    mplsVpnVrfSecIllegalLblVltns:
+      oid: .1.3.6.1.3.118.1.2.6.1.1
+      name: mplsVpnVrfSecIllegalLblVltns
+      syntax: Counter32
+    mplsVpnVrfSecIllegalLblRcvThrsh:
+      oid: .1.3.6.1.3.118.1.2.6.1.2
+      name: mplsVpnVrfSecIllegalLblRcvThrsh
+      syntax: Unsigned32
+
+MPLS-VPN-MIB::mplsVpnVrfPerfEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfPerfEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+  discovery_attribute: mplsVpnVrfPerfRoutesDeleted
+  attributes:
+    mplsVpnVrfPerfRoutesAdded:
+      oid: .1.3.6.1.3.118.1.3.1.1.1
+      name: mplsVpnVrfPerfRoutesAdded
+      syntax: Counter32
+    mplsVpnVrfPerfRoutesDeleted:
+      oid: .1.3.6.1.3.118.1.3.1.1.2
+      name: mplsVpnVrfPerfRoutesDeleted
+      syntax: Counter32
+    mplsVpnVrfPerfCurrNumRoutes:
+      oid: .1.3.6.1.3.118.1.3.1.1.3
+      name: mplsVpnVrfPerfCurrNumRoutes
+      syntax: Unsigned32
+
+MPLS-VPN-MIB::mplsVpnVrfRouteEntry:
+  mib: MPLS-VPN-MIB
+  object: mplsVpnVrfRouteEntry
+  index:
+    - type: MplsVpnName
+      oid: .1.3.6.1.3.118.1.2.2.1.1
+      name: mplsVpnVrfName
+      syntax: MplsVpnName
+    - type: IpAddress
+      oid: .1.3.6.1.3.118.1.4.1.1.1
+      name: mplsVpnVrfRouteDest
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.118.1.4.1.1.3
+      name: mplsVpnVrfRouteMask
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.3.118.1.4.1.1.5
+      name: mplsVpnVrfRouteTos
+      syntax: Unsigned32
+    - type: IpAddress
+      oid: .1.3.6.1.3.118.1.4.1.1.6
+      name: mplsVpnVrfRouteNextHop
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: mplsVpnVrfRouteNextHopAddrType
+  attributes:
+    mplsVpnVrfRouteDestAddrType:
+      oid: .1.3.6.1.3.118.1.4.1.1.2
+      name: mplsVpnVrfRouteDestAddrType
+      syntax: EnumInteger
+    mplsVpnVrfRouteMaskAddrType:
+      oid: .1.3.6.1.3.118.1.4.1.1.4
+      name: mplsVpnVrfRouteMaskAddrType
+      syntax: EnumInteger
+    mplsVpnVrfRouteNextHopAddrType:
+      oid: .1.3.6.1.3.118.1.4.1.1.7
+      name: mplsVpnVrfRouteNextHopAddrType
+      syntax: EnumInteger
+    mplsVpnVrfRouteIfIndex:
+      oid: .1.3.6.1.3.118.1.4.1.1.8
+      name: mplsVpnVrfRouteIfIndex
+      syntax: InterfaceIndexOrZero
+    mplsVpnVrfRouteType:
+      oid: .1.3.6.1.3.118.1.4.1.1.9
+      name: mplsVpnVrfRouteType
+      syntax: EnumInteger
+    mplsVpnVrfRouteProto:
+      oid: .1.3.6.1.3.118.1.4.1.1.10
+      name: mplsVpnVrfRouteProto
+      syntax: EnumInteger
+    mplsVpnVrfRouteAge:
+      oid: .1.3.6.1.3.118.1.4.1.1.11
+      name: mplsVpnVrfRouteAge
+      syntax: Unsigned32
+    mplsVpnVrfRouteInfo:
+      oid: .1.3.6.1.3.118.1.4.1.1.12
+      name: mplsVpnVrfRouteInfo
+      syntax: ObjectIdentifier
+    mplsVpnVrfRouteNextHopAS:
+      oid: .1.3.6.1.3.118.1.4.1.1.13
+      name: mplsVpnVrfRouteNextHopAS
+      syntax: Unsigned32
+    mplsVpnVrfRouteMetric1:
+      oid: .1.3.6.1.3.118.1.4.1.1.14
+      name: mplsVpnVrfRouteMetric1
+      syntax: Integer32
+    mplsVpnVrfRouteMetric2:
+      oid: .1.3.6.1.3.118.1.4.1.1.15
+      name: mplsVpnVrfRouteMetric2
+      syntax: Integer32
+    mplsVpnVrfRouteMetric3:
+      oid: .1.3.6.1.3.118.1.4.1.1.16
+      name: mplsVpnVrfRouteMetric3
+      syntax: Integer32
+    mplsVpnVrfRouteMetric4:
+      oid: .1.3.6.1.3.118.1.4.1.1.17
+      name: mplsVpnVrfRouteMetric4
+      syntax: Integer32
+    mplsVpnVrfRouteMetric5:
+      oid: .1.3.6.1.3.118.1.4.1.1.18
+      name: mplsVpnVrfRouteMetric5
+      syntax: Integer32
+#    mplsVpnVrfRouteRowStatus:
+#      oid: .1.3.6.1.3.118.1.4.1.1.19
+#      name: mplsVpnVrfRouteRowStatus
+#      syntax: RowStatus
+    mplsVpnVrfRouteStorageType:
+      oid: .1.3.6.1.3.118.1.4.1.1.20
+      name: mplsVpnVrfRouteStorageType
+      syntax: EnumInteger
+

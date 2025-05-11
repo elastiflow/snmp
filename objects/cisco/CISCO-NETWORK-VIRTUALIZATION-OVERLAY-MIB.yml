@@ -1,0 +1,238 @@
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoNvoEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoNvoEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.1
+      name: cnvoNvoInstanceId
+      syntax: Unsigned32
+  discovery_attribute: cnvoNvoEncapType
+  attributes:
+    cnvoNvoEncapType:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.2
+      name: cnvoNvoEncapType
+      syntax: EnumInteger
+    cnvoNvoSourceInterface:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.3
+      name: cnvoNvoSourceInterface
+      syntax: InterfaceIndexOrZero
+    cnvoNvoConfiguredVni:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.4
+      name: cnvoNvoConfiguredVni
+      syntax: DisplayString # SnmpAdminString
+    cnvoNvoStorageType:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.5
+      name: cnvoNvoStorageType
+      syntax: EnumInteger
+#    cnvoNvoRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.6
+#      name: cnvoNvoRowStatus
+#      syntax: RowStatus
+
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoVNetEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoVNetEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.1
+      name: cnvoNvoInstanceId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.1
+      name: cnvoVNetLocalVNetId
+      syntax: Unsigned32
+  discovery_attribute: cnvoVNetIpMcastAddrType
+  attributes:
+    cnvoVNetIpMcastAddrType:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.2
+      name: cnvoVNetIpMcastAddrType
+      syntax: EnumInteger
+    cnvoVNetIpMcastAddr:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.3
+      name: cnvoVNetIpMcastAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    cnvoVNetVlan:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.4
+      name: cnvoVNetVlan
+      syntax: VlanIndexOrZero
+    cnvoVNetArpSuppression:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.5
+      name: cnvoVNetArpSuppression
+      syntax: EnumInteger
+    cnvoVNetReplication:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.6
+      name: cnvoVNetReplication
+      syntax: EnumInteger
+    cnvoVNetHostReachability:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.7
+      name: cnvoVNetHostReachability
+      syntax: EnumInteger
+    cnvoVNetVniType:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.8
+      name: cnvoVNetVniType
+      syntax: EnumInteger
+    cnvoVNetIpVrfOrBridgeDomainName:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.9
+      name: cnvoVNetIpVrfOrBridgeDomainName
+      syntax: DisplayString # SnmpAdminString
+    cnvoVNetRouterMacAddr:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.10
+      name: cnvoVNetRouterMacAddr
+      syntax: IpAddressNoSuffix # InetAddress
+
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoPeerEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoPeerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.1
+      name: cnvoNvoInstanceId
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.1
+      name: cnvoPeerIpAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.2
+      name: cnvoPeerIpAddr
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: cnvoPeerUpTime
+  attributes:
+    cnvoPeerUpTime:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.3
+      name: cnvoPeerUpTime
+      syntax: DateAndTime
+    cnvoPeerLearningSourceType:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.4
+      name: cnvoPeerLearningSourceType
+      syntax: EnumInteger
+
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoVNetStatsEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoVNetStatsEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.1
+      name: cnvoNvoInstanceId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.2.1.1
+      name: cnvoVNetLocalVNetId
+      syntax: Unsigned32
+  discovery_attribute: cnvoVNetOutUnicastBytes
+  attributes:
+    cnvoVNetOutUnicastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.1
+      name: cnvoVNetOutUnicastPackets
+      syntax: Counter64
+    cnvoVNetOutUnicastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.2
+      name: cnvoVNetOutUnicastBytes
+      syntax: Counter64
+    cnvoVNetOutMulticastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.3
+      name: cnvoVNetOutMulticastPackets
+      syntax: Counter64
+    cnvoVNetOutMulticastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.4
+      name: cnvoVNetOutMulticastBytes
+      syntax: Counter64
+    cnvoVNetInUnicastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.5
+      name: cnvoVNetInUnicastPackets
+      syntax: Counter64
+    cnvoVNetInUnicastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.6
+      name: cnvoVNetInUnicastBytes
+      syntax: Counter64
+    cnvoVNetInMulticastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.7
+      name: cnvoVNetInMulticastPackets
+      syntax: Counter64
+    cnvoVNetInMulticastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.4.1.8
+      name: cnvoVNetInMulticastBytes
+      syntax: Counter64
+
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoNvoPeerStatsEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoNvoPeerStatsEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.1.1.1
+      name: cnvoNvoInstanceId
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.1
+      name: cnvoPeerIpAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.820.1.1.3.1.2
+      name: cnvoPeerIpAddr
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: cnvoNvoPeerOutUnicastBytes
+  attributes:
+    cnvoNvoPeerOutUnicastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.1
+      name: cnvoNvoPeerOutUnicastPackets
+      syntax: Counter64
+    cnvoNvoPeerOutUnicastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.2
+      name: cnvoNvoPeerOutUnicastBytes
+      syntax: Counter64
+    cnvoNvoPeerOutMulticastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.3
+      name: cnvoNvoPeerOutMulticastPackets
+      syntax: Counter64
+    cnvoNvoPeerOutMulticastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.4
+      name: cnvoNvoPeerOutMulticastBytes
+      syntax: Counter64
+    cnvoNvoPeerInUnicastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.5
+      name: cnvoNvoPeerInUnicastPackets
+      syntax: Counter64
+    cnvoNvoPeerInUnicastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.6
+      name: cnvoNvoPeerInUnicastBytes
+      syntax: Counter64
+    cnvoNvoPeerInMulticastPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.7
+      name: cnvoNvoPeerInMulticastPackets
+      syntax: Counter64
+    cnvoNvoPeerInMulticastBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.5.1.8
+      name: cnvoNvoPeerInMulticastBytes
+      syntax: Counter64
+
+CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB::cnvoVNetVrfStatsEntry:
+  mib: CISCO-NETWORK-VIRTUALIZATION-OVERLAY-MIB
+  object: cnvoVNetVrfStatsEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.1
+      name: cnvoVNetVrfStatsVrfName
+      syntax: DisplayString # SnmpAdminString
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.2
+      name: cnvoVNetVrfStatsVni
+      syntax: Unsigned32
+  discovery_attribute: cnvoVNetVrfIngressPackets
+  attributes:
+    cnvoVNetVrfIngressPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.3
+      name: cnvoVNetVrfIngressPackets
+      syntax: Counter64
+    cnvoVNetVrfIngressBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.4
+      name: cnvoVNetVrfIngressBytes
+      syntax: Counter64
+    cnvoVNetVrfEgressPackets:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.5
+      name: cnvoVNetVrfEgressPackets
+      syntax: Counter64
+    cnvoVNetVrfEgressBytes:
+      oid: .1.3.6.1.4.1.9.9.820.1.1.6.1.6
+      name: cnvoVNetVrfEgressBytes
+      syntax: Counter64
+

@@ -1,0 +1,682 @@
+MIP-MIB::mipSystem:
+  mib: MIP-MIB
+  object: mipSystem
+  discovery_attribute: mipEntities
+  attributes:
+    mipEntities:
+      oid: .1.3.6.1.2.1.44.1.1.1
+      name: mipEntities
+      syntax: EnumBitmap
+    mipEnable:
+      oid: .1.3.6.1.2.1.44.1.1.2
+      name: mipEnable
+      syntax: EnumInteger
+    mipEncapsulationSupported:
+      oid: .1.3.6.1.2.1.44.1.1.3
+      name: mipEncapsulationSupported
+      syntax: EnumBitmap
+
+MIP-MIB::mipSecurity:
+  mib: MIP-MIB
+  object: mipSecurity
+  discovery_attribute: mipSecTotalViolations
+  attributes:
+    mipSecTotalViolations:
+      oid: .1.3.6.1.2.1.44.1.2.2
+      name: mipSecTotalViolations
+      syntax: Counter32
+
+MIP-MIB::mipSecAssocEntry:
+  mib: MIP-MIB
+  object: mipSecAssocEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.2.1.1.1
+      name: mipSecPeerAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.44.1.2.1.1.2
+      name: mipSecSPI
+      syntax: Unsigned32
+  discovery_attribute: mipSecAlgorithmType
+  attributes:
+    mipSecAlgorithmType:
+      oid: .1.3.6.1.2.1.44.1.2.1.1.3
+      name: mipSecAlgorithmType
+      syntax: EnumInteger
+    mipSecAlgorithmMode:
+      oid: .1.3.6.1.2.1.44.1.2.1.1.4
+      name: mipSecAlgorithmMode
+      syntax: EnumInteger
+    mipSecKey:
+      oid: .1.3.6.1.2.1.44.1.2.1.1.5
+      name: mipSecKey
+      syntax: TODO_OctetString # OctetString
+    mipSecReplayMethod:
+      oid: .1.3.6.1.2.1.44.1.2.1.1.6
+      name: mipSecReplayMethod
+      syntax: EnumInteger
+
+MIP-MIB::mipSecViolationEntry:
+  mib: MIP-MIB
+  object: mipSecViolationEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.2.3.1.1
+      name: mipSecViolatorAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: mipSecViolationCounter
+  attributes:
+    mipSecViolationCounter:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.2
+      name: mipSecViolationCounter
+      syntax: Counter32
+    mipSecRecentViolationSPI:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.3
+      name: mipSecRecentViolationSPI
+      syntax: Integer32
+    mipSecRecentViolationTime:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.4
+      name: mipSecRecentViolationTime
+      syntax: TimeStamp
+    mipSecRecentViolationIDLow:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.5
+      name: mipSecRecentViolationIDLow
+      syntax: Integer32
+    mipSecRecentViolationIDHigh:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.6
+      name: mipSecRecentViolationIDHigh
+      syntax: Integer32
+    mipSecRecentViolationReason:
+      oid: .1.3.6.1.2.1.44.1.2.3.1.7
+      name: mipSecRecentViolationReason
+      syntax: EnumInteger
+
+MIP-MIB::mnSystem:
+  mib: MIP-MIB
+  object: mnSystem
+  discovery_attribute: mnState
+  attributes:
+    mnState:
+      oid: .1.3.6.1.2.1.44.1.3.1.1
+      name: mnState
+      syntax: EnumInteger
+    mnHomeAddress:
+      oid: .1.3.6.1.2.1.44.1.3.1.2
+      name: mnHomeAddress
+      syntax: IpAddressNoSuffix # IpAddress
+
+MIP-MIB::mnHAEntry:
+  mib: MIP-MIB
+  object: mnHAEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.3.1.3.1.1
+      name: mnHAAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: mnCurrentHA
+  attributes:
+    mnCurrentHA:
+      oid: .1.3.6.1.2.1.44.1.3.1.3.1.2
+      name: mnCurrentHA
+      syntax: TruthValue
+#    mnHAStatus:
+#      oid: .1.3.6.1.2.1.44.1.3.1.3.1.3
+#      name: mnHAStatus
+#      syntax: RowStatus
+
+MIP-MIB::mnDiscovery:
+  mib: MIP-MIB
+  object: mnDiscovery
+  discovery_attribute: mnSolicitationsSent
+  attributes:
+    mnSolicitationsSent:
+      oid: .1.3.6.1.2.1.44.1.3.2.3
+      name: mnSolicitationsSent
+      syntax: Counter32
+    mnAdvertisementsReceived:
+      oid: .1.3.6.1.2.1.44.1.3.2.4
+      name: mnAdvertisementsReceived
+      syntax: Counter32
+    mnAdvsDroppedInvalidExtension:
+      oid: .1.3.6.1.2.1.44.1.3.2.5
+      name: mnAdvsDroppedInvalidExtension
+      syntax: Counter32
+    mnAdvsIgnoredUnknownExtension:
+      oid: .1.3.6.1.2.1.44.1.3.2.6
+      name: mnAdvsIgnoredUnknownExtension
+      syntax: Counter32
+    mnMoveFromHAToFA:
+      oid: .1.3.6.1.2.1.44.1.3.2.7
+      name: mnMoveFromHAToFA
+      syntax: Counter32
+    mnMoveFromFAToFA:
+      oid: .1.3.6.1.2.1.44.1.3.2.8
+      name: mnMoveFromFAToFA
+      syntax: Counter32
+    mnMoveFromFAToHA:
+      oid: .1.3.6.1.2.1.44.1.3.2.9
+      name: mnMoveFromFAToHA
+      syntax: Counter32
+    mnGratuitousARPsSend:
+      oid: .1.3.6.1.2.1.44.1.3.2.10
+      name: mnGratuitousARPsSend
+      syntax: Counter32
+    mnAgentRebootsDectected:
+      oid: .1.3.6.1.2.1.44.1.3.2.11
+      name: mnAgentRebootsDectected
+      syntax: Counter32
+
+MIP-MIB::mnFAEntry:
+  mib: MIP-MIB
+  object: mnFAEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.3.2.1.1.1
+      name: mnFAAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.3.2.1.1.2
+      name: mnCOA
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: mnCOA
+  attributes:
+
+MIP-MIB::mnRecentAdvReceived:
+  mib: MIP-MIB
+  object: mnRecentAdvReceived
+  discovery_attribute: mnAdvSourceAddress
+  attributes:
+    mnAdvSourceAddress:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.1
+      name: mnAdvSourceAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    mnAdvSequence:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.2
+      name: mnAdvSequence
+      syntax: Integer32
+    mnAdvFlags:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.3
+      name: mnAdvFlags
+      syntax: EnumBitmap
+    mnAdvMaxRegLifetime:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.4
+      name: mnAdvMaxRegLifetime
+      syntax: TicksSec # TODO_TicksSec
+    mnAdvMaxAdvLifetime:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.5
+      name: mnAdvMaxAdvLifetime
+      syntax: TicksSec # TODO_TicksSec
+    mnAdvTimeReceived:
+      oid: .1.3.6.1.2.1.44.1.3.2.2.6
+      name: mnAdvTimeReceived
+      syntax: TimeStamp
+
+MIP-MIB::mnRegistration:
+  mib: MIP-MIB
+  object: mnRegistration
+  discovery_attribute: mnRegRequestsSent
+  attributes:
+    mnRegRequestsSent:
+      oid: .1.3.6.1.2.1.44.1.3.3.2
+      name: mnRegRequestsSent
+      syntax: Counter32
+    mnDeRegRequestsSent:
+      oid: .1.3.6.1.2.1.44.1.3.3.3
+      name: mnDeRegRequestsSent
+      syntax: Counter32
+    mnRegRepliesRecieved:
+      oid: .1.3.6.1.2.1.44.1.3.3.4
+      name: mnRegRepliesRecieved
+      syntax: Counter32
+    mnDeRegRepliesRecieved:
+      oid: .1.3.6.1.2.1.44.1.3.3.5
+      name: mnDeRegRepliesRecieved
+      syntax: Counter32
+    mnRepliesInvalidHomeAddress:
+      oid: .1.3.6.1.2.1.44.1.3.3.6
+      name: mnRepliesInvalidHomeAddress
+      syntax: Counter32
+    mnRepliesUnknownHA:
+      oid: .1.3.6.1.2.1.44.1.3.3.7
+      name: mnRepliesUnknownHA
+      syntax: Counter32
+    mnRepliesUnknownFA:
+      oid: .1.3.6.1.2.1.44.1.3.3.8
+      name: mnRepliesUnknownFA
+      syntax: Counter32
+    mnRepliesInvalidID:
+      oid: .1.3.6.1.2.1.44.1.3.3.9
+      name: mnRepliesInvalidID
+      syntax: Counter32
+    mnRepliesDroppedInvalidExtension:
+      oid: .1.3.6.1.2.1.44.1.3.3.10
+      name: mnRepliesDroppedInvalidExtension
+      syntax: Counter32
+    mnRepliesIgnoredUnknownExtension:
+      oid: .1.3.6.1.2.1.44.1.3.3.11
+      name: mnRepliesIgnoredUnknownExtension
+      syntax: Counter32
+    mnRepliesHAAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.3.3.12
+      name: mnRepliesHAAuthenticationFailure
+      syntax: Counter32
+    mnRepliesFAAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.3.3.13
+      name: mnRepliesFAAuthenticationFailure
+      syntax: Counter32
+    mnRegRequestsAccepted:
+      oid: .1.3.6.1.2.1.44.1.3.3.14
+      name: mnRegRequestsAccepted
+      syntax: Counter32
+    mnRegRequestsDeniedByHA:
+      oid: .1.3.6.1.2.1.44.1.3.3.15
+      name: mnRegRequestsDeniedByHA
+      syntax: Counter32
+    mnRegRequestsDeniedByFA:
+      oid: .1.3.6.1.2.1.44.1.3.3.16
+      name: mnRegRequestsDeniedByFA
+      syntax: Counter32
+    mnRegRequestsDeniedByHADueToID:
+      oid: .1.3.6.1.2.1.44.1.3.3.17
+      name: mnRegRequestsDeniedByHADueToID
+      syntax: Counter32
+    mnRegRequestsWithDirectedBroadcast:
+      oid: .1.3.6.1.2.1.44.1.3.3.18
+      name: mnRegRequestsWithDirectedBroadcast
+      syntax: Counter32
+
+MIP-MIB::mnRegistrationEntry:
+  mib: MIP-MIB
+  object: mnRegistrationEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.1
+      name: mnRegAgentAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.2
+      name: mnRegCOA
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: mnRegFlags
+  attributes:
+    mnRegFlags:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.3
+      name: mnRegFlags
+      syntax: EnumInteger
+    mnRegIDLow:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.4
+      name: mnRegIDLow
+      syntax: Integer32
+    mnRegIDHigh:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.5
+      name: mnRegIDHigh
+      syntax: Integer32
+    mnRegTimeRequested:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.6
+      name: mnRegTimeRequested
+      syntax: TicksSec # TODO_TicksSec
+    mnRegTimeRemaining:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.7
+      name: mnRegTimeRemaining
+      syntax: TicksSec # TODO_TicksSec
+    mnRegTimeSent:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.8
+      name: mnRegTimeSent
+      syntax: TimeStamp
+    mnRegIsAccepted:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.9
+      name: mnRegIsAccepted
+      syntax: TruthValue
+    mnCOAIsLocal:
+      oid: .1.3.6.1.2.1.44.1.3.3.1.1.10
+      name: mnCOAIsLocal
+      syntax: TruthValue
+
+MIP-MIB::maAdvertisement:
+  mib: MIP-MIB
+  object: maAdvertisement
+  discovery_attribute: maAdvertisementsSent
+  attributes:
+    maAdvertisementsSent:
+      oid: .1.3.6.1.2.1.44.1.4.2.2
+      name: maAdvertisementsSent
+      syntax: Counter32
+    maAdvsSentForSolicitation:
+      oid: .1.3.6.1.2.1.44.1.4.2.3
+      name: maAdvsSentForSolicitation
+      syntax: Counter32
+    maSolicitationsReceived:
+      oid: .1.3.6.1.2.1.44.1.4.2.4
+      name: maSolicitationsReceived
+      syntax: Counter32
+
+MIP-MIB::maAdvConfigEntry:
+  mib: MIP-MIB
+  object: maAdvConfigEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.1
+      name: maInterfaceAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: maAdvMaxRegLifetime
+  attributes:
+    maAdvMaxRegLifetime:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.2
+      name: maAdvMaxRegLifetime
+      syntax: TicksSec # TODO_TicksSec
+    maAdvPrefixLengthInclusion:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.3
+      name: maAdvPrefixLengthInclusion
+      syntax: TruthValue
+    maAdvAddress:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.4
+      name: maAdvAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    maAdvMaxInterval:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.5
+      name: maAdvMaxInterval
+      syntax: TicksSec # TODO_TicksSec
+    maAdvMinInterval:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.6
+      name: maAdvMinInterval
+      syntax: TicksSec # TODO_TicksSec
+    maAdvMaxAdvLifetime:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.7
+      name: maAdvMaxAdvLifetime
+      syntax: TicksSec # TODO_TicksSec
+    maAdvResponseSolicitationOnly:
+      oid: .1.3.6.1.2.1.44.1.4.2.1.1.8
+      name: maAdvResponseSolicitationOnly
+      syntax: TruthValue
+#    maAdvStatus:
+#      oid: .1.3.6.1.2.1.44.1.4.2.1.1.9
+#      name: maAdvStatus
+#      syntax: RowStatus
+
+MIP-MIB::faCOAEntry:
+  mib: MIP-MIB
+  object: faCOAEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.5.1.1.1.1
+      name: faSupportedCOA
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: faCOAStatus
+  attributes:
+#    faCOAStatus:
+#      oid: .1.3.6.1.2.1.44.1.5.1.1.1.2
+#      name: faCOAStatus
+#      syntax: RowStatus
+
+MIP-MIB::faAdvertisement:
+  mib: MIP-MIB
+  object: faAdvertisement
+  discovery_attribute: faIsBusy
+  attributes:
+    faIsBusy:
+      oid: .1.3.6.1.2.1.44.1.5.2.1
+      name: faIsBusy
+      syntax: TruthValue
+    faRegistrationRequired:
+      oid: .1.3.6.1.2.1.44.1.5.2.2
+      name: faRegistrationRequired
+      syntax: TruthValue
+
+MIP-MIB::faRegistration:
+  mib: MIP-MIB
+  object: faRegistration
+  discovery_attribute: faRegRequestsReceived
+  attributes:
+    faRegRequestsReceived:
+      oid: .1.3.6.1.2.1.44.1.5.3.2
+      name: faRegRequestsReceived
+      syntax: Counter32
+    faRegRequestsRelayed:
+      oid: .1.3.6.1.2.1.44.1.5.3.3
+      name: faRegRequestsRelayed
+      syntax: Counter32
+    faReasonUnspecified:
+      oid: .1.3.6.1.2.1.44.1.5.3.4
+      name: faReasonUnspecified
+      syntax: Counter32
+    faAdmProhibited:
+      oid: .1.3.6.1.2.1.44.1.5.3.5
+      name: faAdmProhibited
+      syntax: Counter32
+    faInsufficientResource:
+      oid: .1.3.6.1.2.1.44.1.5.3.6
+      name: faInsufficientResource
+      syntax: Counter32
+    faMNAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.5.3.7
+      name: faMNAuthenticationFailure
+      syntax: Counter32
+    faRegLifetimeTooLong:
+      oid: .1.3.6.1.2.1.44.1.5.3.8
+      name: faRegLifetimeTooLong
+      syntax: Counter32
+    faPoorlyFormedRequests:
+      oid: .1.3.6.1.2.1.44.1.5.3.9
+      name: faPoorlyFormedRequests
+      syntax: Counter32
+    faEncapsulationUnavailable:
+      oid: .1.3.6.1.2.1.44.1.5.3.10
+      name: faEncapsulationUnavailable
+      syntax: Counter32
+    faVJCompressionUnavailable:
+      oid: .1.3.6.1.2.1.44.1.5.3.11
+      name: faVJCompressionUnavailable
+      syntax: Counter32
+    faHAUnreachable:
+      oid: .1.3.6.1.2.1.44.1.5.3.12
+      name: faHAUnreachable
+      syntax: Counter32
+    faRegRepliesRecieved:
+      oid: .1.3.6.1.2.1.44.1.5.3.13
+      name: faRegRepliesRecieved
+      syntax: Counter32
+    faRegRepliesRelayed:
+      oid: .1.3.6.1.2.1.44.1.5.3.14
+      name: faRegRepliesRelayed
+      syntax: Counter32
+    faHAAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.5.3.15
+      name: faHAAuthenticationFailure
+      syntax: Counter32
+    faPoorlyFormedReplies:
+      oid: .1.3.6.1.2.1.44.1.5.3.16
+      name: faPoorlyFormedReplies
+      syntax: Counter32
+
+MIP-MIB::faVisitorEntry:
+  mib: MIP-MIB
+  object: faVisitorEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.1
+      name: faVisitorIPAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: faVisitorHomeAddress
+  attributes:
+    faVisitorHomeAddress:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.2
+      name: faVisitorHomeAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    faVisitorHomeAgentAddress:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.3
+      name: faVisitorHomeAgentAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    faVisitorTimeGranted:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.4
+      name: faVisitorTimeGranted
+      syntax: TicksSec # TODO_TicksSec
+    faVisitorTimeRemaining:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.5
+      name: faVisitorTimeRemaining
+      syntax: TicksSec # TODO_TicksSec
+    faVisitorRegFlags:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.6
+      name: faVisitorRegFlags
+      syntax: EnumInteger
+    faVisitorRegIDLow:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.7
+      name: faVisitorRegIDLow
+      syntax: Integer32
+    faVisitorRegIDHigh:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.8
+      name: faVisitorRegIDHigh
+      syntax: Integer32
+    faVisitorRegIsAccepted:
+      oid: .1.3.6.1.2.1.44.1.5.3.1.1.9
+      name: faVisitorRegIsAccepted
+      syntax: TruthValue
+
+MIP-MIB::haRegistration:
+  mib: MIP-MIB
+  object: haRegistration
+  discovery_attribute: haRegistrationAccepted
+  attributes:
+    haRegistrationAccepted:
+      oid: .1.3.6.1.2.1.44.1.6.3.3
+      name: haRegistrationAccepted
+      syntax: Counter32
+    haMultiBindingUnsupported:
+      oid: .1.3.6.1.2.1.44.1.6.3.4
+      name: haMultiBindingUnsupported
+      syntax: Counter32
+    haReasonUnspecified:
+      oid: .1.3.6.1.2.1.44.1.6.3.5
+      name: haReasonUnspecified
+      syntax: Counter32
+    haAdmProhibited:
+      oid: .1.3.6.1.2.1.44.1.6.3.6
+      name: haAdmProhibited
+      syntax: Counter32
+    haInsufficientResource:
+      oid: .1.3.6.1.2.1.44.1.6.3.7
+      name: haInsufficientResource
+      syntax: Counter32
+    haMNAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.6.3.8
+      name: haMNAuthenticationFailure
+      syntax: Counter32
+    haFAAuthenticationFailure:
+      oid: .1.3.6.1.2.1.44.1.6.3.9
+      name: haFAAuthenticationFailure
+      syntax: Counter32
+    haIDMismatch:
+      oid: .1.3.6.1.2.1.44.1.6.3.10
+      name: haIDMismatch
+      syntax: Counter32
+    haPoorlyFormedRequest:
+      oid: .1.3.6.1.2.1.44.1.6.3.11
+      name: haPoorlyFormedRequest
+      syntax: Counter32
+    haTooManyBindings:
+      oid: .1.3.6.1.2.1.44.1.6.3.12
+      name: haTooManyBindings
+      syntax: Counter32
+    haUnknownHA:
+      oid: .1.3.6.1.2.1.44.1.6.3.13
+      name: haUnknownHA
+      syntax: Counter32
+    haGratuitiousARPsSent:
+      oid: .1.3.6.1.2.1.44.1.6.3.14
+      name: haGratuitiousARPsSent
+      syntax: Counter32
+    haProxyARPsSent:
+      oid: .1.3.6.1.2.1.44.1.6.3.15
+      name: haProxyARPsSent
+      syntax: Counter32
+    haRegRequestsReceived:
+      oid: .1.3.6.1.2.1.44.1.6.3.16
+      name: haRegRequestsReceived
+      syntax: Counter32
+    haDeRegRequestsReceived:
+      oid: .1.3.6.1.2.1.44.1.6.3.17
+      name: haDeRegRequestsReceived
+      syntax: Counter32
+    haRegRepliesSent:
+      oid: .1.3.6.1.2.1.44.1.6.3.18
+      name: haRegRepliesSent
+      syntax: Counter32
+    haDeRegRepliesSent:
+      oid: .1.3.6.1.2.1.44.1.6.3.19
+      name: haDeRegRepliesSent
+      syntax: Counter32
+
+MIP-MIB::haMobilityBindingEntry:
+  mib: MIP-MIB
+  object: haMobilityBindingEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.1
+      name: haMobilityBindingMN
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.2
+      name: haMobilityBindingCOA
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: haMobilityBindingSourceAddress
+  attributes:
+    haMobilityBindingSourceAddress:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.3
+      name: haMobilityBindingSourceAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    haMobilityBindingRegFlags:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.4
+      name: haMobilityBindingRegFlags
+      syntax: EnumInteger
+    haMobilityBindingRegIDLow:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.5
+      name: haMobilityBindingRegIDLow
+      syntax: Integer32
+    haMobilityBindingRegIDHigh:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.6
+      name: haMobilityBindingRegIDHigh
+      syntax: Integer32
+    haMobilityBindingTimeGranted:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.7
+      name: haMobilityBindingTimeGranted
+      syntax: TicksSec # TODO_TicksSec
+    haMobilityBindingTimeRemaining:
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.8
+      name: haMobilityBindingTimeRemaining
+      syntax: TicksSec # TODO_TicksSec
+
+MIP-MIB::haCounterEntry:
+  mib: MIP-MIB
+  object: haCounterEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.44.1.6.3.1.1.1
+      name: haMobilityBindingMN
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: haServiceRequestsAccepted
+  attributes:
+    haServiceRequestsAccepted:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.2
+      name: haServiceRequestsAccepted
+      syntax: Counter32
+    haServiceRequestsDenied:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.3
+      name: haServiceRequestsDenied
+      syntax: Counter32
+    haOverallServiceTime:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.4
+      name: haOverallServiceTime
+      syntax: TicksSec # TODO_TicksSec
+    haRecentServiceAcceptedTime:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.5
+      name: haRecentServiceAcceptedTime
+      syntax: TimeStamp
+    haRecentServiceDeniedTime:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.6
+      name: haRecentServiceDeniedTime
+      syntax: TimeStamp
+    haRecentServiceDeniedCode:
+      oid: .1.3.6.1.2.1.44.1.6.3.2.1.7
+      name: haRecentServiceDeniedCode
+      syntax: EnumInteger
+

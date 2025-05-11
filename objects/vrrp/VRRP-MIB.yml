@@ -1,0 +1,177 @@
+VRRP-MIB::vrrpOperations:
+  mib: VRRP-MIB
+  object: vrrpOperations
+  discovery_attribute: vrrpNodeVersion
+  attributes:
+    vrrpNodeVersion:
+      oid: .1.3.6.1.2.1.68.1.1
+      name: vrrpNodeVersion
+      syntax: Integer32
+    vrrpNotificationCntl:
+      oid: .1.3.6.1.2.1.68.1.2
+      name: vrrpNotificationCntl
+      syntax: EnumInteger
+
+VRRP-MIB::vrrpOperEntry:
+  mib: VRRP-MIB
+  object: vrrpOperEntry
+  index:
+    - type: VrId
+      oid: .1.3.6.1.2.1.68.1.3.1.1
+      name: vrrpOperVrId
+      syntax: VrId
+  discovery_attribute: vrrpOperVirtualMacAddr
+  attributes:
+    vrrpOperVirtualMacAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.2
+      name: vrrpOperVirtualMacAddr
+      syntax: MacAddressNoSuffix # MacAddress
+    vrrpOperState:
+      oid: .1.3.6.1.2.1.68.1.3.1.3
+      name: vrrpOperState
+      syntax: EnumInteger
+    vrrpOperAdminState:
+      oid: .1.3.6.1.2.1.68.1.3.1.4
+      name: vrrpOperAdminState
+      syntax: EnumInteger
+    vrrpOperPriority:
+      oid: .1.3.6.1.2.1.68.1.3.1.5
+      name: vrrpOperPriority
+      syntax: Integer32
+    vrrpOperIpAddrCount:
+      oid: .1.3.6.1.2.1.68.1.3.1.6
+      name: vrrpOperIpAddrCount
+      syntax: Integer32
+    vrrpOperMasterIpAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.7
+      name: vrrpOperMasterIpAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    vrrpOperPrimaryIpAddr:
+      oid: .1.3.6.1.2.1.68.1.3.1.8
+      name: vrrpOperPrimaryIpAddr
+      syntax: IpAddressNoSuffix # IpAddress
+    vrrpOperAuthType:
+      oid: .1.3.6.1.2.1.68.1.3.1.9
+      name: vrrpOperAuthType
+      syntax: EnumInteger
+    vrrpOperAuthKey:
+      oid: .1.3.6.1.2.1.68.1.3.1.10
+      name: vrrpOperAuthKey
+      syntax: TODO_OctetString # OctetString
+    vrrpOperAdvertisementInterval:
+      oid: .1.3.6.1.2.1.68.1.3.1.11
+      name: vrrpOperAdvertisementInterval
+      syntax: TicksSec # TODO_TicksSec
+    vrrpOperPreemptMode:
+      oid: .1.3.6.1.2.1.68.1.3.1.12
+      name: vrrpOperPreemptMode
+      syntax: TruthValue
+    vrrpOperVirtualRouterUpTime:
+      oid: .1.3.6.1.2.1.68.1.3.1.13
+      name: vrrpOperVirtualRouterUpTime
+      syntax: TimeStamp
+    vrrpOperProtocol:
+      oid: .1.3.6.1.2.1.68.1.3.1.14
+      name: vrrpOperProtocol
+      syntax: EnumInteger
+#    vrrpOperRowStatus:
+#      oid: .1.3.6.1.2.1.68.1.3.1.15
+#      name: vrrpOperRowStatus
+#      syntax: RowStatus
+
+VRRP-MIB::vrrpAssoIpAddrEntry:
+  mib: VRRP-MIB
+  object: vrrpAssoIpAddrEntry
+  index:
+    - type: VrId
+      oid: .1.3.6.1.2.1.68.1.3.1.1
+      name: vrrpOperVrId
+      syntax: VrId
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.68.1.4.1.1
+      name: vrrpAssoIpAddr
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: vrrpAssoIpAddrRowStatus
+  attributes:
+#    vrrpAssoIpAddrRowStatus:
+#      oid: .1.3.6.1.2.1.68.1.4.1.2
+#      name: vrrpAssoIpAddrRowStatus
+#      syntax: RowStatus
+
+VRRP-MIB::vrrpStatistics:
+  mib: VRRP-MIB
+  object: vrrpStatistics
+  discovery_attribute: vrrpRouterChecksumErrors
+  attributes:
+    vrrpRouterChecksumErrors:
+      oid: .1.3.6.1.2.1.68.2.1
+      name: vrrpRouterChecksumErrors
+      syntax: Counter32
+    vrrpRouterVersionErrors:
+      oid: .1.3.6.1.2.1.68.2.2
+      name: vrrpRouterVersionErrors
+      syntax: Counter32
+    vrrpRouterVrIdErrors:
+      oid: .1.3.6.1.2.1.68.2.3
+      name: vrrpRouterVrIdErrors
+      syntax: Counter32
+
+VRRP-MIB::vrrpRouterStatsEntry:
+  mib: VRRP-MIB
+  object: vrrpRouterStatsEntry
+  index:
+    - type: VrId
+      oid: .1.3.6.1.2.1.68.1.3.1.1
+      name: vrrpOperVrId
+      syntax: VrId
+  discovery_attribute: vrrpStatsAdvertiseRcvd
+  attributes:
+    vrrpStatsBecomeMaster:
+      oid: .1.3.6.1.2.1.68.2.4.1.1
+      name: vrrpStatsBecomeMaster
+      syntax: Counter32
+    vrrpStatsAdvertiseRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.2
+      name: vrrpStatsAdvertiseRcvd
+      syntax: Counter32
+    vrrpStatsAdvertiseIntervalErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.3
+      name: vrrpStatsAdvertiseIntervalErrors
+      syntax: Counter32
+    vrrpStatsAuthFailures:
+      oid: .1.3.6.1.2.1.68.2.4.1.4
+      name: vrrpStatsAuthFailures
+      syntax: Counter32
+    vrrpStatsIpTtlErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.5
+      name: vrrpStatsIpTtlErrors
+      syntax: Counter32
+    vrrpStatsPriorityZeroPktsRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.6
+      name: vrrpStatsPriorityZeroPktsRcvd
+      syntax: Counter32
+    vrrpStatsPriorityZeroPktsSent:
+      oid: .1.3.6.1.2.1.68.2.4.1.7
+      name: vrrpStatsPriorityZeroPktsSent
+      syntax: Counter32
+    vrrpStatsInvalidTypePktsRcvd:
+      oid: .1.3.6.1.2.1.68.2.4.1.8
+      name: vrrpStatsInvalidTypePktsRcvd
+      syntax: Counter32
+    vrrpStatsAddressListErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.9
+      name: vrrpStatsAddressListErrors
+      syntax: Counter32
+    vrrpStatsInvalidAuthType:
+      oid: .1.3.6.1.2.1.68.2.4.1.10
+      name: vrrpStatsInvalidAuthType
+      syntax: Counter32
+    vrrpStatsAuthTypeMismatch:
+      oid: .1.3.6.1.2.1.68.2.4.1.11
+      name: vrrpStatsAuthTypeMismatch
+      syntax: Counter32
+    vrrpStatsPacketLengthErrors:
+      oid: .1.3.6.1.2.1.68.2.4.1.12
+      name: vrrpStatsPacketLengthErrors
+      syntax: Counter32
+

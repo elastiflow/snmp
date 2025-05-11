@@ -1,0 +1,153 @@
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolConfig:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolConfig
+  discovery_attribute: cIpLocalPoolNotificationsEnable
+  attributes:
+    cIpLocalPoolNotificationsEnable:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.1
+      name: cIpLocalPoolNotificationsEnable
+      syntax: TruthValue
+
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolConfigEntry:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolConfigEntry
+  index:
+    - type: CIpLocalPoolName
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.1
+      name: cIpLocalPoolName
+      syntax: CIpLocalPoolName
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.2
+      name: cIpLocalPoolAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.3
+      name: cIpLocalPoolAddressLo
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: cIpLocalPoolAddressHi
+  attributes:
+    cIpLocalPoolAddressHi:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.4
+      name: cIpLocalPoolAddressHi
+      syntax: IpAddressNoSuffix # InetAddress
+    cIpLocalPoolFreeAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.5
+      name: cIpLocalPoolFreeAddrs
+      syntax: Gauge32
+    cIpLocalPoolInUseAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.6
+      name: cIpLocalPoolInUseAddrs
+      syntax: Gauge32
+    cIpLocalPoolGroupContainedIn:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.7
+      name: cIpLocalPoolGroupContainedIn
+      syntax: CIpLocalPoolGroupNameOrNull
+#    cIpLocalPoolRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.8
+#      name: cIpLocalPoolRowStatus
+#      syntax: RowStatus
+    cIpLocalPoolPriority:
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.9
+      name: cIpLocalPoolPriority
+      syntax: Unsigned32
+
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolGroupContainsEntry:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolGroupContainsEntry
+  index:
+    - type: CIpLocalPoolGroupNameOrNull
+      oid: .1.3.6.1.4.1.9.9.326.1.2.1.1.1
+      name: cIpLocalPoolGroupName
+      syntax: CIpLocalPoolGroupNameOrNull
+    - type: CIpLocalPoolName
+      oid: .1.3.6.1.4.1.9.9.326.1.2.1.1.2
+      name: cIpLocalPoolChildIndex
+      syntax: CIpLocalPoolName
+  discovery_attribute: cIpLocalPoolChildIndex
+  attributes:
+
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolGroupEntry:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolGroupEntry
+  index:
+    - type: CIpLocalPoolGroupNameOrNull
+      oid: .1.3.6.1.4.1.9.9.326.1.2.1.1.1
+      name: cIpLocalPoolGroupName
+      syntax: CIpLocalPoolGroupNameOrNull
+  discovery_attribute: cIpLocalPoolGroupInUseAddrs
+  attributes:
+    cIpLocalPoolGroupFreeAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.2.2.1.1
+      name: cIpLocalPoolGroupFreeAddrs
+      syntax: Gauge32
+    cIpLocalPoolGroupInUseAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.2.2.1.2
+      name: cIpLocalPoolGroupInUseAddrs
+      syntax: Gauge32
+
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolStatsEntry:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolStatsEntry
+  index:
+    - type: CIpLocalPoolName
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.1
+      name: cIpLocalPoolName
+      syntax: CIpLocalPoolName
+  discovery_attribute: cIpLocalPoolStatInUseAddrs
+  attributes:
+    cIpLocalPoolStatFreeAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.1
+      name: cIpLocalPoolStatFreeAddrs
+      syntax: Gauge32
+    cIpLocalPoolStatInUseAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.2
+      name: cIpLocalPoolStatInUseAddrs
+      syntax: Gauge32
+    cIpLocalPoolStatHiWaterUsedAddrs:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.3
+      name: cIpLocalPoolStatHiWaterUsedAddrs
+      syntax: Unsigned32
+    cIpLocalPoolStatInUseAddrThldLo:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.4
+      name: cIpLocalPoolStatInUseAddrThldLo
+      syntax: Unsigned32
+    cIpLocalPoolStatInUseAddrThldHi:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.5
+      name: cIpLocalPoolStatInUseAddrThldHi
+      syntax: Unsigned32
+    cIpLocalPoolPercentAddrThldLo:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.6
+      name: cIpLocalPoolPercentAddrThldLo
+      syntax: CIpLocalPoolPercentage
+    cIpLocalPoolPercentAddrThldHi:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.1.1.7
+      name: cIpLocalPoolPercentAddrThldHi
+      syntax: CIpLocalPoolPercentage
+
+CISCO-IP-LOCAL-POOL-MIB::cIpLocalPoolAllocEntry:
+  mib: CISCO-IP-LOCAL-POOL-MIB
+  object: cIpLocalPoolAllocEntry
+  index:
+    - type: CIpLocalPoolName
+      oid: .1.3.6.1.4.1.9.9.326.1.1.2.1.1
+      name: cIpLocalPoolName
+      syntax: CIpLocalPoolName
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.326.1.3.2.1.1
+      name: cIpLocalPoolAllocAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.326.1.3.2.1.2
+      name: cIpLocalPoolAllocAddr
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: cIpLocalPoolAllocIfIndex
+  attributes:
+    cIpLocalPoolAllocIfIndex:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.2.1.3
+      name: cIpLocalPoolAllocIfIndex
+      syntax: InterfaceIndexOrZero
+    cIpLocalPoolAllocUser:
+      oid: .1.3.6.1.4.1.9.9.326.1.3.2.1.4
+      name: cIpLocalPoolAllocUser
+      syntax: DisplayString # SnmpAdminString
+

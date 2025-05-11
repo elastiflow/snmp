@@ -1,0 +1,188 @@
+CISCO-ENTITY-PERFORMANCE-MIB::cepEntityEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepEntityEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+  discovery_attribute: cepEntityLastReloadTime
+  attributes:
+    cepEntityNumReloads:
+      oid: .1.3.6.1.4.1.9.9.756.1.1.1.1
+      name: cepEntityNumReloads
+      syntax: Counter32
+    cepEntityLastReloadTime:
+      oid: .1.3.6.1.4.1.9.9.756.1.1.1.2
+      name: cepEntityLastReloadTime
+      syntax: DateAndTime
+
+CISCO-ENTITY-PERFORMANCE-MIB::cepConfigEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepConfigEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CiscoEntPerfInterval
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.1
+      name: cepConfigInterval
+      syntax: EnumInteger
+    - type: CiscoEntPerfType
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.2
+      name: cepConfigPerfType
+      syntax: EnumInteger
+  discovery_attribute: cepConfigPerfRange
+  attributes:
+    cepConfigPerfRange:
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.3
+      name: cepConfigPerfRange
+      syntax: EnumInteger
+    cepConfigRisingThreshold:
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.4
+      name: cepConfigRisingThreshold
+      syntax: CiscoEntPerfMeasurement
+    cepConfigFallingThreshold:
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.5
+      name: cepConfigFallingThreshold
+      syntax: CiscoEntPerfMeasurement
+    cepConfigThresholdNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.6
+      name: cepConfigThresholdNotifEnabled
+      syntax: TruthValue
+
+CISCO-ENTITY-PERFORMANCE-MIB::cepStatsEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepStatsEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CiscoEntPerfInterval
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.1
+      name: cepConfigInterval
+      syntax: EnumInteger
+    - type: CiscoEntPerfType
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.2
+      name: cepConfigPerfType
+      syntax: EnumInteger
+  discovery_attribute: cepStatsMeasurement
+  attributes:
+    cepStatsAlgorithm:
+      oid: .1.3.6.1.4.1.9.9.756.1.3.1.1
+      name: cepStatsAlgorithm
+      syntax: EnumInteger
+    cepStatsMeasurement:
+      oid: .1.3.6.1.4.1.9.9.756.1.3.1.2
+      name: cepStatsMeasurement
+      syntax: CiscoEntPerfMeasurement
+
+CISCO-ENTITY-PERFORMANCE-MIB::cepEntityIntervalEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepEntityIntervalEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CiscoEntPerfHistInterval
+      oid: .1.3.6.1.4.1.9.9.756.1.4.1.1
+      name: cepHistInterval
+      syntax: EnumInteger
+  discovery_attribute: cepIntervalTimeElapsed
+  attributes:
+    cepIntervalTimeElapsed:
+      oid: .1.3.6.1.4.1.9.9.756.1.4.1.2
+      name: cepIntervalTimeElapsed
+      syntax: TicksSec # TODO_TicksSec
+    cepValidIntervalCount:
+      oid: .1.3.6.1.4.1.9.9.756.1.4.1.3
+      name: cepValidIntervalCount
+      syntax: Unsigned32
+
+CISCO-ENTITY-PERFORMANCE-MIB::cepIntervalStatsEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepIntervalStatsEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CiscoEntPerfHistInterval
+      oid: .1.3.6.1.4.1.9.9.756.1.4.1.1
+      name: cepHistInterval
+      syntax: EnumInteger
+    - type: CiscoEntPerfType
+      oid: .1.3.6.1.4.1.9.9.756.1.2.1.2
+      name: cepConfigPerfType
+      syntax: EnumInteger
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.756.1.5.1.1
+      name: cepIntervalNumber
+      syntax: Unsigned32
+  discovery_attribute: cepIntervalStatsValidData
+  attributes:
+    cepIntervalStatsValidData:
+      oid: .1.3.6.1.4.1.9.9.756.1.5.1.2
+      name: cepIntervalStatsValidData
+      syntax: TruthValue
+    cepIntervalStatsRange:
+      oid: .1.3.6.1.4.1.9.9.756.1.5.1.3
+      name: cepIntervalStatsRange
+      syntax: EnumInteger
+    cepIntervalStatsMeasurement:
+      oid: .1.3.6.1.4.1.9.9.756.1.5.1.4
+      name: cepIntervalStatsMeasurement
+      syntax: CiscoEntPerfMeasurement
+    cepIntervalStatsCreateTime:
+      oid: .1.3.6.1.4.1.9.9.756.1.5.1.5
+      name: cepIntervalStatsCreateTime
+      syntax: TimeStamp
+
+CISCO-ENTITY-PERFORMANCE-MIB::ciscoEntityPerformanceMIBNotifObjects:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: ciscoEntityPerformanceMIBNotifObjects
+  discovery_attribute: cepThresholdNotifEnabled
+  attributes:
+    cepThresholdNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.756.1.6.1
+      name: cepThresholdNotifEnabled
+      syntax: TruthValue
+    cepThroughputNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.756.1.6.2
+      name: cepThroughputNotifEnabled
+      syntax: TruthValue
+
+CISCO-ENTITY-PERFORMANCE-MIB::cepThroughputEntry:
+  mib: CISCO-ENTITY-PERFORMANCE-MIB
+  object: cepThroughputEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+  discovery_attribute: cepThroughputLevel
+  attributes:
+    cepThroughputLicensedBW:
+      oid: .1.3.6.1.4.1.9.9.756.1.7.1.1
+      name: cepThroughputLicensedBW
+      syntax: Counter64
+    cepThroughputLevel:
+      oid: .1.3.6.1.4.1.9.9.756.1.7.1.2
+      name: cepThroughputLevel
+      syntax: EnumInteger
+    cepThroughputInterval:
+      oid: .1.3.6.1.4.1.9.9.756.1.7.1.3
+      name: cepThroughputInterval
+      syntax: TicksSec # TODO_TicksSec
+    cepThroughputThreshold:
+      oid: .1.3.6.1.4.1.9.9.756.1.7.1.4
+      name: cepThroughputThreshold
+      syntax: Integer32
+    cepThroughputAvgRate:
+      oid: .1.3.6.1.4.1.9.9.756.1.7.1.5
+      name: cepThroughputAvgRate
+      syntax: Counter64
+

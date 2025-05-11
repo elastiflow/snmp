@@ -1,0 +1,558 @@
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtTemplateEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtTemplateEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtTemplateStatus
+  attributes:
+#    cdtTemplateStatus:
+#      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.2
+#      name: cdtTemplateStatus
+#      syntax: RowStatus
+    cdtTemplateStorage:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.3
+      name: cdtTemplateStorage
+      syntax: EnumInteger
+    cdtTemplateType:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.4
+      name: cdtTemplateType
+      syntax: EnumInteger
+    cdtTemplateSrc:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.5
+      name: cdtTemplateSrc
+      syntax: EnumInteger
+    cdtTemplateUsageCount:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.6
+      name: cdtTemplateUsageCount
+      syntax: Unsigned32
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtTemplateTargetEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtTemplateTargetEntry
+  index:
+    - type: DynamicTemplateTargetType
+      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.1
+      name: cdtTemplateTargetType
+      syntax: EnumInteger
+    - type: DynamicTemplateTargetId
+      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.2
+      name: cdtTemplateTargetId
+      syntax: DynamicTemplateTargetId
+  discovery_attribute: cdtTemplateTargetStatus
+  attributes:
+#    cdtTemplateTargetStatus:
+#      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.3
+#      name: cdtTemplateTargetStatus
+#      syntax: RowStatus
+    cdtTemplateTargetStorage:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.4
+      name: cdtTemplateTargetStorage
+      syntax: EnumInteger
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtTemplateAssociationEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtTemplateAssociationEntry
+  index:
+    - type: DynamicTemplateTargetType
+      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.1
+      name: cdtTemplateTargetType
+      syntax: EnumInteger
+    - type: DynamicTemplateTargetId
+      oid: .1.3.6.1.4.1.9.9.784.1.1.2.1.2
+      name: cdtTemplateTargetId
+      syntax: DynamicTemplateTargetId
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.3.1.1
+      name: cdtTemplateAssociationName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtTemplateAssociationPrecedence
+  attributes:
+    cdtTemplateAssociationPrecedence:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.3.1.2
+      name: cdtTemplateAssociationPrecedence
+      syntax: Unsigned32
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtTemplateUsageEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtTemplateUsageEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+    - type: DynamicTemplateTargetType
+      oid: .1.3.6.1.4.1.9.9.784.1.1.4.1.1
+      name: cdtTemplateUsageTargetType
+      syntax: EnumInteger
+    - type: DynamicTemplateTargetId
+      oid: .1.3.6.1.4.1.9.9.784.1.1.4.1.2
+      name: cdtTemplateUsageTargetId
+      syntax: DynamicTemplateTargetId
+  discovery_attribute: cdtTemplateUsageTargetId
+  attributes:
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtTemplateCommonEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtTemplateCommonEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtCommonDescr
+  attributes:
+    cdtCommonValid:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.1
+      name: cdtCommonValid
+      syntax: EnumBitmap
+    cdtCommonDescr:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.2
+      name: cdtCommonDescr
+      syntax: DisplayString # SnmpAdminString
+    cdtCommonKeepaliveInt:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.3
+      name: cdtCommonKeepaliveInt
+      syntax: TicksSec # TODO_TicksSec
+    cdtCommonKeepaliveRetries:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.4
+      name: cdtCommonKeepaliveRetries
+      syntax: Unsigned32
+    cdtCommonVrf:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.5
+      name: cdtCommonVrf
+      syntax: CiscoVrfName
+    cdtCommonAddrPool:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.6
+      name: cdtCommonAddrPool
+      syntax: DisplayString # SnmpAdminString
+    cdtCommonIpv4AccessGroup:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.7
+      name: cdtCommonIpv4AccessGroup
+      syntax: DisplayString # SnmpAdminString
+    cdtCommonIpv4Unreachables:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.8
+      name: cdtCommonIpv4Unreachables
+      syntax: TruthValue
+    cdtCommonIpv6AccessGroup:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.9
+      name: cdtCommonIpv6AccessGroup
+      syntax: DisplayString # SnmpAdminString
+    cdtCommonIpv6Unreachables:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.10
+      name: cdtCommonIpv6Unreachables
+      syntax: TruthValue
+    cdtCommonSrvSubControl:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.11
+      name: cdtCommonSrvSubControl
+      syntax: CbpElementName
+    cdtCommonSrvRedirect:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.12
+      name: cdtCommonSrvRedirect
+      syntax: CbpElementName
+    cdtCommonSrvAcct:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.13
+      name: cdtCommonSrvAcct
+      syntax: CbpElementName
+    cdtCommonSrvQos:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.14
+      name: cdtCommonSrvQos
+      syntax: CbpElementName
+    cdtCommonSrvNetflow:
+      oid: .1.3.6.1.4.1.9.9.784.1.1.5.1.15
+      name: cdtCommonSrvNetflow
+      syntax: CbpElementName
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtIfTemplateEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtIfTemplateEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtIfMtu
+  attributes:
+    cdtIfValid:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.1
+      name: cdtIfValid
+      syntax: EnumBitmap
+    cdtIfMtu:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.2
+      name: cdtIfMtu
+      syntax: Unsigned32
+    cdtIfCdpEnable:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.3
+      name: cdtIfCdpEnable
+      syntax: TruthValue
+    cdtIfFlowMonitor:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.4
+      name: cdtIfFlowMonitor
+      syntax: DisplayString # SnmpAdminString
+    cdtIfIpv4Unnumbered:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.5
+      name: cdtIfIpv4Unnumbered
+      syntax: InterfaceIndexOrZero
+    cdtIfIpv4SubEnable:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.6
+      name: cdtIfIpv4SubEnable
+      syntax: TruthValue
+    cdtIfIpv4Mtu:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.7
+      name: cdtIfIpv4Mtu
+      syntax: Unsigned32
+    cdtIfIpv4TcpMssAdjust:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.8
+      name: cdtIfIpv4TcpMssAdjust
+      syntax: Unsigned32
+    cdtIfIpv4VerifyUniRpf:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.9
+      name: cdtIfIpv4VerifyUniRpf
+      syntax: EnumInteger
+    cdtIfIpv4VerifyUniRpfAcl:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.10
+      name: cdtIfIpv4VerifyUniRpfAcl
+      syntax: DisplayString # SnmpAdminString
+    cdtIfIpv4VerifyUniRpfOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.11
+      name: cdtIfIpv4VerifyUniRpfOpts
+      syntax: EnumInteger
+    cdtIfIpv6Enable:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.12
+      name: cdtIfIpv6Enable
+      syntax: TruthValue
+    cdtIfIpv6SubEnable:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.13
+      name: cdtIfIpv6SubEnable
+      syntax: TruthValue
+    cdtIfIpv6TcpMssAdjust:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.14
+      name: cdtIfIpv6TcpMssAdjust
+      syntax: Unsigned32
+    cdtIfIpv6VerifyUniRpf:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.15
+      name: cdtIfIpv6VerifyUniRpf
+      syntax: EnumInteger
+    cdtIfIpv6VerifyUniRpfAcl:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.16
+      name: cdtIfIpv6VerifyUniRpfAcl
+      syntax: DisplayString # SnmpAdminString
+    cdtIfIpv6VerifyUniRpfOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.17
+      name: cdtIfIpv6VerifyUniRpfOpts
+      syntax: EnumInteger
+    cdtIfIpv6NdPrefix:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.18
+      name: cdtIfIpv6NdPrefix
+      syntax: IpAddressNoSuffix # InetAddressIPv6
+    cdtIfIpv6NdPrefixLength:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.19
+      name: cdtIfIpv6NdPrefixLength
+      syntax: InetAddressPrefixLength
+    cdtIfIpv6NdValidLife:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.20
+      name: cdtIfIpv6NdValidLife
+      syntax: TicksSec # TODO_TicksSec
+    cdtIfIpv6NdPreferredLife:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.21
+      name: cdtIfIpv6NdPreferredLife
+      syntax: TicksSec # TODO_TicksSec
+    cdtIfIpv6NdOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.22
+      name: cdtIfIpv6NdOpts
+      syntax: EnumBitmap
+    cdtIfIpv6NdDadAttempts:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.23
+      name: cdtIfIpv6NdDadAttempts
+      syntax: Unsigned32
+    cdtIfIpv6NdNsInterval:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.24
+      name: cdtIfIpv6NdNsInterval
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    cdtIfIpv6NdReachableTime:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.25
+      name: cdtIfIpv6NdReachableTime
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    cdtIfIpv6NdRaIntervalUnits:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.26
+      name: cdtIfIpv6NdRaIntervalUnits
+      syntax: EnumInteger
+    cdtIfIpv6NdRaIntervalMax:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.27
+      name: cdtIfIpv6NdRaIntervalMax
+      syntax: Unsigned32
+    cdtIfIpv6NdRaIntervalMin:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.28
+      name: cdtIfIpv6NdRaIntervalMin
+      syntax: Unsigned32
+    cdtIfIpv6NdRaLife:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.29
+      name: cdtIfIpv6NdRaLife
+      syntax: TicksSec # TODO_TicksSec
+    cdtIfIpv6NdRouterPreference:
+      oid: .1.3.6.1.4.1.9.9.784.1.2.1.1.30
+      name: cdtIfIpv6NdRouterPreference
+      syntax: EnumInteger
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtPppTemplateEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtPppTemplateEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtPppAccounting
+  attributes:
+    cdtPppValid:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.1
+      name: cdtPppValid
+      syntax: EnumBitmap
+    cdtPppAccounting:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.2
+      name: cdtPppAccounting
+      syntax: TruthValue
+    cdtPppAuthentication:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.3
+      name: cdtPppAuthentication
+      syntax: EnumBitmap
+    cdtPppAuthenticationMethods:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.4
+      name: cdtPppAuthenticationMethods
+      syntax: DisplayString # SnmpAdminString
+    cdtPppAuthorization:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.5
+      name: cdtPppAuthorization
+      syntax: TruthValue
+    cdtPppLoopbackIgnore:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.6
+      name: cdtPppLoopbackIgnore
+      syntax: TruthValue
+    cdtPppMaxBadAuth:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.7
+      name: cdtPppMaxBadAuth
+      syntax: Unsigned32
+    cdtPppMaxConfigure:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.8
+      name: cdtPppMaxConfigure
+      syntax: Unsigned32
+    cdtPppMaxFailure:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.9
+      name: cdtPppMaxFailure
+      syntax: Unsigned32
+    cdtPppMaxTerminate:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.10
+      name: cdtPppMaxTerminate
+      syntax: Unsigned32
+    cdtPppTimeoutAuthentication:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.11
+      name: cdtPppTimeoutAuthentication
+      syntax: TicksSec # TODO_TicksSec
+    cdtPppTimeoutRetry:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.12
+      name: cdtPppTimeoutRetry
+      syntax: TicksSec # TODO_TicksSec
+    cdtPppChapOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.13
+      name: cdtPppChapOpts
+      syntax: EnumBitmap
+    cdtPppChapHostname:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.14
+      name: cdtPppChapHostname
+      syntax: DisplayString # SnmpAdminString
+    cdtPppChapPassword:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.15
+      name: cdtPppChapPassword
+      syntax: DisplayString # SnmpAdminString
+    cdtPppMsChapV1Opts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.16
+      name: cdtPppMsChapV1Opts
+      syntax: EnumBitmap
+    cdtPppMsChapV1Hostname:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.17
+      name: cdtPppMsChapV1Hostname
+      syntax: DisplayString # SnmpAdminString
+    cdtPppMsChapV1Password:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.18
+      name: cdtPppMsChapV1Password
+      syntax: DisplayString # SnmpAdminString
+    cdtPppMsChapV2Opts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.19
+      name: cdtPppMsChapV2Opts
+      syntax: EnumBitmap
+    cdtPppMsChapV2Hostname:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.20
+      name: cdtPppMsChapV2Hostname
+      syntax: DisplayString # SnmpAdminString
+    cdtPppMsChapV2Password:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.21
+      name: cdtPppMsChapV2Password
+      syntax: DisplayString # SnmpAdminString
+    cdtPppPapOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.22
+      name: cdtPppPapOpts
+      syntax: EnumBitmap
+    cdtPppPapUsername:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.23
+      name: cdtPppPapUsername
+      syntax: DisplayString # SnmpAdminString
+    cdtPppPapPassword:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.24
+      name: cdtPppPapPassword
+      syntax: DisplayString # SnmpAdminString
+    cdtPppEapOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.25
+      name: cdtPppEapOpts
+      syntax: EnumBitmap
+    cdtPppEapIdentity:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.26
+      name: cdtPppEapIdentity
+      syntax: DisplayString # SnmpAdminString
+    cdtPppEapPassword:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.27
+      name: cdtPppEapPassword
+      syntax: DisplayString # SnmpAdminString
+    cdtPppIpcpAddrOption:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.28
+      name: cdtPppIpcpAddrOption
+      syntax: EnumInteger
+    cdtPppIpcpDnsOption:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.29
+      name: cdtPppIpcpDnsOption
+      syntax: EnumInteger
+    cdtPppIpcpDnsPrimary:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.30
+      name: cdtPppIpcpDnsPrimary
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+    cdtPppIpcpDnsSecondary:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.31
+      name: cdtPppIpcpDnsSecondary
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+    cdtPppIpcpWinsOption:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.32
+      name: cdtPppIpcpWinsOption
+      syntax: EnumInteger
+    cdtPppIpcpWinsPrimary:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.33
+      name: cdtPppIpcpWinsPrimary
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+    cdtPppIpcpWinsSecondary:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.34
+      name: cdtPppIpcpWinsSecondary
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+    cdtPppIpcpMaskOption:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.35
+      name: cdtPppIpcpMaskOption
+      syntax: EnumInteger
+    cdtPppIpcpMask:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.36
+      name: cdtPppIpcpMask
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+    cdtPppPeerDefIpAddrOpts:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.37
+      name: cdtPppPeerDefIpAddrOpts
+      syntax: EnumBitmap
+    cdtPppPeerDefIpAddrSrc:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.38
+      name: cdtPppPeerDefIpAddrSrc
+      syntax: EnumInteger
+    cdtPppPeerDefIpAddr:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.1.1.39
+      name: cdtPppPeerDefIpAddr
+      syntax: IpAddressNoSuffix # InetAddressIPv4
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtPppPeerIpAddrPoolEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtPppPeerIpAddrPoolEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.784.1.3.2.1.1
+      name: cdtPppPeerIpAddrPoolPriority
+      syntax: Unsigned32
+  discovery_attribute: cdtPppPeerIpAddrPoolStatus
+  attributes:
+#    cdtPppPeerIpAddrPoolStatus:
+#      oid: .1.3.6.1.4.1.9.9.784.1.3.2.1.2
+#      name: cdtPppPeerIpAddrPoolStatus
+#      syntax: RowStatus
+    cdtPppPeerIpAddrPoolStorage:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.2.1.3
+      name: cdtPppPeerIpAddrPoolStorage
+      syntax: EnumInteger
+    cdtPppPeerIpAddrPoolName:
+      oid: .1.3.6.1.4.1.9.9.784.1.3.2.1.4
+      name: cdtPppPeerIpAddrPoolName
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtEthernetTemplateEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtEthernetTemplateEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtEthernetBridgeDomain
+  attributes:
+    cdtEthernetValid:
+      oid: .1.3.6.1.4.1.9.9.784.1.4.1.1.1
+      name: cdtEthernetValid
+      syntax: EnumBitmap
+    cdtEthernetBridgeDomain:
+      oid: .1.3.6.1.4.1.9.9.784.1.4.1.1.2
+      name: cdtEthernetBridgeDomain
+      syntax: DisplayString # SnmpAdminString
+    cdtEthernetPppoeEnable:
+      oid: .1.3.6.1.4.1.9.9.784.1.4.1.1.3
+      name: cdtEthernetPppoeEnable
+      syntax: TruthValue
+    cdtEthernetIpv4PointToPoint:
+      oid: .1.3.6.1.4.1.9.9.784.1.4.1.1.4
+      name: cdtEthernetIpv4PointToPoint
+      syntax: TruthValue
+    cdtEthernetMacAddr:
+      oid: .1.3.6.1.4.1.9.9.784.1.4.1.1.5
+      name: cdtEthernetMacAddr
+      syntax: MacAddressNoSuffix # MacAddress
+
+CISCO-DYNAMIC-TEMPLATE-MIB::cdtSrvTemplateEntry:
+  mib: CISCO-DYNAMIC-TEMPLATE-MIB
+  object: cdtSrvTemplateEntry
+  index:
+    - type: DynamicTemplateName
+      oid: .1.3.6.1.4.1.9.9.784.1.1.1.1.1
+      name: cdtTemplateName
+      syntax: DynamicTemplateName
+  discovery_attribute: cdtSrvNetworkSrv
+  attributes:
+    cdtSrvValid:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.1
+      name: cdtSrvValid
+      syntax: EnumBitmap
+    cdtSrvNetworkSrv:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.2
+      name: cdtSrvNetworkSrv
+      syntax: EnumInteger
+    cdtSrvVpdnGroup:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.3
+      name: cdtSrvVpdnGroup
+      syntax: DisplayString # SnmpAdminString
+    cdtSrvSgSrvGroup:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.4
+      name: cdtSrvSgSrvGroup
+      syntax: DisplayString # SnmpAdminString
+    cdtSrvSgSrvType:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.5
+      name: cdtSrvSgSrvType
+      syntax: EnumInteger
+    cdtSrvMulticast:
+      oid: .1.3.6.1.4.1.9.9.784.1.6.1.1.6
+      name: cdtSrvMulticast
+      syntax: TruthValue
+

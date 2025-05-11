@@ -1,0 +1,607 @@
+DIFFSERV-MIB::diffServDataPathEntry:
+  mib: DIFFSERV-MIB
+  object: diffServDataPathEntry
+  index:
+    - type: IfDirection
+      oid: .1.3.6.1.2.1.97.1.1.1.1.1
+      name: diffServDataPathIfDirection
+      syntax: EnumInteger
+  discovery_attribute: diffServDataPathStart
+  attributes:
+    diffServDataPathStart:
+      oid: .1.3.6.1.2.1.97.1.1.1.1.2
+      name: diffServDataPathStart
+      syntax: RowPointer
+    diffServDataPathStorage:
+      oid: .1.3.6.1.2.1.97.1.1.1.1.3
+      name: diffServDataPathStorage
+      syntax: EnumInteger
+#    diffServDataPathStatus:
+#      oid: .1.3.6.1.2.1.97.1.1.1.1.4
+#      name: diffServDataPathStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServClassifier:
+  mib: DIFFSERV-MIB
+  object: diffServClassifier
+  discovery_attribute: diffServClfrNextFree
+  attributes:
+    diffServClfrNextFree:
+      oid: .1.3.6.1.2.1.97.1.2.1
+      name: diffServClfrNextFree
+      syntax: IndexIntegerNextFree
+    diffServClfrElementNextFree:
+      oid: .1.3.6.1.2.1.97.1.2.3
+      name: diffServClfrElementNextFree
+      syntax: IndexIntegerNextFree
+    diffServMultiFieldClfrNextFree:
+      oid: .1.3.6.1.2.1.97.1.2.5
+      name: diffServMultiFieldClfrNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServClfrEntry:
+  mib: DIFFSERV-MIB
+  object: diffServClfrEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.2.2.1.1
+      name: diffServClfrId
+      syntax: IndexInteger
+  discovery_attribute: diffServClfrStorage
+  attributes:
+    diffServClfrStorage:
+      oid: .1.3.6.1.2.1.97.1.2.2.1.2
+      name: diffServClfrStorage
+      syntax: EnumInteger
+#    diffServClfrStatus:
+#      oid: .1.3.6.1.2.1.97.1.2.2.1.3
+#      name: diffServClfrStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServClfrElementEntry:
+  mib: DIFFSERV-MIB
+  object: diffServClfrElementEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.2.2.1.1
+      name: diffServClfrId
+      syntax: IndexInteger
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.2.4.1.1
+      name: diffServClfrElementId
+      syntax: IndexInteger
+  discovery_attribute: diffServClfrElementPrecedence
+  attributes:
+    diffServClfrElementPrecedence:
+      oid: .1.3.6.1.2.1.97.1.2.4.1.2
+      name: diffServClfrElementPrecedence
+      syntax: Unsigned32
+    diffServClfrElementNext:
+      oid: .1.3.6.1.2.1.97.1.2.4.1.3
+      name: diffServClfrElementNext
+      syntax: RowPointer
+    diffServClfrElementSpecific:
+      oid: .1.3.6.1.2.1.97.1.2.4.1.4
+      name: diffServClfrElementSpecific
+      syntax: RowPointer
+    diffServClfrElementStorage:
+      oid: .1.3.6.1.2.1.97.1.2.4.1.5
+      name: diffServClfrElementStorage
+      syntax: EnumInteger
+#    diffServClfrElementStatus:
+#      oid: .1.3.6.1.2.1.97.1.2.4.1.6
+#      name: diffServClfrElementStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServMultiFieldClfrEntry:
+  mib: DIFFSERV-MIB
+  object: diffServMultiFieldClfrEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.2.6.1.1
+      name: diffServMultiFieldClfrId
+      syntax: IndexInteger
+  discovery_attribute: diffServMultiFieldClfrAddrType
+  attributes:
+    diffServMultiFieldClfrAddrType:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.2
+      name: diffServMultiFieldClfrAddrType
+      syntax: EnumInteger
+    diffServMultiFieldClfrDstAddr:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.3
+      name: diffServMultiFieldClfrDstAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    diffServMultiFieldClfrDstPrefixLength:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.4
+      name: diffServMultiFieldClfrDstPrefixLength
+      syntax: InetAddressPrefixLength
+    diffServMultiFieldClfrSrcAddr:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.5
+      name: diffServMultiFieldClfrSrcAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    diffServMultiFieldClfrSrcPrefixLength:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.6
+      name: diffServMultiFieldClfrSrcPrefixLength
+      syntax: InetAddressPrefixLength
+    diffServMultiFieldClfrDscp:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.7
+      name: diffServMultiFieldClfrDscp
+      syntax: DscpOrAny
+    diffServMultiFieldClfrFlowId:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.8
+      name: diffServMultiFieldClfrFlowId
+      syntax: Unsigned32
+    diffServMultiFieldClfrProtocol:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.9
+      name: diffServMultiFieldClfrProtocol
+      syntax: Unsigned32
+    diffServMultiFieldClfrDstL4PortMin:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.10
+      name: diffServMultiFieldClfrDstL4PortMin
+      syntax: Integer32 # InetPortNumber
+    diffServMultiFieldClfrDstL4PortMax:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.11
+      name: diffServMultiFieldClfrDstL4PortMax
+      syntax: Integer32 # InetPortNumber
+    diffServMultiFieldClfrSrcL4PortMin:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.12
+      name: diffServMultiFieldClfrSrcL4PortMin
+      syntax: Integer32 # InetPortNumber
+    diffServMultiFieldClfrSrcL4PortMax:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.13
+      name: diffServMultiFieldClfrSrcL4PortMax
+      syntax: Integer32 # InetPortNumber
+    diffServMultiFieldClfrStorage:
+      oid: .1.3.6.1.2.1.97.1.2.6.1.14
+      name: diffServMultiFieldClfrStorage
+      syntax: EnumInteger
+#    diffServMultiFieldClfrStatus:
+#      oid: .1.3.6.1.2.1.97.1.2.6.1.15
+#      name: diffServMultiFieldClfrStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServMeter:
+  mib: DIFFSERV-MIB
+  object: diffServMeter
+  discovery_attribute: diffServMeterNextFree
+  attributes:
+    diffServMeterNextFree:
+      oid: .1.3.6.1.2.1.97.1.3.1
+      name: diffServMeterNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServMeterEntry:
+  mib: DIFFSERV-MIB
+  object: diffServMeterEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.3.2.1.1
+      name: diffServMeterId
+      syntax: IndexInteger
+  discovery_attribute: diffServMeterSucceedNext
+  attributes:
+    diffServMeterSucceedNext:
+      oid: .1.3.6.1.2.1.97.1.3.2.1.2
+      name: diffServMeterSucceedNext
+      syntax: RowPointer
+    diffServMeterFailNext:
+      oid: .1.3.6.1.2.1.97.1.3.2.1.3
+      name: diffServMeterFailNext
+      syntax: RowPointer
+    diffServMeterSpecific:
+      oid: .1.3.6.1.2.1.97.1.3.2.1.4
+      name: diffServMeterSpecific
+      syntax: RowPointer
+    diffServMeterStorage:
+      oid: .1.3.6.1.2.1.97.1.3.2.1.5
+      name: diffServMeterStorage
+      syntax: EnumInteger
+#    diffServMeterStatus:
+#      oid: .1.3.6.1.2.1.97.1.3.2.1.6
+#      name: diffServMeterStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServTBParam:
+  mib: DIFFSERV-MIB
+  object: diffServTBParam
+  discovery_attribute: diffServTBParamNextFree
+  attributes:
+    diffServTBParamNextFree:
+      oid: .1.3.6.1.2.1.97.1.4.1
+      name: diffServTBParamNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServTBParamEntry:
+  mib: DIFFSERV-MIB
+  object: diffServTBParamEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.4.2.1.1
+      name: diffServTBParamId
+      syntax: IndexInteger
+  discovery_attribute: diffServTBParamType
+  attributes:
+    diffServTBParamType:
+      oid: .1.3.6.1.2.1.97.1.4.2.1.2
+      name: diffServTBParamType
+      syntax: AutonomousType
+    diffServTBParamRate:
+      oid: .1.3.6.1.2.1.97.1.4.2.1.3
+      name: diffServTBParamRate
+      syntax: Unsigned32
+    diffServTBParamBurstSize:
+      oid: .1.3.6.1.2.1.97.1.4.2.1.4
+      name: diffServTBParamBurstSize
+      syntax: BurstSize
+    diffServTBParamInterval:
+      oid: .1.3.6.1.2.1.97.1.4.2.1.5
+      name: diffServTBParamInterval
+      syntax: Unsigned32
+    diffServTBParamStorage:
+      oid: .1.3.6.1.2.1.97.1.4.2.1.6
+      name: diffServTBParamStorage
+      syntax: EnumInteger
+#    diffServTBParamStatus:
+#      oid: .1.3.6.1.2.1.97.1.4.2.1.7
+#      name: diffServTBParamStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServAction:
+  mib: DIFFSERV-MIB
+  object: diffServAction
+  discovery_attribute: diffServActionNextFree
+  attributes:
+    diffServActionNextFree:
+      oid: .1.3.6.1.2.1.97.1.5.1
+      name: diffServActionNextFree
+      syntax: IndexIntegerNextFree
+    diffServCountActNextFree:
+      oid: .1.3.6.1.2.1.97.1.5.4
+      name: diffServCountActNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServActionEntry:
+  mib: DIFFSERV-MIB
+  object: diffServActionEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.5.2.1.1
+      name: diffServActionId
+      syntax: IndexInteger
+  discovery_attribute: diffServActionInterface
+  attributes:
+    diffServActionInterface:
+      oid: .1.3.6.1.2.1.97.1.5.2.1.2
+      name: diffServActionInterface
+      syntax: InterfaceIndexOrZero
+    diffServActionNext:
+      oid: .1.3.6.1.2.1.97.1.5.2.1.3
+      name: diffServActionNext
+      syntax: RowPointer
+    diffServActionSpecific:
+      oid: .1.3.6.1.2.1.97.1.5.2.1.4
+      name: diffServActionSpecific
+      syntax: RowPointer
+    diffServActionStorage:
+      oid: .1.3.6.1.2.1.97.1.5.2.1.5
+      name: diffServActionStorage
+      syntax: EnumInteger
+#    diffServActionStatus:
+#      oid: .1.3.6.1.2.1.97.1.5.2.1.6
+#      name: diffServActionStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServDscpMarkActEntry:
+  mib: DIFFSERV-MIB
+  object: diffServDscpMarkActEntry
+  index:
+    - type: Dscp
+      oid: .1.3.6.1.2.1.97.1.5.3.1.1
+      name: diffServDscpMarkActDscp
+      syntax: Integer32 # Dscp
+  discovery_attribute: diffServDscpMarkActDscp
+  attributes:
+
+DIFFSERV-MIB::diffServCountActEntry:
+  mib: DIFFSERV-MIB
+  object: diffServCountActEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.5.5.1.1
+      name: diffServCountActId
+      syntax: IndexInteger
+  discovery_attribute: diffServCountActOctets
+  attributes:
+    diffServCountActOctets:
+      oid: .1.3.6.1.2.1.97.1.5.5.1.2
+      name: diffServCountActOctets
+      syntax: Counter64
+    diffServCountActPkts:
+      oid: .1.3.6.1.2.1.97.1.5.5.1.3
+      name: diffServCountActPkts
+      syntax: Counter64
+    diffServCountActStorage:
+      oid: .1.3.6.1.2.1.97.1.5.5.1.4
+      name: diffServCountActStorage
+      syntax: EnumInteger
+#    diffServCountActStatus:
+#      oid: .1.3.6.1.2.1.97.1.5.5.1.5
+#      name: diffServCountActStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServAlgDrop:
+  mib: DIFFSERV-MIB
+  object: diffServAlgDrop
+  discovery_attribute: diffServAlgDropNextFree
+  attributes:
+    diffServAlgDropNextFree:
+      oid: .1.3.6.1.2.1.97.1.6.1
+      name: diffServAlgDropNextFree
+      syntax: IndexIntegerNextFree
+    diffServRandomDropNextFree:
+      oid: .1.3.6.1.2.1.97.1.6.3
+      name: diffServRandomDropNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServAlgDropEntry:
+  mib: DIFFSERV-MIB
+  object: diffServAlgDropEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.6.2.1.1
+      name: diffServAlgDropId
+      syntax: IndexInteger
+  discovery_attribute: diffServAlgDropType
+  attributes:
+    diffServAlgDropType:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.2
+      name: diffServAlgDropType
+      syntax: EnumInteger
+    diffServAlgDropNext:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.3
+      name: diffServAlgDropNext
+      syntax: RowPointer
+    diffServAlgDropQMeasure:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.4
+      name: diffServAlgDropQMeasure
+      syntax: RowPointer
+    diffServAlgDropQThreshold:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.5
+      name: diffServAlgDropQThreshold
+      syntax: Unsigned32
+    diffServAlgDropSpecific:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.6
+      name: diffServAlgDropSpecific
+      syntax: RowPointer
+    diffServAlgDropOctets:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.7
+      name: diffServAlgDropOctets
+      syntax: Counter64
+    diffServAlgDropPkts:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.8
+      name: diffServAlgDropPkts
+      syntax: Counter64
+    diffServAlgRandomDropOctets:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.9
+      name: diffServAlgRandomDropOctets
+      syntax: Counter64
+    diffServAlgRandomDropPkts:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.10
+      name: diffServAlgRandomDropPkts
+      syntax: Counter64
+    diffServAlgDropStorage:
+      oid: .1.3.6.1.2.1.97.1.6.2.1.11
+      name: diffServAlgDropStorage
+      syntax: EnumInteger
+#    diffServAlgDropStatus:
+#      oid: .1.3.6.1.2.1.97.1.6.2.1.12
+#      name: diffServAlgDropStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServRandomDropEntry:
+  mib: DIFFSERV-MIB
+  object: diffServRandomDropEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.6.4.1.1
+      name: diffServRandomDropId
+      syntax: IndexInteger
+  discovery_attribute: diffServRandomDropMinThreshBytes
+  attributes:
+    diffServRandomDropMinThreshBytes:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.2
+      name: diffServRandomDropMinThreshBytes
+      syntax: Unsigned32
+    diffServRandomDropMinThreshPkts:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.3
+      name: diffServRandomDropMinThreshPkts
+      syntax: Unsigned32
+    diffServRandomDropMaxThreshBytes:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.4
+      name: diffServRandomDropMaxThreshBytes
+      syntax: Unsigned32
+    diffServRandomDropMaxThreshPkts:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.5
+      name: diffServRandomDropMaxThreshPkts
+      syntax: Unsigned32
+    diffServRandomDropProbMax:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.6
+      name: diffServRandomDropProbMax
+      syntax: Unsigned32
+    diffServRandomDropWeight:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.7
+      name: diffServRandomDropWeight
+      syntax: Unsigned32
+    diffServRandomDropSamplingRate:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.8
+      name: diffServRandomDropSamplingRate
+      syntax: Unsigned32
+    diffServRandomDropStorage:
+      oid: .1.3.6.1.2.1.97.1.6.4.1.9
+      name: diffServRandomDropStorage
+      syntax: EnumInteger
+#    diffServRandomDropStatus:
+#      oid: .1.3.6.1.2.1.97.1.6.4.1.10
+#      name: diffServRandomDropStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServQueue:
+  mib: DIFFSERV-MIB
+  object: diffServQueue
+  discovery_attribute: diffServQNextFree
+  attributes:
+    diffServQNextFree:
+      oid: .1.3.6.1.2.1.97.1.7.1
+      name: diffServQNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServQEntry:
+  mib: DIFFSERV-MIB
+  object: diffServQEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.7.2.1.1
+      name: diffServQId
+      syntax: IndexInteger
+  discovery_attribute: diffServQNext
+  attributes:
+    diffServQNext:
+      oid: .1.3.6.1.2.1.97.1.7.2.1.2
+      name: diffServQNext
+      syntax: RowPointer
+    diffServQMinRate:
+      oid: .1.3.6.1.2.1.97.1.7.2.1.3
+      name: diffServQMinRate
+      syntax: RowPointer
+    diffServQMaxRate:
+      oid: .1.3.6.1.2.1.97.1.7.2.1.4
+      name: diffServQMaxRate
+      syntax: RowPointer
+    diffServQStorage:
+      oid: .1.3.6.1.2.1.97.1.7.2.1.5
+      name: diffServQStorage
+      syntax: EnumInteger
+#    diffServQStatus:
+#      oid: .1.3.6.1.2.1.97.1.7.2.1.6
+#      name: diffServQStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServScheduler:
+  mib: DIFFSERV-MIB
+  object: diffServScheduler
+  discovery_attribute: diffServSchedulerNextFree
+  attributes:
+    diffServSchedulerNextFree:
+      oid: .1.3.6.1.2.1.97.1.8.1
+      name: diffServSchedulerNextFree
+      syntax: IndexIntegerNextFree
+    diffServMinRateNextFree:
+      oid: .1.3.6.1.2.1.97.1.8.3
+      name: diffServMinRateNextFree
+      syntax: IndexIntegerNextFree
+    diffServMaxRateNextFree:
+      oid: .1.3.6.1.2.1.97.1.8.5
+      name: diffServMaxRateNextFree
+      syntax: IndexIntegerNextFree
+
+DIFFSERV-MIB::diffServSchedulerEntry:
+  mib: DIFFSERV-MIB
+  object: diffServSchedulerEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.8.2.1.1
+      name: diffServSchedulerId
+      syntax: IndexInteger
+  discovery_attribute: diffServSchedulerNext
+  attributes:
+    diffServSchedulerNext:
+      oid: .1.3.6.1.2.1.97.1.8.2.1.2
+      name: diffServSchedulerNext
+      syntax: RowPointer
+    diffServSchedulerMethod:
+      oid: .1.3.6.1.2.1.97.1.8.2.1.3
+      name: diffServSchedulerMethod
+      syntax: AutonomousType
+    diffServSchedulerMinRate:
+      oid: .1.3.6.1.2.1.97.1.8.2.1.4
+      name: diffServSchedulerMinRate
+      syntax: RowPointer
+    diffServSchedulerMaxRate:
+      oid: .1.3.6.1.2.1.97.1.8.2.1.5
+      name: diffServSchedulerMaxRate
+      syntax: RowPointer
+    diffServSchedulerStorage:
+      oid: .1.3.6.1.2.1.97.1.8.2.1.6
+      name: diffServSchedulerStorage
+      syntax: EnumInteger
+#    diffServSchedulerStatus:
+#      oid: .1.3.6.1.2.1.97.1.8.2.1.7
+#      name: diffServSchedulerStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServMinRateEntry:
+  mib: DIFFSERV-MIB
+  object: diffServMinRateEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.8.4.1.1
+      name: diffServMinRateId
+      syntax: IndexInteger
+  discovery_attribute: diffServMinRatePriority
+  attributes:
+    diffServMinRatePriority:
+      oid: .1.3.6.1.2.1.97.1.8.4.1.2
+      name: diffServMinRatePriority
+      syntax: Unsigned32
+    diffServMinRateAbsolute:
+      oid: .1.3.6.1.2.1.97.1.8.4.1.3
+      name: diffServMinRateAbsolute
+      syntax: Unsigned32
+    diffServMinRateRelative:
+      oid: .1.3.6.1.2.1.97.1.8.4.1.4
+      name: diffServMinRateRelative
+      syntax: Unsigned32
+    diffServMinRateStorage:
+      oid: .1.3.6.1.2.1.97.1.8.4.1.5
+      name: diffServMinRateStorage
+      syntax: EnumInteger
+#    diffServMinRateStatus:
+#      oid: .1.3.6.1.2.1.97.1.8.4.1.6
+#      name: diffServMinRateStatus
+#      syntax: RowStatus
+
+DIFFSERV-MIB::diffServMaxRateEntry:
+  mib: DIFFSERV-MIB
+  object: diffServMaxRateEntry
+  index:
+    - type: IndexInteger
+      oid: .1.3.6.1.2.1.97.1.8.6.1.1
+      name: diffServMaxRateId
+      syntax: IndexInteger
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.97.1.8.6.1.2
+      name: diffServMaxRateLevel
+      syntax: Unsigned32
+  discovery_attribute: diffServMaxRateAbsolute
+  attributes:
+    diffServMaxRateAbsolute:
+      oid: .1.3.6.1.2.1.97.1.8.6.1.3
+      name: diffServMaxRateAbsolute
+      syntax: Unsigned32
+    diffServMaxRateRelative:
+      oid: .1.3.6.1.2.1.97.1.8.6.1.4
+      name: diffServMaxRateRelative
+      syntax: Unsigned32
+    diffServMaxRateThreshold:
+      oid: .1.3.6.1.2.1.97.1.8.6.1.5
+      name: diffServMaxRateThreshold
+      syntax: BurstSize
+    diffServMaxRateStorage:
+      oid: .1.3.6.1.2.1.97.1.8.6.1.6
+      name: diffServMaxRateStorage
+      syntax: EnumInteger
+#    diffServMaxRateStatus:
+#      oid: .1.3.6.1.2.1.97.1.8.6.1.7
+#      name: diffServMaxRateStatus
+#      syntax: RowStatus
+

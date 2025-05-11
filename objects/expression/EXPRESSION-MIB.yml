@@ -1,0 +1,212 @@
+EXPRESSION-MIB::expResource:
+  mib: EXPRESSION-MIB
+  object: expResource
+  discovery_attribute: expResourceDeltaMinimum
+  attributes:
+    expResourceDeltaMinimum:
+      oid: .1.3.6.1.4.1.9.10.22.1.1.1
+      name: expResourceDeltaMinimum
+      syntax: TicksSec # TODO_TicksSec
+    expResourceDeltaWildcardInstanceMaximum:
+      oid: .1.3.6.1.4.1.9.10.22.1.1.2
+      name: expResourceDeltaWildcardInstanceMaximum
+      syntax: Unsigned32
+    expResourceDeltaWildcardInstances:
+      oid: .1.3.6.1.4.1.9.10.22.1.1.3
+      name: expResourceDeltaWildcardInstances
+      syntax: Gauge32
+    expResourceDeltaWildcardInstancesHigh:
+      oid: .1.3.6.1.4.1.9.10.22.1.1.4
+      name: expResourceDeltaWildcardInstancesHigh
+      syntax: Gauge32
+    expResourceDeltaWildcardInstanceResourceLacks:
+      oid: .1.3.6.1.4.1.9.10.22.1.1.5
+      name: expResourceDeltaWildcardInstanceResourceLacks
+      syntax: Counter32
+
+EXPRESSION-MIB::expNames:
+  mib: EXPRESSION-MIB
+  object: expNames
+  discovery_attribute: expNameLastChange
+  attributes:
+    expNameLastChange:
+      oid: .1.3.6.1.4.1.9.10.22.1.2.1
+      name: expNameLastChange
+      syntax: TimeStamp
+    expNameHighestIndex:
+      oid: .1.3.6.1.4.1.9.10.22.1.2.2
+      name: expNameHighestIndex
+      syntax: ExpressionIndexOrZero
+
+EXPRESSION-MIB::expNameEntry:
+  mib: EXPRESSION-MIB
+  object: expNameEntry
+  index:
+    - type: ExpressionName
+      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.1
+      name: expName
+      syntax: ExpressionName
+  discovery_attribute: expExpressionIndex
+  attributes:
+    expExpressionIndex:
+      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.2
+      name: expExpressionIndex
+      syntax: ExpressionIndex
+#    expNameStatus:
+#      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.3
+#      name: expNameStatus
+#      syntax: RowStatus
+
+EXPRESSION-MIB::expExpressionEntry:
+  mib: EXPRESSION-MIB
+  object: expExpressionEntry
+  index:
+    - type: ExpressionIndex
+      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.2
+      name: expExpressionIndex
+      syntax: ExpressionIndex
+  discovery_attribute: expExpression
+  attributes:
+    expExpressionName:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.1
+      name: expExpressionName
+      syntax: ExpressionName
+    expExpression:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.2
+      name: expExpression
+      syntax: TODO_OctetString # OctetString
+    expExpressionValueType:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.3
+      name: expExpressionValueType
+      syntax: EnumInteger
+    expExpressionComment:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.4
+      name: expExpressionComment
+      syntax: DisplayString
+    expExpressionDeltaInterval:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.5
+      name: expExpressionDeltaInterval
+      syntax: TicksSec # TODO_TicksSec
+    expExpressionPrefix:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.6
+      name: expExpressionPrefix
+      syntax: ObjectIdentifier
+    expExpressionErrors:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.7
+      name: expExpressionErrors
+      syntax: Counter32
+    expExpressionErrorTime:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.8
+      name: expExpressionErrorTime
+      syntax: TimeStamp
+    expExpressionErrorIndex:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.9
+      name: expExpressionErrorIndex
+      syntax: Integer32
+    expExpressionError:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.10
+      name: expExpressionError
+      syntax: EnumInteger
+    expExpressionInstance:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.11
+      name: expExpressionInstance
+      syntax: ObjectIdentifier
+    expExpressionOwner:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.1.1.12
+      name: expExpressionOwner
+      syntax: DisplayString
+
+EXPRESSION-MIB::expObjectEntry:
+  mib: EXPRESSION-MIB
+  object: expObjectEntry
+  index:
+    - type: ExpressionIndex
+      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.2
+      name: expExpressionIndex
+      syntax: ExpressionIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.1
+      name: expObjectIndex
+      syntax: Unsigned32
+  discovery_attribute: expObjectID
+  attributes:
+    expObjectID:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.2
+      name: expObjectID
+      syntax: ObjectIdentifier
+    expObjectIDWildcard:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.3
+      name: expObjectIDWildcard
+      syntax: TruthValue
+    expObjectSampleType:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.4
+      name: expObjectSampleType
+      syntax: EnumInteger
+    expObjectDeltaDiscontinuityID:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.5
+      name: expObjectDeltaDiscontinuityID
+      syntax: ObjectIdentifier
+    expObjectDiscontinuityIDWildcard:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.6
+      name: expObjectDiscontinuityIDWildcard
+      syntax: TruthValue
+    expObjectDiscontinuityIDType:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.7
+      name: expObjectDiscontinuityIDType
+      syntax: EnumInteger
+    expObjectConditional:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.8
+      name: expObjectConditional
+      syntax: ObjectIdentifier
+    expObjectConditionalWildcard:
+      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.9
+      name: expObjectConditionalWildcard
+      syntax: TruthValue
+#    expObjectStatus:
+#      oid: .1.3.6.1.4.1.9.10.22.1.3.2.1.10
+#      name: expObjectStatus
+#      syntax: RowStatus
+
+EXPRESSION-MIB::expValueEntry:
+  mib: EXPRESSION-MIB
+  object: expValueEntry
+  index:
+    - type: ExpressionIndex
+      oid: .1.3.6.1.4.1.9.10.22.1.2.3.1.2
+      name: expExpressionIndex
+      syntax: ExpressionIndex
+    - type: ObjectIdentifier
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.1
+      name: expValueInstance
+      syntax: ObjectIdentifier
+  discovery_attribute: expValueCounter32Val
+  attributes:
+    expValueCounter32Val:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.2
+      name: expValueCounter32Val
+      syntax: Counter32
+    expValueUnsigned32Val:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.3
+      name: expValueUnsigned32Val
+      syntax: Unsigned32
+    expValueInteger32Val:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.4
+      name: expValueInteger32Val
+      syntax: Integer32
+    expValueIpAddressVal:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.5
+      name: expValueIpAddressVal
+      syntax: IpAddressNoSuffix # IpAddress
+    expValueOctetStringVal:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.6
+      name: expValueOctetStringVal
+      syntax: TODO_OctetString # OctetString
+    expValueOidVal:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.7
+      name: expValueOidVal
+      syntax: ObjectIdentifier
+    expValueCounter64Val:
+      oid: .1.3.6.1.4.1.9.10.22.1.4.1.1.8
+      name: expValueCounter64Val
+      syntax: Counter64
+

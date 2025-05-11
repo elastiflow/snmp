@@ -1,0 +1,737 @@
+CISCO-CEF-MIB::cefFIB:
+  mib: CISCO-CEF-MIB
+  object: cefFIB
+  discovery_attribute: cefLMPrefixSpinLock
+  attributes:
+    cefLMPrefixSpinLock:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.3
+      name: cefLMPrefixSpinLock
+      syntax: TestAndIncr
+
+CISCO-CEF-MIB::cefFIBSummaryEntry:
+  mib: CISCO-CEF-MIB
+  object: cefFIBSummaryEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cefFIBSummaryFwdPrefixes
+  attributes:
+    cefFIBSummaryFwdPrefixes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.2
+      name: cefFIBSummaryFwdPrefixes
+      syntax: Unsigned32
+
+CISCO-CEF-MIB::cefPrefixEntry:
+  mib: CISCO-CEF-MIB
+  object: cefPrefixEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.1
+      name: cefPrefixType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.2
+      name: cefPrefixAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.3
+      name: cefPrefixLen
+      syntax: InetAddressPrefixLength
+  discovery_attribute: cefPrefixForwardingInfo
+  attributes:
+    cefPrefixForwardingInfo:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.4
+      name: cefPrefixForwardingInfo
+      syntax: DisplayString # SnmpAdminString
+    cefPrefixPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.5
+      name: cefPrefixPkts
+      syntax: Counter32
+    cefPrefixHCPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.6
+      name: cefPrefixHCPkts
+      syntax: Counter64
+    cefPrefixBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.7
+      name: cefPrefixBytes
+      syntax: Counter32
+    cefPrefixHCBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.8
+      name: cefPrefixHCBytes
+      syntax: Counter64
+    cefPrefixInternalNRPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.9
+      name: cefPrefixInternalNRPkts
+      syntax: Counter32
+    cefPrefixInternalNRHCPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.10
+      name: cefPrefixInternalNRHCPkts
+      syntax: Counter64
+    cefPrefixInternalNRBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.11
+      name: cefPrefixInternalNRBytes
+      syntax: Counter32
+    cefPrefixInternalNRHCBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.12
+      name: cefPrefixInternalNRHCBytes
+      syntax: Counter64
+    cefPrefixExternalNRPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.13
+      name: cefPrefixExternalNRPkts
+      syntax: Counter32
+    cefPrefixExternalNRHCPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.14
+      name: cefPrefixExternalNRHCPkts
+      syntax: Counter64
+    cefPrefixExternalNRBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.15
+      name: cefPrefixExternalNRBytes
+      syntax: Counter32
+    cefPrefixExternalNRHCBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.16
+      name: cefPrefixExternalNRHCBytes
+      syntax: Counter64
+
+CISCO-CEF-MIB::cefLMPrefixEntry:
+  mib: CISCO-CEF-MIB
+  object: cefLMPrefixEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.1
+      name: cefLMPrefixDestAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.2
+      name: cefLMPrefixDestAddr
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: cefLMPrefixState
+  attributes:
+    cefLMPrefixState:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.3
+      name: cefLMPrefixState
+      syntax: EnumInteger
+    cefLMPrefixAddr:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.4
+      name: cefLMPrefixAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    cefLMPrefixLen:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.5
+      name: cefLMPrefixLen
+      syntax: InetAddressPrefixLength
+#    cefLMPrefixRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.492.1.1.4.1.6
+#      name: cefLMPrefixRowStatus
+#      syntax: RowStatus
+
+CISCO-CEF-MIB::cefPathEntry:
+  mib: CISCO-CEF-MIB
+  object: cefPathEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.1
+      name: cefPrefixType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.2
+      name: cefPrefixAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.9.492.1.1.2.1.3
+      name: cefPrefixLen
+      syntax: InetAddressPrefixLength
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.492.1.1.5.1.1
+      name: cefPathId
+      syntax: Integer32
+  discovery_attribute: cefPathType
+  attributes:
+    cefPathType:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.5.1.2
+      name: cefPathType
+      syntax: EnumInteger
+    cefPathInterface:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.5.1.3
+      name: cefPathInterface
+      syntax: InterfaceIndexOrZero
+    cefPathNextHopAddr:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.5.1.4
+      name: cefPathNextHopAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    cefPathRecurseVrfName:
+      oid: .1.3.6.1.4.1.9.9.492.1.1.5.1.5
+      name: cefPathRecurseVrfName
+      syntax: MplsVpnId
+
+CISCO-CEF-MIB::cefAdjSummaryEntry:
+  mib: CISCO-CEF-MIB
+  object: cefAdjSummaryEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefAdjLinkType
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.1
+      name: cefAdjSummaryLinkType
+      syntax: EnumInteger
+  discovery_attribute: cefAdjSummaryComplete
+  attributes:
+    cefAdjSummaryComplete:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.2
+      name: cefAdjSummaryComplete
+      syntax: Unsigned32
+    cefAdjSummaryIncomplete:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.3
+      name: cefAdjSummaryIncomplete
+      syntax: Unsigned32
+    cefAdjSummaryFixup:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.4
+      name: cefAdjSummaryFixup
+      syntax: Unsigned32
+    cefAdjSummaryRedirect:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.5
+      name: cefAdjSummaryRedirect
+      syntax: Unsigned32
+
+CISCO-CEF-MIB::cefAdjEntry:
+  mib: CISCO-CEF-MIB
+  object: cefAdjEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.1
+      name: cefAdjNextHopAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.2
+      name: cefAdjNextHopAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.3
+      name: cefAdjConnId
+      syntax: Unsigned32
+    - type: CefAdjLinkType
+      oid: .1.3.6.1.4.1.9.9.492.1.2.1.1.1.1
+      name: cefAdjSummaryLinkType
+      syntax: EnumInteger
+  discovery_attribute: cefAdjSource
+  attributes:
+    cefAdjSource:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.4
+      name: cefAdjSource
+      syntax: EnumInteger
+    cefAdjEncap:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.5
+      name: cefAdjEncap
+      syntax: DisplayString # SnmpAdminString
+    cefAdjFixup:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.6
+      name: cefAdjFixup
+      syntax: DisplayString # SnmpAdminString
+    cefAdjMTU:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.7
+      name: cefAdjMTU
+      syntax: Unsigned32
+    cefAdjForwardingInfo:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.8
+      name: cefAdjForwardingInfo
+      syntax: DisplayString # SnmpAdminString
+    cefAdjPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.9
+      name: cefAdjPkts
+      syntax: Counter32
+    cefAdjHCPkts:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.10
+      name: cefAdjHCPkts
+      syntax: Counter64
+    cefAdjBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.11
+      name: cefAdjBytes
+      syntax: Counter32
+    cefAdjHCBytes:
+      oid: .1.3.6.1.4.1.9.9.492.1.2.2.1.12
+      name: cefAdjHCBytes
+      syntax: Counter64
+
+CISCO-CEF-MIB::cefFESelectionEntry:
+  mib: CISCO-CEF-MIB
+  object: cefFESelectionEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.1
+      name: cefFESelectionName
+      syntax: DisplayString # SnmpAdminString
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.2
+      name: cefFESelectionId
+      syntax: Integer32
+  discovery_attribute: cefFESelectionSpecial
+  attributes:
+    cefFESelectionSpecial:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.3
+      name: cefFESelectionSpecial
+      syntax: EnumInteger
+    cefFESelectionLabels:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.4
+      name: cefFESelectionLabels
+      syntax: CefMplsLabelList
+    cefFESelectionAdjLinkType:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.5
+      name: cefFESelectionAdjLinkType
+      syntax: EnumInteger
+    cefFESelectionAdjInterface:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.6
+      name: cefFESelectionAdjInterface
+      syntax: InterfaceIndexOrZero
+    cefFESelectionAdjNextHopAddrType:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.7
+      name: cefFESelectionAdjNextHopAddrType
+      syntax: EnumInteger
+    cefFESelectionAdjNextHopAddr:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.8
+      name: cefFESelectionAdjNextHopAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    cefFESelectionAdjConnId:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.9
+      name: cefFESelectionAdjConnId
+      syntax: Unsigned32
+    cefFESelectionVrfName:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.10
+      name: cefFESelectionVrfName
+      syntax: MplsVpnId
+    cefFESelectionWeight:
+      oid: .1.3.6.1.4.1.9.9.492.1.3.1.1.11
+      name: cefFESelectionWeight
+      syntax: Unsigned32
+
+CISCO-CEF-MIB::cefCfgEntry:
+  mib: CISCO-CEF-MIB
+  object: cefCfgEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cefCfgOperState
+  attributes:
+    cefCfgAdminState:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.1
+      name: cefCfgAdminState
+      syntax: EnumInteger
+    cefCfgOperState:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.2
+      name: cefCfgOperState
+      syntax: EnumInteger
+    cefCfgDistributionAdminState:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.3
+      name: cefCfgDistributionAdminState
+      syntax: EnumInteger
+    cefCfgDistributionOperState:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.4
+      name: cefCfgDistributionOperState
+      syntax: EnumInteger
+    cefCfgAccountingMap:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.5
+      name: cefCfgAccountingMap
+      syntax: EnumBitmap
+    cefCfgLoadSharingAlgorithm:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.6
+      name: cefCfgLoadSharingAlgorithm
+      syntax: EnumInteger
+    cefCfgLoadSharingID:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.7
+      name: cefCfgLoadSharingID
+      syntax: Unsigned32
+    cefCfgTrafficStatsLoadInterval:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.8
+      name: cefCfgTrafficStatsLoadInterval
+      syntax: TicksSec # TODO_TicksSec
+    cefCfgTrafficStatsUpdateRate:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.1.1.9
+      name: cefCfgTrafficStatsUpdateRate
+      syntax: TicksSec # TODO_TicksSec
+
+CISCO-CEF-MIB::cefResourceEntry:
+  mib: CISCO-CEF-MIB
+  object: cefResourceEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+  discovery_attribute: cefResourceFailureReason
+  attributes:
+    cefResourceMemoryUsed:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.2.1.1
+      name: cefResourceMemoryUsed
+      syntax: Gauge32
+    cefResourceFailureReason:
+      oid: .1.3.6.1.4.1.9.9.492.1.4.2.1.2
+      name: cefResourceFailureReason
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefIntEntry:
+  mib: CISCO-CEF-MIB
+  object: cefIntEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cefIntLoadSharing
+  attributes:
+    cefIntSwitchingState:
+      oid: .1.3.6.1.4.1.9.9.492.1.5.1.1.1
+      name: cefIntSwitchingState
+      syntax: EnumInteger
+    cefIntLoadSharing:
+      oid: .1.3.6.1.4.1.9.9.492.1.5.1.1.2
+      name: cefIntLoadSharing
+      syntax: EnumInteger
+    cefIntNonrecursiveAccouting:
+      oid: .1.3.6.1.4.1.9.9.492.1.5.1.1.3
+      name: cefIntNonrecursiveAccouting
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefPeerEntry:
+  mib: CISCO-CEF-MIB
+  object: cefPeerEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: PhysicalIndex
+      oid: .1.3.6.1.4.1.9.9.492.1.6.1.1.1
+      name: entPeerPhysicalIndex
+      syntax: PhysicalIndex
+  discovery_attribute: cefPeerOperState
+  attributes:
+    cefPeerOperState:
+      oid: .1.3.6.1.4.1.9.9.492.1.6.1.1.2
+      name: cefPeerOperState
+      syntax: EnumInteger
+    cefPeerNumberOfResets:
+      oid: .1.3.6.1.4.1.9.9.492.1.6.1.1.3
+      name: cefPeerNumberOfResets
+      syntax: Counter32
+
+CISCO-CEF-MIB::cefPeerFIBEntry:
+  mib: CISCO-CEF-MIB
+  object: cefPeerFIBEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: PhysicalIndex
+      oid: .1.3.6.1.4.1.9.9.492.1.6.1.1.1
+      name: entPeerPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cefPeerFIBOperState
+  attributes:
+    cefPeerFIBOperState:
+      oid: .1.3.6.1.4.1.9.9.492.1.6.2.1.1
+      name: cefPeerFIBOperState
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefCC:
+  mib: CISCO-CEF-MIB
+  object: cefCC
+  discovery_attribute: entLastInconsistencyDetectTime
+  attributes:
+    entLastInconsistencyDetectTime:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.4
+      name: entLastInconsistencyDetectTime
+      syntax: TimeStamp
+    cefInconsistencyReset:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.5
+      name: cefInconsistencyReset
+      syntax: EnumInteger
+    cefInconsistencyResetStatus:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.6
+      name: cefInconsistencyResetStatus
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefCCGlobalEntry:
+  mib: CISCO-CEF-MIB
+  object: cefCCGlobalEntry
+  index:
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cefCCGlobalAutoRepairDelay
+  attributes:
+    cefCCGlobalAutoRepairEnabled:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.1
+      name: cefCCGlobalAutoRepairEnabled
+      syntax: TruthValue
+    cefCCGlobalAutoRepairDelay:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.2
+      name: cefCCGlobalAutoRepairDelay
+      syntax: TicksSec # TODO_TicksSec
+    cefCCGlobalAutoRepairHoldDown:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.3
+      name: cefCCGlobalAutoRepairHoldDown
+      syntax: TicksSec # TODO_TicksSec
+    cefCCGlobalErrorMsgEnabled:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.4
+      name: cefCCGlobalErrorMsgEnabled
+      syntax: TruthValue
+    cefCCGlobalFullScanAction:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.5
+      name: cefCCGlobalFullScanAction
+      syntax: EnumInteger
+    cefCCGlobalFullScanStatus:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.1.1.6
+      name: cefCCGlobalFullScanStatus
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefCCTypeEntry:
+  mib: CISCO-CEF-MIB
+  object: cefCCTypeEntry
+  index:
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+    - type: CefCCType
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.1
+      name: cefCCType
+      syntax: EnumInteger
+  discovery_attribute: cefCCEnabled
+  attributes:
+    cefCCEnabled:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.2
+      name: cefCCEnabled
+      syntax: TruthValue
+    cefCCCount:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.3
+      name: cefCCCount
+      syntax: Unsigned32
+    cefCCPeriod:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.4
+      name: cefCCPeriod
+      syntax: TicksSec # TODO_TicksSec
+    cefCCQueriesSent:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.5
+      name: cefCCQueriesSent
+      syntax: Counter32
+    cefCCQueriesIgnored:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.6
+      name: cefCCQueriesIgnored
+      syntax: Counter32
+    cefCCQueriesChecked:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.7
+      name: cefCCQueriesChecked
+      syntax: Counter32
+    cefCCQueriesIterated:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.2.1.8
+      name: cefCCQueriesIterated
+      syntax: Counter32
+
+CISCO-CEF-MIB::cefInconsistencyRecordEntry:
+  mib: CISCO-CEF-MIB
+  object: cefInconsistencyRecordEntry
+  index:
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.1
+      name: cefInconsistencyRecId
+      syntax: Integer32
+  discovery_attribute: cefInconsistencyPrefixType
+  attributes:
+    cefInconsistencyPrefixType:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.2
+      name: cefInconsistencyPrefixType
+      syntax: EnumInteger
+    cefInconsistencyPrefixAddr:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.3
+      name: cefInconsistencyPrefixAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    cefInconsistencyPrefixLen:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.4
+      name: cefInconsistencyPrefixLen
+      syntax: InetAddressPrefixLength
+    cefInconsistencyVrfName:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.5
+      name: cefInconsistencyVrfName
+      syntax: MplsVpnId
+    cefInconsistencyCCType:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.6
+      name: cefInconsistencyCCType
+      syntax: EnumInteger
+    cefInconsistencyEntity:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.7
+      name: cefInconsistencyEntity
+      syntax: EntPhysicalIndexOrZero
+    cefInconsistencyReason:
+      oid: .1.3.6.1.4.1.9.9.492.1.7.3.1.8
+      name: cefInconsistencyReason
+      syntax: EnumInteger
+
+CISCO-CEF-MIB::cefStatsPrefixLenEntry:
+  mib: CISCO-CEF-MIB
+  object: cefStatsPrefixLenEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.1
+      name: cefStatsPrefixLen
+      syntax: InetAddressPrefixLength
+  discovery_attribute: cefStatsPrefixQueries
+  attributes:
+    cefStatsPrefixQueries:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.2
+      name: cefStatsPrefixQueries
+      syntax: Counter32
+    cefStatsPrefixHCQueries:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.3
+      name: cefStatsPrefixHCQueries
+      syntax: Counter64
+    cefStatsPrefixInserts:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.4
+      name: cefStatsPrefixInserts
+      syntax: Counter32
+    cefStatsPrefixHCInserts:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.5
+      name: cefStatsPrefixHCInserts
+      syntax: Counter64
+    cefStatsPrefixDeletes:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.6
+      name: cefStatsPrefixDeletes
+      syntax: Counter32
+    cefStatsPrefixHCDeletes:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.7
+      name: cefStatsPrefixHCDeletes
+      syntax: Counter64
+    cefStatsPrefixElements:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.8
+      name: cefStatsPrefixElements
+      syntax: Gauge32
+    cefStatsPrefixHCElements:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.1.1.9
+      name: cefStatsPrefixHCElements
+      syntax: CounterBasedGauge64
+
+CISCO-CEF-MIB::cefSwitchingStatsEntry:
+  mib: CISCO-CEF-MIB
+  object: cefSwitchingStatsEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: CefIpVersion
+      oid: .1.3.6.1.4.1.9.9.492.1.1.1.1.1.1
+      name: cefFIBIpVersion
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.1
+      name: cefSwitchingIndex
+      syntax: Integer32
+  discovery_attribute: cefSwitchingPath
+  attributes:
+    cefSwitchingPath:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.2
+      name: cefSwitchingPath
+      syntax: DisplayString # SnmpAdminString
+    cefSwitchingDrop:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.3
+      name: cefSwitchingDrop
+      syntax: Counter32
+    cefSwitchingHCDrop:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.4
+      name: cefSwitchingHCDrop
+      syntax: Counter64
+    cefSwitchingPunt:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.5
+      name: cefSwitchingPunt
+      syntax: Counter32
+    cefSwitchingHCPunt:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.6
+      name: cefSwitchingHCPunt
+      syntax: Counter64
+    cefSwitchingPunt2Host:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.7
+      name: cefSwitchingPunt2Host
+      syntax: Counter32
+    cefSwitchingHCPunt2Host:
+      oid: .1.3.6.1.4.1.9.9.492.1.8.2.1.8
+      name: cefSwitchingHCPunt2Host
+      syntax: Counter64
+
+CISCO-CEF-MIB::cefNotifCntl:
+  mib: CISCO-CEF-MIB
+  object: cefNotifCntl
+  discovery_attribute: cefResourceFailureNotifEnable
+  attributes:
+    cefResourceFailureNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.492.1.9.1
+      name: cefResourceFailureNotifEnable
+      syntax: TruthValue
+    cefPeerStateChangeNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.492.1.9.2
+      name: cefPeerStateChangeNotifEnable
+      syntax: TruthValue
+    cefPeerFIBStateChangeNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.492.1.9.3
+      name: cefPeerFIBStateChangeNotifEnable
+      syntax: TruthValue
+    cefNotifThrottlingInterval:
+      oid: .1.3.6.1.4.1.9.9.492.1.9.4
+      name: cefNotifThrottlingInterval
+      syntax: TicksSec # TODO_TicksSec
+    cefInconsistencyNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.492.1.9.5
+      name: cefInconsistencyNotifEnable
+      syntax: TruthValue
+

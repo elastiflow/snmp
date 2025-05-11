@@ -1,0 +1,533 @@
+CISCO-EVC-MIB::cevcSystem:
+  mib: CISCO-EVC-MIB
+  object: cevcSystem
+  discovery_attribute: cevcMaxNumEvcs
+  attributes:
+    cevcMaxNumEvcs:
+      oid: .1.3.6.1.4.1.9.9.613.1.1.1
+      name: cevcMaxNumEvcs
+      syntax: Gauge32
+    cevcNumCfgEvcs:
+      oid: .1.3.6.1.4.1.9.9.613.1.1.2
+      name: cevcNumCfgEvcs
+      syntax: Gauge32
+
+CISCO-EVC-MIB::cevcPortEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcPortEntry
+  index:
+  discovery_attribute: cevcPortMaxNumEVCs
+  attributes:
+    cevcPortMode:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.1.1.1
+      name: cevcPortMode
+      syntax: EnumInteger
+    cevcPortMaxNumEVCs:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.1.1.2
+      name: cevcPortMaxNumEVCs
+      syntax: Gauge32
+    cevcPortMaxNumServiceInstances:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.1.1.3
+      name: cevcPortMaxNumServiceInstances
+      syntax: Gauge32
+
+CISCO-EVC-MIB::cevcUniEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcUniEntry
+  index:
+  discovery_attribute: cevcUniPortType
+  attributes:
+    cevcUniIdentifier:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.2.1.1
+      name: cevcUniIdentifier
+      syntax: DisplayString # SnmpAdminString
+    cevcUniPortType:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.2.1.2
+      name: cevcUniPortType
+      syntax: EnumInteger
+    cevcUniServiceAttributes:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.2.1.3
+      name: cevcUniServiceAttributes
+      syntax: EnumBitmap
+
+CISCO-EVC-MIB::cevcPortL2ControlProtocolEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcPortL2ControlProtocolEntry
+  index:
+    - type: CevcL2ControlProtocolType
+      oid: .1.3.6.1.4.1.9.9.613.1.2.3.1.1
+      name: cevcPortL2ControlProtocolType
+      syntax: EnumInteger
+  discovery_attribute: cevcPortL2ControlProtocolAction
+  attributes:
+    cevcPortL2ControlProtocolAction:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.3.1.2
+      name: cevcPortL2ControlProtocolAction
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcUniCEVlanEvcEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcUniCEVlanEvcEntry
+  index:
+    - type: CiscoEvcIndex
+      oid: .1.3.6.1.4.1.9.9.613.1.2.4.1.1
+      name: cevcUniEvcIndex
+      syntax: CiscoEvcIndex
+    - type: VlanId
+      oid: .1.3.6.1.4.1.9.9.613.1.2.4.1.2
+      name: cevcUniCEVlanEvcBeginningVlan
+      syntax: VlanId
+  discovery_attribute: cevcUniCEVlanEvcEndingVlan
+  attributes:
+    cevcUniCEVlanEvcEndingVlan:
+      oid: .1.3.6.1.4.1.9.9.613.1.2.4.1.3
+      name: cevcUniCEVlanEvcEndingVlan
+      syntax: VlanIdOrNone
+
+CISCO-EVC-MIB::cevcEvcEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcEvcEntry
+  index:
+    - type: CiscoEvcIndex
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.1
+      name: cevcEvcIndex
+      syntax: CiscoEvcIndex
+  discovery_attribute: cevcEvcRowStatus
+  attributes:
+#    cevcEvcRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.2
+#      name: cevcEvcRowStatus
+#      syntax: RowStatus
+    cevcEvcStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.3
+      name: cevcEvcStorageType
+      syntax: EnumInteger
+    cevcEvcIdentifier:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.4
+      name: cevcEvcIdentifier
+      syntax: DisplayString # SnmpAdminString
+    cevcEvcType:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.5
+      name: cevcEvcType
+      syntax: EnumInteger
+    cevcEvcCfgUnis:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.6
+      name: cevcEvcCfgUnis
+      syntax: Unsigned32
+
+CISCO-EVC-MIB::cevcEvcStateEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcEvcStateEntry
+  index:
+    - type: CiscoEvcIndex
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.1
+      name: cevcEvcIndex
+      syntax: CiscoEvcIndex
+  discovery_attribute: cevcEvcActiveUnis
+  attributes:
+    cevcEvcOperStatus:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.2.1.1
+      name: cevcEvcOperStatus
+      syntax: EnumInteger
+    cevcEvcActiveUnis:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.2.1.2
+      name: cevcEvcActiveUnis
+      syntax: Gauge32
+
+CISCO-EVC-MIB::cevcEvcUniEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcEvcUniEntry
+  index:
+    - type: CiscoEvcIndex
+      oid: .1.3.6.1.4.1.9.9.613.1.3.1.1.1
+      name: cevcEvcIndex
+      syntax: CiscoEvcIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.3.3.1.1
+      name: cevcEvcUniIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcEvcUniId
+  attributes:
+    cevcEvcUniId:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.3.1.2
+      name: cevcEvcUniId
+      syntax: DisplayString # SnmpAdminString
+    cevcEvcUniOperStatus:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.3.1.3
+      name: cevcEvcUniOperStatus
+      syntax: EnumInteger
+    cevcEvcLocalUniIfIndex:
+      oid: .1.3.6.1.4.1.9.9.613.1.3.3.1.4
+      name: cevcEvcLocalUniIfIndex
+      syntax: InterfaceIndexOrZero
+
+CISCO-EVC-MIB::cevcSIEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcSIRowStatus
+  attributes:
+#    cevcSIRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.2
+#      name: cevcSIRowStatus
+#      syntax: RowStatus
+    cevcSIStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.3
+      name: cevcSIStorageType
+      syntax: EnumInteger
+    cevcSITargetType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.4
+      name: cevcSITargetType
+      syntax: EnumInteger
+    cevcSITarget:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.5
+      name: cevcSITarget
+      syntax: ServiceInstanceTarget
+    cevcSIName:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.6
+      name: cevcSIName
+      syntax: DisplayString # SnmpAdminString
+    cevcSIEvcIndex:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.7
+      name: cevcSIEvcIndex
+      syntax: CiscoEvcIndexOrZero
+    cevcSIAdminStatus:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.8
+      name: cevcSIAdminStatus
+      syntax: EnumInteger
+    cevcSIForwardingType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.9
+      name: cevcSIForwardingType
+      syntax: EnumInteger
+    cevcSICreationType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.10
+      name: cevcSICreationType
+      syntax: EnumInteger
+    cevcSIType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.11
+      name: cevcSIType
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcSIStateEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIStateEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcSIOperStatus
+  attributes:
+    cevcSIOperStatus:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.2.1.1
+      name: cevcSIOperStatus
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcSIVlanRewriteEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIVlanRewriteEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.1
+      name: cevcSIVlanRewriteDirection
+      syntax: EnumInteger
+  discovery_attribute: cevcSIVlanRewriteRowStatus
+  attributes:
+#    cevcSIVlanRewriteRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.2
+#      name: cevcSIVlanRewriteRowStatus
+#      syntax: RowStatus
+    cevcSIVlanRewriteStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.3
+      name: cevcSIVlanRewriteStorageType
+      syntax: EnumInteger
+    cevcSIVlanRewriteAction:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.4
+      name: cevcSIVlanRewriteAction
+      syntax: EnumInteger
+    cevcSIVlanRewriteEncapsulation:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.5
+      name: cevcSIVlanRewriteEncapsulation
+      syntax: EnumInteger
+    cevcSIVlanRewriteVlan1:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.6
+      name: cevcSIVlanRewriteVlan1
+      syntax: VlanId
+    cevcSIVlanRewriteVlan2:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.7
+      name: cevcSIVlanRewriteVlan2
+      syntax: VlanId
+    cevcSIVlanRewriteSymmetric:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.3.1.8
+      name: cevcSIVlanRewriteSymmetric
+      syntax: TruthValue
+
+CISCO-EVC-MIB::cevcSIL2ControlProtocolEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIL2ControlProtocolEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: CevcL2ControlProtocolType
+      oid: .1.3.6.1.4.1.9.9.613.1.4.4.1.1
+      name: cevcSIL2ControlProtocolType
+      syntax: EnumInteger
+  discovery_attribute: cevcSIL2ControlProtocolAction
+  attributes:
+    cevcSIL2ControlProtocolAction:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.4.1.2
+      name: cevcSIL2ControlProtocolAction
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcSICEVlanEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSICEVlanEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: VlanId
+      oid: .1.3.6.1.4.1.9.9.613.1.4.5.1.1
+      name: cevcSICEVlanBeginningVlan
+      syntax: VlanId
+  discovery_attribute: cevcSICEVlanRowStatus
+  attributes:
+#    cevcSICEVlanRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.5.1.2
+#      name: cevcSICEVlanRowStatus
+#      syntax: RowStatus
+    cevcSICEVlanStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.5.1.3
+      name: cevcSICEVlanStorageType
+      syntax: EnumInteger
+    cevcSICEVlanEndingVlan:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.5.1.4
+      name: cevcSICEVlanEndingVlan
+      syntax: VlanIdOrNone
+
+CISCO-EVC-MIB::cevcSIMatchCriteriaEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIMatchCriteriaEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.1
+      name: cevcSIMatchCriteriaIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcSIMatchRowStatus
+  attributes:
+#    cevcSIMatchRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.2
+#      name: cevcSIMatchRowStatus
+#      syntax: RowStatus
+    cevcSIMatchStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.3
+      name: cevcSIMatchStorageType
+      syntax: EnumInteger
+    cevcSIMatchCriteriaType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.4
+      name: cevcSIMatchCriteriaType
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcSIMatchEncapEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIMatchEncapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.1
+      name: cevcSIMatchCriteriaIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcSIMatchEncapStorageType
+  attributes:
+#    cevcSIMatchEncapRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.1
+#      name: cevcSIMatchEncapRowStatus
+#      syntax: RowStatus
+    cevcSIMatchEncapStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.2
+      name: cevcSIMatchEncapStorageType
+      syntax: EnumInteger
+    cevcSIMatchEncapValid:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.3
+      name: cevcSIMatchEncapValid
+      syntax: EnumBitmap
+    cevcSIMatchEncapEncapsulation:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.4
+      name: cevcSIMatchEncapEncapsulation
+      syntax: EnumInteger
+    cevcSIMatchEncapPrimaryCos:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.5
+      name: cevcSIMatchEncapPrimaryCos
+      syntax: EnumInteger
+    cevcSIMatchEncapSecondaryCos:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.6
+      name: cevcSIMatchEncapSecondaryCos
+      syntax: EnumInteger
+    cevcSIMatchEncapPayloadType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.7
+      name: cevcSIMatchEncapPayloadType
+      syntax: EnumInteger
+    cevcSIMatchEncapPayloadTypes:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.8
+      name: cevcSIMatchEncapPayloadTypes
+      syntax: EnumBitmap
+    cevcSIMatchEncapPriorityCos:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.7.1.9
+      name: cevcSIMatchEncapPriorityCos
+      syntax: EnumInteger
+
+CISCO-EVC-MIB::cevcSIPrimaryVlanEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIPrimaryVlanEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.1
+      name: cevcSIMatchCriteriaIndex
+      syntax: Unsigned32
+    - type: VlanId
+      oid: .1.3.6.1.4.1.9.9.613.1.4.8.1.1
+      name: cevcSIPrimaryVlanBeginningVlan
+      syntax: VlanId
+  discovery_attribute: cevcSIPrimaryVlanRowStatus
+  attributes:
+#    cevcSIPrimaryVlanRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.8.1.2
+#      name: cevcSIPrimaryVlanRowStatus
+#      syntax: RowStatus
+    cevcSIPrimaryVlanStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.8.1.3
+      name: cevcSIPrimaryVlanStorageType
+      syntax: EnumInteger
+    cevcSIPrimaryVlanEndingVlan:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.8.1.4
+      name: cevcSIPrimaryVlanEndingVlan
+      syntax: VlanIdOrNone
+
+CISCO-EVC-MIB::cevcSISecondaryVlanEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSISecondaryVlanEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.6.1.1
+      name: cevcSIMatchCriteriaIndex
+      syntax: Unsigned32
+    - type: VlanId
+      oid: .1.3.6.1.4.1.9.9.613.1.4.9.1.1
+      name: cevcSISecondaryVlanBeginningVlan
+      syntax: VlanId
+  discovery_attribute: cevcSISecondaryVlanRowStatus
+  attributes:
+#    cevcSISecondaryVlanRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.9.1.2
+#      name: cevcSISecondaryVlanRowStatus
+#      syntax: RowStatus
+    cevcSISecondaryVlanStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.9.1.3
+      name: cevcSISecondaryVlanStorageType
+      syntax: EnumInteger
+    cevcSISecondaryVlanEndingVlan:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.9.1.4
+      name: cevcSISecondaryVlanEndingVlan
+      syntax: VlanIdOrNone
+
+CISCO-EVC-MIB::cevcSIForwardBdEntry:
+  mib: CISCO-EVC-MIB
+  object: cevcSIForwardBdEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.613.1.4.1.1.1
+      name: cevcSIIndex
+      syntax: Unsigned32
+  discovery_attribute: cevcSIForwardBdStorageType
+  attributes:
+#    cevcSIForwardBdRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.1
+#      name: cevcSIForwardBdRowStatus
+#      syntax: RowStatus
+    cevcSIForwardBdStorageType:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.2
+      name: cevcSIForwardBdStorageType
+      syntax: EnumInteger
+    cevcSIForwardBdNumber:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.3
+      name: cevcSIForwardBdNumber
+      syntax: Unsigned32
+    cevcSIForwardBdNumberBase:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.4
+      name: cevcSIForwardBdNumberBase
+      syntax: EnumInteger
+    cevcSIForwardBdNumber1kBitmap:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.5
+      name: cevcSIForwardBdNumber1kBitmap
+      syntax: TODO_OctetString # OctetString
+    cevcSIForwardBdNumber2kBitmap:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.6
+      name: cevcSIForwardBdNumber2kBitmap
+      syntax: TODO_OctetString # OctetString
+    cevcSIForwardBdNumber3kBitmap:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.7
+      name: cevcSIForwardBdNumber3kBitmap
+      syntax: TODO_OctetString # OctetString
+    cevcSIForwardBdNumber4kBitmap:
+      oid: .1.3.6.1.4.1.9.9.613.1.4.10.1.8
+      name: cevcSIForwardBdNumber4kBitmap
+      syntax: TODO_OctetString # OctetString
+
+CISCO-EVC-MIB::cevcEvcNotificationConfig:
+  mib: CISCO-EVC-MIB
+  object: cevcEvcNotificationConfig
+  discovery_attribute: cevcEvcNotifyEnabled
+  attributes:
+    cevcEvcNotifyEnabled:
+      oid: .1.3.6.1.4.1.9.9.613.1.5.1
+      name: cevcEvcNotifyEnabled
+      syntax: EnumBitmap
+
+CISCO-EVC-MIB::cevcMacSecurityViolation:
+  mib: CISCO-EVC-MIB
+  object: cevcMacSecurityViolation
+  discovery_attribute: cevcMacAddress
+  attributes:
+    cevcMacAddress:
+      oid: .1.3.6.1.4.1.9.9.613.1.6.1
+      name: cevcMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    cevcMaxMacConfigLimit:
+      oid: .1.3.6.1.4.1.9.9.613.1.6.2
+      name: cevcMaxMacConfigLimit
+      syntax: Unsigned32
+    cevcSIID:
+      oid: .1.3.6.1.4.1.9.9.613.1.6.3
+      name: cevcSIID
+      syntax: Integer32
+    cevcViolationCause:
+      oid: .1.3.6.1.4.1.9.9.613.1.6.4
+      name: cevcViolationCause
+      syntax: EnumInteger
+

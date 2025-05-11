@@ -1,0 +1,832 @@
+CISCO-IETF-ISIS-MIB::ciiSysObject:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiSysObject
+  discovery_attribute: ciiSysVersion
+  attributes:
+    ciiSysVersion:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.1
+      name: ciiSysVersion
+      syntax: EnumInteger
+    ciiSysType:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.2
+      name: ciiSysType
+      syntax: EnumInteger
+    ciiSysID:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.3
+      name: ciiSysID
+      syntax: CiiSystemID
+    ciiSysMaxPathSplits:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.4
+      name: ciiSysMaxPathSplits
+      syntax: Integer32
+    ciiSysMaxLSPGenInt:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.5
+      name: ciiSysMaxLSPGenInt
+      syntax: TicksSec # TODO_TicksSec
+    ciiSysPollESHelloRate:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.6
+      name: ciiSysPollESHelloRate
+      syntax: TicksSec # TODO_TicksSec
+    ciiSysWaitTime:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.7
+      name: ciiSysWaitTime
+      syntax: TicksSec # TODO_TicksSec
+    ciiSysAdminState:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.8
+      name: ciiSysAdminState
+      syntax: EnumInteger
+    ciiSysL2toL1Leaking:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.9
+      name: ciiSysL2toL1Leaking
+      syntax: TruthValue
+    ciiSysMaxAge:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.10
+      name: ciiSysMaxAge
+      syntax: TicksSec # TODO_TicksSec
+    ciiSysReceiveLSPBufferSize:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.1.11
+      name: ciiSysReceiveLSPBufferSize
+      syntax: CiiUnsigned16TC
+
+CISCO-IETF-ISIS-MIB::ciiManAreaAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiManAreaAddrEntry
+  index:
+    - type: CiiOSINSAddress
+      oid: .1.3.6.1.4.1.9.10.118.1.1.2.1.1
+      name: ciiManAreaAddr
+      syntax: CiiOSINSAddress
+  discovery_attribute: ciiManAreaAddrExistState
+  attributes:
+#    ciiManAreaAddrExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.1.2.1.2
+#      name: ciiManAreaAddrExistState
+#      syntax: RowStatus
+
+CISCO-IETF-ISIS-MIB::ciiAreaAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiAreaAddrEntry
+  index:
+    - type: CiiOSINSAddress
+      oid: .1.3.6.1.4.1.9.10.118.1.1.3.1.1
+      name: ciiAreaAddr
+      syntax: CiiOSINSAddress
+  discovery_attribute: ciiAreaAddr
+  attributes:
+
+CISCO-IETF-ISIS-MIB::ciiSysProtSuppEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiSysProtSuppEntry
+  index:
+    - type: CiiSupportedProtocol
+      oid: .1.3.6.1.4.1.9.10.118.1.1.4.1.1
+      name: ciiSysProtSuppProtocol
+      syntax: EnumInteger
+  discovery_attribute: ciiSysProtSuppExistState
+  attributes:
+#    ciiSysProtSuppExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.1.4.1.2
+#      name: ciiSysProtSuppExistState
+#      syntax: RowStatus
+
+CISCO-IETF-ISIS-MIB::ciiSummAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiSummAddrEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.1
+      name: ciiSummAddressType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.2
+      name: ciiSummAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.3
+      name: ciiSummAddrPrefixLen
+      syntax: InetAddressPrefixLength
+  discovery_attribute: ciiSummAddrExistState
+  attributes:
+#    ciiSummAddrExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.4
+#      name: ciiSummAddrExistState
+#      syntax: RowStatus
+    ciiSummAddrMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.5
+      name: ciiSummAddrMetric
+      syntax: CiiDefaultMetric
+    ciiSummAddrFullMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.5.1.6
+      name: ciiSummAddrFullMetric
+      syntax: CiiFullMetric
+
+CISCO-IETF-ISIS-MIB::ciiRedistributeAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiRedistributeAddrEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.118.1.1.6.1.1
+      name: ciiRedistributeAddrType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.118.1.1.6.1.2
+      name: ciiRedistributeAddrAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.10.118.1.1.6.1.3
+      name: ciiRedistributeAddrPrefixLen
+      syntax: InetAddressPrefixLength
+  discovery_attribute: ciiRedistributeAddrExistState
+  attributes:
+#    ciiRedistributeAddrExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.1.6.1.4
+#      name: ciiRedistributeAddrExistState
+#      syntax: RowStatus
+
+CISCO-IETF-ISIS-MIB::ciiRouterEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiRouterEntry
+  index:
+    - type: CiiSystemID
+      oid: .1.3.6.1.4.1.9.10.118.1.1.7.1.1
+      name: ciiRouterSysID
+      syntax: CiiSystemID
+    - type: CiiISLevel
+      oid: .1.3.6.1.4.1.9.10.118.1.1.7.1.2
+      name: ciiRouterLevel
+      syntax: EnumInteger
+  discovery_attribute: ciiRouterHostName
+  attributes:
+    ciiRouterHostName:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.7.1.3
+      name: ciiRouterHostName
+      syntax: DisplayString # SnmpAdminString
+    ciiRouterID:
+      oid: .1.3.6.1.4.1.9.10.118.1.1.7.1.4
+      name: ciiRouterID
+      syntax: Unsigned32
+
+CISCO-IETF-ISIS-MIB::ciiSysLevelEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiSysLevelEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.1
+      name: ciiSysLevelIndex
+      syntax: EnumInteger
+  discovery_attribute: ciiSysLevelOrigLSPBuffSize
+  attributes:
+    ciiSysLevelOrigLSPBuffSize:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.2
+      name: ciiSysLevelOrigLSPBuffSize
+      syntax: CiiLSPBuffSize
+    ciiSysLevelMinLSPGenInt:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.3
+      name: ciiSysLevelMinLSPGenInt
+      syntax: TicksSec # TODO_TicksSec
+    ciiSysLevelOverloadState:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.4
+      name: ciiSysLevelOverloadState
+      syntax: EnumInteger
+    ciiSysLevelSetOverload:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.5
+      name: ciiSysLevelSetOverload
+      syntax: TruthValue
+    ciiSysLevelSetOverloadUntil:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.6
+      name: ciiSysLevelSetOverloadUntil
+      syntax: TimeTicks
+    ciiSysLevelMetricStyle:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.7
+      name: ciiSysLevelMetricStyle
+      syntax: EnumInteger
+    ciiSysLevelSPFConsiders:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.8
+      name: ciiSysLevelSPFConsiders
+      syntax: EnumInteger
+    ciiSysLevelTEEnabled:
+      oid: .1.3.6.1.4.1.9.10.118.1.2.1.1.9
+      name: ciiSysLevelTEEnabled
+      syntax: TruthValue
+
+CISCO-IETF-ISIS-MIB::ciiCirc:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiCirc
+  discovery_attribute: ciiNextCircIndex
+  attributes:
+    ciiNextCircIndex:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.1
+      name: ciiNextCircIndex
+      syntax: IndexIntegerNextFree
+
+CISCO-IETF-ISIS-MIB::ciiCircEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiCircEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+  discovery_attribute: ciiCircIfIndex
+  attributes:
+    ciiCircIfIndex:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.2
+      name: ciiCircIfIndex
+      syntax: InterfaceIndex
+    ciiCircIfSubIndex:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.3
+      name: ciiCircIfSubIndex
+      syntax: Integer32
+    ciiCircAdminState:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.4
+      name: ciiCircAdminState
+      syntax: EnumInteger
+#    ciiCircExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.5
+#      name: ciiCircExistState
+#      syntax: RowStatus
+    ciiCircType:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.6
+      name: ciiCircType
+      syntax: EnumInteger
+    ciiCircExtDomain:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.7
+      name: ciiCircExtDomain
+      syntax: TruthValue
+    ciiCircLevel:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.8
+      name: ciiCircLevel
+      syntax: EnumInteger
+    ciiCircPassiveCircuit:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.9
+      name: ciiCircPassiveCircuit
+      syntax: TruthValue
+    ciiCircMeshGroupEnabled:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.10
+      name: ciiCircMeshGroupEnabled
+      syntax: EnumInteger
+    ciiCircMeshGroup:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.11
+      name: ciiCircMeshGroup
+      syntax: Unsigned32
+    ciiCircSmallHellos:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.12
+      name: ciiCircSmallHellos
+      syntax: TruthValue
+    ciiCircLastUpTime:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.13
+      name: ciiCircLastUpTime
+      syntax: TimeTicks
+    ciiCirc3WayEnabled:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.14
+      name: ciiCirc3WayEnabled
+      syntax: TruthValue
+    ciiCircExtendedCircID:
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.15
+      name: ciiCircExtendedCircID
+      syntax: Unsigned32
+
+CISCO-IETF-ISIS-MIB::ciiCircLevelEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiCircLevelEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.1
+      name: ciiCircLevelIndex
+      syntax: EnumInteger
+  discovery_attribute: ciiCircLevelMetric
+  attributes:
+    ciiCircLevelMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.2
+      name: ciiCircLevelMetric
+      syntax: CiiDefaultMetric
+    ciiCircLevelWideMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.3
+      name: ciiCircLevelWideMetric
+      syntax: CiiWideMetric
+    ciiCircLevelISPriority:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.4
+      name: ciiCircLevelISPriority
+      syntax: CiiISPriority
+    ciiCircLevelIDOctet:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.5
+      name: ciiCircLevelIDOctet
+      syntax: Integer32
+    ciiCircLevelID:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.6
+      name: ciiCircLevelID
+      syntax: CiiCircuitID
+    ciiCircLevelDesIS:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.7
+      name: ciiCircLevelDesIS
+      syntax: CiiCircuitID
+    ciiCircLevelHelloMultiplier:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.8
+      name: ciiCircLevelHelloMultiplier
+      syntax: Integer32
+    ciiCircLevelHelloTimer:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.9
+      name: ciiCircLevelHelloTimer
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    ciiCircLevelDRHelloTimer:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.10
+      name: ciiCircLevelDRHelloTimer
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    ciiCircLevelLSPThrottle:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.11
+      name: ciiCircLevelLSPThrottle
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    ciiCircLevelMinLSPRetransInt:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.12
+      name: ciiCircLevelMinLSPRetransInt
+      syntax: TicksSec # TODO_TicksSec
+    ciiCircLevelCSNPInterval:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.13
+      name: ciiCircLevelCSNPInterval
+      syntax: TicksSec # TODO_TicksSec
+    ciiCircLevelPartSNPInterval:
+      oid: .1.3.6.1.4.1.9.10.118.1.4.1.1.14
+      name: ciiCircLevelPartSNPInterval
+      syntax: TicksSec # TODO_TicksSec
+
+CISCO-IETF-ISIS-MIB::ciiSystemCounterEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiSystemCounterEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.1
+      name: ciiSysStatLevel
+      syntax: EnumInteger
+  discovery_attribute: ciiSysStatCorrLSPs
+  attributes:
+    ciiSysStatCorrLSPs:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.2
+      name: ciiSysStatCorrLSPs
+      syntax: Counter32
+    ciiSysStatAuthTypeFails:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.3
+      name: ciiSysStatAuthTypeFails
+      syntax: Counter32
+    ciiSysStatAuthFails:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.4
+      name: ciiSysStatAuthFails
+      syntax: Counter32
+    ciiSysStatLSPDbaseOloads:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.5
+      name: ciiSysStatLSPDbaseOloads
+      syntax: Counter32
+    ciiSysStatManAddrDropFromAreas:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.6
+      name: ciiSysStatManAddrDropFromAreas
+      syntax: Counter32
+    ciiSysStatAttmptToExMaxSeqNums:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.7
+      name: ciiSysStatAttmptToExMaxSeqNums
+      syntax: Counter32
+    ciiSysStatSeqNumSkips:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.8
+      name: ciiSysStatSeqNumSkips
+      syntax: Counter32
+    ciiSysStatOwnLSPPurges:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.9
+      name: ciiSysStatOwnLSPPurges
+      syntax: Counter32
+    ciiSysStatIDFieldLenMismatches:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.10
+      name: ciiSysStatIDFieldLenMismatches
+      syntax: Counter32
+    ciiSysStatPartChanges:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.11
+      name: ciiSysStatPartChanges
+      syntax: Counter32
+    ciiSysStatSPFRuns:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.12
+      name: ciiSysStatSPFRuns
+      syntax: Counter32
+    ciiSysStatLSPErrors:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.1.1.13
+      name: ciiSysStatLSPErrors
+      syntax: Counter32
+
+CISCO-IETF-ISIS-MIB::ciiCircuitCounterEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiCircuitCounterEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.1
+      name: ciiCircuitType
+      syntax: EnumInteger
+  discovery_attribute: ciiCircAdjChanges
+  attributes:
+    ciiCircAdjChanges:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.2
+      name: ciiCircAdjChanges
+      syntax: Counter32
+    ciiCircNumAdj:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.3
+      name: ciiCircNumAdj
+      syntax: Unsigned32
+    ciiCircInitFails:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.4
+      name: ciiCircInitFails
+      syntax: Counter32
+    ciiCircRejAdjs:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.5
+      name: ciiCircRejAdjs
+      syntax: Counter32
+    ciiCircIDFieldLenMismatches:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.6
+      name: ciiCircIDFieldLenMismatches
+      syntax: Counter32
+    ciiCircMaxAreaAddrMismatches:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.7
+      name: ciiCircMaxAreaAddrMismatches
+      syntax: Counter32
+    ciiCircAuthTypeFails:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.8
+      name: ciiCircAuthTypeFails
+      syntax: Counter32
+    ciiCircAuthFails:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.9
+      name: ciiCircAuthFails
+      syntax: Counter32
+    ciiCircLANDesISChanges:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.2.1.10
+      name: ciiCircLANDesISChanges
+      syntax: Counter32
+
+CISCO-IETF-ISIS-MIB::ciiPacketCounterEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiPacketCounterEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.1
+      name: ciiPacketCountLevel
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.2
+      name: ciiPacketCountDirection
+      syntax: EnumInteger
+  discovery_attribute: ciiPacketCountIIHellos
+  attributes:
+    ciiPacketCountIIHellos:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.3
+      name: ciiPacketCountIIHellos
+      syntax: Counter32
+    ciiPacketCountISHellos:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.4
+      name: ciiPacketCountISHellos
+      syntax: Counter32
+    ciiPacketCountESHellos:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.5
+      name: ciiPacketCountESHellos
+      syntax: Counter32
+    ciiPacketCountLSPs:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.6
+      name: ciiPacketCountLSPs
+      syntax: Counter32
+    ciiPacketCountCSNPs:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.7
+      name: ciiPacketCountCSNPs
+      syntax: Counter32
+    ciiPacketCountPSNPs:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.8
+      name: ciiPacketCountPSNPs
+      syntax: Counter32
+    ciiPacketCountUnknowns:
+      oid: .1.3.6.1.4.1.9.10.118.1.5.3.1.9
+      name: ciiPacketCountUnknowns
+      syntax: Counter32
+
+CISCO-IETF-ISIS-MIB::ciiISAdjEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiISAdjEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.1
+      name: ciiISAdjIndex
+      syntax: Integer32
+  discovery_attribute: ciiISAdjState
+  attributes:
+    ciiISAdjState:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.2
+      name: ciiISAdjState
+      syntax: EnumInteger
+    ciiISAdj3WayState:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.3
+      name: ciiISAdj3WayState
+      syntax: EnumInteger
+    ciiISAdjNeighSNPAAddress:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.4
+      name: ciiISAdjNeighSNPAAddress
+      syntax: CiiOSINSAddress
+    ciiISAdjNeighSysType:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.5
+      name: ciiISAdjNeighSysType
+      syntax: EnumInteger
+    ciiISAdjNeighSysID:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.6
+      name: ciiISAdjNeighSysID
+      syntax: CiiSystemID
+    ciiISAdjNbrExtendedCircID:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.7
+      name: ciiISAdjNbrExtendedCircID
+      syntax: Unsigned32
+    ciiISAdjUsage:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.8
+      name: ciiISAdjUsage
+      syntax: EnumInteger
+    ciiISAdjHoldTimer:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.9
+      name: ciiISAdjHoldTimer
+      syntax: TicksSec # TODO_TicksSec
+    ciiISAdjNeighPriority:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.10
+      name: ciiISAdjNeighPriority
+      syntax: CiiISPriority
+    ciiISAdjLastUpTime:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.11
+      name: ciiISAdjLastUpTime
+      syntax: TimeTicks
+
+CISCO-IETF-ISIS-MIB::ciiISAdjAreaAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiISAdjAreaAddrEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.1
+      name: ciiISAdjIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.2.1.1
+      name: ciiISAdjAreaAddrIndex
+      syntax: Integer32
+  discovery_attribute: ciiISAdjAreaAddress
+  attributes:
+    ciiISAdjAreaAddress:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.2.1.2
+      name: ciiISAdjAreaAddress
+      syntax: CiiOSINSAddress
+
+CISCO-IETF-ISIS-MIB::ciiISAdjIPAddrEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiISAdjIPAddrEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.1
+      name: ciiISAdjIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.3.1.1
+      name: ciiISAdjIPAddrIndex
+      syntax: Integer32
+  discovery_attribute: ciiISAdjIPAddrType
+  attributes:
+    ciiISAdjIPAddrType:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.3.1.2
+      name: ciiISAdjIPAddrType
+      syntax: EnumInteger
+    ciiISAdjIPAddrAddress:
+      oid: .1.3.6.1.4.1.9.10.118.1.6.3.1.3
+      name: ciiISAdjIPAddrAddress
+      syntax: IpAddressNoSuffix # InetAddress
+
+CISCO-IETF-ISIS-MIB::ciiISAdjProtSuppEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiISAdjProtSuppEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.6.1.1.1
+      name: ciiISAdjIndex
+      syntax: Integer32
+    - type: CiiSupportedProtocol
+      oid: .1.3.6.1.4.1.9.10.118.1.6.4.1.1
+      name: ciiISAdjProtSuppProtocol
+      syntax: EnumInteger
+  discovery_attribute: ciiISAdjProtSuppProtocol
+  attributes:
+
+CISCO-IETF-ISIS-MIB::ciiRAEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiRAEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.3.2.1.1
+      name: ciiCircIndex
+      syntax: Integer32
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.1
+      name: ciiRAIndex
+      syntax: Integer32
+  discovery_attribute: ciiRAExistState
+  attributes:
+#    ciiRAExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.2
+#      name: ciiRAExistState
+#      syntax: RowStatus
+    ciiRAAdminState:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.3
+      name: ciiRAAdminState
+      syntax: EnumInteger
+    ciiRAAddrPrefix:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.4
+      name: ciiRAAddrPrefix
+      syntax: CiiOSINSAddress
+    ciiRAMapType:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.5
+      name: ciiRAMapType
+      syntax: EnumInteger
+    ciiRAMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.6
+      name: ciiRAMetric
+      syntax: CiiDefaultMetric
+    ciiRAMetricType:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.7
+      name: ciiRAMetricType
+      syntax: EnumInteger
+    ciiRASNPAAddress:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.8
+      name: ciiRASNPAAddress
+      syntax: CiiOSINSAddress
+    ciiRASNPAMask:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.9
+      name: ciiRASNPAMask
+      syntax: CiiOSINSAddress
+    ciiRASNPAPrefix:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.10
+      name: ciiRASNPAPrefix
+      syntax: CiiOSINSAddress
+    ciiRAType:
+      oid: .1.3.6.1.4.1.9.10.118.1.7.1.1.11
+      name: ciiRAType
+      syntax: EnumInteger
+
+CISCO-IETF-ISIS-MIB::ciiIPRAEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiIPRAEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.1
+      name: ciiIPRADestType
+      syntax: EnumInteger
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.2
+      name: ciiIPRADest
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: InetAddressPrefixLength
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.3
+      name: ciiIPRADestPrefixLen
+      syntax: InetAddressPrefixLength
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.4
+      name: ciiIPRANextHopIndex
+      syntax: Integer32
+  discovery_attribute: ciiIPRANextHopType
+  attributes:
+    ciiIPRANextHopType:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.5
+      name: ciiIPRANextHopType
+      syntax: EnumInteger
+    ciiIPRANextHop:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.6
+      name: ciiIPRANextHop
+      syntax: IpAddressNoSuffix # InetAddress
+    ciiIPRAType:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.7
+      name: ciiIPRAType
+      syntax: EnumInteger
+#    ciiIPRAExistState:
+#      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.8
+#      name: ciiIPRAExistState
+#      syntax: RowStatus
+    ciiIPRAAdminState:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.9
+      name: ciiIPRAAdminState
+      syntax: EnumInteger
+    ciiIPRAMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.10
+      name: ciiIPRAMetric
+      syntax: CiiDefaultMetric
+    ciiIPRAMetricType:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.11
+      name: ciiIPRAMetricType
+      syntax: EnumInteger
+    ciiIPRAFullMetric:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.12
+      name: ciiIPRAFullMetric
+      syntax: CiiFullMetric
+    ciiIPRASNPAAddress:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.13
+      name: ciiIPRASNPAAddress
+      syntax: CiiOSINSAddress
+    ciiIPRASourceType:
+      oid: .1.3.6.1.4.1.9.10.118.1.8.1.1.14
+      name: ciiIPRASourceType
+      syntax: EnumInteger
+
+CISCO-IETF-ISIS-MIB::ciiLSPSummaryEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiLSPSummaryEntry
+  index:
+    - type: CiiISLevel
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.1
+      name: ciiLSPLevel
+      syntax: EnumInteger
+    - type: CiiLinkStatePDUID
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.2
+      name: ciiLSPID
+      syntax: CiiLinkStatePDUID
+  discovery_attribute: ciiLSPSeq
+  attributes:
+    ciiLSPSeq:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.3
+      name: ciiLSPSeq
+      syntax: Unsigned32
+    ciiLSPZeroLife:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.4
+      name: ciiLSPZeroLife
+      syntax: TruthValue
+    ciiLSPChecksum:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.5
+      name: ciiLSPChecksum
+      syntax: CiiUnsigned16TC
+    ciiLSPLifetimeRemain:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.6
+      name: ciiLSPLifetimeRemain
+      syntax: TicksSec # TODO_TicksSec
+    ciiLSPPDULength:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.7
+      name: ciiLSPPDULength
+      syntax: CiiUnsigned16TC
+    ciiLSPAttributes:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.8
+      name: ciiLSPAttributes
+      syntax: CiiUnsigned8TC
+
+CISCO-IETF-ISIS-MIB::ciiLSPTLVEntry:
+  mib: CISCO-IETF-ISIS-MIB
+  object: ciiLSPTLVEntry
+  index:
+    - type: CiiISLevel
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.1
+      name: ciiLSPLevel
+      syntax: EnumInteger
+    - type: CiiLinkStatePDUID
+      oid: .1.3.6.1.4.1.9.10.118.1.9.1.1.2
+      name: ciiLSPID
+      syntax: CiiLinkStatePDUID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.1
+      name: ciiLSPTLVIndex
+      syntax: Unsigned32
+  discovery_attribute: ciiLSPTLVSeq
+  attributes:
+    ciiLSPTLVSeq:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.2
+      name: ciiLSPTLVSeq
+      syntax: Unsigned32
+    ciiLSPTLVChecksum:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.3
+      name: ciiLSPTLVChecksum
+      syntax: CiiUnsigned16TC
+    ciiLSPTLVType:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.4
+      name: ciiLSPTLVType
+      syntax: CiiUnsigned8TC
+    ciiLSPTLVLen:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.5
+      name: ciiLSPTLVLen
+      syntax: CiiUnsigned8TC
+    ciiLSPTLVValue:
+      oid: .1.3.6.1.4.1.9.10.118.1.9.2.1.6
+      name: ciiLSPTLVValue
+      syntax: TODO_OctetString # OctetString
+

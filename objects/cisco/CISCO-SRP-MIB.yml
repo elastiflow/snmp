@@ -1,0 +1,676 @@
+CISCO-SRP-MIB::srpIfEntry:
+  mib: CISCO-SRP-MIB
+  object: srpIfEntry
+  index:
+  discovery_attribute: srpPriorityThreshold
+  attributes:
+    srpMACAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.1
+      name: srpMACAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpPriorityThreshold:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.2
+      name: srpPriorityThreshold
+      syntax: Integer32
+    srpNodesOnTheRing:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.3
+      name: srpNodesOnTheRing
+      syntax: Integer32
+    srpIpsState:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.4
+      name: srpIpsState
+      syntax: EnumInteger
+    srpIpsLockedOut:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.5
+      name: srpIpsLockedOut
+      syntax: TruthValue
+    srpIpsWaitToRestoreTimer:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.6
+      name: srpIpsWaitToRestoreTimer
+      syntax: TicksSec # TODO_TicksSec
+    srpIfTimeElapsed:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.7
+      name: srpIfTimeElapsed
+      syntax: TicksSec # TODO_TicksSec
+    srpIfValidIntervals:
+      oid: .1.3.6.1.4.1.9.10.60.1.1.1.8
+      name: srpIfValidIntervals
+      syntax: Integer32
+
+CISCO-SRP-MIB::srpMACSideEntry:
+  mib: CISCO-SRP-MIB
+  object: srpMACSideEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.1
+      name: srpMACInterfaceSide
+      syntax: EnumInteger
+  discovery_attribute: srpMACNeighborAddress
+  attributes:
+    srpMACNeighborAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.2
+      name: srpMACNeighborAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpMACSideWrapped:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.3
+      name: srpMACSideWrapped
+      syntax: TruthValue
+    srpMACIpsMgmtRequestedMode:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.4
+      name: srpMACIpsMgmtRequestedMode
+      syntax: EnumInteger
+    srpMACIpsAutoDetectMode:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.5
+      name: srpMACIpsAutoDetectMode
+      syntax: EnumInteger
+    srpMACIpsRemoteMode:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.6
+      name: srpMACIpsRemoteMode
+      syntax: EnumInteger
+    srpMACIpsRemoteType:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.7
+      name: srpMACIpsRemoteType
+      syntax: EnumInteger
+    srpMACIpsActiveMode:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.8
+      name: srpMACIpsActiveMode
+      syntax: EnumInteger
+    srpMACIpsWrapCounter:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.9
+      name: srpMACIpsWrapCounter
+      syntax: Counter32
+    srpMACIpsLastWrapTimeStamp:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.10
+      name: srpMACIpsLastWrapTimeStamp
+      syntax: TimeStamp
+    srpMACIpsLastUnWrapTimeStamp:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.11
+      name: srpMACIpsLastUnWrapTimeStamp
+      syntax: TimeStamp
+    srpMACClockSourceMode:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.12
+      name: srpMACClockSourceMode
+      syntax: EnumInteger
+    srpMACTopologyTimer:
+      oid: .1.3.6.1.4.1.9.10.60.1.2.1.13
+      name: srpMACTopologyTimer
+      syntax: Integer32
+
+CISCO-SRP-MIB::srpRingTopologyMapEntry:
+  mib: CISCO-SRP-MIB
+  object: srpRingTopologyMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.10.60.1.3.1.1
+      name: srpNodeHopsNumber
+      syntax: Unsigned32
+  discovery_attribute: srpNodeMACAddress
+  attributes:
+    srpNodeMACAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.3.1.2
+      name: srpNodeMACAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpNodeWrapped:
+      oid: .1.3.6.1.4.1.9.10.60.1.3.1.3
+      name: srpNodeWrapped
+      syntax: TruthValue
+    srpNodeName:
+      oid: .1.3.6.1.4.1.9.10.60.1.3.1.4
+      name: srpNodeName
+      syntax: DisplayString
+
+CISCO-SRP-MIB::srpMACCountersEntry:
+  mib: CISCO-SRP-MIB
+  object: srpMACCountersEntry
+  index:
+  discovery_attribute: srpMACCountPktsBySourceAddress
+  attributes:
+    srpMACCountPktsBySourceFlag:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.1
+      name: srpMACCountPktsBySourceFlag
+      syntax: TruthValue
+    srpMACCountPktsBySourceAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.2
+      name: srpMACCountPktsBySourceAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpMACSourceDiscontTimeStamp:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.3
+      name: srpMACSourceDiscontTimeStamp
+      syntax: TimeStamp
+    srpMACCountPktsBySource:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.4
+      name: srpMACCountPktsBySource
+      syntax: Counter64
+    srpMACCountPktsByDestinationFlag:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.5
+      name: srpMACCountPktsByDestinationFlag
+      syntax: TruthValue
+    srpMACCountPktsByDestAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.6
+      name: srpMACCountPktsByDestAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpMACDestDiscontTimeStamp:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.7
+      name: srpMACDestDiscontTimeStamp
+      syntax: TimeStamp
+    srpMACCountPktsByDest:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.8
+      name: srpMACCountPktsByDest
+      syntax: Counter64
+    srpMACRejectPktsBySourceFlag:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.9
+      name: srpMACRejectPktsBySourceFlag
+      syntax: TruthValue
+    srpMACRejectPktsBySourceAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.10
+      name: srpMACRejectPktsBySourceAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    srpMACRejectPktsByDestFlag:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.11
+      name: srpMACRejectPktsByDestFlag
+      syntax: TruthValue
+    srpMACRejectPktsByDestAddress:
+      oid: .1.3.6.1.4.1.9.10.60.1.6.1.12
+      name: srpMACRejectPktsByDestAddress
+      syntax: MacAddressNoSuffix # MacAddress
+
+CISCO-SRP-MIB::srpRingCountersCurrentEntry:
+  mib: CISCO-SRP-MIB
+  object: srpRingCountersCurrentEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.1
+      name: srpRingInterfaceSide
+      syntax: EnumInteger
+  discovery_attribute: srpRingCurUcastLowPriPktsIn
+  attributes:
+    srpRingCurUcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.2
+      name: srpRingCurUcastLowPriPktsIn
+      syntax: PerfCurrentCount64
+    srpRingCurUcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.3
+      name: srpRingCurUcastLowPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpRingCurMcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.4
+      name: srpRingCurMcastLowPriPktsIn
+      syntax: PerfCurrentCount64
+    srpRingCurMcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.5
+      name: srpRingCurMcastLowPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpRingCurUcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.6
+      name: srpRingCurUcastHighPriPktsIn
+      syntax: PerfCurrentCount64
+    srpRingCurUcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.7
+      name: srpRingCurUcastHighPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpRingCurMcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.8
+      name: srpRingCurMcastHighPriPktsIn
+      syntax: PerfCurrentCount64
+    srpRingCurMcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.9
+      name: srpRingCurMcastHighPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpRingCurUcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.10
+      name: srpRingCurUcastLowPriPktsOut
+      syntax: PerfCurrentCount64
+    srpRingCurUcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.11
+      name: srpRingCurUcastLowPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpRingCurMcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.12
+      name: srpRingCurMcastLowPriPktsOut
+      syntax: PerfCurrentCount64
+    srpRingCurMcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.13
+      name: srpRingCurMcastLowPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpRingCurUcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.14
+      name: srpRingCurUcastHighPriPktsOut
+      syntax: PerfCurrentCount64
+    srpRingCurUcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.15
+      name: srpRingCurUcastHighPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpRingCurMcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.16
+      name: srpRingCurMcastHighPriPktsOut
+      syntax: PerfCurrentCount64
+    srpRingCurMcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.1.1.17
+      name: srpRingCurMcastHighPriOctetsOut
+      syntax: PerfCurrentCount64
+
+CISCO-SRP-MIB::srpRingCountersIntervalEntry:
+  mib: CISCO-SRP-MIB
+  object: srpRingCountersIntervalEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.1
+      name: srpRingIntInterfaceSide
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.2
+      name: srpRingIntNumber
+      syntax: Integer32
+  discovery_attribute: srpRingIntWrapCounter
+  attributes:
+    srpRingIntWrapCounter:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.3
+      name: srpRingIntWrapCounter
+      syntax: Counter32
+    srpRingIntUcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.4
+      name: srpRingIntUcastLowPriPktsIn
+      syntax: PerfIntervalCount64
+    srpRingIntUcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.5
+      name: srpRingIntUcastLowPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpRingIntMcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.6
+      name: srpRingIntMcastLowPriPktsIn
+      syntax: PerfIntervalCount64
+    srpRingIntMcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.7
+      name: srpRingIntMcastLowPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpRingIntUcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.8
+      name: srpRingIntUcastHighPriPktsIn
+      syntax: PerfIntervalCount64
+    srpRingIntUcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.9
+      name: srpRingIntUcastHighPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpRingIntMcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.10
+      name: srpRingIntMcastHighPriPktsIn
+      syntax: PerfIntervalCount64
+    srpRingIntMcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.11
+      name: srpRingIntMcastHighPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpRingIntUcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.12
+      name: srpRingIntUcastLowPriPktsOut
+      syntax: PerfIntervalCount64
+    srpRingIntUcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.13
+      name: srpRingIntUcastLowPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpRingIntMcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.14
+      name: srpRingIntMcastLowPriPktsOut
+      syntax: PerfIntervalCount64
+    srpRingIntMcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.15
+      name: srpRingIntMcastLowPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpRingIntUcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.16
+      name: srpRingIntUcastHighPriPktsOut
+      syntax: PerfIntervalCount64
+    srpRingIntUcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.17
+      name: srpRingIntUcastHighPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpRingIntMcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.18
+      name: srpRingIntMcastHighPriPktsOut
+      syntax: PerfIntervalCount64
+    srpRingIntMcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.2.2.1.19
+      name: srpRingIntMcastHighPriOctetsOut
+      syntax: PerfIntervalCount64
+
+CISCO-SRP-MIB::srpHostCountersCurrentEntry:
+  mib: CISCO-SRP-MIB
+  object: srpHostCountersCurrentEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.1
+      name: srpHostInterfaceSide
+      syntax: EnumInteger
+  discovery_attribute: srpHostCurUcastLowPriPktsIn
+  attributes:
+    srpHostCurUcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.2
+      name: srpHostCurUcastLowPriPktsIn
+      syntax: PerfCurrentCount64
+    srpHostCurUcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.3
+      name: srpHostCurUcastLowPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpHostCurMcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.4
+      name: srpHostCurMcastLowPriPktsIn
+      syntax: PerfCurrentCount64
+    srpHostCurMcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.5
+      name: srpHostCurMcastLowPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpHostCurUcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.6
+      name: srpHostCurUcastHighPriPktsIn
+      syntax: PerfCurrentCount64
+    srpHostCurUcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.7
+      name: srpHostCurUcastHighPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpHostCurMcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.8
+      name: srpHostCurMcastHighPriPktsIn
+      syntax: PerfCurrentCount64
+    srpHostCurMcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.9
+      name: srpHostCurMcastHighPriOctetsIn
+      syntax: PerfCurrentCount64
+    srpHostCurUcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.10
+      name: srpHostCurUcastLowPriPktsOut
+      syntax: PerfCurrentCount64
+    srpHostCurUcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.11
+      name: srpHostCurUcastLowPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpHostCurMcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.12
+      name: srpHostCurMcastLowPriPktsOut
+      syntax: PerfCurrentCount64
+    srpHostCurMcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.13
+      name: srpHostCurMcastLowPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpHostCurUcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.14
+      name: srpHostCurUcastHighPriPktsOut
+      syntax: PerfCurrentCount64
+    srpHostCurUcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.15
+      name: srpHostCurUcastHighPriOctetsOut
+      syntax: PerfCurrentCount64
+    srpHostCurMcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.16
+      name: srpHostCurMcastHighPriPktsOut
+      syntax: PerfCurrentCount64
+    srpHostCurMcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.1.1.17
+      name: srpHostCurMcastHighPriOctetsOut
+      syntax: PerfCurrentCount64
+
+CISCO-SRP-MIB::srpHostCountersIntervalEntry:
+  mib: CISCO-SRP-MIB
+  object: srpHostCountersIntervalEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.1
+      name: srpHostIntInterfaceSide
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.2
+      name: srpHostIntNumber
+      syntax: Integer32
+  discovery_attribute: srpHostIntUcastLowPriPktsIn
+  attributes:
+    srpHostIntUcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.3
+      name: srpHostIntUcastLowPriPktsIn
+      syntax: PerfIntervalCount64
+    srpHostIntUcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.4
+      name: srpHostIntUcastLowPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpHostIntMcastLowPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.5
+      name: srpHostIntMcastLowPriPktsIn
+      syntax: PerfIntervalCount64
+    srpHostIntMcastLowPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.6
+      name: srpHostIntMcastLowPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpHostIntUcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.7
+      name: srpHostIntUcastHighPriPktsIn
+      syntax: PerfIntervalCount64
+    srpHostIntUcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.8
+      name: srpHostIntUcastHighPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpHostIntMcastHighPriPktsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.9
+      name: srpHostIntMcastHighPriPktsIn
+      syntax: PerfIntervalCount64
+    srpHostIntMcastHighPriOctetsIn:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.10
+      name: srpHostIntMcastHighPriOctetsIn
+      syntax: PerfIntervalCount64
+    srpHostIntUcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.11
+      name: srpHostIntUcastLowPriPktsOut
+      syntax: PerfIntervalCount64
+    srpHostIntUcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.12
+      name: srpHostIntUcastLowPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpHostIntMcastLowPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.13
+      name: srpHostIntMcastLowPriPktsOut
+      syntax: PerfIntervalCount64
+    srpHostIntMcastLowPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.14
+      name: srpHostIntMcastLowPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpHostIntUcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.15
+      name: srpHostIntUcastHighPriPktsOut
+      syntax: PerfIntervalCount64
+    srpHostIntUcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.16
+      name: srpHostIntUcastHighPriOctetsOut
+      syntax: PerfIntervalCount64
+    srpHostIntMcastHighPriPktsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.17
+      name: srpHostIntMcastHighPriPktsOut
+      syntax: PerfIntervalCount64
+    srpHostIntMcastHighPriOctetsOut:
+      oid: .1.3.6.1.4.1.9.10.60.3.2.1.18
+      name: srpHostIntMcastHighPriOctetsOut
+      syntax: PerfIntervalCount64
+
+CISCO-SRP-MIB::srpErrorsCountersCurrentEntry:
+  mib: CISCO-SRP-MIB
+  object: srpErrorsCountersCurrentEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.1
+      name: srpErrorsInterfaceSide
+      syntax: EnumInteger
+  discovery_attribute: srpRingCurRxErrorsDataParity
+  attributes:
+    srpRingCurRxErrorsDataParity:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.2
+      name: srpRingCurRxErrorsDataParity
+      syntax: PerfCurrentCount64
+    srpRingCurRxErrorsShortPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.3
+      name: srpRingCurRxErrorsShortPackets
+      syntax: PerfCurrentCount64
+    srpRingCurRxErrorsGiantPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.4
+      name: srpRingCurRxErrorsGiantPackets
+      syntax: PerfCurrentCount64
+    srpRingCurRxErrorsSideBadPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.5
+      name: srpRingCurRxErrorsSideBadPackets
+      syntax: PerfCurrentCount64
+    srpRingCurRxErrorsCRC:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.6
+      name: srpRingCurRxErrorsCRC
+      syntax: PerfCurrentCount64
+    srpHostCurRxErrorsDataParity:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.7
+      name: srpHostCurRxErrorsDataParity
+      syntax: PerfCurrentCount64
+    srpHostCurRxErrorsShortPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.8
+      name: srpHostCurRxErrorsShortPackets
+      syntax: PerfCurrentCount64
+    srpHostCurRxErrorsGiantPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.9
+      name: srpHostCurRxErrorsGiantPackets
+      syntax: PerfCurrentCount64
+    srpHostCurRxErrorsSideBadPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.1.1.10
+      name: srpHostCurRxErrorsSideBadPackets
+      syntax: PerfCurrentCount64
+
+CISCO-SRP-MIB::srpErrorsCountersIntervalEntry:
+  mib: CISCO-SRP-MIB
+  object: srpErrorsCountersIntervalEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.1
+      name: srpErrorsIntervalInterfaceSide
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.2
+      name: srpErrorsIntervalNumber
+      syntax: Integer32
+  discovery_attribute: srpRingIntRxErrorsDataParity
+  attributes:
+    srpRingIntRxErrorsDataParity:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.3
+      name: srpRingIntRxErrorsDataParity
+      syntax: PerfIntervalCount64
+    srpRingIntRxErrorsShortPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.4
+      name: srpRingIntRxErrorsShortPackets
+      syntax: PerfIntervalCount64
+    srpRingIntRxErrorsGiantPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.5
+      name: srpRingIntRxErrorsGiantPackets
+      syntax: PerfIntervalCount64
+    srpRingIntRxErrorsSideBadPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.6
+      name: srpRingIntRxErrorsSideBadPackets
+      syntax: PerfIntervalCount64
+    srpRingIntRxErrorsCRC:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.7
+      name: srpRingIntRxErrorsCRC
+      syntax: PerfIntervalCount64
+    srpHostIntRxErrorsDataParity:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.8
+      name: srpHostIntRxErrorsDataParity
+      syntax: PerfIntervalCount64
+    srpHostIntRxErrorsShortPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.9
+      name: srpHostIntRxErrorsShortPackets
+      syntax: PerfIntervalCount64
+    srpHostIntRxErrorsGiantPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.10
+      name: srpHostIntRxErrorsGiantPackets
+      syntax: PerfIntervalCount64
+    srpHostIntRxErrorsSideBadPackets:
+      oid: .1.3.6.1.4.1.9.10.60.4.2.1.11
+      name: srpHostIntRxErrorsSideBadPackets
+      syntax: PerfIntervalCount64
+
+CISCO-SRP-MIB::srpErrCntCurrEntry:
+  mib: CISCO-SRP-MIB
+  object: srpErrCntCurrEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.1
+      name: srpErrCntCurrInterfaceSide
+      syntax: EnumInteger
+  discovery_attribute: srpErrCntCurrRingRxTtlExpPkts
+  attributes:
+    srpErrCntCurrRingRxTtlExpPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.2
+      name: srpErrCntCurrRingRxTtlExpPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrRingRxShortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.3
+      name: srpErrCntCurrRingRxShortPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrRingRxGiantPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.4
+      name: srpErrCntCurrRingRxGiantPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrRingRxAbortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.5
+      name: srpErrCntCurrRingRxAbortPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrRingRxCRC:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.6
+      name: srpErrCntCurrRingRxCRC
+      syntax: PerfCurrentCount64
+    srpErrCntCurrHostRxDiscardPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.7
+      name: srpErrCntCurrHostRxDiscardPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrHostRxShortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.8
+      name: srpErrCntCurrHostRxShortPkts
+      syntax: PerfCurrentCount64
+    srpErrCntCurrHostRxGiantPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.3.1.9
+      name: srpErrCntCurrHostRxGiantPkts
+      syntax: PerfCurrentCount64
+
+CISCO-SRP-MIB::srpErrCntIntEntry:
+  mib: CISCO-SRP-MIB
+  object: srpErrCntIntEntry
+  index:
+    - type: InterfaceSide
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.1
+      name: srpErrCntIntInterfaceSide
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.2
+      name: srpErrCntIntNumber
+      syntax: Integer32
+  discovery_attribute: srpErrCntIntRingRxTtlExpPkts
+  attributes:
+    srpErrCntIntRingRxTtlExpPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.3
+      name: srpErrCntIntRingRxTtlExpPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntRingRxShortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.4
+      name: srpErrCntIntRingRxShortPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntRingRxGiantPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.5
+      name: srpErrCntIntRingRxGiantPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntRingRxAbortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.6
+      name: srpErrCntIntRingRxAbortPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntRingRxCRC:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.7
+      name: srpErrCntIntRingRxCRC
+      syntax: PerfIntervalCount64
+    srpErrCntIntHostRxDiscardPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.8
+      name: srpErrCntIntHostRxDiscardPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntHostRxShortPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.9
+      name: srpErrCntIntHostRxShortPkts
+      syntax: PerfIntervalCount64
+    srpErrCntIntHostRxGiantPkts:
+      oid: .1.3.6.1.4.1.9.10.60.4.4.1.10
+      name: srpErrCntIntHostRxGiantPkts
+      syntax: PerfIntervalCount64
+

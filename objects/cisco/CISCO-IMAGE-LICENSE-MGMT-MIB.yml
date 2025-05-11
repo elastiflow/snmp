@@ -1,0 +1,94 @@
+CISCO-IMAGE-LICENSE-MGMT-MIB::ciscoImageLicenseMgmtMIBObjects:
+  mib: CISCO-IMAGE-LICENSE-MGMT-MIB
+  object: ciscoImageLicenseMgmtMIBObjects
+  discovery_attribute: cilmEULAAccepted
+  attributes:
+    cilmEULAAccepted:
+      oid: .1.3.6.1.4.1.9.9.640.1.3
+      name: cilmEULAAccepted
+      syntax: TruthValue
+
+CISCO-IMAGE-LICENSE-MGMT-MIB::cilmBootImageLevelEntry:
+  mib: CISCO-IMAGE-LICENSE-MGMT-MIB
+  object: cilmBootImageLevelEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.1
+      name: cilmModuleName
+      syntax: DisplayString # SnmpAdminString
+  discovery_attribute: cilmCurrentImageLevel
+  attributes:
+    cilmCurrentImageLevel:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.2
+      name: cilmCurrentImageLevel
+      syntax: BootImageLevel
+    cilmConfiguredBootImageLevel:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.3
+      name: cilmConfiguredBootImageLevel
+      syntax: BootImageLevel
+    cilmNextBootImageLevel:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.4
+      name: cilmNextBootImageLevel
+      syntax: BootImageLevel
+    cilmCurrentLicenseStoreIndex:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.5
+      name: cilmCurrentLicenseStoreIndex
+      syntax: Unsigned32
+    cilmCurrentLicenseIndex:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.6
+      name: cilmCurrentLicenseIndex
+      syntax: Unsigned32
+    cilmNextBootLicenseStoreIndex:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.7
+      name: cilmNextBootLicenseStoreIndex
+      syntax: Unsigned32
+    cilmNextBootLicenseIndex:
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.8
+      name: cilmNextBootLicenseIndex
+      syntax: Unsigned32
+
+CISCO-IMAGE-LICENSE-MGMT-MIB::cilmImageLevelToLicenseMapEntry:
+  mib: CISCO-IMAGE-LICENSE-MGMT-MIB
+  object: cilmImageLevelToLicenseMapEntry
+  index:
+    - type: PhysicalIndex
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entPhysicalIndex
+      syntax: PhysicalIndex
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.640.1.1.1.1
+      name: cilmModuleName
+      syntax: DisplayString # SnmpAdminString
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.640.1.2.1.1
+      name: cilmImageLicenseMapIndex
+      syntax: Unsigned32
+  discovery_attribute: cilmImageLicenseImageLevel
+  attributes:
+    cilmImageLicenseImageLevel:
+      oid: .1.3.6.1.4.1.9.9.640.1.2.1.2
+      name: cilmImageLicenseImageLevel
+      syntax: BootImageLevel
+    cilmImageLicenseName:
+      oid: .1.3.6.1.4.1.9.9.640.1.2.1.3
+      name: cilmImageLicenseName
+      syntax: LicenseNameList
+    cilmImageLicensePriority:
+      oid: .1.3.6.1.4.1.9.9.640.1.2.1.4
+      name: cilmImageLicensePriority
+      syntax: Unsigned32
+
+CISCO-IMAGE-LICENSE-MGMT-MIB::cilmNotifCntl:
+  mib: CISCO-IMAGE-LICENSE-MGMT-MIB
+  object: cilmNotifCntl
+  discovery_attribute: cilmImageLevelChangedNotif
+  attributes:
+    cilmImageLevelChangedNotif:
+      oid: .1.3.6.1.4.1.9.9.640.1.4.1
+      name: cilmImageLevelChangedNotif
+      syntax: TruthValue
+

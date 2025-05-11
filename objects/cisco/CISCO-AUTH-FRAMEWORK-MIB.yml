@@ -1,0 +1,304 @@
+CISCO-AUTH-FRAMEWORK-MIB::ciscoAuthFrameworkSystem:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: ciscoAuthFrameworkSystem
+  discovery_attribute: cafAaaNoRespRecoveryDelay
+  attributes:
+    cafAaaNoRespRecoveryDelay:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.1
+      name: cafAaaNoRespRecoveryDelay
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    cafMacMoveMode:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.3
+      name: cafMacMoveMode
+      syntax: EnumInteger
+    cafCoABouncePortCommandIgnoreEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.4
+      name: cafCoABouncePortCommandIgnoreEnabled
+      syntax: TruthValue
+    cafCoADisablePortCommandIgnoreEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.5
+      name: cafCoADisablePortCommandIgnoreEnabled
+      syntax: TruthValue
+
+CISCO-AUTH-FRAMEWORK-MIB::cafAuthMethodRegEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafAuthMethodRegEntry
+  index:
+    - type: CiscoAuthMethod
+      oid: .1.3.6.1.4.1.9.9.656.1.1.2.1.1
+      name: cafAuthMethod
+      syntax: EnumInteger
+  discovery_attribute: cafAuthMethodDefaultPriority
+  attributes:
+    cafAuthMethodDefaultPriority:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.2.1.2
+      name: cafAuthMethodDefaultPriority
+      syntax: Unsigned32
+    cafAuthMethodDefaultExecOrder:
+      oid: .1.3.6.1.4.1.9.9.656.1.1.2.1.3
+      name: cafAuthMethodDefaultExecOrder
+      syntax: Unsigned32
+
+CISCO-AUTH-FRAMEWORK-MIB::cafPortConfigEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafPortConfigEntry
+  index:
+  discovery_attribute: cafPortFallBackProfile
+  attributes:
+    cafPortControlledDirection:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.1
+      name: cafPortControlledDirection
+      syntax: EnumInteger
+    cafPortFallBackProfile:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.2
+      name: cafPortFallBackProfile
+      syntax: DisplayString # SnmpAdminString
+    cafPortAuthHostMode:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.3
+      name: cafPortAuthHostMode
+      syntax: EnumInteger
+    cafPortPreAuthOpenAccess:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.4
+      name: cafPortPreAuthOpenAccess
+      syntax: TruthValue
+    cafPortAuthorizeControl:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.5
+      name: cafPortAuthorizeControl
+      syntax: EnumInteger
+    cafPortReauthEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.6
+      name: cafPortReauthEnabled
+      syntax: TruthValue
+    cafPortReauthInterval:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.7
+      name: cafPortReauthInterval
+      syntax: TicksSec # TODO_TicksSec
+    cafPortRestartInterval:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.8
+      name: cafPortRestartInterval
+      syntax: TicksSec # TODO_TicksSec
+    cafPortInactivityTimeout:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.9
+      name: cafPortInactivityTimeout
+      syntax: TicksSec # TODO_TicksSec
+    cafPortViolationAction:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.1.1.10
+      name: cafPortViolationAction
+      syntax: EnumInteger
+
+CISCO-AUTH-FRAMEWORK-MIB::cafPortMethodEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafPortMethodEntry
+  index:
+  discovery_attribute: cafPortMethodAdminPriority
+  attributes:
+    cafPortMethodAdminExecOrder:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.2.1.1
+      name: cafPortMethodAdminExecOrder
+      syntax: CiscoAuthMethodList
+    cafPortMethodAdminPriority:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.2.1.2
+      name: cafPortMethodAdminPriority
+      syntax: CiscoAuthMethodList
+    cafPortMethodAvailable:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.2.1.3
+      name: cafPortMethodAvailable
+      syntax: CiscoAuthMethodList
+    cafPortMethodOperExecOrder:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.2.1.4
+      name: cafPortMethodOperExecOrder
+      syntax: CiscoAuthMethodList
+    cafPortMethodOperPriority:
+      oid: .1.3.6.1.4.1.9.9.656.1.2.2.1.5
+      name: cafPortMethodOperPriority
+      syntax: CiscoAuthMethodList
+
+CISCO-AUTH-FRAMEWORK-MIB::cafAuthFailedEventPortEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafAuthFailedEventPortEntry
+  index:
+  discovery_attribute: cafAuthFailedNoActionEnabled
+  attributes:
+    cafAuthFailedMaxRetry:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.1.1.1
+      name: cafAuthFailedMaxRetry
+      syntax: Unsigned32
+    cafAuthFailedNoActionEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.1.1.2
+      name: cafAuthFailedNoActionEnabled
+      syntax: TruthValue
+    cafAuthFailedAuthorizedVlan:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.1.1.3
+      name: cafAuthFailedAuthorizedVlan
+      syntax: Integer32
+    cafAuthFailedNextMethodEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.1.1.4
+      name: cafAuthFailedNextMethodEnabled
+      syntax: TruthValue
+
+CISCO-AUTH-FRAMEWORK-MIB::cafClientNoRespEventPortEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafClientNoRespEventPortEntry
+  index:
+  discovery_attribute: cafClientNoRespAuthorizedVlan
+  attributes:
+    cafClientNoRespNoActionEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.2.1.1
+      name: cafClientNoRespNoActionEnabled
+      syntax: TruthValue
+    cafClientNoRespAuthorizedVlan:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.2.1.2
+      name: cafClientNoRespAuthorizedVlan
+      syntax: Integer32
+
+CISCO-AUTH-FRAMEWORK-MIB::cafServerEventPortEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafServerEventPortEntry
+  index:
+  discovery_attribute: cafServerDeadRemainAuthorized
+  attributes:
+    cafServerDeadNoActionEnabled:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.3.1.1
+      name: cafServerDeadNoActionEnabled
+      syntax: TruthValue
+    cafServerDeadRemainAuthorized:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.3.1.2
+      name: cafServerDeadRemainAuthorized
+      syntax: TruthValue
+    cafServerDeadAuthorizedVlan:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.3.1.3
+      name: cafServerDeadAuthorizedVlan
+      syntax: Integer32
+    cafServerAliveAction:
+      oid: .1.3.6.1.4.1.9.9.656.1.3.3.1.4
+      name: cafServerAliveAction
+      syntax: EnumInteger
+
+CISCO-AUTH-FRAMEWORK-MIB::cafSessionEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafSessionEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.1
+      name: cafSessionId
+      syntax: TODO_OctetString # OctetString
+  discovery_attribute: cafSessionClientMacAddress
+  attributes:
+    cafSessionClientMacAddress:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.2
+      name: cafSessionClientMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    cafSessionClientAddrType:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.3
+      name: cafSessionClientAddrType
+      syntax: EnumInteger
+    cafSessionClientAddress:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.4
+      name: cafSessionClientAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    cafSessionStatus:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.5
+      name: cafSessionStatus
+      syntax: EnumInteger
+    cafSessionDomain:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.6
+      name: cafSessionDomain
+      syntax: EnumInteger
+    cafSessionAuthHostMode:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.7
+      name: cafSessionAuthHostMode
+      syntax: EnumInteger
+    cafSessionControlledDirection:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.8
+      name: cafSessionControlledDirection
+      syntax: EnumInteger
+    cafSessionPostureToken:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.9
+      name: cafSessionPostureToken
+      syntax: CnnEouPostureTokenString
+    cafSessionAuthUserName:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.10
+      name: cafSessionAuthUserName
+      syntax: DisplayString # SnmpAdminString
+    cafSessionClientFramedIpPool:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.11
+      name: cafSessionClientFramedIpPool
+      syntax: DisplayString # SnmpAdminString
+    cafSessionAuthorizedBy:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.12
+      name: cafSessionAuthorizedBy
+      syntax: DisplayString # SnmpAdminString
+    cafSessionCriticalTimeLeft:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.13
+      name: cafSessionCriticalTimeLeft
+      syntax: TicksSec # TODO_TicksSec
+    cafSessionAuthVlan:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.14
+      name: cafSessionAuthVlan
+      syntax: VlanIndexOrZero
+    cafSessionTimeout:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.15
+      name: cafSessionTimeout
+      syntax: TicksSec # TODO_TicksSec
+    cafSessionTimeLeft:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.16
+      name: cafSessionTimeLeft
+      syntax: TicksSec # TODO_TicksSec
+    cafSessionTimeoutAction:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.17
+      name: cafSessionTimeoutAction
+      syntax: EnumInteger
+    cafSessionInactivityTimeout:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.18
+      name: cafSessionInactivityTimeout
+      syntax: TicksSec # TODO_TicksSec
+    cafSessionInactivityTimeLeft:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.19
+      name: cafSessionInactivityTimeLeft
+      syntax: TicksSec # TODO_TicksSec
+    cafSessionReauth:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.20
+      name: cafSessionReauth
+      syntax: TruthValue
+    cafSessionTerminate:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.21
+      name: cafSessionTerminate
+      syntax: TruthValue
+    cafSessionVlanGroupName:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.22
+      name: cafSessionVlanGroupName
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-AUTH-FRAMEWORK-MIB::cafSessionMethodsInfoEntry:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: cafSessionMethodsInfoEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.656.1.4.1.1.1
+      name: cafSessionId
+      syntax: TODO_OctetString # OctetString
+    - type: CiscoAuthMethod
+      oid: .1.3.6.1.4.1.9.9.656.1.4.2.1.1
+      name: cafSessionMethod
+      syntax: EnumInteger
+  discovery_attribute: cafSessionMethodState
+  attributes:
+    cafSessionMethodState:
+      oid: .1.3.6.1.4.1.9.9.656.1.4.2.1.2
+      name: cafSessionMethodState
+      syntax: EnumInteger
+
+CISCO-AUTH-FRAMEWORK-MIB::ciscoAuthFrwkNotifControl:
+  mib: CISCO-AUTH-FRAMEWORK-MIB
+  object: ciscoAuthFrwkNotifControl
+  discovery_attribute: cafSecurityViolationNotifEnable
+  attributes:
+    cafSecurityViolationNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.656.1.5.1
+      name: cafSecurityViolationNotifEnable
+      syntax: TruthValue
+    cafAuthFailNotifEnable:
+      oid: .1.3.6.1.4.1.9.9.656.1.5.2
+      name: cafAuthFailNotifEnable
+      syntax: TruthValue
+

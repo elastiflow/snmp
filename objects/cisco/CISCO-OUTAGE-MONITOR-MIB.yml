@@ -1,0 +1,178 @@
+CISCO-OUTAGE-MONITOR-MIB::cOutageBasicInfo:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageBasicInfo
+  discovery_attribute: cOutageApplVersion
+  attributes:
+    cOutageApplVersion:
+      oid: .1.3.6.1.4.1.9.9.280.1.1.1
+      name: cOutageApplVersion
+      syntax: DisplayString # SnmpAdminString
+    cOutageNotificationsSent:
+      oid: .1.3.6.1.4.1.9.9.280.1.1.2
+      name: cOutageNotificationsSent
+      syntax: Counter32
+    cOutageNotificationsEnabled:
+      oid: .1.3.6.1.4.1.9.9.280.1.1.3
+      name: cOutageNotificationsEnabled
+      syntax: TruthValue
+    cOutageNotificationFilterEnabled:
+      oid: .1.3.6.1.4.1.9.9.280.1.1.4
+      name: cOutageNotificationFilterEnabled
+      syntax: TruthValue
+    cOutageFilteredEvents:
+      oid: .1.3.6.1.4.1.9.9.280.1.1.5
+      name: cOutageFilteredEvents
+      syntax: Counter32
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageHistory:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageHistory
+  discovery_attribute: cOutageHistTableSize
+  attributes:
+    cOutageHistTableSize:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.1
+      name: cOutageHistTableSize
+      syntax: Unsigned32
+    cOutageHistMsgsFlushed:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.2
+      name: cOutageHistMsgsFlushed
+      syntax: Counter32
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageHistoryEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageHistoryEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.1
+      name: cOutageEventIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageEventObjectType
+  attributes:
+    cOutageEventObjectType:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.2
+      name: cOutageEventObjectType
+      syntax: EnumInteger
+    cOutageEventMonObjectIndex:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.3
+      name: cOutageEventMonObjectIndex
+      syntax: Unsigned32
+    cOutageEventTypeIndex:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.4
+      name: cOutageEventTypeIndex
+      syntax: Unsigned32
+    cOutageEventTime:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.5
+      name: cOutageEventTime
+      syntax: DateAndTime
+    cOutageEventInterval:
+      oid: .1.3.6.1.4.1.9.9.280.1.2.3.1.6
+      name: cOutageEventInterval
+      syntax: Unsigned32
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageEventTypeMapEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageEventTypeMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.3.1.1.1
+      name: cOutageEventTypeMapIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageEventTypeName
+  attributes:
+    cOutageEventTypeName:
+      oid: .1.3.6.1.4.1.9.9.280.1.3.1.1.2
+      name: cOutageEventTypeName
+      syntax: DisplayString # SnmpAdminString
+    cOutageEventTypeDescrText:
+      oid: .1.3.6.1.4.1.9.9.280.1.3.1.1.3
+      name: cOutageEventTypeDescrText
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageObjectEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageObjectEntry
+  index:
+    - type: OutageMonObjectType
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.1
+      name: cOutageObjectType
+      syntax: EnumInteger
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.2
+      name: cOutageMonitoredObjectIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageCurrentStatus
+  attributes:
+    cOutageCurrentStatus:
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.3
+      name: cOutageCurrentStatus
+      syntax: EnumInteger
+    cOutageAOTSinceMeasureStarted:
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.4
+      name: cOutageAOTSinceMeasureStarted
+      syntax: Unsigned32
+    cOutageNAFSinceMeasureStarted:
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.5
+      name: cOutageNAFSinceMeasureStarted
+      syntax: Unsigned32
+    cOutageRecordingStartTime:
+      oid: .1.3.6.1.4.1.9.9.280.1.4.1.1.6
+      name: cOutageRecordingStartTime
+      syntax: DateAndTime
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageCpmMapEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageCpmMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.5.1.1.1
+      name: cOutageCpmMapIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageCpmCPUTotalIndex
+  attributes:
+    cOutageCpmCPUTotalIndex:
+      oid: .1.3.6.1.4.1.9.9.280.1.5.1.1.2
+      name: cOutageCpmCPUTotalIndex
+      syntax: Unsigned32
+    cOutageCpmProcessPID:
+      oid: .1.3.6.1.4.1.9.9.280.1.5.1.1.3
+      name: cOutageCpmProcessPID
+      syntax: Unsigned32
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageRemoteObjMapEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageRemoteObjMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.6.1.1.1
+      name: cOutageRemoteObjMapIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageRemoteObjIDType
+  attributes:
+    cOutageRemoteObjIDType:
+      oid: .1.3.6.1.4.1.9.9.280.1.6.1.1.2
+      name: cOutageRemoteObjIDType
+      syntax: EnumInteger
+    cOutageRemoteObjID:
+      oid: .1.3.6.1.4.1.9.9.280.1.6.1.1.3
+      name: cOutageRemoteObjID
+      syntax: IpAddressNoSuffix # InetAddress
+    cOutageRemoteObjDescrText:
+      oid: .1.3.6.1.4.1.9.9.280.1.6.1.1.4
+      name: cOutageRemoteObjDescrText
+      syntax: DisplayString # SnmpAdminString
+
+CISCO-OUTAGE-MONITOR-MIB::cOutageLogicalObjMapEntry:
+  mib: CISCO-OUTAGE-MONITOR-MIB
+  object: cOutageLogicalObjMapEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.280.1.7.1.1.1
+      name: cOutageLogicalObjMapIndex
+      syntax: Unsigned32
+  discovery_attribute: cOutageLogicalObjDescrText
+  attributes:
+    cOutageLogicalObjDescrText:
+      oid: .1.3.6.1.4.1.9.9.280.1.7.1.1.2
+      name: cOutageLogicalObjDescrText
+      syntax: DisplayString # SnmpAdminString
+

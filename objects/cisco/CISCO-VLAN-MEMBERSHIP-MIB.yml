@@ -1,0 +1,195 @@
+CISCO-VLAN-MEMBERSHIP-MIB::vmVmps:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmVmps
+  discovery_attribute: vmVmpsVQPVersion
+  attributes:
+    vmVmpsVQPVersion:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.1
+      name: vmVmpsVQPVersion
+      syntax: Integer32
+    vmVmpsRetries:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.2
+      name: vmVmpsRetries
+      syntax: Integer32
+    vmVmpsReconfirmInterval:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.3
+      name: vmVmpsReconfirmInterval
+      syntax: Integer32
+    vmVmpsReconfirm:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.4
+      name: vmVmpsReconfirm
+      syntax: EnumInteger
+    vmVmpsReconfirmResult:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.5
+      name: vmVmpsReconfirmResult
+      syntax: EnumInteger
+    vmVmpsCurrent:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.6
+      name: vmVmpsCurrent
+      syntax: IpAddressNoSuffix # IpAddress
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmVmpsEntry:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmVmpsEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.9.68.1.1.7.1.1
+      name: vmVmpsIpAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: vmVmpsPrimary
+  attributes:
+    vmVmpsPrimary:
+      oid: .1.3.6.1.4.1.9.9.68.1.1.7.1.2
+      name: vmVmpsPrimary
+      syntax: TruthValue
+#    vmVmpsRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.68.1.1.7.1.3
+#      name: vmVmpsRowStatus
+#      syntax: RowStatus
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmMembership:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmMembership
+  discovery_attribute: vmVlanCreationMode
+  attributes:
+    vmVlanCreationMode:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.4
+      name: vmVlanCreationMode
+      syntax: EnumInteger
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmMembershipSummaryEntry:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmMembershipSummaryEntry
+  index:
+    - type: VlanIndex
+      oid: .1.3.6.1.4.1.9.9.68.1.2.1.1.1
+      name: vmMembershipSummaryVlanIndex
+      syntax: InterfaceIndex # VlanIndex
+  discovery_attribute: vmMembershipSummaryMemberPorts
+  attributes:
+    vmMembershipSummaryMemberPorts:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.1.1.2
+      name: vmMembershipSummaryMemberPorts
+      syntax: TODO_OctetString # OctetString
+    vmMembershipSummaryMember2kPorts:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.1.1.3
+      name: vmMembershipSummaryMember2kPorts
+      syntax: CiscoPortList
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmMembershipEntry:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmMembershipEntry
+  index:
+  discovery_attribute: vmVlan
+  attributes:
+    vmVlanType:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.1
+      name: vmVlanType
+      syntax: EnumInteger
+    vmVlan:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.2
+      name: vmVlan
+      syntax: Integer32
+    vmPortStatus:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.3
+      name: vmPortStatus
+      syntax: EnumInteger
+    vmVlans:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.4
+      name: vmVlans
+      syntax: TODO_OctetString # OctetString
+    vmVlans2k:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.5
+      name: vmVlans2k
+      syntax: TODO_OctetString # OctetString
+    vmVlans3k:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.6
+      name: vmVlans3k
+      syntax: TODO_OctetString # OctetString
+    vmVlans4k:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.2.1.7
+      name: vmVlans4k
+      syntax: TODO_OctetString # OctetString
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmMembershipSummaryExtEntry:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmMembershipSummaryExtEntry
+  index:
+    - type: VlanIndex
+      oid: .1.3.6.1.4.1.9.9.68.1.2.1.1.1
+      name: vmMembershipSummaryVlanIndex
+      syntax: InterfaceIndex # VlanIndex
+    - type: CiscoPortListRange
+      oid: .1.3.6.1.4.1.9.9.68.1.2.3.1.1
+      name: vmMembershipPortRangeIndex
+      syntax: EnumInteger
+  discovery_attribute: vmMembershipSummaryExtPorts
+  attributes:
+    vmMembershipSummaryExtPorts:
+      oid: .1.3.6.1.4.1.9.9.68.1.2.3.1.2
+      name: vmMembershipSummaryExtPorts
+      syntax: CiscoPortList
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmStatistics:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmStatistics
+  discovery_attribute: vmVQPQueries
+  attributes:
+    vmVQPQueries:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.1
+      name: vmVQPQueries
+      syntax: Counter32
+    vmVQPResponses:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.2
+      name: vmVQPResponses
+      syntax: Counter32
+    vmVmpsChanges:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.3
+      name: vmVmpsChanges
+      syntax: Counter32
+    vmVQPShutdown:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.4
+      name: vmVQPShutdown
+      syntax: Counter32
+    vmVQPDenied:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.5
+      name: vmVQPDenied
+      syntax: Counter32
+    vmVQPWrongDomain:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.6
+      name: vmVQPWrongDomain
+      syntax: Counter32
+    vmVQPWrongVersion:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.7
+      name: vmVQPWrongVersion
+      syntax: Counter32
+    vmInsufficientResources:
+      oid: .1.3.6.1.4.1.9.9.68.1.3.8
+      name: vmInsufficientResources
+      syntax: Counter32
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmStatus:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmStatus
+  discovery_attribute: vmNotificationsEnabled
+  attributes:
+    vmNotificationsEnabled:
+      oid: .1.3.6.1.4.1.9.9.68.1.4.1
+      name: vmNotificationsEnabled
+      syntax: TruthValue
+
+CISCO-VLAN-MEMBERSHIP-MIB::vmVoiceVlanEntry:
+  mib: CISCO-VLAN-MEMBERSHIP-MIB
+  object: vmVoiceVlanEntry
+  index:
+  discovery_attribute: vmVoiceVlanCdpVerifyEnable
+  attributes:
+    vmVoiceVlanId:
+      oid: .1.3.6.1.4.1.9.9.68.1.5.1.1.1
+      name: vmVoiceVlanId
+      syntax: Integer32
+    vmVoiceVlanCdpVerifyEnable:
+      oid: .1.3.6.1.4.1.9.9.68.1.5.1.1.2
+      name: vmVoiceVlanCdpVerifyEnable
+      syntax: TruthValue
+

@@ -1,0 +1,262 @@
+PIM-MIB::pim:
+  mib: PIM-MIB
+  object: pim
+  discovery_attribute: pimJoinPruneInterval
+  attributes:
+    pimJoinPruneInterval:
+      oid: .1.3.6.1.3.61.1.1.1
+      name: pimJoinPruneInterval
+      syntax: TicksSec # TODO_TicksSec
+
+PIM-MIB::pimInterfaceEntry:
+  mib: PIM-MIB
+  object: pimInterfaceEntry
+  index:
+    - type: InterfaceIndex
+      oid: .1.3.6.1.3.61.1.1.2.1.1
+      name: pimInterfaceIfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: pimInterfaceAddress
+  attributes:
+    pimInterfaceAddress:
+      oid: .1.3.6.1.3.61.1.1.2.1.2
+      name: pimInterfaceAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    pimInterfaceNetMask:
+      oid: .1.3.6.1.3.61.1.1.2.1.3
+      name: pimInterfaceNetMask
+      syntax: IpAddressNoSuffix # IpAddress
+    pimInterfaceMode:
+      oid: .1.3.6.1.3.61.1.1.2.1.4
+      name: pimInterfaceMode
+      syntax: EnumInteger
+    pimInterfaceDR:
+      oid: .1.3.6.1.3.61.1.1.2.1.5
+      name: pimInterfaceDR
+      syntax: IpAddressNoSuffix # IpAddress
+    pimInterfaceHelloInterval:
+      oid: .1.3.6.1.3.61.1.1.2.1.6
+      name: pimInterfaceHelloInterval
+      syntax: TicksSec # TODO_TicksSec
+#    pimInterfaceStatus:
+#      oid: .1.3.6.1.3.61.1.1.2.1.7
+#      name: pimInterfaceStatus
+#      syntax: RowStatus
+    pimInterfaceJoinPruneInterval:
+      oid: .1.3.6.1.3.61.1.1.2.1.8
+      name: pimInterfaceJoinPruneInterval
+      syntax: TicksSec # TODO_TicksSec
+    pimInterfaceCBSRPreference:
+      oid: .1.3.6.1.3.61.1.1.2.1.9
+      name: pimInterfaceCBSRPreference
+      syntax: Integer32
+
+PIM-MIB::pimNeighborEntry:
+  mib: PIM-MIB
+  object: pimNeighborEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.3.1.1
+      name: pimNeighborAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimNeighborIfIndex
+  attributes:
+    pimNeighborIfIndex:
+      oid: .1.3.6.1.3.61.1.1.3.1.2
+      name: pimNeighborIfIndex
+      syntax: InterfaceIndex
+    pimNeighborUpTime:
+      oid: .1.3.6.1.3.61.1.1.3.1.3
+      name: pimNeighborUpTime
+      syntax: TimeTicks
+    pimNeighborExpiryTime:
+      oid: .1.3.6.1.3.61.1.1.3.1.4
+      name: pimNeighborExpiryTime
+      syntax: TimeTicks
+    pimNeighborMode:
+      oid: .1.3.6.1.3.61.1.1.3.1.5
+      name: pimNeighborMode
+      syntax: EnumInteger
+
+PIM-MIB::pimIpMRouteEntry:
+  mib: PIM-MIB
+  object: pimIpMRouteEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.2.1.1
+      name: ipMRouteGroup
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.2.1.2
+      name: ipMRouteSource
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.2.1.3
+      name: ipMRouteSourceMask
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimIpMRouteAssertMetric
+  attributes:
+    pimIpMRouteUpstreamAssertTimer:
+      oid: .1.3.6.1.3.61.1.1.4.1.1
+      name: pimIpMRouteUpstreamAssertTimer
+      syntax: TimeTicks
+    pimIpMRouteAssertMetric:
+      oid: .1.3.6.1.3.61.1.1.4.1.2
+      name: pimIpMRouteAssertMetric
+      syntax: Integer32
+    pimIpMRouteAssertMetricPref:
+      oid: .1.3.6.1.3.61.1.1.4.1.3
+      name: pimIpMRouteAssertMetricPref
+      syntax: Integer32
+    pimIpMRouteAssertRPTBit:
+      oid: .1.3.6.1.3.61.1.1.4.1.4
+      name: pimIpMRouteAssertRPTBit
+      syntax: TruthValue
+    pimIpMRouteFlags:
+      oid: .1.3.6.1.3.61.1.1.4.1.5
+      name: pimIpMRouteFlags
+      syntax: EnumBitmap
+
+PIM-MIB::pimRPEntry:
+  mib: PIM-MIB
+  object: pimRPEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.5.1.1
+      name: pimRPGroupAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.5.1.2
+      name: pimRPAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimRPState
+  attributes:
+    pimRPState:
+      oid: .1.3.6.1.3.61.1.1.5.1.3
+      name: pimRPState
+      syntax: EnumInteger
+    pimRPStateTimer:
+      oid: .1.3.6.1.3.61.1.1.5.1.4
+      name: pimRPStateTimer
+      syntax: TimeTicks
+    pimRPLastChange:
+      oid: .1.3.6.1.3.61.1.1.5.1.5
+      name: pimRPLastChange
+      syntax: TimeTicks
+#    pimRPRowStatus:
+#      oid: .1.3.6.1.3.61.1.1.5.1.6
+#      name: pimRPRowStatus
+#      syntax: RowStatus
+
+PIM-MIB::pimRPSetEntry:
+  mib: PIM-MIB
+  object: pimRPSetEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.3.61.1.1.6.1.6
+      name: pimRPSetComponent
+      syntax: Integer32
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.6.1.1
+      name: pimRPSetGroupAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.6.1.2
+      name: pimRPSetGroupMask
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.6.1.3
+      name: pimRPSetAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimRPSetHoldTime
+  attributes:
+    pimRPSetHoldTime:
+      oid: .1.3.6.1.3.61.1.1.6.1.4
+      name: pimRPSetHoldTime
+      syntax: TicksSec # TODO_TicksSec
+    pimRPSetExpiryTime:
+      oid: .1.3.6.1.3.61.1.1.6.1.5
+      name: pimRPSetExpiryTime
+      syntax: TimeTicks
+
+PIM-MIB::pimIpMRouteNextHopEntry:
+  mib: PIM-MIB
+  object: pimIpMRouteNextHopEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.3.1.1
+      name: ipMRouteNextHopGroup
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.3.1.2
+      name: ipMRouteNextHopSource
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.3.1.3
+      name: ipMRouteNextHopSourceMask
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: InterfaceIndex
+      oid: .1.3.6.1.2.1.83.1.1.3.1.4
+      name: ipMRouteNextHopIfIndex
+      syntax: InterfaceIndex
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.83.1.1.3.1.5
+      name: ipMRouteNextHopAddress
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimIpMRouteNextHopPruneReason
+  attributes:
+    pimIpMRouteNextHopPruneReason:
+      oid: .1.3.6.1.3.61.1.1.7.1.2
+      name: pimIpMRouteNextHopPruneReason
+      syntax: EnumInteger
+
+PIM-MIB::pimCandidateRPEntry:
+  mib: PIM-MIB
+  object: pimCandidateRPEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.11.1.1
+      name: pimCandidateRPGroupAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.3.61.1.1.11.1.2
+      name: pimCandidateRPGroupMask
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: pimCandidateRPAddress
+  attributes:
+    pimCandidateRPAddress:
+      oid: .1.3.6.1.3.61.1.1.11.1.3
+      name: pimCandidateRPAddress
+      syntax: IpAddressNoSuffix # IpAddress
+#    pimCandidateRPRowStatus:
+#      oid: .1.3.6.1.3.61.1.1.11.1.4
+#      name: pimCandidateRPRowStatus
+#      syntax: RowStatus
+
+PIM-MIB::pimComponentEntry:
+  mib: PIM-MIB
+  object: pimComponentEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.3.61.1.1.12.1.1
+      name: pimComponentIndex
+      syntax: Integer32
+  discovery_attribute: pimComponentBSRAddress
+  attributes:
+    pimComponentBSRAddress:
+      oid: .1.3.6.1.3.61.1.1.12.1.2
+      name: pimComponentBSRAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    pimComponentBSRExpiryTime:
+      oid: .1.3.6.1.3.61.1.1.12.1.3
+      name: pimComponentBSRExpiryTime
+      syntax: TimeTicks
+    pimComponentCRPHoldTime:
+      oid: .1.3.6.1.3.61.1.1.12.1.4
+      name: pimComponentCRPHoldTime
+      syntax: TicksSec # TODO_TicksSec
+#    pimComponentStatus:
+#      oid: .1.3.6.1.3.61.1.1.12.1.5
+#      name: pimComponentStatus
+#      syntax: RowStatus
+

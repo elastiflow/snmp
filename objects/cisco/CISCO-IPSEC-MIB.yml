@@ -1,0 +1,273 @@
+CISCO-IPSEC-MIB::cipsIsakmpGroup:
+  mib: CISCO-IPSEC-MIB
+  object: cipsIsakmpGroup
+  discovery_attribute: cipsIsakmpEnabled
+  attributes:
+    cipsIsakmpEnabled:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.1
+      name: cipsIsakmpEnabled
+      syntax: TruthValue
+    cipsIsakmpIdentity:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.2
+      name: cipsIsakmpIdentity
+      syntax: EnumInteger
+    cipsIsakmpKeepaliveInterval:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.3
+      name: cipsIsakmpKeepaliveInterval
+      syntax: TicksSec # TODO_TicksSec
+    cipsNumIsakmpPolicies:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.4
+      name: cipsNumIsakmpPolicies
+      syntax: Integer32
+
+CISCO-IPSEC-MIB::cipsIsakmpPolicyEntry:
+  mib: CISCO-IPSEC-MIB
+  object: cipsIsakmpPolicyEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.1
+      name: cipsIsakmpPolPriority
+      syntax: Integer32
+  discovery_attribute: cipsIsakmpPolEncr
+  attributes:
+    cipsIsakmpPolEncr:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.2
+      name: cipsIsakmpPolEncr
+      syntax: EnumInteger
+    cipsIsakmpPolHash:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.3
+      name: cipsIsakmpPolHash
+      syntax: EnumInteger
+    cipsIsakmpPolAuth:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.4
+      name: cipsIsakmpPolAuth
+      syntax: EnumInteger
+    cipsIsakmpPolGroup:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.5
+      name: cipsIsakmpPolGroup
+      syntax: EnumInteger
+    cipsIsakmpPolLifetime:
+      oid: .1.3.6.1.4.1.9.10.62.1.1.5.1.6
+      name: cipsIsakmpPolLifetime
+      syntax: TicksSec # TODO_TicksSec
+
+CISCO-IPSEC-MIB::cipsIPsecGlobals:
+  mib: CISCO-IPSEC-MIB
+  object: cipsIPsecGlobals
+  discovery_attribute: cipsSALifetime
+  attributes:
+    cipsSALifetime:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.1
+      name: cipsSALifetime
+      syntax: TicksSec # TODO_TicksSec
+    cipsSALifesize:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.2
+      name: cipsSALifesize
+      syntax: CIPsecLifesize
+    cipsNumStaticCryptomapSets:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.3
+      name: cipsNumStaticCryptomapSets
+      syntax: CIPsecNumCryptoMaps
+    cipsNumCETCryptomapSets:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.4
+      name: cipsNumCETCryptomapSets
+      syntax: CIPsecNumCryptoMaps
+    cipsNumDynamicCryptomapSets:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.5
+      name: cipsNumDynamicCryptomapSets
+      syntax: CIPsecNumCryptoMaps
+    cipsNumTEDCryptomapSets:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.1.6
+      name: cipsNumTEDCryptomapSets
+      syntax: CIPsecNumCryptoMaps
+
+CISCO-IPSEC-MIB::cipsIPsecStatistics:
+  mib: CISCO-IPSEC-MIB
+  object: cipsIPsecStatistics
+  discovery_attribute: cipsNumTEDProbesReceived
+  attributes:
+    cipsNumTEDProbesReceived:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.2.1
+      name: cipsNumTEDProbesReceived
+      syntax: Counter32
+    cipsNumTEDProbesSent:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.2.2
+      name: cipsNumTEDProbesSent
+      syntax: Counter32
+    cipsNumTEDFailures:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.2.3
+      name: cipsNumTEDFailures
+      syntax: Counter32
+
+CISCO-IPSEC-MIB::cipsStaticCryptomapSetEntry:
+  mib: CISCO-IPSEC-MIB
+  object: cipsStaticCryptomapSetEntry
+  index:
+    - type: DisplayString
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.1
+      name: cipsStaticCryptomapSetName
+      syntax: DisplayString
+  discovery_attribute: cipsStaticCryptomapSetSize
+  attributes:
+    cipsStaticCryptomapSetSize:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.2
+      name: cipsStaticCryptomapSetSize
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumIsakmp:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.3
+      name: cipsStaticCryptomapSetNumIsakmp
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumManual:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.4
+      name: cipsStaticCryptomapSetNumManual
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumCET:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.5
+      name: cipsStaticCryptomapSetNumCET
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumDynamic:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.6
+      name: cipsStaticCryptomapSetNumDynamic
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumDisc:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.7
+      name: cipsStaticCryptomapSetNumDisc
+      syntax: Gauge32
+    cipsStaticCryptomapSetNumSAs:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.8
+      name: cipsStaticCryptomapSetNumSAs
+      syntax: Gauge32
+
+CISCO-IPSEC-MIB::cipsDynamicCryptomapSetEntry:
+  mib: CISCO-IPSEC-MIB
+  object: cipsDynamicCryptomapSetEntry
+  index:
+    - type: DisplayString
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.2.1.1
+      name: cipsDynamicCryptomapSetName
+      syntax: DisplayString
+  discovery_attribute: cipsDynamicCryptomapSetSize
+  attributes:
+    cipsDynamicCryptomapSetSize:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.2.1.2
+      name: cipsDynamicCryptomapSetSize
+      syntax: Gauge32
+    cipsDynamicCryptomapSetNumAssoc:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.2.1.3
+      name: cipsDynamicCryptomapSetNumAssoc
+      syntax: Gauge32
+
+CISCO-IPSEC-MIB::cipsStaticCryptomapEntry:
+  mib: CISCO-IPSEC-MIB
+  object: cipsStaticCryptomapEntry
+  index:
+    - type: DisplayString
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.1
+      name: cipsStaticCryptomapSetName
+      syntax: DisplayString
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.1
+      name: cipsStaticCryptomapPriority
+      syntax: Integer32
+  discovery_attribute: cipsStaticCryptomapType
+  attributes:
+    cipsStaticCryptomapType:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.2
+      name: cipsStaticCryptomapType
+      syntax: EnumInteger
+    cipsStaticCryptomapDescr:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.3
+      name: cipsStaticCryptomapDescr
+      syntax: DisplayString
+    cipsStaticCryptomapPeer:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.4
+      name: cipsStaticCryptomapPeer
+      syntax: IPSIpAddress
+    cipsStaticCryptomapNumPeers:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.5
+      name: cipsStaticCryptomapNumPeers
+      syntax: Integer32
+    cipsStaticCryptomapPfs:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.6
+      name: cipsStaticCryptomapPfs
+      syntax: EnumInteger
+    cipsStaticCryptomapLifetime:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.7
+      name: cipsStaticCryptomapLifetime
+      syntax: Integer32
+    cipsStaticCryptomapLifesize:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.8
+      name: cipsStaticCryptomapLifesize
+      syntax: Integer32
+    cipsStaticCryptomapLevelHost:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.3.1.9
+      name: cipsStaticCryptomapLevelHost
+      syntax: TruthValue
+
+CISCO-IPSEC-MIB::cipsCryptomapSetIfEntry:
+  mib: CISCO-IPSEC-MIB
+  object: cipsCryptomapSetIfEntry
+  index:
+    - type: DisplayString
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.1.1.1
+      name: cipsStaticCryptomapSetName
+      syntax: DisplayString
+  discovery_attribute: cipsCryptomapSetIfStatus
+  attributes:
+    cipsCryptomapSetIfVirtual:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.4.1.1
+      name: cipsCryptomapSetIfVirtual
+      syntax: TruthValue
+    cipsCryptomapSetIfStatus:
+      oid: .1.3.6.1.4.1.9.10.62.1.2.3.4.1.2
+      name: cipsCryptomapSetIfStatus
+      syntax: EnumInteger
+
+CISCO-IPSEC-MIB::cipsSysCapacityGroup:
+  mib: CISCO-IPSEC-MIB
+  object: cipsSysCapacityGroup
+  discovery_attribute: cipsMaxSAs
+  attributes:
+    cipsMaxSAs:
+      oid: .1.3.6.1.4.1.9.10.62.1.3.1
+      name: cipsMaxSAs
+      syntax: Integer32
+    cips3DesCapable:
+      oid: .1.3.6.1.4.1.9.10.62.1.3.2
+      name: cips3DesCapable
+      syntax: TruthValue
+
+CISCO-IPSEC-MIB::cipsTrapCntlGroup:
+  mib: CISCO-IPSEC-MIB
+  object: cipsTrapCntlGroup
+  discovery_attribute: cipsCntlIsakmpPolicyAdded
+  attributes:
+    cipsCntlIsakmpPolicyAdded:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.1
+      name: cipsCntlIsakmpPolicyAdded
+      syntax: EnumInteger
+    cipsCntlIsakmpPolicyDeleted:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.2
+      name: cipsCntlIsakmpPolicyDeleted
+      syntax: EnumInteger
+    cipsCntlCryptomapAdded:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.3
+      name: cipsCntlCryptomapAdded
+      syntax: EnumInteger
+    cipsCntlCryptomapDeleted:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.4
+      name: cipsCntlCryptomapDeleted
+      syntax: EnumInteger
+    cipsCntlCryptomapSetAttached:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.5
+      name: cipsCntlCryptomapSetAttached
+      syntax: EnumInteger
+    cipsCntlCryptomapSetDetached:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.6
+      name: cipsCntlCryptomapSetDetached
+      syntax: EnumInteger
+    cipsCntlTooManySAs:
+      oid: .1.3.6.1.4.1.9.10.62.1.4.7
+      name: cipsCntlTooManySAs
+      syntax: EnumInteger
+
