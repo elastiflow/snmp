@@ -1,0 +1,529 @@
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcObjects:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcObjects
+#   discovery_attribute: ctpcStatNotifyEnable
+#   attributes:
+#     ctpcStatNotifyEnable:
+#       oid: .1.3.6.1.4.1.9.9.644.1.1.1
+#       name: cisco.ctpcStatNotifyEnable
+#       syntax: TruthValue
+#     ctpcMgmtSysConnNotifyEnable:
+#       oid: .1.3.6.1.4.1.9.9.644.1.1.2
+#       name: cisco.ctpcMgmtSysConnNotifyEnable
+#       syntax: TruthValue
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcInfoObjects:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcInfoObjects
+#   discovery_attribute: ctpcLocalAddr
+#   attributes:
+#     ctpcLocalAddr:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.2
+#       name: cisco.ctpcLocalAddr
+#       syntax: IpAddressNoSuffix # InetAddress
+#     ctpcMode:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.4
+#       name: cisco.ctpcMode
+#       syntax: EnumInteger
+#     ctpcActiveMgmtSysIndex:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.5
+#       name: cisco.ctpcActiveMgmtSysIndex
+#       syntax: Unsigned32
+#     ctpcTxDscpTelepresenceConfigured:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.7
+#       name: cisco.ctpcTxDscpTelepresenceConfigured
+#       syntax: Integer32 # Dscp
+#     ctpcTxDscpAudioConfigured:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.8
+#       name: cisco.ctpcTxDscpAudioConfigured
+#       syntax: Integer32 # Dscp
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcLocalDirNumEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcLocalDirNumEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.3.1.1
+#       name: cisco.ctpcLocalDirNumIndex
+#       syntax: Unsigned32
+#   discovery_attribute: ctpcLocalDirNum
+#   attributes:
+#     ctpcLocalDirNum:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.3.1.2
+#       name: cisco.ctpcLocalDirNum
+#       syntax: OctetString # CtpcE164Address
+#     ctpcExtNumberMask:
+#       oid: .1.3.6.1.4.1.9.9.644.1.2.3.1.3
+#       name: cisco.ctpcExtNumberMask
+#       syntax: DisplayString # SnmpAdminString
+
+CISCO-TELEPRESENCE-CALL-MIB::ctpcMgmtSysEntry:
+  mib: CISCO-TELEPRESENCE-CALL-MIB
+  object: ctpcMgmtSysEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.644.1.2.6.1.1
+      name: cisco.ctpcMgmtSysIndex
+      syntax: Unsigned32
+  discovery_attribute: ctpcMgmtSysAddr
+  attributes:
+    ctpcMgmtSysAddr:
+      oid: .1.3.6.1.4.1.9.9.644.1.2.6.1.3
+      name: cisco.ctpcMgmtSysAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    ctpcMgmtSysConnStatus:
+      oid: .1.3.6.1.4.1.9.9.644.1.2.6.1.4
+      name: cisco.ctpcMgmtSysConnStatus
+      syntax: EnumInteger
+    ctpcMgmtSysSIPRespCode:
+      oid: .1.3.6.1.4.1.9.9.644.1.2.6.1.5
+      name: cisco.ctpcMgmtSysSIPRespCode
+      syntax: Unsigned32
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcStatMonitoredEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcStatMonitoredEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.1
+#       name: cisco.ctpcStatMonitoredType
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.2
+#       name: cisco.ctpcStatMonitoredStreamType
+#       syntax: EnumInteger
+#   discovery_attribute: ctpcStatMonitoredUnit
+#   attributes:
+#     ctpcStatMonitoredUnit:
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.3
+#       name: cisco.ctpcStatMonitoredUnit
+#       syntax: EnumInteger
+#     ctpcStatRisingThreshold:
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.4
+#       name: cisco.ctpcStatRisingThreshold
+#       syntax: Unsigned32
+#     ctpcStatFallingThreshold:
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.5
+#       name: cisco.ctpcStatFallingThreshold
+#       syntax: Unsigned32
+#     ctpcStatStartupAlarm:
+#       oid: .1.3.6.1.4.1.9.9.644.1.3.1.1.6
+#       name: cisco.ctpcStatStartupAlarm
+#       syntax: EnumInteger
+
+CISCO-TELEPRESENCE-CALL-MIB::ctpcStatObjects:
+  mib: CISCO-TELEPRESENCE-CALL-MIB
+  object: ctpcStatObjects
+  discovery_attribute: ctpcStatOverallCalls
+  attributes:
+    ctpcStatOverallCalls:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.1
+      name: cisco.ctpcStatOverallCalls
+      syntax: Unsigned32
+    ctpcStatOverallCallTime:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.2
+      name: cisco.ctpcStatOverallCallTime
+      syntax: TicksSec
+    ctpcStatTotalCalls:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.3
+      name: cisco.ctpcStatTotalCalls
+      syntax: Unsigned32
+    ctpcStatTotalCallTime:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.4
+      name: cisco.ctpcStatTotalCallTime
+      syntax: TicksSec
+    ctpcSamplePeriod:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.5
+      name: cisco.ctpcSamplePeriod
+      syntax: TicksSec
+    ctpcTableSize:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.6
+      name: cisco.ctpcTableSize
+      syntax: Integer32
+    ctpcTableLastIndex:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.7
+      name: cisco.ctpcTableLastIndex
+      syntax: Unsigned32
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.1
+#       name: cisco.ctpcIndex
+#       syntax: Unsigned32
+#   discovery_attribute: ctpcRemoteDirNum
+#   attributes:
+#     ctpcRemoteDirNum:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.2
+#       name: cisco.ctpcRemoteDirNum
+#       syntax: OctetString # CtpcE164Address
+#     ctpcLocalSIPCallId:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.3
+#       name: cisco.ctpcLocalSIPCallId
+#       syntax: DisplayString # SnmpAdminString
+#     ctpcTxDestAddr:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.5
+#       name: cisco.ctpcTxDestAddr
+#       syntax: IpAddressNoSuffix # InetAddress
+#     ctpcStartDateAndTime:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.6
+#       name: cisco.ctpcStartDateAndTime
+#       syntax: DateAndTime
+#     ctpcDuration:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.7
+#       name: cisco.ctpcDuration
+#       syntax: TicksSec
+#     ctpcType:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.8
+#       name: cisco.ctpcType
+#       syntax: EnumInteger
+#     ctpcSecurity:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.9
+#       name: cisco.ctpcSecurity
+#       syntax: EnumInteger
+#     ctpcDirection:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.10
+#       name: cisco.ctpcDirection
+#       syntax: EnumInteger
+#     ctpcState:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.11
+#       name: cisco.ctpcState
+#       syntax: EnumInteger
+#     ctpcInitialBitRate:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.12
+#       name: cisco.ctpcInitialBitRate
+#       syntax: Unsigned32
+#     ctpcLatestBitRate:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.13
+#       name: cisco.ctpcLatestBitRate
+#       syntax: Unsigned32
+#     ctpcAttributes:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.15
+#       name: cisco.ctpcAttributes
+#       syntax: EnumInteger
+#     ctpcRemoteDevice:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.16
+#       name: cisco.ctpcRemoteDevice
+#       syntax: EnumInteger
+#     ctpcCallTermReason:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.17
+#       name: cisco.ctpcCallTermReason
+#       syntax: EnumInteger
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcStatStreamTypeEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcStatStreamTypeEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.1
+#       name: cisco.ctpcIndex
+#       syntax: Unsigned32
+#     - type: Integer
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.1
+#       name: cisco.ctpcStreamType
+#       syntax: EnumInteger
+#   discovery_attribute: ctpcAvgPeriodLatency
+#   attributes:
+#     ctpcAvgPeriodLatency:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.2
+#       name: cisco.ctpcAvgPeriodLatency
+#       syntax: TicksMilliSec
+#     ctpcAvgCallLatency:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.3
+#       name: cisco.ctpcAvgCallLatency
+#       syntax: TicksMilliSec
+#     ctpcMaxPeriodLatency:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.4
+#       name: cisco.ctpcMaxPeriodLatency
+#       syntax: TicksMilliSec
+#     ctpcMaxCallLatency:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.5
+#       name: cisco.ctpcMaxCallLatency
+#       syntax: TicksMilliSec
+#     ctpcMaxCallLatencyRecTime:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.6
+#       name: cisco.ctpcMaxCallLatencyRecTime
+#       syntax: TicksSec
+#     ctpcMediaSrcPort:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.7
+#       name: cisco.ctpcMediaSrcPort
+#       syntax: Unsigned32
+#     ctpcMediaDestPort:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.8
+#       name: cisco.ctpcMediaDestPort
+#       syntax: Unsigned32
+#     ctpcRxDscpCurrent:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.9
+#       name: cisco.ctpcRxDscpCurrent
+#       syntax: Integer32 # Dscp
+#     ctpcRxDscpPrevious:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.10
+#       name: cisco.ctpcRxDscpPrevious
+#       syntax: Integer32 # Dscp
+#     ctpcRxCoSCurrent:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.11
+#       name: cisco.ctpcRxCoSCurrent
+#       syntax: Integer # QosLayer2Cos
+#     ctpcRxCoSPrevious:
+#       oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.12
+#       name: cisco.ctpcRxCoSPrevious
+#       syntax: Integer # QosLayer2Cos
+
+CISCO-TELEPRESENCE-CALL-MIB::ctpcStatStreamSourceEntry:
+  mib: CISCO-TELEPRESENCE-CALL-MIB
+  object: ctpcStatStreamSourceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.644.1.4.8.1.1
+      name: cisco.ctpcIndex
+      syntax: Unsigned32
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.644.1.4.9.1.1
+      name: cisco.ctpcStreamType
+      syntax: EnumInteger
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.1
+      name: cisco.ctpcStreamSource
+      syntax: EnumInteger
+  discovery_attribute: ctpcTxActive
+  attributes:
+    ctpcTxActive:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.2
+      name: cisco.ctpcTxActive
+      syntax: TruthValue
+    ctpcTxTotalBytes:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.3
+      name: cisco.ctpcTxTotalBytes
+      syntax: BytesB
+    ctpcTxTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.4
+      name: cisco.ctpcTxTotalPackets
+      syntax: Counter64
+    ctpcTxLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.5
+      name: cisco.ctpcTxLostPackets
+      syntax: Counter64
+    ctpcTxPeriodLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.6
+      name: cisco.ctpcTxPeriodLostPackets
+      syntax: Gauge32
+    ctpcTxCallLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.7
+      name: cisco.ctpcTxCallLostPackets
+      syntax: Gauge32
+    ctpcTxIDRPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.8
+      name: cisco.ctpcTxIDRPackets
+      syntax: Counter64
+    ctpcTxShapingWindow:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.9
+      name: cisco.ctpcTxShapingWindow
+      syntax: TicksMilliSec # TODO_TicksMilliSec
+    ctpcRxActive:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.10
+      name: cisco.ctpcRxActive
+      syntax: TruthValue
+    ctpcRxTotalBytes:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.11
+      name: cisco.ctpcRxTotalBytes
+      syntax: BytesB
+    ctpcRxTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.12
+      name: cisco.ctpcRxTotalPackets
+      syntax: Counter64
+    ctpcRxLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.13
+      name: cisco.ctpcRxLostPackets
+      syntax: Counter64
+    ctpcRxPeriodLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.14
+      name: cisco.ctpcRxPeriodLostPackets
+      syntax: Gauge32
+    ctpcRxCallLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.15
+      name: cisco.ctpcRxCallLostPackets
+      syntax: Gauge32
+    ctpcRxOutOfOrderPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.16
+      name: cisco.ctpcRxOutOfOrderPackets
+      syntax: Counter64
+    ctpcRxDuplicatePackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.17
+      name: cisco.ctpcRxDuplicatePackets
+      syntax: Counter64
+    ctpcRxLatePackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.18
+      name: cisco.ctpcRxLatePackets
+      syntax: Counter64
+    ctpcRxIDRPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.19
+      name: cisco.ctpcRxIDRPackets
+      syntax: Counter64
+    ctpcRxShapingWindow:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.20
+      name: cisco.ctpcRxShapingWindow
+      syntax: TicksMilliSec
+    ctpcRxCallAuthFailure:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.21
+      name: cisco.ctpcRxCallAuthFailure
+      syntax: Counter64
+    ctpcAvgPeriodJitter:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.22
+      name: cisco.ctpcAvgPeriodJitter
+      syntax: TicksMilliSec
+    ctpcAvgCallJitter:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.23
+      name: cisco.ctpcAvgCallJitter
+      syntax: TicksMilliSec
+    ctpcMaxPeriodJitter:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.24
+      name: cisco.ctpcMaxPeriodJitter
+      syntax: TicksMilliSec
+    ctpcMaxCallJitter:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.25
+      name: cisco.ctpcMaxCallJitter
+      syntax: TicksMilliSec
+    ctpcMaxCallJitterRecTime:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.26
+      name: cisco.ctpcMaxCallJitterRecTime
+      syntax: TicksSec
+    ctpcTxCodec:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.27
+      name: cisco.ctpcTxCodec
+      syntax: EnumInteger
+    ctpcTxFrameRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.28
+      name: cisco.ctpcTxFrameRate
+      syntax: Unsigned32
+    ctpcRxCodec:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.29
+      name: cisco.ctpcRxCodec
+      syntax: EnumInteger
+    ctpcRxFrameRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.30
+      name: cisco.ctpcRxFrameRate
+      syntax: Unsigned32
+    ctpcTxVideoHorzPixels:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.31
+      name: cisco.ctpcTxVideoHorzPixels
+      syntax: Gauge32
+    ctpcTxVideoVertPixels:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.32
+      name: cisco.ctpcTxVideoVertPixels
+      syntax: Gauge32
+    ctpcRxVideoHorzPixels:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.33
+      name: cisco.ctpcRxVideoHorzPixels
+      syntax: Gauge32
+    ctpcRxVideoVertPixels:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.34
+      name: cisco.ctpcRxVideoVertPixels
+      syntax: Gauge32
+    ctpcTxCallBitRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.35
+      name: cisco.ctpcTxCallBitRate
+      syntax: BandwidthKBits
+    ctpcTxPeriodBitRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.36
+      name: cisco.ctpcTxPeriodBitRate
+      syntax: BandwidthKBits
+    ctpcRxCallBitRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.37
+      name: cisco.ctpcRxCallBitRate
+      syntax: BandwidthKBits
+    ctpcRxPeriodBitRate:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.38
+      name: cisco.ctpcRxPeriodBitRate
+      syntax: BandwidthKBits
+    ctpcRxMaxPeriodLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.39
+      name: cisco.ctpcRxMaxPeriodLostPackets
+      syntax: Gauge32
+    ctpcRxMaxCallLostPackets:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.40
+      name: cisco.ctpcRxMaxCallLostPackets
+      syntax: Gauge32
+    ctpcRxMaxCallLostPacketsRecTime:
+      oid: .1.3.6.1.4.1.9.9.644.1.4.10.1.41
+      name: cisco.ctpcRxMaxCallLostPacketsRecTime
+      syntax: TicksSec
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcStatEventHistory:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcStatEventHistory
+#   discovery_attribute: ctpcStatEventHistTableSize
+#   attributes:
+#     ctpcStatEventHistTableSize:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.1
+#       name: cisco.ctpcStatEventHistTableSize
+#       syntax: Unsigned32
+#     ctpcStatEventHistLastIndex:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.2
+#       name: cisco.ctpcStatEventHistLastIndex
+#       syntax: Unsigned32
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcStatEventHistoryEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcStatEventHistoryEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.3.1.1
+#       name: cisco.ctpcStatEventHistoryIndex
+#       syntax: Unsigned32
+#   discovery_attribute: ctpcStatEventMonObjectInst
+#   attributes:
+#     ctpcStatEventMonObjectInst:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.3.1.2
+#       name: cisco.ctpcStatEventMonObjectInst
+#       syntax: VariablePointer
+#     ctpcStatEventCrossedValue:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.3.1.3
+#       name: cisco.ctpcStatEventCrossedValue
+#       syntax: Counter64 # Unsigned64
+#     ctpcStatEventCrossedType:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.3.1.4
+#       name: cisco.ctpcStatEventCrossedType
+#       syntax: EnumInteger
+#     ctpcStatEventTimeStamp:
+#       oid: .1.3.6.1.4.1.9.9.644.1.5.3.1.5
+#       name: cisco.ctpcStatEventTimeStamp
+#       syntax: TimeTicks
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcMgmtSysConnEventHistory:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcMgmtSysConnEventHistory
+#   discovery_attribute: ctpcMgmtSysConnEventHistTableSize
+#   attributes:
+#     ctpcMgmtSysConnEventHistTableSize:
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.1
+#       name: cisco.ctpcMgmtSysConnEventHistTableSize
+#       syntax: Unsigned32
+#     ctpcMgmtSysConnEventHistLastIndex:
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.2
+#       name: cisco.ctpcMgmtSysConnEventHistLastIndex
+#       syntax: Unsigned32
+
+# CISCO-TELEPRESENCE-CALL-MIB::ctpcMgmtSysConnEventHistoryEntry:
+#   mib: CISCO-TELEPRESENCE-CALL-MIB
+#   object: ctpcMgmtSysConnEventHistoryEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.3.1.1
+#       name: cisco.ctpcMgmtSysConnEventHistoryIndex
+#       syntax: Unsigned32
+#   discovery_attribute: ctpcMgmtSysConnEventStatus
+#   attributes:
+#     ctpcMgmtSysConnEventStatus:
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.3.1.2
+#       name: cisco.ctpcMgmtSysConnEventStatus
+#       syntax: EnumInteger
+#     ctpcMgmtSysConnEventSIPRespCode:
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.3.1.3
+#       name: cisco.ctpcMgmtSysConnEventSIPRespCode
+#       syntax: Unsigned32
+#     ctpcMgmtSysConnEventTimeStamp:
+#       oid: .1.3.6.1.4.1.9.9.644.1.6.3.1.4
+#       name: cisco.ctpcMgmtSysConnEventTimeStamp
+#       syntax: TimeTicks
