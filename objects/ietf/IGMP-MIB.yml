@@ -1,65 +1,61 @@
-IGMP-STD-MIB::igmpInterfaceEntry:
-  mib: IGMP-STD-MIB
+IGMP-MIB::igmpInterfaceEntry:
+  mib: IGMP-MIB
   object: igmpInterfaceEntry
   index:
     - type: Integer32
-      oid: .1.3.6.1.2.1.85.1.1.1.1
+      oid: .1.3.6.1.3.59.1.1.1.1.1
       name: netif # igmpInterfaceIfIndex
       syntax: InterfaceIndex
   discovery_attribute: igmpInterfaceQueryInterval
   attributes:
     igmpInterfaceQueryInterval:
-      oid: .1.3.6.1.2.1.85.1.1.1.2
+      oid: .1.3.6.1.3.59.1.1.1.1.2
       name: igmp.query.interval
       syntax: TicksSec
     igmpInterfaceVersion:
-      oid: .1.3.6.1.2.1.85.1.1.1.4
+      oid: .1.3.6.1.3.59.1.1.1.1.4
       name: igmp.version.ver
       syntax: UnsignedAsID
     igmpInterfaceQuerier:
-      oid: .1.3.6.1.2.1.85.1.1.1.5
+      oid: .1.3.6.1.3.59.1.1.1.1.5
       name: igmp.querier
       syntax: IpAddress
     igmpInterfaceQueryMaxResponseTime:
-      oid: .1.3.6.1.2.1.85.1.1.1.6
+      oid: .1.3.6.1.3.59.1.1.1.1.6
       name: igmp.query.max_resp_time
-      syntax: TicksDeciSec
-    igmpInterfaceQuerierUpTime:
-      oid: .1.3.6.1.2.1.85.1.1.1.7
-      name: igmp.querier.uptime
-      syntax: TimeTicks
-    igmpInterfaceQuerierExpiryTime:
-      oid: .1.3.6.1.2.1.85.1.1.1.8
-      name: igmp.querier.expiry_time
-      syntax: TimeTicks
+      syntax: TicksSec
+    igmpInterfaceQuerierPresentTimeout:
+      oid: .1.3.6.1.3.59.1.1.1.1.7
+      name: igmp.querier.timeout_interval
+      syntax: TicksSec
+    igmpInterfaceLeaveEnabled:
+      oid: .1.3.6.1.3.59.1.1.1.1.8
+      name: igmp.leave.enable
+      syntax: TruthValue
     igmpInterfaceVersion1QuerierTimer:
-      oid: .1.3.6.1.2.1.85.1.1.1.9
+      oid: .1.3.6.1.3.59.1.1.1.1.9
       name: igmp.v1_querier_remain
-      syntax: TimeTicks
+      syntax: TicksSec
     igmpInterfaceWrongVersionQueries:
-      oid: .1.3.6.1.2.1.85.1.1.1.10
+      oid: .1.3.6.1.3.59.1.1.1.1.10
       name: igmp.netif.queries.wrong_version
       syntax: Counter32
     igmpInterfaceJoins:
-      oid: .1.3.6.1.2.1.85.1.1.1.11
+      oid: .1.3.6.1.3.59.1.1.1.1.11
       name: igmp.netif.joins
       syntax: Counter32
-    igmpInterfaceProxyIfIndex:
-      oid: .1.3.6.1.2.1.85.1.1.1.12
-      name: igmp.proxy.netif
-      syntax: InterfaceIndexOrZero
+    igmpInterfaceLeaves:
+      oid: .1.3.6.1.3.59.1.1.1.1.12
+      name: igmp.netif.leaves
+      syntax: Counter32
     igmpInterfaceGroups:
-      oid: .1.3.6.1.2.1.85.1.1.1.13
+      oid: .1.3.6.1.3.59.1.1.1.1.13
       name: igmp.groups
       syntax: Gauge32
     igmpInterfaceRobustness:
-      oid: .1.3.6.1.2.1.85.1.1.1.14
+      oid: .1.3.6.1.3.59.1.1.1.1.14
       name: igmp.robustness
-      syntax: Unsigned32
-    igmpInterfaceLastMembQueryIntvl:
-      oid: .1.3.6.1.2.1.85.1.1.1.15
-      name: igmp.last_member_query_interval
-      syntax: Unsigned32
+      syntax: Integer32
     # Additional Attributes as Tags
     ifDescr:
       oid: .1.3.6.1.2.1.2.2.1.2
@@ -82,37 +78,37 @@ IGMP-STD-MIB::igmpInterfaceEntry:
       name: netif.alias
       syntax: DisplayString
 
-IGMP-STD-MIB::igmpCacheEntry:
-  mib: IGMP-STD-MIB
+IGMP-MIB::igmpCacheEntry:
+  mib: IGMP-MIB
   object: igmpCacheEntry
   index:
     - type: IpAddress
-      oid: .1.3.6.1.2.1.85.1.2.1.1
+      oid: .1.3.6.1.3.59.1.1.2.1.1
       name: igmp.cache # igmpCacheAddress
       syntax: IpAddress
     - type: Integer32
-      oid: .1.3.6.1.2.1.85.1.2.1.2
+      oid: .1.3.6.1.3.59.1.1.2.1.2
       name: netif # igmpCacheIfIndex
       syntax: InterfaceIndex
   discovery_attribute: igmpCacheSelf
   attributes:
     igmpCacheSelf:
-      oid: .1.3.6.1.2.1.85.1.2.1.3
+      oid: .1.3.6.1.3.59.1.1.2.1.3
       name: igmp.cache.self
       syntax: TruthValue
     igmpCacheLastReporter:
-      oid: .1.3.6.1.2.1.85.1.2.1.4
+      oid: .1.3.6.1.3.59.1.1.2.1.4
       name: igmp.cache.last_reporter
       syntax: IpAddress
     igmpCacheUpTime:
-      oid: .1.3.6.1.2.1.85.1.2.1.5
+      oid: .1.3.6.1.3.59.1.1.2.1.5
       name: igmp.cache.uptime
       syntax: TimeTicks
     igmpCacheExpiryTime:
-      oid: .1.3.6.1.2.1.85.1.2.1.6
+      oid: .1.3.6.1.3.59.1.1.2.1.6
       name: igmp.cache.expiry_time
       syntax: TimeTicks
     igmpCacheVersion1HostTimer:
-      oid: .1.3.6.1.2.1.85.1.2.1.8
+      oid: .1.3.6.1.3.59.1.1.2.1.8
       name: igmp.cache.v1_host_timer
       syntax: TimeTicks
