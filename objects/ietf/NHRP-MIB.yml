@@ -1,0 +1,599 @@
+# NHRP-MIB::nhrpGeneralObjects:
+#   mib: NHRP-MIB
+#   object: nhrpGeneralObjects
+#   discovery_attribute: nhrpNextIndex
+#   attributes:
+#     nhrpNextIndex:
+#       oid: .1.3.6.1.2.1.71.1.1.1
+#       name: ietf.nhrpNextIndex
+#       syntax: Unsigned32
+
+# NHRP-MIB::nhrpCacheEntry:
+#   mib: NHRP-MIB
+#   object: nhrpCacheEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.1
+#       name: ietf.nhrpCacheInternetworkAddrType
+#       syntax: EnumInteger
+#     - type: OctetString
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.2
+#       name: ietf.nhrpCacheInternetworkAddr
+#       syntax: OctetString
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.3
+#       name: ietf.nhrpCacheIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpCachePrefixLength
+#   attributes:
+#     nhrpCachePrefixLength:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.4
+#       name: ietf.nhrpCachePrefixLength
+#       syntax: Integer32
+#     nhrpCacheNextHopInternetworkAddr:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.5
+#       name: ietf.nhrpCacheNextHopInternetworkAddr
+#       syntax: OctetString
+#     nhrpCacheNbmaAddrType:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.6
+#       name: ietf.nhrpCacheNbmaAddrType
+#       syntax: EnumInteger
+#     nhrpCacheNbmaAddr:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.7
+#       name: ietf.nhrpCacheNbmaAddr
+#       syntax: OctetString
+#     nhrpCacheNbmaSubaddr:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.8
+#       name: ietf.nhrpCacheNbmaSubaddr
+#       syntax: OctetString
+#     nhrpCacheType:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.9
+#       name: ietf.nhrpCacheType
+#       syntax: EnumInteger
+#     nhrpCacheState:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.10
+#       name: ietf.nhrpCacheState
+#       syntax: EnumInteger
+#     nhrpCacheHoldingTimeValid:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.11
+#       name: ietf.nhrpCacheHoldingTimeValid
+#       syntax: TruthValue
+#     nhrpCacheHoldingTime:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.12
+#       name: ietf.nhrpCacheHoldingTime
+#       syntax: TicksSec
+#     nhrpCacheNegotiatedMtu:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.13
+#       name: ietf.nhrpCacheNegotiatedMtu
+#       syntax: BytesB
+#     nhrpCachePreference:
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.14
+#       name: ietf.nhrpCachePreference
+#       syntax: Integer32
+
+# NHRP-MIB::nhrpPurgeReqEntry:
+#   mib: NHRP-MIB
+#   object: nhrpPurgeReqEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.1.3.1.1
+#       name: ietf.nhrpPurgeIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpPurgeCacheIdentifier
+#   attributes:
+#     nhrpPurgeCacheIdentifier:
+#       oid: .1.3.6.1.2.1.71.1.1.3.1.2
+#       name: ietf.nhrpPurgeCacheIdentifier
+#       syntax: Unsigned32
+#     nhrpPurgePrefixLength:
+#       oid: .1.3.6.1.2.1.71.1.1.3.1.3
+#       name: ietf.nhrpPurgePrefixLength
+#       syntax: Integer32
+#     nhrpPurgeRequestID:
+#       oid: .1.3.6.1.2.1.71.1.1.3.1.4
+#       name: ietf.nhrpPurgeRequestID
+#       syntax: Unsigned32
+#     nhrpPurgeReplyExpected:
+#       oid: .1.3.6.1.2.1.71.1.1.3.1.5
+#       name: ietf.nhrpPurgeReplyExpected
+#       syntax: TruthValue
+
+NHRP-MIB::nhrpClientEntry:
+  mib: NHRP-MIB
+  object: nhrpClientEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.71.1.2.1.1.1
+      name: ietf.nhrpClientIndex
+      syntax: UnsignedAsID
+  discovery_attribute: nhrpClientInternetworkAddrType
+  attributes:
+    nhrpClientInternetworkAddrType:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.2
+      name: ietf.nhrpClientInternetworkAddrType
+      syntax: EnumInteger
+    nhrpClientInternetworkAddr:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.3
+      name: ietf.nhrpClientInternetworkAddr
+      syntax: OctetString
+    nhrpClientNbmaAddrType:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.4
+      name: ietf.nhrpClientNbmaAddrType
+      syntax: EnumInteger
+    nhrpClientNbmaAddr:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.5
+      name: ietf.nhrpClientNbmaAddr
+      syntax: OctetString
+    nhrpClientNbmaSubaddr:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.6
+      name: ietf.nhrpClientNbmaSubaddr
+      syntax: OctetString
+    nhrpClientInitialRequestTimeout:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.7
+      name: ietf.nhrpClientInitialRequestTimeout
+      syntax: TicksSec
+    nhrpClientRegistrationRequestRetries:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.8
+      name: ietf.nhrpClientRegistrationRequestRetries
+      syntax: Integer32
+    nhrpClientResolutionRequestRetries:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.9
+      name: ietf.nhrpClientResolutionRequestRetries
+      syntax: Integer32
+    nhrpClientPurgeRequestRetries:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.10
+      name: ietf.nhrpClientPurgeRequestRetries
+      syntax: Integer32
+    nhrpClientDefaultMtu:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.11
+      name: ietf.nhrpClientDefaultMtu
+      syntax: BytesB
+    nhrpClientHoldTime:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.12
+      name: ietf.nhrpClientHoldTime
+      syntax: TicksSec
+    nhrpClientRequestID:
+      oid: .1.3.6.1.2.1.71.1.2.1.1.13
+      name: ietf.nhrpClientRequestID
+      syntax: UnsignedAsID
+
+# NHRP-MIB::nhrpClientRegistrationEntry:
+#   mib: NHRP-MIB
+#   object: nhrpClientRegistrationEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.2.1.1.1
+#       name: ietf.nhrpClientIndex
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.2.2.1.1
+#       name: ietf.nhrpClientRegIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpClientRegUniqueness
+#   attributes:
+#     nhrpClientRegUniqueness:
+#       oid: .1.3.6.1.2.1.71.1.2.2.1.2
+#       name: ietf.nhrpClientRegUniqueness
+#       syntax: EnumInteger
+#     nhrpClientRegState:
+#       oid: .1.3.6.1.2.1.71.1.2.2.1.3
+#       name: ietf.nhrpClientRegState
+#       syntax: EnumInteger
+
+# NHRP-MIB::nhrpClientNhsEntry:
+#   mib: NHRP-MIB
+#   object: nhrpClientNhsEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.2.1.1.1
+#       name: ietf.nhrpClientIndex
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.1
+#       name: ietf.nhrpClientNhsIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpClientNhsInternetworkAddrType
+#   attributes:
+#     nhrpClientNhsInternetworkAddrType:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.2
+#       name: ietf.nhrpClientNhsInternetworkAddrType
+#       syntax: EnumInteger
+#     nhrpClientNhsInternetworkAddr:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.3
+#       name: ietf.nhrpClientNhsInternetworkAddr
+#       syntax: OctetString
+#     nhrpClientNhsNbmaAddrType:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.4
+#       name: ietf.nhrpClientNhsNbmaAddrType
+#       syntax: EnumInteger
+#     nhrpClientNhsNbmaAddr:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.5
+#       name: ietf.nhrpClientNhsNbmaAddr
+#       syntax: OctetString
+#     nhrpClientNhsNbmaSubaddr:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.6
+#       name: ietf.nhrpClientNhsNbmaSubaddr
+#       syntax: OctetString
+#     nhrpClientNhsInUse:
+#       oid: .1.3.6.1.2.1.71.1.2.3.1.7
+#       name: ietf.nhrpClientNhsInUse
+#       syntax: TruthValue
+
+NHRP-MIB::nhrpClientStatEntry:
+  mib: NHRP-MIB
+  object: nhrpClientStatEntry
+  augments: NHRP-MIB::nhrpClientEntry
+  discovery_attribute: nhrpClientStatRxResolveReplyAck
+  attributes:
+    nhrpClientStatTxResolveReq:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.1
+      name: ietf.nhrpClientStatTxResolveReq
+      syntax: Counter32
+    nhrpClientStatRxResolveReplyAck:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.2
+      name: ietf.nhrpClientStatRxResolveReplyAck
+      syntax: Counter32
+    nhrpClientStatRxResolveReplyNakProhibited:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.3
+      name: ietf.nhrpClientStatRxResolveReplyNakProhibited
+      syntax: Counter32
+    nhrpClientStatRxResolveReplyNakInsufResources:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.4
+      name: ietf.nhrpClientStatRxResolveReplyNakInsufResources
+      syntax: Counter32
+    nhrpClientStatRxResolveReplyNakNoBinding:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.5
+      name: ietf.nhrpClientStatRxResolveReplyNakNoBinding
+      syntax: Counter32
+    nhrpClientStatRxResolveReplyNakNotUnique:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.6
+      name: ietf.nhrpClientStatRxResolveReplyNakNotUnique
+      syntax: Counter32
+    nhrpClientStatTxRegisterReq:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.7
+      name: ietf.nhrpClientStatTxRegisterReq
+      syntax: Counter32
+    nhrpClientStatRxRegisterAck:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.8
+      name: ietf.nhrpClientStatRxRegisterAck
+      syntax: Counter32
+    nhrpClientStatRxRegisterNakProhibited:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.9
+      name: ietf.nhrpClientStatRxRegisterNakProhibited
+      syntax: Counter32
+    nhrpClientStatRxRegisterNakInsufResources:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.10
+      name: ietf.nhrpClientStatRxRegisterNakInsufResources
+      syntax: Counter32
+    nhrpClientStatRxRegisterNakAlreadyReg:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.11
+      name: ietf.nhrpClientStatRxRegisterNakAlreadyReg
+      syntax: Counter32
+    nhrpClientStatRxPurgeReq:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.12
+      name: ietf.nhrpClientStatRxPurgeReq
+      syntax: Counter32
+    nhrpClientStatTxPurgeReq:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.13
+      name: ietf.nhrpClientStatTxPurgeReq
+      syntax: Counter32
+    nhrpClientStatRxPurgeReply:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.14
+      name: ietf.nhrpClientStatRxPurgeReply
+      syntax: Counter32
+    nhrpClientStatTxPurgeReply:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.15
+      name: ietf.nhrpClientStatTxPurgeReply
+      syntax: Counter32
+    nhrpClientStatTxErrorIndication:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.16
+      name: ietf.nhrpClientStatTxErrorIndication
+      syntax: Counter32
+    nhrpClientStatRxErrUnrecognizedExtension:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.17
+      name: ietf.nhrpClientStatRxErrUnrecognizedExtension
+      syntax: Counter32
+    nhrpClientStatRxErrLoopDetected:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.18
+      name: ietf.nhrpClientStatRxErrLoopDetected
+      syntax: Counter32
+    nhrpClientStatRxErrProtoAddrUnreachable:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.19
+      name: ietf.nhrpClientStatRxErrProtoAddrUnreachable
+      syntax: Counter32
+    nhrpClientStatRxErrProtoError:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.20
+      name: ietf.nhrpClientStatRxErrProtoError
+      syntax: Counter32
+    nhrpClientStatRxErrSduSizeExceeded:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.21
+      name: ietf.nhrpClientStatRxErrSduSizeExceeded
+      syntax: Counter32
+    nhrpClientStatRxErrInvalidExtension:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.22
+      name: ietf.nhrpClientStatRxErrInvalidExtension
+      syntax: Counter32
+    nhrpClientStatRxErrAuthenticationFailure:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.23
+      name: ietf.nhrpClientStatRxErrAuthenticationFailure
+      syntax: Counter32
+    nhrpClientStatRxErrHopCountExceeded:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.24
+      name: ietf.nhrpClientStatRxErrHopCountExceeded
+      syntax: Counter32
+    nhrpClientStatDiscontinuityTime:
+      oid: .1.3.6.1.2.1.71.1.2.4.1.25
+      name: ietf.nhrpClientStatDiscontinuityTime
+      syntax: TimeStamp
+
+NHRP-MIB::nhrpServerEntry:
+  mib: NHRP-MIB
+  object: nhrpServerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.71.1.3.1.1.1
+      name: ietf.nhrpServerIndex
+      syntax: UnsignedAsID
+  discovery_attribute: nhrpServerInternetworkAddrType
+  attributes:
+    nhrpServerInternetworkAddrType:
+      oid: .1.3.6.1.2.1.71.1.3.1.1.2
+      name: ietf.nhrpServerInternetworkAddrType
+      syntax: EnumInteger
+    nhrpServerInternetworkAddr:
+      oid: .1.3.6.1.2.1.71.1.3.1.1.3
+      name: ietf.nhrpServerInternetworkAddr
+      syntax: OctetString
+    nhrpServerNbmaAddrType:
+      oid: .1.3.6.1.2.1.71.1.3.1.1.4
+      name: ietf.nhrpServerNbmaAddrType
+      syntax: EnumInteger
+    nhrpServerNbmaAddr:
+      oid: .1.3.6.1.2.1.71.1.3.1.1.5
+      name: ietf.nhrpServerNbmaAddr
+      syntax: OctetString
+    nhrpServerNbmaSubaddr:
+      oid: .1.3.6.1.2.1.71.1.3.1.1.6
+      name: ietf.nhrpServerNbmaSubaddr
+      syntax: OctetString
+
+# NHRP-MIB::nhrpServerCacheEntry:
+#   mib: NHRP-MIB
+#   object: nhrpServerCacheEntry
+#   index:
+#     - type: AddressFamilyNumbers
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.1
+#       name: ietf.nhrpCacheInternetworkAddrType
+#       syntax: EnumInteger
+#     - type: OctetString
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.2
+#       name: ietf.nhrpCacheInternetworkAddr
+#       syntax: OctetString
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.1.2.1.3
+#       name: ietf.nhrpCacheIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpServerCacheUniqueness
+#   attributes:
+#     nhrpServerCacheAuthoritative:
+#       oid: .1.3.6.1.2.1.71.1.3.2.1.1
+#       name: ietf.nhrpServerCacheAuthoritative
+#       syntax: TruthValue
+#     nhrpServerCacheUniqueness:
+#       oid: .1.3.6.1.2.1.71.1.3.2.1.2
+#       name: ietf.nhrpServerCacheUniqueness
+#       syntax: TruthValue
+
+# NHRP-MIB::nhrpServerNhcEntry:
+#   mib: NHRP-MIB
+#   object: nhrpServerNhcEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.3.1.1.1
+#       name: ietf.nhrpServerIndex
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.1
+#       name: ietf.nhrpServerNhcIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: nhrpServerNhcPrefixLength
+#   attributes:
+#     nhrpServerNhcPrefixLength:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.2
+#       name: ietf.nhrpServerNhcPrefixLength
+#       syntax: Integer32
+#     nhrpServerNhcInternetworkAddrType:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.3
+#       name: ietf.nhrpServerNhcInternetworkAddrType
+#       syntax: EnumInteger
+#     nhrpServerNhcInternetworkAddr:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.4
+#       name: ietf.nhrpServerNhcInternetworkAddr
+#       syntax: OctetString
+#     nhrpServerNhcNbmaAddrType:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.5
+#       name: ietf.nhrpServerNhcNbmaAddrType
+#       syntax: EnumInteger
+#     nhrpServerNhcNbmaAddr:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.6
+#       name: ietf.nhrpServerNhcNbmaAddr
+#       syntax: OctetString
+#     nhrpServerNhcNbmaSubaddr:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.7
+#       name: ietf.nhrpServerNhcNbmaSubaddr
+#       syntax: OctetString
+#     nhrpServerNhcInUse:
+#       oid: .1.3.6.1.2.1.71.1.3.3.1.8
+#       name: ietf.nhrpServerNhcInUse
+#       syntax: TruthValue
+
+NHRP-MIB::nhrpServerStatEntry:
+  mib: NHRP-MIB
+  object: nhrpServerStatEntry
+  augments: NHRP-MIB::nhrpServerEntry
+  discovery_attribute: nhrpServerStatTxResolveReplyAck
+  attributes:
+    nhrpServerStatRxResolveReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.1
+      name: ietf.nhrpServerStatRxResolveReq
+      syntax: Counter32
+    nhrpServerStatTxResolveReplyAck:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.2
+      name: ietf.nhrpServerStatTxResolveReplyAck
+      syntax: Counter32
+    nhrpServerStatTxResolveReplyNakProhibited:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.3
+      name: ietf.nhrpServerStatTxResolveReplyNakProhibited
+      syntax: Counter32
+    nhrpServerStatTxResolveReplyNakInsufResources:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.4
+      name: ietf.nhrpServerStatTxResolveReplyNakInsufResources
+      syntax: Counter32
+    nhrpServerStatTxResolveReplyNakNoBinding:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.5
+      name: ietf.nhrpServerStatTxResolveReplyNakNoBinding
+      syntax: Counter32
+    nhrpServerStatTxResolveReplyNakNotUnique:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.6
+      name: ietf.nhrpServerStatTxResolveReplyNakNotUnique
+      syntax: Counter32
+    nhrpServerStatRxRegisterReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.7
+      name: ietf.nhrpServerStatRxRegisterReq
+      syntax: Counter32
+    nhrpServerStatTxRegisterAck:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.8
+      name: ietf.nhrpServerStatTxRegisterAck
+      syntax: Counter32
+    nhrpServerStatTxRegisterNakProhibited:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.9
+      name: ietf.nhrpServerStatTxRegisterNakProhibited
+      syntax: Counter32
+    nhrpServerStatTxRegisterNakInsufResources:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.10
+      name: ietf.nhrpServerStatTxRegisterNakInsufResources
+      syntax: Counter32
+    nhrpServerStatTxRegisterNakAlreadyReg:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.11
+      name: ietf.nhrpServerStatTxRegisterNakAlreadyReg
+      syntax: Counter32
+    nhrpServerStatRxPurgeReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.12
+      name: ietf.nhrpServerStatRxPurgeReq
+      syntax: Counter32
+    nhrpServerStatTxPurgeReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.13
+      name: ietf.nhrpServerStatTxPurgeReq
+      syntax: Counter32
+    nhrpServerStatRxPurgeReply:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.14
+      name: ietf.nhrpServerStatRxPurgeReply
+      syntax: Counter32
+    nhrpServerStatTxPurgeReply:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.15
+      name: ietf.nhrpServerStatTxPurgeReply
+      syntax: Counter32
+    nhrpServerStatRxErrUnrecognizedExtension:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.16
+      name: ietf.nhrpServerStatRxErrUnrecognizedExtension
+      syntax: Counter32
+    nhrpServerStatRxErrLoopDetected:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.17
+      name: ietf.nhrpServerStatRxErrLoopDetected
+      syntax: Counter32
+    nhrpServerStatRxErrProtoAddrUnreachable:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.18
+      name: ietf.nhrpServerStatRxErrProtoAddrUnreachable
+      syntax: Counter32
+    nhrpServerStatRxErrProtoError:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.19
+      name: ietf.nhrpServerStatRxErrProtoError
+      syntax: Counter32
+    nhrpServerStatRxErrSduSizeExceeded:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.20
+      name: ietf.nhrpServerStatRxErrSduSizeExceeded
+      syntax: Counter32
+    nhrpServerStatRxErrInvalidExtension:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.21
+      name: ietf.nhrpServerStatRxErrInvalidExtension
+      syntax: Counter32
+    nhrpServerStatRxErrInvalidResReplyReceived:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.22
+      name: ietf.nhrpServerStatRxErrInvalidResReplyReceived
+      syntax: Counter32
+    nhrpServerStatRxErrAuthenticationFailure:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.23
+      name: ietf.nhrpServerStatRxErrAuthenticationFailure
+      syntax: Counter32
+    nhrpServerStatRxErrHopCountExceeded:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.24
+      name: ietf.nhrpServerStatRxErrHopCountExceeded
+      syntax: Counter32
+    nhrpServerStatTxErrUnrecognizedExtension:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.25
+      name: ietf.nhrpServerStatTxErrUnrecognizedExtension
+      syntax: Counter32
+    nhrpServerStatTxErrLoopDetected:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.26
+      name: ietf.nhrpServerStatTxErrLoopDetected
+      syntax: Counter32
+    nhrpServerStatTxErrProtoAddrUnreachable:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.27
+      name: ietf.nhrpServerStatTxErrProtoAddrUnreachable
+      syntax: Counter32
+    nhrpServerStatTxErrProtoError:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.28
+      name: ietf.nhrpServerStatTxErrProtoError
+      syntax: Counter32
+    nhrpServerStatTxErrSduSizeExceeded:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.29
+      name: ietf.nhrpServerStatTxErrSduSizeExceeded
+      syntax: Counter32
+    nhrpServerStatTxErrInvalidExtension:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.30
+      name: ietf.nhrpServerStatTxErrInvalidExtension
+      syntax: Counter32
+    nhrpServerStatTxErrAuthenticationFailure:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.31
+      name: ietf.nhrpServerStatTxErrAuthenticationFailure
+      syntax: Counter32
+    nhrpServerStatTxErrHopCountExceeded:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.32
+      name: ietf.nhrpServerStatTxErrHopCountExceeded
+      syntax: Counter32
+    nhrpServerStatFwResolveReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.33
+      name: ietf.nhrpServerStatFwResolveReq
+      syntax: Counter32
+    nhrpServerStatFwResolveReply:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.34
+      name: ietf.nhrpServerStatFwResolveReply
+      syntax: Counter32
+    nhrpServerStatFwRegisterReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.35
+      name: ietf.nhrpServerStatFwRegisterReq
+      syntax: Counter32
+    nhrpServerStatFwRegisterReply:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.36
+      name: ietf.nhrpServerStatFwRegisterReply
+      syntax: Counter32
+    nhrpServerStatFwPurgeReq:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.37
+      name: ietf.nhrpServerStatFwPurgeReq
+      syntax: Counter32
+    nhrpServerStatFwPurgeReply:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.38
+      name: ietf.nhrpServerStatFwPurgeReply
+      syntax: Counter32
+    nhrpServerStatFwErrorIndication:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.39
+      name: ietf.nhrpServerStatFwErrorIndication
+      syntax: Counter32
+    nhrpServerStatDiscontinuityTime:
+      oid: .1.3.6.1.2.1.71.1.3.4.1.40
+      name: ietf.nhrpServerStatDiscontinuityTime
+      syntax: TimeStamp
