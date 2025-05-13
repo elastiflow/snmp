@@ -1,0 +1,137 @@
+OLD-CISCO-IP-MIB::lip:
+  mib: OLD-CISCO-IP-MIB
+  object: lip
+  discovery_attribute: actThresh
+  attributes:
+    actThresh:
+      oid: .1.3.6.1.4.1.9.2.4.4
+      name: cisco.actThresh
+      syntax: Integer32
+    actLostPkts:
+      oid: .1.3.6.1.4.1.9.2.4.5
+      name: cisco.actLostPkts
+      syntax: Integer32
+    actLostByts:
+      oid: .1.3.6.1.4.1.9.2.4.6
+      name: cisco.actLostByts
+      syntax: Integer32
+    actAge:
+      oid: .1.3.6.1.4.1.9.2.4.8
+      name: cisco.actAge
+      syntax: TimeTicks
+    ckactAge:
+      oid: .1.3.6.1.4.1.9.2.4.10
+      name: cisco.ckactAge
+      syntax: TimeTicks
+    actCheckPoint:
+      oid: .1.3.6.1.4.1.9.2.4.11
+      name: cisco.actCheckPoint
+      syntax: Integer32
+    ipNoaccess:
+      oid: .1.3.6.1.4.1.9.2.4.12
+      name: cisco.ipNoaccess
+      syntax: Counter32
+
+OLD-CISCO-IP-MIB::lipAddrEntry:
+  mib: OLD-CISCO-IP-MIB
+  object: lipAddrEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.4.20.1.1
+      name: ip.addr # ipAdEntAddr
+      syntax: IpAddress
+  discovery_attribute: locIPWho
+  attributes:
+    locIPHow:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.1
+      name: cisco.locIPHow
+      syntax: DisplayString
+    locIPWho:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.2
+      name: cisco.locIPWho
+      syntax: IpAddressNoSuffix # IpAddress
+    locIPHelper:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.3
+      name: cisco.locIPHelper
+      syntax: IpAddressNoSuffix # IpAddress
+    locIPSecurity:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.4
+      name: cisco.locIPSecurity
+      syntax: Integer32
+    locIPRedirects:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.5
+      name: cisco.locIPRedirects
+      syntax: Integer32
+    locIPUnreach:
+      oid: .1.3.6.1.4.1.9.2.4.1.1.6
+      name: cisco.locIPUnreach
+      syntax: Integer32
+
+OLD-CISCO-IP-MIB::lipRouteEntry:
+  mib: OLD-CISCO-IP-MIB
+  object: lipRouteEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.4.21.1.1
+      name: ip.route.dst # ipRouteDest
+      syntax: IpAddress
+  discovery_attribute: locRtCount
+  attributes:
+    locRtMask:
+      oid: .1.3.6.1.4.1.9.2.4.2.1.1
+      name: cisco.locRtMask
+      syntax: IpAddressNoSuffix # IpAddress
+    locRtCount:
+      oid: .1.3.6.1.4.1.9.2.4.2.1.2
+      name: cisco.locRtCount
+      syntax: Integer32
+    locRtUses:
+      oid: .1.3.6.1.4.1.9.2.4.2.1.3
+      name: cisco.locRtUses
+      syntax: Integer32
+
+OLD-CISCO-IP-MIB::lipAccountEntry:
+  mib: OLD-CISCO-IP-MIB
+  object: lipAccountEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.2.4.7.1.1
+      name: cisco.actSrc
+      syntax: IpAddressNoSuffix # IpAddress
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.9.2.4.7.1.2
+      name: cisco.actDst
+      syntax: IpAddressNoSuffix # IpAddress
+  discovery_attribute: actPkts
+  attributes:
+    actPkts:
+      oid: .1.3.6.1.4.1.9.2.4.7.1.3
+      name: cisco.actPkts
+      syntax: Integer32
+    actByts:
+      oid: .1.3.6.1.4.1.9.2.4.7.1.4
+      name: cisco.actByts
+      syntax: BytesB
+    actViolation:
+      oid: .1.3.6.1.4.1.9.2.4.7.1.5
+      name: cisco.actViolation
+      syntax: Integer32
+
+OLD-CISCO-IP-MIB::lipCkAccountEntry:
+  mib: OLD-CISCO-IP-MIB
+  object: lipCkAccountEntry
+  augments: OLD-CISCO-IP-MIB::lipAccountEntry
+  discovery_attribute: ckactPkts
+  attributes:
+    ckactPkts:
+      oid: .1.3.6.1.4.1.9.2.4.9.1.3
+      name: cisco.ckactPkts
+      syntax: Integer32
+    ckactByts:
+      oid: .1.3.6.1.4.1.9.2.4.9.1.4
+      name: cisco.ckactByts
+      syntax: BytesB
+    ckactViolation:
+      oid: .1.3.6.1.4.1.9.2.4.9.1.5
+      name: cisco.ckactViolation
+      syntax: Integer32
