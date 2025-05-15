@@ -1,0 +1,190 @@
+CISCO-LWAPP-TSM-MIB::ciscoLwappTsmDot11Config:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: ciscoLwappTsmDot11Config
+  discovery_attribute: cLTsmDot11aConfig
+  attributes:
+    cLTsmDot11aConfig:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.1
+      name: cLTsmDot11aConfig
+      syntax: TruthValue
+    cLTsmDot11bgConfig:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.2
+      name: cLTsmDot11bgConfig
+      syntax: TruthValue
+    cLTsmDot11MaxClientsPerDot11Intf:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.3
+      name: cLTsmDot11MaxClientsPerDot11Intf
+      syntax: Unsigned32
+    cLTsmDot11MaxTsmStatsEntries:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.4
+      name: cLTsmDot11MaxTsmStatsEntries
+      syntax: Unsigned32
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11ClientEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11ClientEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cLApSysMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
+      name: cLApDot11IfSlotId
+      syntax: Unsigned32
+    - type: TODO_cLTsmDot11ClientIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.1
+      name: cLTsmDot11ClientIndex
+      syntax: Unsigned32
+  discovery_attribute: cLTsmDot11ClientMacAddress
+  attributes:
+    cLTsmDot11ClientMacAddress:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11UplinkEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11UplinkEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.1
+      name: cLTsmDot11UplinkApMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.2
+      name: cLTsmDot11UplinkApIfSlotId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.3
+      name: cLTsmDot11UplinkTimeStamp
+      syntax: Unsigned32
+  discovery_attribute: cLTsmDot11UplinkAvgPktQDelay
+  attributes:
+    cLTsmDot11UplinkAvgPktQDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.4
+      name: cLTsmDot11UplinkAvgPktQDelay
+      syntax: TODO_TimeInterval # TimeInterval :: Units: hundredths-seconds
+    cLTsmDot11UplinkLt10Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.5
+      name: cLTsmDot11UplinkLt10Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkPktGt10Lt20Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.6
+      name: cLTsmDot11UplinkPktGt10Lt20Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkPktGt20Lt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.7
+      name: cLTsmDot11UplinkPktGt20Lt40Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkPktGt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.8
+      name: cLTsmDot11UplinkPktGt40Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkLostPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.9
+      name: cLTsmDot11UplinkLostPackets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.10
+      name: cLTsmDot11UplinkTotalPackets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkRoamingPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.11
+      name: cLTsmDot11UplinkRoamingPackets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11UplinkRoamingDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.12
+      name: cLTsmDot11UplinkRoamingDelay
+      syntax: TODO_TimeInterval # TimeInterval :: Units: hundredths-seconds
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11DnlinkEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11DnlinkEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.1
+      name: cLTsmDot11DnlinkApMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.2
+      name: cLTsmDot11DnlinkApIfSlotId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.3
+      name: cLTsmDot11DnlinkTimeStamp
+      syntax: Unsigned32
+  discovery_attribute: cLTsmDot11DnlinkAvgPktQDelay
+  attributes:
+    cLTsmDot11DnlinkAvgPktQDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.4
+      name: cLTsmDot11DnlinkAvgPktQDelay
+      syntax: TODO_TimeInterval # TimeInterval :: Units: hundredths-seconds
+    cLTsmDot11DnlinkLt10Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.5
+      name: cLTsmDot11DnlinkLt10Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11DnlinkPktGt10Lt20Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.6
+      name: cLTsmDot11DnlinkPktGt10Lt20Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11DnlinkPktGt20Lt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.7
+      name: cLTsmDot11DnlinkPktGt20Lt40Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11DnlinkPktGt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.8
+      name: cLTsmDot11DnlinkPktGt40Packets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11DnlinkLostPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.9
+      name: cLTsmDot11DnlinkLostPackets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+    cLTsmDot11DnlinkTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.10
+      name: cLTsmDot11DnlinkTotalPackets
+      syntax: TODO_Gauge32 # Gauge32 :: Units: packets
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11CUEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11CUEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cLApSysMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
+      name: cLApDot11IfSlotId
+      syntax: Unsigned32
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.1
+      name: cLTsmDot11CUTimeStamp
+      syntax: Unsigned32
+  discovery_attribute: cLTsmDot11CUFiftyPercentilePicc
+  attributes:
+    cLTsmDot11CUFiftyPercentilePicc:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.2
+      name: cLTsmDot11CUFiftyPercentilePicc
+      syntax: TODO_Unsigned32 # Unsigned32 :: Units: percent
+    cLTsmDot11CUNinetyPercentilePicc:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.3
+      name: cLTsmDot11CUNinetyPercentilePicc
+      syntax: TODO_Unsigned32 # Unsigned32 :: Units: percent
+    cLTsmDot11CUFiftyPercentilePib:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.4
+      name: cLTsmDot11CUFiftyPercentilePib
+      syntax: TODO_Unsigned32 # Unsigned32 :: Units: percent
+    cLTsmDot11CUNinetyPercentilePib:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.5
+      name: cLTsmDot11CUNinetyPercentilePib
+      syntax: TODO_Unsigned32 # Unsigned32 :: Units: percent
+
