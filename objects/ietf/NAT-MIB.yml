@@ -1,0 +1,411 @@
+NAT-MIB::natMIBObjects:
+  mib: NAT-MIB
+  object: natMIBObjects
+  discovery_attribute: natAddrBindNumberOfEntries
+  attributes:
+    natAddrBindNumberOfEntries:
+      oid: .1.3.6.1.2.1.123.1.5
+      name: ietf.natAddrBindNumberOfEntries
+      syntax: Gauge32
+    natAddrPortBindNumberOfEntries:
+      oid: .1.3.6.1.2.1.123.1.7
+      name: ietf.natAddrPortBindNumberOfEntries
+      syntax: Gauge32
+
+# NAT-MIB::natDefTimeouts:
+#   mib: NAT-MIB
+#   object: natDefTimeouts
+#   discovery_attribute: natBindDefIdleTimeout
+#   attributes:
+#     natBindDefIdleTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.1
+#       name: ietf.natBindDefIdleTimeout
+#       syntax: TicksSec
+#     natUdpDefIdleTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.2
+#       name: ietf.natUdpDefIdleTimeout
+#       syntax: TicksSec
+#     natIcmpDefIdleTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.3
+#       name: ietf.natIcmpDefIdleTimeout
+#       syntax: TicksSec
+#     natOtherDefIdleTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.4
+#       name: ietf.natOtherDefIdleTimeout
+#       syntax: TicksSec
+#     natTcpDefIdleTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.5
+#       name: ietf.natTcpDefIdleTimeout
+#       syntax: TicksSec
+#     natTcpDefNegTimeout:
+#       oid: .1.3.6.1.2.1.123.1.1.6
+#       name: ietf.natTcpDefNegTimeout
+#       syntax: TicksSec
+
+# NAT-MIB::natNotifCtrl:
+#   mib: NAT-MIB
+#   object: natNotifCtrl
+#   discovery_attribute: natNotifThrottlingInterval
+#   attributes:
+#     natNotifThrottlingInterval:
+#       oid: .1.3.6.1.2.1.123.1.2.1
+#       name: ietf.natNotifThrottlingInterval
+#       syntax: TicksSec
+
+NAT-MIB::natInterfaceEntry:
+  mib: NAT-MIB
+  object: natInterfaceEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: natInterfaceServiceType
+  attributes:
+    natInterfaceRealm:
+      oid: .1.3.6.1.2.1.123.1.3.1.1
+      name: ietf.natInterfaceRealm
+      syntax: EnumInteger
+    natInterfaceServiceType:
+      oid: .1.3.6.1.2.1.123.1.3.1.2
+      name: ietf.natInterfaceServiceType
+      syntax: EnumBitmap
+    natInterfaceInTranslates:
+      oid: .1.3.6.1.2.1.123.1.3.1.3
+      name: ietf.natInterfaceInTranslates
+      syntax: Counter64
+    natInterfaceOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.3.1.4
+      name: ietf.natInterfaceOutTranslates
+      syntax: Counter64
+    natInterfaceDiscards:
+      oid: .1.3.6.1.2.1.123.1.3.1.5
+      name: ietf.natInterfaceDiscards
+      syntax: Counter64
+
+NAT-MIB::natAddrMapEntry:
+  mib: NAT-MIB
+  object: natAddrMapEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.123.1.4.1.1
+      name: ietf.natAddrMapIndex
+      syntax: UnsignedAsID
+  discovery_attribute: natAddrMapName
+  attributes:
+    natAddrMapName:
+      oid: .1.3.6.1.2.1.123.1.4.1.2
+      name: ietf.natAddrMapName
+      syntax: DisplayString # SnmpAdminString
+    natAddrMapEntryType:
+      oid: .1.3.6.1.2.1.123.1.4.1.3
+      name: ietf.natAddrMapEntryType
+      syntax: EnumInteger
+    natAddrMapTranslationEntity:
+      oid: .1.3.6.1.2.1.123.1.4.1.4
+      name: ietf.natAddrMapTranslationEntity
+      syntax: EnumBitmap
+    natAddrMapLocalAddrFrom:
+      oid: .1.3.6.1.2.1.123.1.4.1.6
+      name: ietf.natAddrMapLocalAddrFrom
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrMapLocalAddrTo:
+      oid: .1.3.6.1.2.1.123.1.4.1.7
+      name: ietf.natAddrMapLocalAddrTo
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrMapLocalPortFrom:
+      oid: .1.3.6.1.2.1.123.1.4.1.8
+      name: ietf.natAddrMapLocalPortFrom
+      syntax: Integer32 # InetPortNumber
+    natAddrMapLocalPortTo:
+      oid: .1.3.6.1.2.1.123.1.4.1.9
+      name: ietf.natAddrMapLocalPortTo
+      syntax: Integer32 # InetPortNumber
+    natAddrMapGlobalAddrFrom:
+      oid: .1.3.6.1.2.1.123.1.4.1.11
+      name: ietf.natAddrMapGlobalAddrFrom
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrMapGlobalAddrTo:
+      oid: .1.3.6.1.2.1.123.1.4.1.12
+      name: ietf.natAddrMapGlobalAddrTo
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrMapGlobalPortFrom:
+      oid: .1.3.6.1.2.1.123.1.4.1.13
+      name: ietf.natAddrMapGlobalPortFrom
+      syntax: Integer32 # InetPortNumber
+    natAddrMapGlobalPortTo:
+      oid: .1.3.6.1.2.1.123.1.4.1.14
+      name: ietf.natAddrMapGlobalPortTo
+      syntax: Integer32 # InetPortNumber
+    natAddrMapProtocol:
+      oid: .1.3.6.1.2.1.123.1.4.1.15
+      name: ietf.natAddrMapProtocol
+      syntax: EnumBitmap
+    natAddrMapInTranslates:
+      oid: .1.3.6.1.2.1.123.1.4.1.16
+      name: ietf.natAddrMapInTranslates
+      syntax: Counter64
+    natAddrMapOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.4.1.17
+      name: ietf.natAddrMapOutTranslates
+      syntax: Counter64
+    natAddrMapDiscards:
+      oid: .1.3.6.1.2.1.123.1.4.1.18
+      name: ietf.natAddrMapDiscards
+      syntax: Counter64
+    natAddrMapAddrUsed:
+      oid: .1.3.6.1.2.1.123.1.4.1.19
+      name: ietf.natAddrMapAddrUsed
+      syntax: Gauge32
+
+NAT-MIB::natAddrBindEntry:
+  mib: NAT-MIB
+  object: natAddrBindEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.2.1.123.1.6.1.1
+      name: ietf.natAddrBindLocalAddrType
+      syntax: skip
+    - type: IpAddress
+      oid: .1.3.6.1.2.1.123.1.6.1.2
+      name: ietf.natAddrBindLocalAddr
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: natAddrBindGlobalAddrType
+  attributes:
+    natAddrBindGlobalAddr:
+      oid: .1.3.6.1.2.1.123.1.6.1.4
+      name: ietf.natAddrBindGlobalAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrBindId:
+      oid: .1.3.6.1.2.1.123.1.6.1.5
+      name: ietf.natAddrBindId
+      syntax: UnsignedAsID
+    natAddrBindTranslationEntity:
+      oid: .1.3.6.1.2.1.123.1.6.1.6
+      name: ietf.natAddrBindTranslationEntity
+      syntax: EnumBitmap
+    natAddrBindType:
+      oid: .1.3.6.1.2.1.123.1.6.1.7
+      name: ietf.natAddrBindType
+      syntax: EnumInteger
+    natAddrBindMapIndex:
+      oid: .1.3.6.1.2.1.123.1.6.1.8
+      name: ietf.natAddrBindMapIndex
+      syntax: UnsignedAsID
+    natAddrBindSessions:
+      oid: .1.3.6.1.2.1.123.1.6.1.9
+      name: ietf.natAddrBindSessions
+      syntax: Gauge32
+    natAddrBindMaxIdleTime:
+      oid: .1.3.6.1.2.1.123.1.6.1.10
+      name: ietf.natAddrBindMaxIdleTime
+      syntax: TimeTicks
+    natAddrBindCurrentIdleTime:
+      oid: .1.3.6.1.2.1.123.1.6.1.11
+      name: ietf.natAddrBindCurrentIdleTime
+      syntax: TimeTicks
+    natAddrBindInTranslates:
+      oid: .1.3.6.1.2.1.123.1.6.1.12
+      name: ietf.natAddrBindInTranslates
+      syntax: Counter64
+    natAddrBindOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.6.1.13
+      name: ietf.natAddrBindOutTranslates
+      syntax: Counter64
+
+NAT-MIB::natAddrPortBindEntry:
+  mib: NAT-MIB
+  object: natAddrPortBindEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.2.1.123.1.8.1.1
+      name: ietf.natAddrPortBindLocalAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.2.1.123.1.8.1.2
+      name: ietf.natAddrPortBindLocalAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.123.1.8.1.3
+      name: ietf.natAddrPortBindLocalPort
+      syntax: Integer32 # InetPortNumber
+    - type: Integer
+      oid: .1.3.6.1.2.1.123.1.8.1.4
+      name: ietf.natAddrPortBindProtocol
+      syntax: EnumInteger
+  discovery_attribute: natAddrPortBindGlobalAddrType
+  attributes:
+    natAddrPortBindGlobalAddr:
+      oid: .1.3.6.1.2.1.123.1.8.1.6
+      name: ietf.natAddrPortBindGlobalAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natAddrPortBindGlobalPort:
+      oid: .1.3.6.1.2.1.123.1.8.1.7
+      name: ietf.natAddrPortBindGlobalPort
+      syntax: Integer32 # InetPortNumber
+    natAddrPortBindId:
+      oid: .1.3.6.1.2.1.123.1.8.1.8
+      name: ietf.natAddrPortBindId
+      syntax: UnsignedAsID
+    natAddrPortBindTranslationEntity:
+      oid: .1.3.6.1.2.1.123.1.8.1.9
+      name: ietf.natAddrPortBindTranslationEntity
+      syntax: EnumBitmap
+    natAddrPortBindType:
+      oid: .1.3.6.1.2.1.123.1.8.1.10
+      name: ietf.natAddrPortBindType
+      syntax: EnumInteger
+    natAddrPortBindMapIndex:
+      oid: .1.3.6.1.2.1.123.1.8.1.11
+      name: ietf.natAddrPortBindMapIndex
+      syntax: UnsignedAsID
+    natAddrPortBindSessions:
+      oid: .1.3.6.1.2.1.123.1.8.1.12
+      name: ietf.natAddrPortBindSessions
+      syntax: Gauge32
+    natAddrPortBindMaxIdleTime:
+      oid: .1.3.6.1.2.1.123.1.8.1.13
+      name: ietf.natAddrPortBindMaxIdleTime
+      syntax: TimeTicks
+    natAddrPortBindCurrentIdleTime:
+      oid: .1.3.6.1.2.1.123.1.8.1.14
+      name: ietf.natAddrPortBindCurrentIdleTime
+      syntax: TimeTicks
+    natAddrPortBindInTranslates:
+      oid: .1.3.6.1.2.1.123.1.8.1.15
+      name: ietf.natAddrPortBindInTranslates
+      syntax: Counter64
+    natAddrPortBindOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.8.1.16
+      name: ietf.natAddrPortBindOutTranslates
+      syntax: Counter64
+
+NAT-MIB::natSessionEntry:
+  mib: NAT-MIB
+  object: natSessionEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.123.1.9.1.1
+      name: ietf.natSessionIndex
+      syntax: UnsignedAsID
+  discovery_attribute: natSessionPrivateSrcEPBindId
+  attributes:
+    natSessionPrivateSrcEPBindId:
+      oid: .1.3.6.1.2.1.123.1.9.1.2
+      name: ietf.natSessionPrivateSrcEPBindId
+      syntax: UnsignedAsID
+    natSessionPrivateSrcEPBindMode:
+      oid: .1.3.6.1.2.1.123.1.9.1.3
+      name: ietf.natSessionPrivateSrcEPBindMode
+      syntax: EnumInteger
+    natSessionPrivateDstEPBindId:
+      oid: .1.3.6.1.2.1.123.1.9.1.4
+      name: ietf.natSessionPrivateDstEPBindId
+      syntax: UnsignedAsID
+    natSessionPrivateDstEPBindMode:
+      oid: .1.3.6.1.2.1.123.1.9.1.5
+      name: ietf.natSessionPrivateDstEPBindMode
+      syntax: EnumInteger
+    natSessionDirection:
+      oid: .1.3.6.1.2.1.123.1.9.1.6
+      name: ietf.natSessionDirection
+      syntax: EnumInteger
+    natSessionUpTime:
+      oid: .1.3.6.1.2.1.123.1.9.1.7
+      name: ietf.natSessionUpTime
+      syntax: TimeTicks
+    natSessionAddrMapIndex:
+      oid: .1.3.6.1.2.1.123.1.9.1.8
+      name: ietf.natSessionAddrMapIndex
+      syntax: UnsignedAsID
+    natSessionProtocolType:
+      oid: .1.3.6.1.2.1.123.1.9.1.9
+      name: ietf.natSessionProtocolType
+      syntax: EnumInteger
+    natSessionPrivateSrcAddr:
+      oid: .1.3.6.1.2.1.123.1.9.1.11
+      name: ietf.natSessionPrivateSrcAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natSessionPrivateSrcPort:
+      oid: .1.3.6.1.2.1.123.1.9.1.12
+      name: ietf.natSessionPrivateSrcPort
+      syntax: Integer32 # InetPortNumber
+    natSessionPrivateDstAddr:
+      oid: .1.3.6.1.2.1.123.1.9.1.13
+      name: ietf.natSessionPrivateDstAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natSessionPrivateDstPort:
+      oid: .1.3.6.1.2.1.123.1.9.1.14
+      name: ietf.natSessionPrivateDstPort
+      syntax: Integer32 # InetPortNumber
+    natSessionPublicSrcAddr:
+      oid: .1.3.6.1.2.1.123.1.9.1.16
+      name: ietf.natSessionPublicSrcAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natSessionPublicSrcPort:
+      oid: .1.3.6.1.2.1.123.1.9.1.17
+      name: ietf.natSessionPublicSrcPort
+      syntax: Integer32 # InetPortNumber
+    natSessionPublicDstAddr:
+      oid: .1.3.6.1.2.1.123.1.9.1.18
+      name: ietf.natSessionPublicDstAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    natSessionPublicDstPort:
+      oid: .1.3.6.1.2.1.123.1.9.1.19
+      name: ietf.natSessionPublicDstPort
+      syntax: Integer32 # InetPortNumber
+    natSessionMaxIdleTime:
+      oid: .1.3.6.1.2.1.123.1.9.1.20
+      name: ietf.natSessionMaxIdleTime
+      syntax: TimeTicks
+    natSessionCurrentIdleTime:
+      oid: .1.3.6.1.2.1.123.1.9.1.21
+      name: ietf.natSessionCurrentIdleTime
+      syntax: TimeTicks
+    natSessionInTranslates:
+      oid: .1.3.6.1.2.1.123.1.9.1.22
+      name: ietf.natSessionInTranslates
+      syntax: Counter64
+    natSessionOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.9.1.23
+      name: ietf.natSessionOutTranslates
+      syntax: Counter64
+
+NAT-MIB::natProtocolEntry:
+  mib: NAT-MIB
+  object: natProtocolEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.123.1.10.1.1
+      name: ietf.natProtocol
+      syntax: EnumInteger
+  discovery_attribute: natProtocolInTranslates
+  attributes:
+    natProtocolInTranslates:
+      oid: .1.3.6.1.2.1.123.1.10.1.2
+      name: ietf.natProtocolInTranslates
+      syntax: Counter64
+    natProtocolOutTranslates:
+      oid: .1.3.6.1.2.1.123.1.10.1.3
+      name: ietf.natProtocolOutTranslates
+      syntax: Counter64
+    natProtocolDiscards:
+      oid: .1.3.6.1.2.1.123.1.10.1.4
+      name: ietf.natProtocolDiscards
+      syntax: Counter64

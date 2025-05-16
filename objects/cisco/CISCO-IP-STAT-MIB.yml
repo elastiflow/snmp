@@ -1,0 +1,114 @@
+CISCO-IP-STAT-MIB::cipPrecedenceEntry:
+  mib: CISCO-IP-STAT-MIB
+  object: cipPrecedenceEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.84.1.1.1.1.1
+      name: cisco.cipPrecedenceDirection
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.84.1.1.1.1.2
+      name: cisco.cipPrecedenceIpPrecedence
+      syntax: Integer32
+  discovery_attribute: cipPrecedenceSwitchedPkts
+  attributes:
+    cipPrecedenceSwitchedPkts:
+      oid: .1.3.6.1.4.1.9.9.84.1.1.1.1.3
+      name: cisco.cipPrecedenceSwitchedPkts
+      syntax: Counter32
+    cipPrecedenceSwitchedBytes:
+      oid: .1.3.6.1.4.1.9.9.84.1.1.1.1.4
+      name: cisco.cipPrecedenceSwitchedBytes
+      syntax: BytesB
+
+CISCO-IP-STAT-MIB::cipPrecedenceXEntry:
+  mib: CISCO-IP-STAT-MIB
+  object: cipPrecedenceXEntry
+  augments: CISCO-IP-STAT-MIB::cipPrecedenceEntry
+  discovery_attribute: cipPrecedenceHCSwitchedBytes
+  attributes:
+    cipPrecedenceHCSwitchedPkts:
+      oid: .1.3.6.1.4.1.9.9.84.1.1.2.1.1
+      name: cisco.cipPrecedenceSwitchedPkts
+      syntax: Counter64
+      overrides:
+        object: CISCO-IP-STAT-MIB::cipPrecedenceEntry
+        attribute: cipPrecedenceSwitchedPkts
+    cipPrecedenceHCSwitchedBytes:
+      oid: .1.3.6.1.4.1.9.9.84.1.1.2.1.2
+      name: cisco.cipPrecedenceSwitchedBytes
+      syntax: BytesB
+      overrides:
+        object: CISCO-IP-STAT-MIB::cipPrecedenceEntry
+        attribute: cipPrecedenceSwitchedBytes
+
+CISCO-IP-STAT-MIB::cipMacEntry:
+  mib: CISCO-IP-STAT-MIB
+  object: cipMacEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.84.1.2.1.1.1
+      name: cisco.cipMacDirection
+      syntax: EnumInteger
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.84.1.2.1.1.2
+      name: cisco.cipMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+  discovery_attribute: cipMacSwitchedPkts
+  attributes:
+    cipMacSwitchedPkts:
+      oid: .1.3.6.1.4.1.9.9.84.1.2.1.1.3
+      name: cisco.cipMacSwitchedPkts
+      syntax: Counter32
+    cipMacSwitchedBytes:
+      oid: .1.3.6.1.4.1.9.9.84.1.2.1.1.4
+      name: cisco.cipMacSwitchedBytes
+      syntax: BytesB
+
+CISCO-IP-STAT-MIB::cipMacFreeEntry:
+  mib: CISCO-IP-STAT-MIB
+  object: cipMacFreeEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer
+      oid: .1.3.6.1.4.1.9.9.84.1.2.2.1.1
+      name: cisco.cipMacFreeDirection
+      syntax: EnumInteger
+  discovery_attribute: cipMacFreeCount
+  attributes:
+    cipMacFreeCount:
+      oid: .1.3.6.1.4.1.9.9.84.1.2.2.1.2
+      name: cisco.cipMacFreeCount
+      syntax: Gauge32
+
+CISCO-IP-STAT-MIB::cipMacXEntry:
+  mib: CISCO-IP-STAT-MIB
+  object: cipMacXEntry
+  augments: CISCO-IP-STAT-MIB::cipMacEntry
+  discovery_attribute: cipMacHCSwitchedBytes
+  attributes:
+    cipMacHCSwitchedPkts:
+      oid: .1.3.6.1.4.1.9.9.84.1.2.3.1.1
+      name: cisco.cipMacSwitchedPkts
+      syntax: Counter64
+      overrides:
+        object: CISCO-IP-STAT-MIB::cipMacEntry
+        attribute: cipMacSwitchedPkts
+    cipMacHCSwitchedBytes:
+      oid: .1.3.6.1.4.1.9.9.84.1.2.3.1.2
+      name: cisco.cipMacSwitchedBytes
+      syntax: BytesB
+      overrides:
+        object: CISCO-IP-STAT-MIB::cipMacEntry
+        attribute: cipMacSwitchedBytes

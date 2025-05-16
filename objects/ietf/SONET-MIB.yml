@@ -1,0 +1,503 @@
+SONET-MIB::sonetMedium:
+  mib: SONET-MIB
+  object: sonetMedium
+  discovery_attribute: sonetSESthresholdSet
+  attributes:
+    sonetSESthresholdSet:
+      oid: .1.3.6.1.2.1.10.39.1.1.2
+      name: ietf.sonetSESthresholdSet
+      syntax: EnumInteger
+
+SONET-MIB::sonetMediumEntry:
+  mib: SONET-MIB
+  object: sonetMediumEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: sonetMediumTimeElapsed
+  attributes:
+    sonetMediumType:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.1
+      name: ietf.sonetMediumType
+      syntax: EnumInteger
+    sonetMediumTimeElapsed:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.2
+      name: ietf.sonetMediumTimeElapsed
+      syntax: TicksSec
+    sonetMediumValidIntervals:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.3
+      name: ietf.sonetMediumValidIntervals
+      syntax: Integer32
+    sonetMediumLineCoding:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.4
+      name: ietf.sonetMediumLineCoding
+      syntax: EnumInteger
+    sonetMediumLineType:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.5
+      name: ietf.sonetMediumLineType
+      syntax: EnumInteger
+    sonetMediumCircuitIdentifier:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.6
+      name: ietf.sonetMediumCircuitIdentifier
+      syntax: DisplayString
+    sonetMediumInvalidIntervals:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.7
+      name: ietf.sonetMediumInvalidIntervals
+      syntax: Integer32
+    sonetMediumLoopbackConfig:
+      oid: .1.3.6.1.2.1.10.39.1.1.1.1.8
+      name: ietf.sonetMediumLoopbackConfig
+      syntax: EnumBitmap
+    # Additional Attributes as Tags
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
+
+SONET-MIB::sonetSectionCurrentEntry:
+  mib: SONET-MIB
+  object: sonetSectionCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetSectionCurrentESs
+  attributes:
+    sonetSectionCurrentStatus:
+      oid: .1.3.6.1.2.1.10.39.1.2.1.1.1
+      name: ietf.sonetSectionCurrentStatus
+      syntax: EnumBitmap
+    sonetSectionCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.1.2.1.1.2
+      name: ietf.sonetSectionCurrentESs
+      syntax: Gauge32
+    sonetSectionCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.1.2.1.1.3
+      name: ietf.sonetSectionCurrentSESs
+      syntax: Gauge32
+    sonetSectionCurrentSEFSs:
+      oid: .1.3.6.1.2.1.10.39.1.2.1.1.4
+      name: ietf.sonetSectionCurrentSEFSs
+      syntax: Gauge32
+    sonetSectionCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.1.2.1.1.5
+      name: ietf.sonetSectionCurrentCVs
+      syntax: Gauge32
+
+# SONET-MIB::sonetSectionIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetSectionIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.1
+#       name: ietf.sonetSectionIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetSectionIntervalESs
+#   attributes:
+#     sonetSectionIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.2
+#       name: ietf.sonetSectionIntervalESs
+#       syntax: Gauge32
+#     sonetSectionIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.3
+#       name: ietf.sonetSectionIntervalSESs
+#       syntax: Gauge32
+#     sonetSectionIntervalSEFSs:
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.4
+#       name: ietf.sonetSectionIntervalSEFSs
+#       syntax: Gauge32
+#     sonetSectionIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.5
+#       name: ietf.sonetSectionIntervalCVs
+#       syntax: Gauge32
+#     sonetSectionIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.1.2.2.1.6
+#       name: ietf.sonetSectionIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetLineCurrentEntry:
+  mib: SONET-MIB
+  object: sonetLineCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetLineCurrentESs
+  attributes:
+    sonetLineCurrentStatus:
+      oid: .1.3.6.1.2.1.10.39.1.3.1.1.1
+      name: ietf.sonetLineCurrentStatus
+      syntax: EnumBitmap
+    sonetLineCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.1.3.1.1.2
+      name: ietf.sonetLineCurrentESs
+      syntax: Gauge32
+    sonetLineCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.1.3.1.1.3
+      name: ietf.sonetLineCurrentSESs
+      syntax: Gauge32
+    sonetLineCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.1.3.1.1.4
+      name: ietf.sonetLineCurrentCVs
+      syntax: Gauge32
+    sonetLineCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.1.3.1.1.5
+      name: ietf.sonetLineCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetLineIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetLineIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.1
+#       name: ietf.sonetLineIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetLineIntervalESs
+#   attributes:
+#     sonetLineIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.2
+#       name: ietf.sonetLineIntervalESs
+#       syntax: Gauge32
+#     sonetLineIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.3
+#       name: ietf.sonetLineIntervalSESs
+#       syntax: Gauge32
+#     sonetLineIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.4
+#       name: ietf.sonetLineIntervalCVs
+#       syntax: Gauge32
+#     sonetLineIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.5
+#       name: ietf.sonetLineIntervalUASs
+#       syntax: Gauge32
+#     sonetLineIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.1.3.2.1.6
+#       name: ietf.sonetLineIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetFarEndLineCurrentEntry:
+  mib: SONET-MIB
+  object: sonetFarEndLineCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetFarEndLineCurrentSESs
+  attributes:
+    sonetFarEndLineCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.1.4.1.1.1
+      name: ietf.sonetFarEndLineCurrentESs
+      syntax: Gauge32
+    sonetFarEndLineCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.1.4.1.1.2
+      name: ietf.sonetFarEndLineCurrentSESs
+      syntax: Gauge32
+    sonetFarEndLineCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.1.4.1.1.3
+      name: ietf.sonetFarEndLineCurrentCVs
+      syntax: Gauge32
+    sonetFarEndLineCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.1.4.1.1.4
+      name: ietf.sonetFarEndLineCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetFarEndLineIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetFarEndLineIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.1
+#       name: ietf.sonetFarEndLineIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetFarEndLineIntervalESs
+#   attributes:
+#     sonetFarEndLineIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.2
+#       name: ietf.sonetFarEndLineIntervalESs
+#       syntax: Gauge32
+#     sonetFarEndLineIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.3
+#       name: ietf.sonetFarEndLineIntervalSESs
+#       syntax: Gauge32
+#     sonetFarEndLineIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.4
+#       name: ietf.sonetFarEndLineIntervalCVs
+#       syntax: Gauge32
+#     sonetFarEndLineIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.5
+#       name: ietf.sonetFarEndLineIntervalUASs
+#       syntax: Gauge32
+#     sonetFarEndLineIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.1.4.2.1.6
+#       name: ietf.sonetFarEndLineIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetPathCurrentEntry:
+  mib: SONET-MIB
+  object: sonetPathCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetPathCurrentStatus
+  attributes:
+    sonetPathCurrentWidth:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.1
+      name: ietf.sonetPathCurrentWidth
+      syntax: EnumInteger
+    sonetPathCurrentStatus:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.2
+      name: ietf.sonetPathCurrentStatus
+      syntax: EnumBitmap
+    sonetPathCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.3
+      name: ietf.sonetPathCurrentESs
+      syntax: Gauge32
+    sonetPathCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.4
+      name: ietf.sonetPathCurrentSESs
+      syntax: Gauge32
+    sonetPathCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.5
+      name: ietf.sonetPathCurrentCVs
+      syntax: Gauge32
+    sonetPathCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.2.1.1.1.6
+      name: ietf.sonetPathCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetPathIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetPathIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.1
+#       name: ietf.sonetPathIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetPathIntervalESs
+#   attributes:
+#     sonetPathIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.2
+#       name: ietf.sonetPathIntervalESs
+#       syntax: Gauge32
+#     sonetPathIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.3
+#       name: ietf.sonetPathIntervalSESs
+#       syntax: Gauge32
+#     sonetPathIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.4
+#       name: ietf.sonetPathIntervalCVs
+#       syntax: Gauge32
+#     sonetPathIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.5
+#       name: ietf.sonetPathIntervalUASs
+#       syntax: Gauge32
+#     sonetPathIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.2.1.2.1.6
+#       name: ietf.sonetPathIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetFarEndPathCurrentEntry:
+  mib: SONET-MIB
+  object: sonetFarEndPathCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetFarEndPathCurrentSESs
+  attributes:
+    sonetFarEndPathCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.2.2.1.1.1
+      name: ietf.sonetFarEndPathCurrentESs
+      syntax: Gauge32
+    sonetFarEndPathCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.2.2.1.1.2
+      name: ietf.sonetFarEndPathCurrentSESs
+      syntax: Gauge32
+    sonetFarEndPathCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.2.2.1.1.3
+      name: ietf.sonetFarEndPathCurrentCVs
+      syntax: Gauge32
+    sonetFarEndPathCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.2.2.1.1.4
+      name: ietf.sonetFarEndPathCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetFarEndPathIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetFarEndPathIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.1
+#       name: ietf.sonetFarEndPathIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetFarEndPathIntervalESs
+#   attributes:
+#     sonetFarEndPathIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.2
+#       name: ietf.sonetFarEndPathIntervalESs
+#       syntax: Gauge32
+#     sonetFarEndPathIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.3
+#       name: ietf.sonetFarEndPathIntervalSESs
+#       syntax: Gauge32
+#     sonetFarEndPathIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.4
+#       name: ietf.sonetFarEndPathIntervalCVs
+#       syntax: Gauge32
+#     sonetFarEndPathIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.5
+#       name: ietf.sonetFarEndPathIntervalUASs
+#       syntax: Gauge32
+#     sonetFarEndPathIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.2.2.2.1.6
+#       name: ietf.sonetFarEndPathIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetVTCurrentEntry:
+  mib: SONET-MIB
+  object: sonetVTCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetVTCurrentStatus
+  attributes:
+    sonetVTCurrentWidth:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.1
+      name: ietf.sonetVTCurrentWidth
+      syntax: EnumInteger
+    sonetVTCurrentStatus:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.2
+      name: ietf.sonetVTCurrentStatus
+      syntax: EnumBitmap
+    sonetVTCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.3
+      name: ietf.sonetVTCurrentESs
+      syntax: Gauge32
+    sonetVTCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.4
+      name: ietf.sonetVTCurrentSESs
+      syntax: Gauge32
+    sonetVTCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.5
+      name: ietf.sonetVTCurrentCVs
+      syntax: Gauge32
+    sonetVTCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.3.1.1.1.6
+      name: ietf.sonetVTCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetVTIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetVTIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.1
+#       name: ietf.sonetVTIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetVTIntervalESs
+#   attributes:
+#     sonetVTIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.2
+#       name: ietf.sonetVTIntervalESs
+#       syntax: Gauge32
+#     sonetVTIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.3
+#       name: ietf.sonetVTIntervalSESs
+#       syntax: Gauge32
+#     sonetVTIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.4
+#       name: ietf.sonetVTIntervalCVs
+#       syntax: Gauge32
+#     sonetVTIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.5
+#       name: ietf.sonetVTIntervalUASs
+#       syntax: Gauge32
+#     sonetVTIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.3.1.2.1.6
+#       name: ietf.sonetVTIntervalValidData
+#       syntax: TruthValue
+
+SONET-MIB::sonetFarEndVTCurrentEntry:
+  mib: SONET-MIB
+  object: sonetFarEndVTCurrentEntry
+  augments: SONET-MIB::sonetMediumEntry
+  discovery_attribute: sonetFarEndVTCurrentSESs
+  attributes:
+    sonetFarEndVTCurrentESs:
+      oid: .1.3.6.1.2.1.10.39.3.2.1.1.1
+      name: ietf.sonetFarEndVTCurrentESs
+      syntax: Gauge32
+    sonetFarEndVTCurrentSESs:
+      oid: .1.3.6.1.2.1.10.39.3.2.1.1.2
+      name: ietf.sonetFarEndVTCurrentSESs
+      syntax: Gauge32
+    sonetFarEndVTCurrentCVs:
+      oid: .1.3.6.1.2.1.10.39.3.2.1.1.3
+      name: ietf.sonetFarEndVTCurrentCVs
+      syntax: Gauge32
+    sonetFarEndVTCurrentUASs:
+      oid: .1.3.6.1.2.1.10.39.3.2.1.1.4
+      name: ietf.sonetFarEndVTCurrentUASs
+      syntax: Gauge32
+
+# SONET-MIB::sonetFarEndVTIntervalEntry:
+#   mib: SONET-MIB
+#   object: sonetFarEndVTIntervalEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.1
+#       name: ietf.sonetFarEndVTIntervalNumber
+#       syntax: Integer32
+#   discovery_attribute: sonetFarEndVTIntervalESs
+#   attributes:
+#     sonetFarEndVTIntervalESs:
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.2
+#       name: ietf.sonetFarEndVTIntervalESs
+#       syntax: Gauge32
+#     sonetFarEndVTIntervalSESs:
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.3
+#       name: ietf.sonetFarEndVTIntervalSESs
+#       syntax: Gauge32
+#     sonetFarEndVTIntervalCVs:
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.4
+#       name: ietf.sonetFarEndVTIntervalCVs
+#       syntax: Gauge32
+#     sonetFarEndVTIntervalUASs:
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.5
+#       name: ietf.sonetFarEndVTIntervalUASs
+#       syntax: Gauge32
+#     sonetFarEndVTIntervalValidData:
+#       oid: .1.3.6.1.2.1.10.39.3.2.2.1.6
+#       name: ietf.sonetFarEndVTIntervalValidData
+#       syntax: TruthValue
