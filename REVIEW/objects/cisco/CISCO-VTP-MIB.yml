@@ -1,0 +1,696 @@
+CISCO-VTP-MIB::vtpStatus:
+  mib: CISCO-VTP-MIB
+  object: vtpStatus
+  discovery_attribute: vtpVersion
+  attributes:
+    vtpVersion:
+      oid: .1.3.6.1.4.1.9.9.46.1.1.1
+      name: vtpVersion
+      syntax: EnumInteger
+    vtpMaxVlanStorage:
+      oid: .1.3.6.1.4.1.9.9.46.1.1.2
+      name: vtpMaxVlanStorage
+      syntax: Integer32
+    vtpNotificationsEnabled:
+      oid: .1.3.6.1.4.1.9.9.46.1.1.3
+      name: vtpNotificationsEnabled
+      syntax: TruthValue
+    vtpVlanCreatedNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.46.1.1.4
+      name: vtpVlanCreatedNotifEnabled
+      syntax: TruthValue
+    vtpVlanDeletedNotifEnabled:
+      oid: .1.3.6.1.4.1.9.9.46.1.1.5
+      name: vtpVlanDeletedNotifEnabled
+      syntax: TruthValue
+
+CISCO-VTP-MIB::managementDomainEntry:
+  mib: CISCO-VTP-MIB
+  object: managementDomainEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+  discovery_attribute: managementDomainName
+  attributes:
+    managementDomainName:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.2
+      name: managementDomainName
+      syntax: DisplayString
+    managementDomainLocalMode:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.3
+      name: managementDomainLocalMode
+      syntax: EnumInteger
+    managementDomainConfigRevNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.4
+      name: managementDomainConfigRevNumber
+      syntax: Gauge32
+    managementDomainLastUpdater:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.5
+      name: managementDomainLastUpdater
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    managementDomainLastChange:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.6
+      name: managementDomainLastChange
+      syntax: DateAndTime
+#    managementDomainRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.7
+#      name: managementDomainRowStatus
+#      syntax: RowStatus
+    managementDomainTftpServer:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.8
+      name: managementDomainTftpServer
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    managementDomainTftpPathname:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.9
+      name: managementDomainTftpPathname
+      syntax: DisplayString
+    managementDomainPruningState:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.10
+      name: managementDomainPruningState
+      syntax: EnumInteger
+    managementDomainVersionInUse:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.11
+      name: managementDomainVersionInUse
+      syntax: EnumInteger
+    managementDomainPruningStateOper:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.12
+      name: managementDomainPruningStateOper
+      syntax: EnumInteger
+    managementDomainAdminSrcIf:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.13
+      name: managementDomainAdminSrcIf
+      syntax: DisplayString # TODO_SnmpAdminString
+    managementDomainSourceOnlyMode:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.14
+      name: managementDomainSourceOnlyMode
+      syntax: TruthValue
+    managementDomainOperSrcIf:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.15
+      name: managementDomainOperSrcIf
+      syntax: DisplayString # TODO_SnmpAdminString
+    managementDomainConfigFile:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.16
+      name: managementDomainConfigFile
+      syntax: DisplayString # TODO_SnmpAdminString
+    managementDomainLocalUpdaterType:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.17
+      name: managementDomainLocalUpdaterType
+      syntax: EnumInteger
+    managementDomainLocalUpdater:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.18
+      name: managementDomainLocalUpdater
+      syntax: IpAddressNoSuffix # TODO_InetAddress
+    managementDomainDeviceID:
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.19
+      name: managementDomainDeviceID
+      syntax: DisplayString # TODO_SnmpAdminString
+
+CISCO-VTP-MIB::vtpVlanEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpVlanEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpVlanIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.1
+      name: vtpVlanIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpVlanState
+  attributes:
+    vtpVlanState:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.2
+      name: vtpVlanState
+      syntax: EnumInteger
+    vtpVlanType:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.3
+      name: vtpVlanType
+      syntax: EnumInteger
+    vtpVlanName:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.4
+      name: vtpVlanName
+      syntax: DisplayString
+    vtpVlanMtu:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.5
+      name: vtpVlanMtu
+      syntax: Integer32
+    vtpVlanDot10Said:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.6
+      name: vtpVlanDot10Said
+      syntax: TODO_OctetString # OctetString
+    vtpVlanRingNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.7
+      name: vtpVlanRingNumber
+      syntax: Integer32
+    vtpVlanBridgeNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.8
+      name: vtpVlanBridgeNumber
+      syntax: Integer32
+    vtpVlanStpType:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.9
+      name: vtpVlanStpType
+      syntax: EnumInteger
+    vtpVlanParentVlan:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.10
+      name: vtpVlanParentVlan
+      syntax: Gauge32
+    vtpVlanTranslationalVlan1:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.11
+      name: vtpVlanTranslationalVlan1
+      syntax: Gauge32
+    vtpVlanTranslationalVlan2:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.12
+      name: vtpVlanTranslationalVlan2
+      syntax: Gauge32
+    vtpVlanBridgeType:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.13
+      name: vtpVlanBridgeType
+      syntax: EnumInteger
+    vtpVlanAreHopCount:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.14
+      name: vtpVlanAreHopCount
+      syntax: Integer32
+    vtpVlanSteHopCount:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.15
+      name: vtpVlanSteHopCount
+      syntax: Integer32
+    vtpVlanIsCRFBackup:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.16
+      name: vtpVlanIsCRFBackup
+      syntax: TruthValue
+    vtpVlanTypeExt:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.17
+      name: vtpVlanTypeExt
+      syntax: EnumBitmap
+    vtpVlanIfIndex:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.18
+      name: vtpVlanIfIndex
+      syntax: InterfaceIndexOrZero
+
+CISCO-VTP-MIB::internalVlanInfo:
+  mib: CISCO-VTP-MIB
+  object: internalVlanInfo
+  discovery_attribute: vtpInternalVlanAllocPolicy
+  attributes:
+    vtpInternalVlanAllocPolicy:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.2.1
+      name: vtpInternalVlanAllocPolicy
+      syntax: EnumInteger
+
+CISCO-VTP-MIB::vtpInternalVlanEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpInternalVlanEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpVlanIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.1
+      name: vtpVlanIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpInternalVlanOwner
+  attributes:
+    vtpInternalVlanOwner:
+      oid: .1.3.6.1.4.1.9.9.46.1.3.2.2.1.1
+      name: vtpInternalVlanOwner
+      syntax: DisplayString # TODO_SnmpAdminString
+
+CISCO-VTP-MIB::vtpEditControlEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpEditControlEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpVlanApplyStatus
+  attributes:
+    vtpVlanEditOperation:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.1.1.1
+      name: vtpVlanEditOperation
+      syntax: EnumInteger
+    vtpVlanApplyStatus:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.1.1.2
+      name: vtpVlanApplyStatus
+      syntax: EnumInteger
+    vtpVlanEditBufferOwner:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.1.1.3
+      name: vtpVlanEditBufferOwner
+      syntax: TODO_OctetString # OctetString
+    vtpVlanEditConfigRevNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.1.1.4
+      name: vtpVlanEditConfigRevNumber
+      syntax: Gauge32
+    vtpVlanEditModifiedVlan:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.1.1.5
+      name: vtpVlanEditModifiedVlan
+      syntax: Gauge32
+
+CISCO-VTP-MIB::vtpVlanEditEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpVlanEditEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpVlanEditIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.1
+      name: vtpVlanEditIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpVlanEditState
+  attributes:
+    vtpVlanEditState:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.2
+      name: vtpVlanEditState
+      syntax: EnumInteger
+    vtpVlanEditType:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.3
+      name: vtpVlanEditType
+      syntax: EnumInteger
+    vtpVlanEditName:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.4
+      name: vtpVlanEditName
+      syntax: DisplayString
+    vtpVlanEditMtu:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.5
+      name: vtpVlanEditMtu
+      syntax: Integer32
+    vtpVlanEditDot10Said:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.6
+      name: vtpVlanEditDot10Said
+      syntax: TODO_OctetString # OctetString
+    vtpVlanEditRingNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.7
+      name: vtpVlanEditRingNumber
+      syntax: Integer32
+    vtpVlanEditBridgeNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.8
+      name: vtpVlanEditBridgeNumber
+      syntax: Integer32
+    vtpVlanEditStpType:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.9
+      name: vtpVlanEditStpType
+      syntax: EnumInteger
+    vtpVlanEditParentVlan:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.10
+      name: vtpVlanEditParentVlan
+      syntax: Gauge32
+#    vtpVlanEditRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.11
+#      name: vtpVlanEditRowStatus
+#      syntax: RowStatus
+    vtpVlanEditTranslationalVlan1:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.12
+      name: vtpVlanEditTranslationalVlan1
+      syntax: Gauge32
+    vtpVlanEditTranslationalVlan2:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.13
+      name: vtpVlanEditTranslationalVlan2
+      syntax: Gauge32
+    vtpVlanEditBridgeType:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.14
+      name: vtpVlanEditBridgeType
+      syntax: EnumInteger
+    vtpVlanEditAreHopCount:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.15
+      name: vtpVlanEditAreHopCount
+      syntax: Integer32
+    vtpVlanEditSteHopCount:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.16
+      name: vtpVlanEditSteHopCount
+      syntax: Integer32
+    vtpVlanEditIsCRFBackup:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.17
+      name: vtpVlanEditIsCRFBackup
+      syntax: TruthValue
+    vtpVlanEditTypeExt:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.18
+      name: vtpVlanEditTypeExt
+      syntax: EnumBitmap
+    vtpVlanEditTypeExt2:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.2.1.19
+      name: vtpVlanEditTypeExt2
+      syntax: EnumBitmap
+
+CISCO-VTP-MIB::vtpVlanLocalShutdownEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpVlanLocalShutdownEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpVlanIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.3.1.1.1
+      name: vtpVlanIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpVlanLocalShutdown
+  attributes:
+    vtpVlanLocalShutdown:
+      oid: .1.3.6.1.4.1.9.9.46.1.4.3.1.1
+      name: vtpVlanLocalShutdown
+      syntax: EnumInteger
+
+CISCO-VTP-MIB::vtpStatsEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpStatsEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpInSubsetAdverts
+  attributes:
+    vtpInSummaryAdverts:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.1
+      name: vtpInSummaryAdverts
+      syntax: Counter32
+    vtpInSubsetAdverts:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.2
+      name: vtpInSubsetAdverts
+      syntax: Counter32
+    vtpInAdvertRequests:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.3
+      name: vtpInAdvertRequests
+      syntax: Counter32
+    vtpOutSummaryAdverts:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.4
+      name: vtpOutSummaryAdverts
+      syntax: Counter32
+    vtpOutSubsetAdverts:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.5
+      name: vtpOutSubsetAdverts
+      syntax: Counter32
+    vtpOutAdvertRequests:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.6
+      name: vtpOutAdvertRequests
+      syntax: Counter32
+    vtpConfigRevNumberErrors:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.7
+      name: vtpConfigRevNumberErrors
+      syntax: Counter32
+    vtpConfigDigestErrors:
+      oid: .1.3.6.1.4.1.9.9.46.1.5.1.1.8
+      name: vtpConfigDigestErrors
+      syntax: Counter32
+
+CISCO-VTP-MIB::vlanTrunkPorts:
+  mib: CISCO-VTP-MIB
+  object: vlanTrunkPorts
+  discovery_attribute: vlanTrunkPortSetSerialNo
+  attributes:
+    vlanTrunkPortSetSerialNo:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.2
+      name: vlanTrunkPortSetSerialNo
+      syntax: Gauge32
+    vlanTrunkPortsDot1qTag:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.3
+      name: vlanTrunkPortsDot1qTag
+      syntax: TruthValue
+
+CISCO-VTP-MIB::vlanTrunkPortEntry:
+  mib: CISCO-VTP-MIB
+  object: vlanTrunkPortEntry
+  index:
+    - type: TODO_vlanTrunkPortIfIndex # InterfaceIndex
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.1
+      name: vlanTrunkPortIfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: vlanTrunkPortManagementDomain
+  attributes:
+    vlanTrunkPortManagementDomain:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.2
+      name: vlanTrunkPortManagementDomain
+      syntax: Gauge32
+    vlanTrunkPortEncapsulationType:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.3
+      name: vlanTrunkPortEncapsulationType
+      syntax: EnumInteger
+    vlanTrunkPortVlansEnabled:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.4
+      name: vlanTrunkPortVlansEnabled
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortNativeVlan:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.5
+      name: vlanTrunkPortNativeVlan
+      syntax: Gauge32
+#    vlanTrunkPortRowStatus:
+#      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.6
+#      name: vlanTrunkPortRowStatus
+#      syntax: RowStatus
+    vlanTrunkPortInJoins:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.7
+      name: vlanTrunkPortInJoins
+      syntax: Counter32
+    vlanTrunkPortOutJoins:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.8
+      name: vlanTrunkPortOutJoins
+      syntax: Counter32
+    vlanTrunkPortOldAdverts:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.9
+      name: vlanTrunkPortOldAdverts
+      syntax: Counter32
+    vlanTrunkPortVlansPruningEligible:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.10
+      name: vlanTrunkPortVlansPruningEligible
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansXmitJoined:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.11
+      name: vlanTrunkPortVlansXmitJoined
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansRcvJoined:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.12
+      name: vlanTrunkPortVlansRcvJoined
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortDynamicState:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.13
+      name: vlanTrunkPortDynamicState
+      syntax: EnumInteger
+    vlanTrunkPortDynamicStatus:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.14
+      name: vlanTrunkPortDynamicStatus
+      syntax: EnumInteger
+    vlanTrunkPortVtpEnabled:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.15
+      name: vlanTrunkPortVtpEnabled
+      syntax: TruthValue
+    vlanTrunkPortEncapsulationOperType:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.16
+      name: vlanTrunkPortEncapsulationOperType
+      syntax: EnumInteger
+    vlanTrunkPortVlansEnabled2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.17
+      name: vlanTrunkPortVlansEnabled2k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansEnabled3k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.18
+      name: vlanTrunkPortVlansEnabled3k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansEnabled4k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.19
+      name: vlanTrunkPortVlansEnabled4k
+      syntax: TODO_OctetString # OctetString
+    vtpVlansPruningEligible2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.20
+      name: vtpVlansPruningEligible2k
+      syntax: TODO_OctetString # OctetString
+    vtpVlansPruningEligible3k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.21
+      name: vtpVlansPruningEligible3k
+      syntax: TODO_OctetString # OctetString
+    vtpVlansPruningEligible4k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.22
+      name: vtpVlansPruningEligible4k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansXmitJoined2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.23
+      name: vlanTrunkPortVlansXmitJoined2k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansXmitJoined3k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.24
+      name: vlanTrunkPortVlansXmitJoined3k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansXmitJoined4k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.25
+      name: vlanTrunkPortVlansXmitJoined4k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansRcvJoined2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.26
+      name: vlanTrunkPortVlansRcvJoined2k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansRcvJoined3k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.27
+      name: vlanTrunkPortVlansRcvJoined3k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansRcvJoined4k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.28
+      name: vlanTrunkPortVlansRcvJoined4k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortDot1qTunnel:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.29
+      name: vlanTrunkPortDot1qTunnel
+      syntax: EnumInteger
+    vlanTrunkPortVlansActiveFirst2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.30
+      name: vlanTrunkPortVlansActiveFirst2k
+      syntax: TODO_OctetString # OctetString
+    vlanTrunkPortVlansActiveSecond2k:
+      oid: .1.3.6.1.4.1.9.9.46.1.6.1.1.31
+      name: vlanTrunkPortVlansActiveSecond2k
+      syntax: TODO_OctetString # OctetString
+
+CISCO-VTP-MIB::vtpDiscoverEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpDiscoverEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpDiscoverStatus
+  attributes:
+    vtpDiscoverAction:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.1.1.1
+      name: vtpDiscoverAction
+      syntax: EnumInteger
+    vtpDiscoverStatus:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.1.1.2
+      name: vtpDiscoverStatus
+      syntax: EnumInteger
+    vtpLastDiscoverTime:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.1.1.3
+      name: vtpLastDiscoverTime
+      syntax: TimeStamp
+
+CISCO-VTP-MIB::vtpDiscoverResultEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpDiscoverResultEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpDiscoverResultIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.1
+      name: vtpDiscoverResultIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpDiscoverResultDatabaseName
+  attributes:
+    vtpDiscoverResultDatabaseName:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.2
+      name: vtpDiscoverResultDatabaseName
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpDiscoverResultConflicting:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.3
+      name: vtpDiscoverResultConflicting
+      syntax: TruthValue
+    vtpDiscoverResultDeviceId:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.4
+      name: vtpDiscoverResultDeviceId
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpDiscoverResultPrimaryServer:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.5
+      name: vtpDiscoverResultPrimaryServer
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpDiscoverResultRevNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.6
+      name: vtpDiscoverResultRevNumber
+      syntax: Gauge32
+    vtpDiscoverResultSystemName:
+      oid: .1.3.6.1.4.1.9.9.46.1.7.2.1.7
+      name: vtpDiscoverResultSystemName
+      syntax: DisplayString # TODO_SnmpAdminString
+
+CISCO-VTP-MIB::vtpDatabaseEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpDatabaseEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+    - type: TODO_vtpDatabaseIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.1
+      name: vtpDatabaseIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpDatabaseName
+  attributes:
+    vtpDatabaseName:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.2
+      name: vtpDatabaseName
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpDatabaseLocalMode:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.3
+      name: vtpDatabaseLocalMode
+      syntax: EnumInteger
+    vtpDatabaseRevNumber:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.4
+      name: vtpDatabaseRevNumber
+      syntax: Gauge32
+    vtpDatabasePrimaryServer:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.5
+      name: vtpDatabasePrimaryServer
+      syntax: TruthValue
+    vtpDatabasePrimaryServerId:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.6
+      name: vtpDatabasePrimaryServerId
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpDatabaseTakeOverPrimary:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.7
+      name: vtpDatabaseTakeOverPrimary
+      syntax: TruthValue
+    vtpDatabaseTakeOverPassword:
+      oid: .1.3.6.1.4.1.9.9.46.1.8.1.1.8
+      name: vtpDatabaseTakeOverPassword
+      syntax: DisplayString # TODO_SnmpAdminString
+
+CISCO-VTP-MIB::vtpAuthEntry:
+  mib: CISCO-VTP-MIB
+  object: vtpAuthEntry
+  index:
+    - type: TODO_managementDomainIndex # Unsigned32
+      oid: .1.3.6.1.4.1.9.9.46.1.2.1.1.1
+      name: managementDomainIndex
+      syntax: Unsigned32
+  discovery_attribute: vtpAuthPasswordType
+  attributes:
+    vtpAuthPassword:
+      oid: .1.3.6.1.4.1.9.9.46.1.9.1.1.1
+      name: vtpAuthPassword
+      syntax: DisplayString # TODO_SnmpAdminString
+    vtpAuthPasswordType:
+      oid: .1.3.6.1.4.1.9.9.46.1.9.1.1.2
+      name: vtpAuthPasswordType
+      syntax: EnumInteger
+    vtpAuthSecretKey:
+      oid: .1.3.6.1.4.1.9.9.46.1.9.1.1.3
+      name: vtpAuthSecretKey
+      syntax: TODO_OctetString # OctetString
+
+CISCO-VTP-MIB::vlanStatistics:
+  mib: CISCO-VTP-MIB
+  object: vlanStatistics
+  discovery_attribute: vlanStatsVlans
+  attributes:
+    vlanStatsVlans:
+      oid: .1.3.6.1.4.1.9.9.46.1.10.1
+      name: vlanStatsVlans
+      syntax: Unsigned32
+    vlanStatsExtendedVlans:
+      oid: .1.3.6.1.4.1.9.9.46.1.10.2
+      name: vlanStatsExtendedVlans
+      syntax: Unsigned32
+    vlanStatsInternalVlans:
+      oid: .1.3.6.1.4.1.9.9.46.1.10.3
+      name: vlanStatsInternalVlans
+      syntax: Unsigned32
+    vlanStatsFreeVlans:
+      oid: .1.3.6.1.4.1.9.9.46.1.10.4
+      name: vlanStatsFreeVlans
+      syntax: Unsigned32
+
