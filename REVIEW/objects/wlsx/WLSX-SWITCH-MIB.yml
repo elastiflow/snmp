@@ -1,0 +1,619 @@
+WLSX-SWITCH-MIB::wlsxSystemXGroup:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSystemXGroup
+  discovery_attribute: wlsxHostname
+  attributes:
+    wlsxHostname:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.1
+      name: wlsxHostname
+      syntax: DisplayString
+    wlsxModelName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.2
+      name: wlsxModelName
+      syntax: DisplayString
+    wlsxSwitchIp:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.3
+      name: wlsxSwitchIp
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxSwitchRole:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.4
+      name: wlsxSwitchRole
+      syntax: EnumInteger
+    wlsxSwitchMasterIp:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.5
+      name: wlsxSwitchMasterIp
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxSwitchLicenseCount:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.7
+      name: wlsxSwitchLicenseCount
+      syntax: Integer32
+    wlsxSwitchLicenseSerialNumber:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.12
+      name: wlsxSwitchLicenseSerialNumber
+      syntax: DisplayString
+
+WLSX-SWITCH-MIB::wlsxSwitchListEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchListEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.6.1.1
+      name: switchListSwitchIPAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+  discovery_attribute: switchListSwitchRole
+  attributes:
+    switchListSwitchRole:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.6.1.2
+      name: switchListSwitchRole
+      syntax: EnumInteger
+
+WLSX-SWITCH-MIB::wlsxLicenseEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxLicenseEntry
+  index:
+    - type: TODO_licenseIndex # Integer32
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.1
+      name: licenseIndex
+      syntax: Integer32
+  discovery_attribute: licenseKey
+  attributes:
+    licenseKey:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.2
+      name: licenseKey
+      syntax: DisplayString
+    licenseInstalled:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.3
+      name: licenseInstalled
+      syntax: DisplayString
+    licenseExpires:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.4
+      name: licenseExpires
+      syntax: DisplayString
+    licenseFlags:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.5
+      name: licenseFlags
+      syntax: DisplayString
+    licenseService:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.8.1.6
+      name: licenseService
+      syntax: DisplayString
+
+WLSX-SWITCH-MIB::wlsxSysXProcessorEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSysXProcessorEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.9.1.1
+      name: sysXProcessorID
+      syntax: Integer32
+  discovery_attribute: sysXProcessorDescr
+  attributes:
+    sysXProcessorDescr:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.9.1.2
+      name: sysXProcessorDescr
+      syntax: DisplayString
+    sysXProcessorLoad:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.9.1.3
+      name: sysXProcessorLoad
+      syntax: Integer32
+
+WLSX-SWITCH-MIB::wlsxSysXStorageEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSysXStorageEntry
+  index:
+    - type: TODO_sysXStorageIndex # Integer32
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.10.1.1
+      name: sysXStorageIndex
+      syntax: Integer32
+  discovery_attribute: sysXStorageType
+  attributes:
+    sysXStorageType:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.10.1.2
+      name: sysXStorageType
+      syntax: EnumInteger
+    sysXStorageSize:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.10.1.3
+      name: sysXStorageSize
+      syntax: Integer32
+    sysXStorageUsed:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.10.1.4
+      name: sysXStorageUsed
+      syntax: Integer32
+    sysXStorageName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.10.1.5
+      name: sysXStorageName
+      syntax: DisplayString
+
+WLSX-SWITCH-MIB::wlsxSysXMemoryEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSysXMemoryEntry
+  index:
+    - type: TODO_sysXMemoryIndex # Integer32
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.11.1.1
+      name: sysXMemoryIndex
+      syntax: Integer32
+  discovery_attribute: sysXMemorySize
+  attributes:
+    sysXMemorySize:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.11.1.2
+      name: sysXMemorySize
+      syntax: Integer32
+    sysXMemoryUsed:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.11.1.3
+      name: sysXMemoryUsed
+      syntax: Integer32
+    sysXMemoryFree:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.1.11.1.4
+      name: sysXMemoryFree
+      syntax: Integer32
+
+WLSX-SWITCH-MIB::wlsxSwitchUserEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchUserEntry
+  index:
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.1
+      name: userIpAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+  discovery_attribute: userPhyAddress
+  attributes:
+    userPhyAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.2
+      name: userPhyAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    userName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.3
+      name: userName
+      syntax: DisplayString
+    userRole:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.4
+      name: userRole
+      syntax: DisplayString
+    userUpTime:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.5
+      name: userUpTime
+      syntax: TimeTicks
+    userAuthenticationMethod:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.6
+      name: userAuthenticationMethod
+      syntax: EnumInteger
+    userLocation:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.7
+      name: userLocation
+      syntax: DisplayString
+    userServerName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.8
+      name: userServerName
+      syntax: DisplayString
+    userConnectedVlan:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.9
+      name: userConnectedVlan
+      syntax: Integer32
+    userConnectedSlot:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.10
+      name: userConnectedSlot
+      syntax: Integer32
+    userConnectedPort:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.11
+      name: userConnectedPort
+      syntax: Integer32
+    userBWContractName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.12
+      name: userBWContractName
+      syntax: DisplayString
+    userBWContractUsage:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.13
+      name: userBWContractUsage
+      syntax: EnumInteger
+    userConnectedModule:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.1.1.14
+      name: userConnectedModule
+      syntax: Integer32
+
+WLSX-SWITCH-MIB::wlsxSwitchStationMgmtEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchStationMgmtEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.1
+      name: staPhyAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.2
+      name: staAccessPointBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: staUserName
+  attributes:
+    staUserName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.3
+      name: staUserName
+      syntax: DisplayString
+    staUserRole:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.4
+      name: staUserRole
+      syntax: DisplayString
+    staAssociationID:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.5
+      name: staAssociationID
+      syntax: Unsigned32
+    staAccessPointESSID:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.6
+      name: staAccessPointESSID
+      syntax: DisplayString
+    staSignalToNoiseRatio:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.7
+      name: staSignalToNoiseRatio
+      syntax: Integer32
+    staTransmitRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.8
+      name: staTransmitRate
+      syntax: EnumInteger
+    staReceiveRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.9
+      name: staReceiveRate
+      syntax: EnumInteger
+
+WLSX-SWITCH-MIB::wlsxSwitchStationStatsEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchStationStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.1
+      name: staPhyAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.2.1.2
+      name: staAccessPointBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: staTxBytes
+  attributes:
+    staTxPackets:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.1
+      name: staTxPackets
+      syntax: Counter32
+    staTxBytes:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.2
+      name: staTxBytes
+      syntax: Counter32
+    staRxPackets:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.3
+      name: staRxPackets
+      syntax: Counter32
+    staRxBytes:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.4
+      name: staRxBytes
+      syntax: Counter32
+    staBwRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.5
+      name: staBwRate
+      syntax: Integer32
+    staFrameRetryRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.6
+      name: staFrameRetryRate
+      syntax: Integer32
+    staFrameLowSpeedRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.7
+      name: staFrameLowSpeedRate
+      syntax: Integer32
+    staFrameNonUnicastRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.8
+      name: staFrameNonUnicastRate
+      syntax: Integer32
+    staFrameFragmentationRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.9
+      name: staFrameFragmentationRate
+      syntax: Integer32
+    staFrameReceiveErrorRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.2.3.1.10
+      name: staFrameReceiveErrorRate
+      syntax: Integer32
+
+WLSX-SWITCH-MIB::wlsxAccessPointInfoGroup:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxAccessPointInfoGroup
+  discovery_attribute: wlsxSwitchTotalNumAccessPoints
+  attributes:
+    wlsxSwitchTotalNumAccessPoints:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.1
+      name: wlsxSwitchTotalNumAccessPoints
+      syntax: Unsigned32
+    wlsxSwitchTotalNumStationsAssociated:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.2
+      name: wlsxSwitchTotalNumStationsAssociated
+      syntax: Unsigned32
+
+WLSX-SWITCH-MIB::wlsxSwitchAccessPointEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchAccessPointEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.1
+      name: apBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: apESSID
+  attributes:
+    apESSID:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.2
+      name: apESSID
+      syntax: DisplayString
+    apSlot:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.3
+      name: apSlot
+      syntax: Unsigned32
+    apPort:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.4
+      name: apPort
+      syntax: Unsigned32
+    apIpAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.5
+      name: apIpAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    apPhyType:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.6
+      name: apPhyType
+      syntax: EnumInteger
+    apType:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.7
+      name: apType
+      syntax: EnumInteger
+    apCurrentChannel:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.8
+      name: apCurrentChannel
+      syntax: Integer32
+    apLocation:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.9
+      name: apLocation
+      syntax: DisplayString
+    apTotalTime:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.10
+      name: apTotalTime
+      syntax: TimeTicks
+    apInactiveTime:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.11
+      name: apInactiveTime
+      syntax: TimeTicks
+    apLoadBalancing:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.12
+      name: apLoadBalancing
+      syntax: TruthValue
+    apChannelNoise:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.13
+      name: apChannelNoise
+      syntax: Integer32
+    apSignalToNoiseRatio:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.14
+      name: apSignalToNoiseRatio
+      syntax: Integer32
+    apTransmitRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.15
+      name: apTransmitRate
+      syntax: EnumInteger
+    apReceiveRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.16
+      name: apReceiveRate
+      syntax: EnumInteger
+
+WLSX-SWITCH-MIB::wlsxSwitchGlobalAPEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchGlobalAPEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.1
+      name: globalAPLocation
+      syntax: TODO_OctetString # OctetString
+    - type: IpAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.2
+      name: globalAPAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+  discovery_attribute: globalAPLocalSwitch
+  attributes:
+    globalAPLocalSwitch:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.3
+      name: globalAPLocalSwitch
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    globalAPdot11aPhyAddr:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.4
+      name: globalAPdot11aPhyAddr
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    globalAPdot11bPhyAddr:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.5
+      name: globalAPdot11bPhyAddr
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    globalAPState:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.6
+      name: globalAPState
+      syntax: Integer32
+    globalAPdot11gPhyAddr:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.4.1.7
+      name: globalAPdot11gPhyAddr
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+
+WLSX-SWITCH-MIB::wlsxSwitchAccessPointStatsEntry:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchAccessPointStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.3.1.1
+      name: apBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: apChannelBwRate
+  attributes:
+    apStatsChannel:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.1
+      name: apStatsChannel
+      syntax: Integer32
+    apChannelBwRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.2
+      name: apChannelBwRate
+      syntax: Integer32
+    apChannelFrameRetryRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.3
+      name: apChannelFrameRetryRate
+      syntax: Integer32
+    apChannelFrameLowSpeedRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.4
+      name: apChannelFrameLowSpeedRate
+      syntax: Integer32
+    apChannelFrameNonUnicastRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.5
+      name: apChannelFrameNonUnicastRate
+      syntax: Integer32
+    apChannelFrameFragmentationRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.6
+      name: apChannelFrameFragmentationRate
+      syntax: Integer32
+    apChannelFrameReceiveErrorRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.7
+      name: apChannelFrameReceiveErrorRate
+      syntax: Integer32
+    apBSSTxPackets:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.8
+      name: apBSSTxPackets
+      syntax: Counter32
+    apBSSTxBytes:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.9
+      name: apBSSTxBytes
+      syntax: Counter32
+    apBSSRxPackets:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.10
+      name: apBSSRxPackets
+      syntax: Counter32
+    apBSSRxBytes:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.11
+      name: apBSSRxBytes
+      syntax: Counter32
+    apBSSBwRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.12
+      name: apBSSBwRate
+      syntax: Integer32
+    apBSSFrameRetryRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.13
+      name: apBSSFrameRetryRate
+      syntax: Integer32
+    apBSSFrameLowSpeedRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.14
+      name: apBSSFrameLowSpeedRate
+      syntax: Integer32
+    apBSSFrameNonUnicastRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.15
+      name: apBSSFrameNonUnicastRate
+      syntax: Integer32
+    apBSSFrameFragmentationRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.16
+      name: apBSSFrameFragmentationRate
+      syntax: Integer32
+    apBSSFrameReceiveErrorRate:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.3.5.1.17
+      name: apBSSFrameReceiveErrorRate
+      syntax: Integer32
+
+WLSX-SWITCH-MIB::wlsxSwitchTrapObjectsGroup:
+  mib: WLSX-SWITCH-MIB
+  object: wlsxSwitchTrapObjectsGroup
+  discovery_attribute: wlsxAuthServerName
+  attributes:
+    wlsxAuthServerName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.1
+      name: wlsxAuthServerName
+      syntax: DisplayString
+    wlsxAuthServerTimeout:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.2
+      name: wlsxAuthServerTimeout
+      syntax: Integer32
+    wlsxFanNumber:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.4
+      name: wlsxFanNumber
+      syntax: Integer32
+    wlsxLineCardNumber:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.5
+      name: wlsxLineCardNumber
+      syntax: Integer32
+    wlsxVoltageType:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.6
+      name: wlsxVoltageType
+      syntax: DisplayString
+    wlsxVoltageValue:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.7
+      name: wlsxVoltageValue
+      syntax: DisplayString
+    wlsxTemperatureValue:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.8
+      name: wlsxTemperatureValue
+      syntax: DisplayString
+    wlsxProcessName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.9
+      name: wlsxProcessName
+      syntax: DisplayString
+    wlsxStationMacAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.10
+      name: wlsxStationMacAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsxStationBlackListReason:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.11
+      name: wlsxStationBlackListReason
+      syntax: EnumInteger
+    wlsxSpoofedIpAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.12
+      name: wlsxSpoofedIpAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxSpoofedOldPhyAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.13
+      name: wlsxSpoofedOldPhyAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsxSpoofedNewPhyAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.14
+      name: wlsxSpoofedNewPhyAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsxDBName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.15
+      name: wlsxDBName
+      syntax: DisplayString
+    wlsxDBUserName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.16
+      name: wlsxDBUserName
+      syntax: DisplayString
+    wlsxDBIpAddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.17
+      name: wlsxDBIpAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxDBType:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.18
+      name: wlsxDBType
+      syntax: EnumInteger
+    wlsxVrID:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.19
+      name: wlsxVrID
+      syntax: Integer32
+    wlsxVrMasterIp:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.20
+      name: wlsxVrMasterIp
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxVrrpOperState:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.21
+      name: wlsxVrrpOperState
+      syntax: EnumInteger
+    wlsxApTxPower:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.22
+      name: wlsxApTxPower
+      syntax: Integer32
+    wlsxESIServerGrpName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.23
+      name: wlsxESIServerGrpName
+      syntax: DisplayString
+    wlsxESIServerName:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.24
+      name: wlsxESIServerName
+      syntax: DisplayString
+    wlsxESIServerIpaddress:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.25
+      name: wlsxESIServerIpaddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsxLicenseDaysRemaining:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.26
+      name: wlsxLicenseDaysRemaining
+      syntax: Integer32
+    wlsxSlotNumber:
+      oid: .1.3.6.1.4.1.14823.2.2.1.1.100.100.27
+      name: wlsxSlotNumber
+      syntax: Integer32
+

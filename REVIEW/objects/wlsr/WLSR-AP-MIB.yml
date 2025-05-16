@@ -1,0 +1,950 @@
+WLSR-AP-MIB::wlsrConfigEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrConfigEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.1
+      name: wlsrBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrESSID
+  attributes:
+    wlsrESSID:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.2
+      name: wlsrESSID
+      syntax: DisplayString
+    wlsrMode:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.3
+      name: wlsrMode
+      syntax: EnumInteger
+    wlsrCurrentChannel:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.4
+      name: wlsrCurrentChannel
+      syntax: Integer32
+    wlsrTxPower:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.5
+      name: wlsrTxPower
+      syntax: Integer32
+    wlsrRTSThreshold:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.6
+      name: wlsrRTSThreshold
+      syntax: Integer32
+    wlsrRetryLimit:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.7
+      name: wlsrRetryLimit
+      syntax: Integer32
+    wlsrPreamble:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.8
+      name: wlsrPreamble
+      syntax: EnumInteger
+    wlsrBeaconInterval:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.9
+      name: wlsrBeaconInterval
+      syntax: Integer32
+    wlsrPowerMgmt:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.10
+      name: wlsrPowerMgmt
+      syntax: EnumInteger
+    wlsrLoadBalance:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.11
+      name: wlsrLoadBalance
+      syntax: EnumInteger
+    wlsrSupportedRates:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.12
+      name: wlsrSupportedRates
+      syntax: EnumBitmap
+    wlsrDTIMPeriod:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.13
+      name: wlsrDTIMPeriod
+      syntax: Integer32
+    wlsrLMSAddress:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.14
+      name: wlsrLMSAddress
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsrEncryption:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.15
+      name: wlsrEncryption
+      syntax: EnumBitmap
+    wlsrStatus:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.17
+      name: wlsrStatus
+      syntax: TruthValue
+    wlsrAgeout:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.18
+      name: wlsrAgeout
+      syntax: Integer32
+    wlsrMTU:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.19
+      name: wlsrMTU
+      syntax: Integer32
+    wlsrLocation:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.20
+      name: wlsrLocation
+      syntax: DisplayString
+    wlsrHideSSID:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.21
+      name: wlsrHideSSID
+      syntax: TruthValue
+    wlsrDenyBroadcast:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.22
+      name: wlsrDenyBroadcast
+      syntax: TruthValue
+    wlsrBGmode:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.23
+      name: wlsrBGmode
+      syntax: EnumInteger
+    wlsrCardType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.24
+      name: wlsrCardType
+      syntax: EnumInteger
+    wlsrRegDomain:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.25
+      name: wlsrRegDomain
+      syntax: Integer32
+    wlsrCountryCode:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.26
+      name: wlsrCountryCode
+      syntax: DisplayString
+    wlsrTxRates:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.1.1.1.27
+      name: wlsrTxRates
+      syntax: EnumBitmap
+
+WLSR-AP-MIB::wlsrChannelStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrChannelStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.1
+      name: wlsrChStatsChannel
+      syntax: Integer32
+  discovery_attribute: wlsrChStatsNumAPs
+  attributes:
+    wlsrChStatsNumAPs:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.2
+      name: wlsrChStatsNumAPs
+      syntax: Integer32
+    wlsrChStatsNumStations:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.3
+      name: wlsrChStatsNumStations
+      syntax: Integer32
+    wlsrChStatsTotPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.4
+      name: wlsrChStatsTotPkts
+      syntax: Counter32
+    wlsrChStatsTotBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.5
+      name: wlsrChStatsTotBytes
+      syntax: Counter32
+    wlsrChStatsTotRetryPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.6
+      name: wlsrChStatsTotRetryPkts
+      syntax: Counter32
+    wlsrChStatsTotFragmentedPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.7
+      name: wlsrChStatsTotFragmentedPkts
+      syntax: Counter32
+    wlsrChStatsTotPhyErrPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.8
+      name: wlsrChStatsTotPhyErrPkts
+      syntax: Counter32
+    wlsrChStatsTotMacErrPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.9
+      name: wlsrChStatsTotMacErrPkts
+      syntax: Counter32
+    wlsrChStatsFrameErrorRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.10
+      name: wlsrChStatsFrameErrorRate
+      syntax: Integer32
+    wlsrChStatsFrameRetryRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.11
+      name: wlsrChStatsFrameRetryRate
+      syntax: Integer32
+    wlsrChStatsFrameLowSpeedRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.12
+      name: wlsrChStatsFrameLowSpeedRate
+      syntax: Integer32
+    wlsrChStatsFrameNonUnicastRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.13
+      name: wlsrChStatsFrameNonUnicastRate
+      syntax: Integer32
+    wlsrChStatsFrameBandwidthRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.14
+      name: wlsrChStatsFrameBandwidthRate
+      syntax: Integer32
+    wlsrChStatsFrameFragmentationRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.15
+      name: wlsrChStatsFrameFragmentationRate
+      syntax: Integer32
+    wlsrChStatsMonitoredTime:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.16
+      name: wlsrChStatsMonitoredTime
+      syntax: TimeTicks
+
+WLSR-AP-MIB::wlsrChannelRateStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrChannelRateStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.1
+      name: wlsrChStatsChannel
+      syntax: Integer32
+  discovery_attribute: wlsrChStatsTotBytesAt1Mbps
+  attributes:
+    wlsrChStatsTotPktsAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.1
+      name: wlsrChStatsTotPktsAt1Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.2
+      name: wlsrChStatsTotBytesAt1Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.3
+      name: wlsrChStatsTotPktsAt2Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.4
+      name: wlsrChStatsTotBytesAt2Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.5
+      name: wlsrChStatsTotPktsAt5Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.6
+      name: wlsrChStatsTotBytesAt5Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.7
+      name: wlsrChStatsTotPktsAt11Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.8
+      name: wlsrChStatsTotBytesAt11Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.9
+      name: wlsrChStatsTotPktsAt6Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.10
+      name: wlsrChStatsTotBytesAt6Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.11
+      name: wlsrChStatsTotPktsAt12Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.12
+      name: wlsrChStatsTotBytesAt12Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.13
+      name: wlsrChStatsTotPktsAt18Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.14
+      name: wlsrChStatsTotBytesAt18Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.15
+      name: wlsrChStatsTotPktsAt24Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.16
+      name: wlsrChStatsTotBytesAt24Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.17
+      name: wlsrChStatsTotPktsAt36Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.18
+      name: wlsrChStatsTotBytesAt36Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.19
+      name: wlsrChStatsTotPktsAt48Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.20
+      name: wlsrChStatsTotBytesAt48Mbps
+      syntax: Counter32
+    wlsrChStatsTotPktsAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.21
+      name: wlsrChStatsTotPktsAt54Mbps
+      syntax: Counter32
+    wlsrChStatsTotBytesAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.2.1.22
+      name: wlsrChStatsTotBytesAt54Mbps
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrChannelDATypeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrChannelDATypeStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.1
+      name: wlsrChStatsChannel
+      syntax: Integer32
+  discovery_attribute: wlsrChStatsTotDABroadcastBytes
+  attributes:
+    wlsrChStatsTotDABroadcastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.1
+      name: wlsrChStatsTotDABroadcastPkts
+      syntax: Counter32
+    wlsrChStatsTotDABroadcastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.2
+      name: wlsrChStatsTotDABroadcastBytes
+      syntax: Counter32
+    wlsrChStatsTotDAMulticastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.3
+      name: wlsrChStatsTotDAMulticastPkts
+      syntax: Counter32
+    wlsrChStatsTotDAMulticastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.4
+      name: wlsrChStatsTotDAMulticastBytes
+      syntax: Counter32
+    wlsrChStatsTotDAUnicastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.5
+      name: wlsrChStatsTotDAUnicastPkts
+      syntax: Counter32
+    wlsrChStatsTotDAUnicastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.3.1.6
+      name: wlsrChStatsTotDAUnicastBytes
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrChannelFrameTypeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrChannelFrameTypeStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.1
+      name: wlsrChStatsChannel
+      syntax: Integer32
+  discovery_attribute: wlsrChStatsTotMgmtBytes
+  attributes:
+    wlsrChStatsTotMgmtPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.1
+      name: wlsrChStatsTotMgmtPkts
+      syntax: Counter32
+    wlsrChStatsTotMgmtBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.2
+      name: wlsrChStatsTotMgmtBytes
+      syntax: Counter32
+    wlsrChStatsTotCtrlPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.3
+      name: wlsrChStatsTotCtrlPkts
+      syntax: Counter32
+    wlsrChStatsTotCtrlBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.4
+      name: wlsrChStatsTotCtrlBytes
+      syntax: Counter32
+    wlsrChStatsTotDataPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.5
+      name: wlsrChStatsTotDataPkts
+      syntax: Counter32
+    wlsrChStatsTotDataBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.4.1.6
+      name: wlsrChStatsTotDataBytes
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrChannelPktSizeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrChannelPktSizeStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.1.1.1
+      name: wlsrChStatsChannel
+      syntax: Integer32
+  discovery_attribute: wlsrChStatsPkts64To127
+  attributes:
+    wlsrChStatsPkts63Bytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.1
+      name: wlsrChStatsPkts63Bytes
+      syntax: Counter32
+    wlsrChStatsPkts64To127:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.2
+      name: wlsrChStatsPkts64To127
+      syntax: Counter32
+    wlsrChStatsPkts128To255:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.3
+      name: wlsrChStatsPkts128To255
+      syntax: Counter32
+    wlsrChStatsPkts256To511:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.4
+      name: wlsrChStatsPkts256To511
+      syntax: Counter32
+    wlsrChStatsPkts512To1023:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.5
+      name: wlsrChStatsPkts512To1023
+      syntax: Counter32
+    wlsrChStatsPkts1024To1518:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.3.5.1.6
+      name: wlsrChStatsPkts1024To1518
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrStaStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrStaStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.1
+      name: wlsrStaAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrStaTxPkts
+  attributes:
+    wlsrStaTxPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.2
+      name: wlsrStaTxPkts
+      syntax: Counter32
+    wlsrStaTxBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.3
+      name: wlsrStaTxBytes
+      syntax: Counter32
+    wlsrStaRxPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.4
+      name: wlsrStaRxPkts
+      syntax: Counter32
+    wlsrStaRxBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.5
+      name: wlsrStaRxBytes
+      syntax: Counter32
+    wlsrStaTxRetryPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.6
+      name: wlsrStaTxRetryPkts
+      syntax: Counter32
+    wlsrStaRxRetryPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.7
+      name: wlsrStaRxRetryPkts
+      syntax: Counter32
+    wlsrStaTxFragmentedPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.8
+      name: wlsrStaTxFragmentedPkts
+      syntax: Counter32
+    wlsrStaRxFragmentedPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.9
+      name: wlsrStaRxFragmentedPkts
+      syntax: Counter32
+    wlsrStaReceiveErrPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.10
+      name: wlsrStaReceiveErrPkts
+      syntax: Counter32
+    wlsrStaTxTotSignal:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.11
+      name: wlsrStaTxTotSignal
+      syntax: Integer32
+    wlsrStaTxSignalPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.12
+      name: wlsrStaTxSignalPkts
+      syntax: Counter32
+    wlsrStaTxCurSignal:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.13
+      name: wlsrStaTxCurSignal
+      syntax: Integer32
+    wlsrStaTxHighSignal:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.14
+      name: wlsrStaTxHighSignal
+      syntax: Integer32
+    wlsrStaRxTotNoise:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.15
+      name: wlsrStaRxTotNoise
+      syntax: Counter32
+    wlsrStaRxNoisePkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.16
+      name: wlsrStaRxNoisePkts
+      syntax: Counter32
+    wlsrStaRxCurrentNoise:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.17
+      name: wlsrStaRxCurrentNoise
+      syntax: Integer32
+    wlsrStaRxHighNoise:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.18
+      name: wlsrStaRxHighNoise
+      syntax: Integer32
+    wlsrStaRxLowNoise:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.19
+      name: wlsrStaRxLowNoise
+      syntax: Integer32
+    wlsrStaFrameRetryRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.20
+      name: wlsrStaFrameRetryRate
+      syntax: Integer32
+    wlsrStaFrameLowSpeedRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.21
+      name: wlsrStaFrameLowSpeedRate
+      syntax: Integer32
+    wlsrStaFrameNonUnicastRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.22
+      name: wlsrStaFrameNonUnicastRate
+      syntax: Integer32
+    wlsrStaFrameRetryErrorRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.23
+      name: wlsrStaFrameRetryErrorRate
+      syntax: Integer32
+    wlsrStaFrameBandwidthRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.24
+      name: wlsrStaFrameBandwidthRate
+      syntax: Integer32
+    wlsrStaFrameFragmentationRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.25
+      name: wlsrStaFrameFragmentationRate
+      syntax: Integer32
+    wlsrStaFrameHighBandwidthRate:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.26
+      name: wlsrStaFrameHighBandwidthRate
+      syntax: Integer32
+
+WLSR-AP-MIB::wlsrStaRateStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrStaRateStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.1
+      name: wlsrStaAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrStaTxBytesAt1Mbps
+  attributes:
+    wlsrStaTxPktsAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.1
+      name: wlsrStaTxPktsAt1Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.2
+      name: wlsrStaTxBytesAt1Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.3
+      name: wlsrStaTxPktsAt2Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.4
+      name: wlsrStaTxBytesAt2Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.5
+      name: wlsrStaTxPktsAt5Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.6
+      name: wlsrStaTxBytesAt5Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.7
+      name: wlsrStaTxPktsAt11Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.8
+      name: wlsrStaTxBytesAt11Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.9
+      name: wlsrStaTxPktsAt6Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.10
+      name: wlsrStaTxBytesAt6Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.11
+      name: wlsrStaTxPktsAt12Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.12
+      name: wlsrStaTxBytesAt12Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.13
+      name: wlsrStaTxPktsAt18Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.14
+      name: wlsrStaTxBytesAt18Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.15
+      name: wlsrStaTxPktsAt24Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.16
+      name: wlsrStaTxBytesAt24Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.17
+      name: wlsrStaTxPktsAt36Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.18
+      name: wlsrStaTxBytesAt36Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.19
+      name: wlsrStaTxPktsAt48Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.20
+      name: wlsrStaTxBytesAt48Mbps
+      syntax: Counter32
+    wlsrStaTxPktsAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.21
+      name: wlsrStaTxPktsAt54Mbps
+      syntax: Counter32
+    wlsrStaTxBytesAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.22
+      name: wlsrStaTxBytesAt54Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.23
+      name: wlsrStaRxPktsAt1Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt1Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.24
+      name: wlsrStaRxBytesAt1Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.25
+      name: wlsrStaRxPktsAt2Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt2Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.26
+      name: wlsrStaRxBytesAt2Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.27
+      name: wlsrStaRxPktsAt5Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt5Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.28
+      name: wlsrStaRxBytesAt5Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.29
+      name: wlsrStaRxPktsAt11Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt11Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.30
+      name: wlsrStaRxBytesAt11Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.31
+      name: wlsrStaRxPktsAt6Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt6Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.32
+      name: wlsrStaRxBytesAt6Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.33
+      name: wlsrStaRxPktsAt12Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt12Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.34
+      name: wlsrStaRxBytesAt12Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.35
+      name: wlsrStaRxPktsAt18Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt18Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.36
+      name: wlsrStaRxBytesAt18Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.37
+      name: wlsrStaRxPktsAt24Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt24Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.38
+      name: wlsrStaRxBytesAt24Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.39
+      name: wlsrStaRxPktsAt36Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt36Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.40
+      name: wlsrStaRxBytesAt36Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.41
+      name: wlsrStaRxPktsAt48Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt48Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.42
+      name: wlsrStaRxBytesAt48Mbps
+      syntax: Counter32
+    wlsrStaRxPktsAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.43
+      name: wlsrStaRxPktsAt54Mbps
+      syntax: Counter32
+    wlsrStaRxBytesAt54Mbps:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.2.1.44
+      name: wlsrStaRxBytesAt54Mbps
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrStaDATypeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrStaDATypeStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.1
+      name: wlsrStaAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrStaTxDABroadcastBytes
+  attributes:
+    wlsrStaTxDABroadcastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.1
+      name: wlsrStaTxDABroadcastPkts
+      syntax: Counter32
+    wlsrStaTxDABroadcastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.2
+      name: wlsrStaTxDABroadcastBytes
+      syntax: Counter32
+    wlsrStaTxDAMulticastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.3
+      name: wlsrStaTxDAMulticastPkts
+      syntax: Counter32
+    wlsrStaTxDAMulticastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.4
+      name: wlsrStaTxDAMulticastBytes
+      syntax: Counter32
+    wlsrStaTxDAUnicastPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.5
+      name: wlsrStaTxDAUnicastPkts
+      syntax: Counter32
+    wlsrStaTxDAUnicastBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.3.1.6
+      name: wlsrStaTxDAUnicastBytes
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrStaFrameTypeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrStaFrameTypeStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.1
+      name: wlsrStaAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrStaTxMgmtBytes
+  attributes:
+    wlsrStaTxMgmtPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.1
+      name: wlsrStaTxMgmtPkts
+      syntax: Counter32
+    wlsrStaTxMgmtBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.2
+      name: wlsrStaTxMgmtBytes
+      syntax: Counter32
+    wlsrStaTxCtrlPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.3
+      name: wlsrStaTxCtrlPkts
+      syntax: Counter32
+    wlsrStaTxCtrlBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.4
+      name: wlsrStaTxCtrlBytes
+      syntax: Counter32
+    wlsrStaTxDataPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.5
+      name: wlsrStaTxDataPkts
+      syntax: Counter32
+    wlsrStaTxDataBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.6
+      name: wlsrStaTxDataBytes
+      syntax: Counter32
+    wlsrStaRxMgmtPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.7
+      name: wlsrStaRxMgmtPkts
+      syntax: Counter32
+    wlsrStaRxMgmtBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.8
+      name: wlsrStaRxMgmtBytes
+      syntax: Counter32
+    wlsrStaRxCtrlPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.9
+      name: wlsrStaRxCtrlPkts
+      syntax: Counter32
+    wlsrStaRxCtrlBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.10
+      name: wlsrStaRxCtrlBytes
+      syntax: Counter32
+    wlsrStaRxDataPkts:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.11
+      name: wlsrStaRxDataPkts
+      syntax: Counter32
+    wlsrStaRxDataBytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.4.1.12
+      name: wlsrStaRxDataBytes
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrStaPktSizeStatsEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrStaPktSizeStatsEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.1.1.1
+      name: wlsrStaAddress
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrStaTxPkts64To127
+  attributes:
+    wlsrStaTxPkts63Bytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.1
+      name: wlsrStaTxPkts63Bytes
+      syntax: Counter32
+    wlsrStaTxPkts64To127:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.2
+      name: wlsrStaTxPkts64To127
+      syntax: Counter32
+    wlsrStaTxPkts128To255:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.3
+      name: wlsrStaTxPkts128To255
+      syntax: Counter32
+    wlsrStaTxPkts256To511:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.4
+      name: wlsrStaTxPkts256To511
+      syntax: Counter32
+    wlsrStaTxPkts512To1023:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.5
+      name: wlsrStaTxPkts512To1023
+      syntax: Counter32
+    wlsrStaTxPkts1024To1518:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.6
+      name: wlsrStaTxPkts1024To1518
+      syntax: Counter32
+    wlsrStaRxPkts63Bytes:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.7
+      name: wlsrStaRxPkts63Bytes
+      syntax: Counter32
+    wlsrStaRxPkts64To127:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.8
+      name: wlsrStaRxPkts64To127
+      syntax: Counter32
+    wlsrStaRxPkts128To255:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.9
+      name: wlsrStaRxPkts128To255
+      syntax: Counter32
+    wlsrStaRxPkts256To511:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.10
+      name: wlsrStaRxPkts256To511
+      syntax: Counter32
+    wlsrStaRxPkts512To1023:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.11
+      name: wlsrStaRxPkts512To1023
+      syntax: Counter32
+    wlsrStaRxPkts1024To1518:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.3.4.5.1.12
+      name: wlsrStaRxPkts1024To1518
+      syntax: Counter32
+
+WLSR-AP-MIB::wlsrAirMonitorApListEntry:
+  mib: WLSR-AP-MIB
+  object: wlsrAirMonitorApListEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.1
+      name: wlsrAmApBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+  discovery_attribute: wlsrAmSSID
+  attributes:
+    wlsrAmSSID:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.2
+      name: wlsrAmSSID
+      syntax: DisplayString
+    wlsrAmChannel:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.3
+      name: wlsrAmChannel
+      syntax: Integer32
+    wlsrAmPhysicalType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.4
+      name: wlsrAmPhysicalType
+      syntax: EnumInteger
+    wlsrAmAccessPointType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.5
+      name: wlsrAmAccessPointType
+      syntax: EnumInteger
+    wlsrAmRAPType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.6
+      name: wlsrAmRAPType
+      syntax: EnumInteger
+    wlsrAmRSSI:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.7
+      name: wlsrAmRSSI
+      syntax: Integer32
+    wlsrAmMonitoredTime:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.8
+      name: wlsrAmMonitoredTime
+      syntax: TimeTicks
+    wlsrAmInactivityTime:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.9
+      name: wlsrAmInactivityTime
+      syntax: TimeTicks
+    wlsrAmLoadBalancing:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.4.1.1.10
+      name: wlsrAmLoadBalancing
+      syntax: EnumInteger
+
+WLSR-AP-MIB::wlsrTrapObjectsGroup:
+  mib: WLSR-AP-MIB
+  object: wlsrTrapObjectsGroup
+  discovery_attribute: wlsrTargetApBSSID
+  attributes:
+    wlsrTargetApBSSID:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.1
+      name: wlsrTargetApBSSID
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrTargetApSSID:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.2
+      name: wlsrTargetApSSID
+      syntax: DisplayString
+    wlsrTargetApChannel:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.3
+      name: wlsrTargetApChannel
+      syntax: Integer32
+    wlsrSourceMac:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.4
+      name: wlsrSourceMac
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrNodeMac:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.5
+      name: wlsrNodeMac
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrFrameType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.6
+      name: wlsrFrameType
+      syntax: EnumInteger
+    wlsrAddressType:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.7
+      name: wlsrAddressType
+      syntax: EnumInteger
+    wlsrSignatureName:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.8
+      name: wlsrSignatureName
+      syntax: TODO_OctetString # OctetString
+    wlsrMatchedMac:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.9
+      name: wlsrMatchedMac
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrMatchedIp:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.10
+      name: wlsrMatchedIp
+      syntax: IpAddressNoSuffix # TODO_IpAddress
+    wlsrReceiverMac:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.11
+      name: wlsrReceiverMac
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrTransmitterMac:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.12
+      name: wlsrTransmitterMac
+      syntax: MacAddressNoSuffix # TODO_MacAddress
+    wlsrRSSI:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.13
+      name: wlsrRSSI
+      syntax: Integer32
+    wlsrRogueInfoURL:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.14
+      name: wlsrRogueInfoURL
+      syntax: DisplayString
+    wlsrInterferingAPInfoURL:
+      oid: .1.3.6.1.4.1.14823.2.3.1.1.100.100.15
+      name: wlsrInterferingAPInfoURL
+      syntax: DisplayString
+
