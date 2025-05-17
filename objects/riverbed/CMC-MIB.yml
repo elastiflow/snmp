@@ -1,0 +1,264 @@
+CMC-MIB::system:
+  mib: CMC-MIB
+  object: system
+  discovery_attribute: model
+  attributes:
+    model:
+      oid: .1.3.6.1.4.1.17163.1.2.1.1
+      name: riverbed.model
+      syntax: DisplayString
+    serialNumber:
+      oid: .1.3.6.1.4.1.17163.1.2.1.2
+      name: riverbed.serialNumber
+      syntax: DisplayString
+    systemVersion:
+      oid: .1.3.6.1.4.1.17163.1.2.1.3
+      name: riverbed.systemVersion
+      syntax: DisplayString
+
+CMC-MIB::status:
+  mib: CMC-MIB
+  object: status
+  augments: CMC-MIB::system
+  discovery_attribute: systemClock
+  attributes:
+    systemClock:
+      oid: .1.3.6.1.4.1.17163.1.2.2.1
+      name: riverbed.systemClock
+      syntax: DateAndTime
+    health:
+      oid: .1.3.6.1.4.1.17163.1.2.2.2
+      name: riverbed.health
+      syntax: DisplayString
+    systemTemperature:
+      oid: .1.3.6.1.4.1.17163.1.2.2.4
+      name: riverbed.systemTemperature
+      syntax: TemperatureC
+    healthNotes:
+      oid: .1.3.6.1.4.1.17163.1.2.2.5
+      name: riverbed.healthNotes
+      syntax: DisplayString
+
+CMC-MIB::procEntry:
+  mib: CMC-MIB
+  object: procEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.2.2.3.1.1
+      name: riverbed.procIndex
+      syntax: UnsignedAsID
+  discovery_attribute: procName
+  attributes:
+    procName:
+      oid: .1.3.6.1.4.1.17163.1.2.2.3.1.2
+      name: riverbed.procName
+      syntax: DisplayString
+    procStatus:
+      oid: .1.3.6.1.4.1.17163.1.2.2.3.1.3
+      name: riverbed.procStatus
+      syntax: DisplayString
+    procNumFailures:
+      oid: .1.3.6.1.4.1.17163.1.2.2.3.1.4
+      name: riverbed.procNumFailures
+      syntax: Unsigned32
+
+CMC-MIB::config:
+  mib: CMC-MIB
+  object: config
+  augments: CMC-MIB::system
+  discovery_attribute: activeConfig
+  attributes:
+    activeConfig:
+      oid: .1.3.6.1.4.1.17163.1.2.3.1
+      name: riverbed.activeConfig
+      syntax: DisplayString
+
+CMC-MIB::cpuLoad:
+  mib: CMC-MIB
+  object: cpuLoad
+  augments: CMC-MIB::system
+  discovery_attribute: cpuLoad1
+  attributes:
+    cpuLoad1:
+      oid: .1.3.6.1.4.1.17163.1.2.5.1.1
+      name: riverbed.cpuLoad1
+      syntax: PercentCenti100
+    cpuLoad5:
+      oid: .1.3.6.1.4.1.17163.1.2.5.1.2
+      name: riverbed.cpuLoad5
+      syntax: PercentCenti100
+    cpuLoad15:
+      oid: .1.3.6.1.4.1.17163.1.2.5.1.3
+      name: riverbed.cpuLoad15
+      syntax: PercentCenti100
+    cpuUtil1:
+      oid: .1.3.6.1.4.1.17163.1.2.5.1.4
+      name: riverbed.cpuUtil1
+      syntax: PercentCenti100
+
+# CMC-MIB::groupEntry:
+#   mib: CMC-MIB
+#   object: groupEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.17163.1.2.6.1.1.1
+#       name: riverbed.cmc.groupIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: groupName
+#   attributes:
+#     groupName:
+#       oid: .1.3.6.1.4.1.17163.1.2.6.1.1.2
+#       name: riverbed.cmc.groupName
+#       syntax: DisplayString
+#     groupComment:
+#       oid: .1.3.6.1.4.1.17163.1.2.6.1.1.3
+#       name: riverbed.cmc.groupComment
+#       syntax: DisplayString
+#     groupAppliances:
+#       oid: .1.3.6.1.4.1.17163.1.2.6.1.1.4
+#       name: riverbed.cmc.groupAppliances
+#       syntax: DisplayString
+
+CMC-MIB::applianceEntry:
+  mib: CMC-MIB
+  object: applianceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.3
+      name: riverbed.cmc.applianceIndex
+      syntax: UnsignedAsID
+  discovery_attribute: applianceSerial
+  attributes:
+    typeName:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.2
+      name: riverbed.cmc.typeName
+      syntax: DisplayString
+    applianceSerial:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.4
+      name: riverbed.cmc.applianceSerial
+      syntax: DisplayString
+    applianceHealth:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.5
+      name: riverbed.cmc.applianceHealth
+      syntax: DisplayString
+    applianceConn:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.6
+      name: riverbed.cmc.applianceConn
+      syntax: DisplayString
+    applianceDisplayAddr:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.7
+      name: riverbed.cmc.applianceDisplayAddr
+      syntax: DisplayString
+    applianceBackup:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.8
+      name: riverbed.cmc.applianceBackup
+      syntax: DisplayString
+    applianceHealthNotes:
+      oid: .1.3.6.1.4.1.17163.1.2.7.1.1.9
+      name: riverbed.cmc.applianceHealthNotes
+      syntax: DisplayString
+
+CMC-MIB::steelheadEntry:
+  mib: CMC-MIB
+  object: steelheadEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.1
+      name: riverbed.cmc.steelheadIndex
+      syntax: UnsignedAsID
+  discovery_attribute: steelheadSerial
+  attributes:
+    steelheadSerial:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.2
+      name: riverbed.cmc.steelheadSerial
+      syntax: DisplayString
+    steelheadHealth:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.3
+      name: riverbed.cmc.steelheadHealth
+      syntax: DisplayString
+    steelheadConn:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.4
+      name: riverbed.cmc.steelheadConn
+      syntax: DisplayString
+    steelheadDisplayAddr:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.5
+      name: riverbed.cmc.steelheadDisplayAddr
+      syntax: DisplayString
+    steelheadBackup:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.6
+      name: riverbed.cmc.steelheadBackup
+      syntax: DisplayString
+    steelheadHealthNotes:
+      oid: .1.3.6.1.4.1.17163.1.2.8.1.1.7
+      name: riverbed.cmc.steelheadHealthNotes
+      syntax: DisplayString
+
+CMC-MIB::interceptorEntry:
+  mib: CMC-MIB
+  object: interceptorEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.1
+      name: riverbed.cmc.interceptorIndex
+      syntax: UnsignedAsID
+  discovery_attribute: interceptorSerial
+  attributes:
+    interceptorSerial:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.2
+      name: riverbed.cmc.interceptorSerial
+      syntax: DisplayString
+    interceptorHealth:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.3
+      name: riverbed.cmc.interceptorHealth
+      syntax: DisplayString
+    interceptorConn:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.4
+      name: riverbed.cmc.interceptorConn
+      syntax: DisplayString
+    interceptorDisplayAddr:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.5
+      name: riverbed.cmc.interceptorDisplayAddr
+      syntax: DisplayString
+    interceptorBackup:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.6
+      name: riverbed.cmc.interceptorBackup
+      syntax: DisplayString
+    interceptorHealthNotes:
+      oid: .1.3.6.1.4.1.17163.1.2.9.1.1.7
+      name: riverbed.cmc.interceptorHealthNotes
+      syntax: DisplayString
+
+CMC-MIB::mobileControllerEntry:
+  mib: CMC-MIB
+  object: mobileControllerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.1
+      name: riverbed.cmc.mobileControllerIndex
+      syntax: UnsignedAsID
+  discovery_attribute: mobileControllerSerial
+  attributes:
+    mobileControllerSerial:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.2
+      name: riverbed.cmc.mobileControllerSerial
+      syntax: DisplayString
+    mobileControllerHealth:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.3
+      name: riverbed.cmc.mobileControllerHealth
+      syntax: DisplayString
+    mobileControllerConn:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.4
+      name: riverbed.cmc.mobileControllerConn
+      syntax: DisplayString
+    mobileControllerDisplayAddr:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.5
+      name: riverbed.cmc.mobileControllerDisplayAddr
+      syntax: DisplayString
+    mobileControllerBackup:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.6
+      name: riverbed.cmc.mobileControllerBackup
+      syntax: DisplayString
+    mobileControllerHealthNotes:
+      oid: .1.3.6.1.4.1.17163.1.2.10.1.1.7
+      name: riverbed.cmc.mobileControllerHealthNotes
+      syntax: DisplayString

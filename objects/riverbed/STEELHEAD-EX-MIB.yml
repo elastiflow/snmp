@@ -1,0 +1,734 @@
+STEELHEAD-EX-MIB::system:
+  mib: STEELHEAD-EX-MIB
+  object: system
+  discovery_attribute: model
+  attributes:
+    model:
+      oid: .1.3.6.1.4.1.17163.1.51.1.1
+      name: riverbed.model
+      syntax: DisplayString
+    serialNumber:
+      oid: .1.3.6.1.4.1.17163.1.51.1.2
+      name: riverbed.serialNumber
+      syntax: DisplayString
+    systemVersion:
+      oid: .1.3.6.1.4.1.17163.1.51.1.3
+      name: riverbed.systemVersion
+      syntax: DisplayString
+
+STEELHEAD-EX-MIB::status:
+  mib: STEELHEAD-EX-MIB
+  object: status
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: systemClock
+  attributes:
+    systemClock:
+      oid: .1.3.6.1.4.1.17163.1.51.2.1
+      name: riverbed.systemClock
+      syntax: DateAndTime
+    health:
+      oid: .1.3.6.1.4.1.17163.1.51.2.2
+      name: riverbed.health
+      syntax: DisplayString
+    serviceStatus:
+      oid: .1.3.6.1.4.1.17163.1.51.2.3
+      name: riverbed.serviceStatus
+      syntax: DisplayString
+    serviceUptime:
+      oid: .1.3.6.1.4.1.17163.1.51.2.4
+      name: riverbed.serviceUptime
+      syntax: TimeTicks
+    systemHealth:
+      oid: .1.3.6.1.4.1.17163.1.51.2.7
+      name: riverbed.systemHealth
+      syntax: EnumInteger
+    optServiceStatus:
+      oid: .1.3.6.1.4.1.17163.1.51.2.8
+      name: riverbed.optServiceStatus
+      syntax: EnumInteger
+    systemTemperature:
+      oid: .1.3.6.1.4.1.17163.1.51.2.9
+      name: riverbed.systemTemperature
+      syntax: TemperatureC
+    healthNotes:
+      oid: .1.3.6.1.4.1.17163.1.51.2.10
+      name: riverbed.healthNotes
+      syntax: DisplayString
+    asymRouteCount:
+      oid: .1.3.6.1.4.1.17163.1.51.2.14
+      name: riverbed.asymRouteCount
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::procEntry:
+  mib: STEELHEAD-EX-MIB
+  object: procEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.2.5.1.1
+      name: riverbed.procIndex
+      syntax: UnsignedAsID
+  discovery_attribute: procName
+  attributes:
+    procName:
+      oid: .1.3.6.1.4.1.17163.1.51.2.5.1.2
+      name: riverbed.procName
+      syntax: DisplayString
+    procStatus:
+      oid: .1.3.6.1.4.1.17163.1.51.2.5.1.3
+      name: riverbed.procStatus
+      syntax: DisplayString
+    procNumFailures:
+      oid: .1.3.6.1.4.1.17163.1.51.2.5.1.4
+      name: riverbed.procNumFailures
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::peerEntry:
+  mib: STEELHEAD-EX-MIB
+  object: peerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.2.6.1.1.1
+      name: riverbed.steelhead.peerIndex
+      syntax: UnsignedAsID
+  discovery_attribute: peerHostname
+  attributes:
+    peerHostname:
+      oid: .1.3.6.1.4.1.17163.1.51.2.6.1.1.2
+      name: riverbed.steelhead.peerHostname
+      syntax: DisplayString
+    peerVersion:
+      oid: .1.3.6.1.4.1.17163.1.51.2.6.1.1.3
+      name: riverbed.steelhead.peerVersion
+      syntax: DisplayString
+    peerAddress:
+      oid: .1.3.6.1.4.1.17163.1.51.2.6.1.1.4
+      name: riverbed.steelhead.peerAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    peerModel:
+      oid: .1.3.6.1.4.1.17163.1.51.2.6.1.1.5
+      name: riverbed.steelhead.peerModel
+      syntax: DisplayString
+
+STEELHEAD-EX-MIB::crlEntry:
+  mib: STEELHEAD-EX-MIB
+  object: crlEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.2.11.1.1.1
+      name: riverbed.steelhead.crlIndex
+      syntax: UnsignedAsID
+  discovery_attribute: crlFeatureName
+  attributes:
+    crlFeatureName:
+      oid: .1.3.6.1.4.1.17163.1.51.2.11.1.1.2
+      name: riverbed.steelhead.crlFeatureName
+      syntax: DisplayString
+    crlNumCdpErr:
+      oid: .1.3.6.1.4.1.17163.1.51.2.11.1.1.3
+      name: riverbed.steelhead.crlNumCdpErr
+      syntax: Unsigned32
+    crlErrMsg:
+      oid: .1.3.6.1.4.1.17163.1.51.2.11.1.1.4
+      name: riverbed.steelhead.crlErrMsg
+      syntax: DisplayString
+
+STEELHEAD-EX-MIB::neighborEntry:
+  mib: STEELHEAD-EX-MIB
+  object: neighborEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.1
+      name: riverbed.steelhead.neighborIndex
+      syntax: UnsignedAsID
+  discovery_attribute: neighborAddress
+  attributes:
+    neighborAddress:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.2
+      name: riverbed.steelhead.neighborAddress
+      syntax: IpAddressNoSuffix # IpAddress
+    neighborState:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.3
+      name: riverbed.steelhead.neighborState
+      syntax: Unsigned32
+    neighborNatReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.4
+      name: riverbed.steelhead.neighborNatReqSent
+      syntax: Counter32
+    neighborNatDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.5
+      name: riverbed.steelhead.neighborNatDelSent
+      syntax: Counter32
+    neighborNatAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.6
+      name: riverbed.steelhead.neighborNatAckRcvd
+      syntax: Counter32
+    neighborNatReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.7
+      name: riverbed.steelhead.neighborNatReqRcvd
+      syntax: Counter32
+    neighborNatDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.8
+      name: riverbed.steelhead.neighborNatDelRcvd
+      syntax: Counter32
+    neighborNatAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.9
+      name: riverbed.steelhead.neighborNatAckSent
+      syntax: Counter32
+    neighborDynReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.10
+      name: riverbed.steelhead.neighborDynReqSent
+      syntax: Counter32
+    neighborDynDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.11
+      name: riverbed.steelhead.neighborDynDelSent
+      syntax: Counter32
+    neighborDynAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.12
+      name: riverbed.steelhead.neighborDynAckRcvd
+      syntax: Counter32
+    neighborDynReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.13
+      name: riverbed.steelhead.neighborDynReqRcvd
+      syntax: Counter32
+    neighborDynDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.14
+      name: riverbed.steelhead.neighborDynDelRcvd
+      syntax: Counter32
+    neighborDynAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.15
+      name: riverbed.steelhead.neighborDynAckSent
+      syntax: Counter32
+    neighborRedirReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.16
+      name: riverbed.steelhead.neighborRedirReqSent
+      syntax: Counter32
+    neighborRedirDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.17
+      name: riverbed.steelhead.neighborRedirDelSent
+      syntax: Counter32
+    neighborRedirAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.18
+      name: riverbed.steelhead.neighborRedirAckRcvd
+      syntax: Counter32
+    neighborRedirReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.19
+      name: riverbed.steelhead.neighborRedirReqRcvd
+      syntax: Counter32
+    neighborRedirDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.20
+      name: riverbed.steelhead.neighborRedirDelRcvd
+      syntax: Counter32
+    neighborRedirAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.21
+      name: riverbed.steelhead.neighborRedirAckSent
+      syntax: Counter32
+    neighborConnFailures:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.22
+      name: riverbed.steelhead.neighborConnFailures
+      syntax: Counter32
+    neighborKeepaliveTimeouts:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.23
+      name: riverbed.steelhead.neighborKeepaliveTimeouts
+      syntax: Counter32
+    neighborRequestTimeouts:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.24
+      name: riverbed.steelhead.neighborRequestTimeouts
+      syntax: Counter32
+    neighborMaxLatency:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.1.1.25
+      name: riverbed.steelhead.neighborMaxLatency
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::neighborAggregates:
+  mib: STEELHEAD-EX-MIB
+  object: neighborAggregates
+  discovery_attribute: nghAggrConfigured
+  attributes:
+    nghAggrConfigured:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.1
+      name: riverbed.steelhead.nghAggrConfigured
+      syntax: Unsigned32
+    nghAggrConnected:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.2
+      name: riverbed.steelhead.nghAggrConnected
+      syntax: Unsigned32
+    nghAggrConnFailures:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.3
+      name: riverbed.steelhead.nghAggrConnFailures
+      syntax: Counter32
+    nghAggrKeepaliveTimouts:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.4
+      name: riverbed.steelhead.nghAggrKeepaliveTimouts
+      syntax: Counter32
+    nghAggrRequestTimeouts:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.5
+      name: riverbed.steelhead.nghAggrRequestTimeouts
+      syntax: Counter32
+    nghAggrMaxLatency:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.6
+      name: riverbed.steelhead.nghAggrMaxLatency
+      syntax: Unsigned32
+    nghAggrNatReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.7
+      name: riverbed.steelhead.nghAggrNatReqSent
+      syntax: Counter32
+    nghAggrNatDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.8
+      name: riverbed.steelhead.nghAggrNatDelSent
+      syntax: Counter32
+    nghAggrNatAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.9
+      name: riverbed.steelhead.nghAggrNatAckRcvd
+      syntax: Counter32
+    nghAggrNatReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.10
+      name: riverbed.steelhead.nghAggrNatReqRcvd
+      syntax: Counter32
+    nghAggrNatDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.11
+      name: riverbed.steelhead.nghAggrNatDelRcvd
+      syntax: Counter32
+    nghAggrNatAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.12
+      name: riverbed.steelhead.nghAggrNatAckSent
+      syntax: Counter32
+    nghAggrDynReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.13
+      name: riverbed.steelhead.nghAggrDynReqSent
+      syntax: Counter32
+    nghAggrDynDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.14
+      name: riverbed.steelhead.nghAggrDynDelSent
+      syntax: Counter32
+    nghAggrDynAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.15
+      name: riverbed.steelhead.nghAggrDynAckRcvd
+      syntax: Counter32
+    nghAggrDynReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.16
+      name: riverbed.steelhead.nghAggrDynReqRcvd
+      syntax: Counter32
+    nghAggrDynDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.17
+      name: riverbed.steelhead.nghAggrDynDelRcvd
+      syntax: Counter32
+    nghAggrDynAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.18
+      name: riverbed.steelhead.nghAggrDynAckSent
+      syntax: Counter32
+    nghAggrRedirReqSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.19
+      name: riverbed.steelhead.nghAggrRedirReqSent
+      syntax: Counter32
+    nghAggrRedirDelSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.20
+      name: riverbed.steelhead.nghAggrRedirDelSent
+      syntax: Counter32
+    nghAggrRedirAckRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.21
+      name: riverbed.steelhead.nghAggrRedirAckRcvd
+      syntax: Counter32
+    nghAggrRedirReqRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.22
+      name: riverbed.steelhead.nghAggrRedirReqRcvd
+      syntax: Counter32
+    nghAggrRedirDelRcvd:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.23
+      name: riverbed.steelhead.nghAggrRedirDelRcvd
+      syntax: Counter32
+    nghAggrRedirAckSent:
+      oid: .1.3.6.1.4.1.17163.1.51.2.12.2.24
+      name: riverbed.steelhead.nghAggrRedirAckSent
+      syntax: Counter32
+
+STEELHEAD-EX-MIB::capabilityStatus:
+  mib: STEELHEAD-EX-MIB
+  object: capabilityStatus
+  discovery_attribute: shMaxConnections
+  attributes:
+    shMaxConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.2.13.1
+      name: riverbed.steelhead.shMaxConnections
+      syntax: Unsigned32
+    shMaxBandwidth:
+      oid: .1.3.6.1.4.1.17163.1.51.2.13.2
+      name: riverbed.steelhead.shMaxBandwidth
+      syntax: Counter64
+
+STEELHEAD-EX-MIB::config:
+  mib: STEELHEAD-EX-MIB
+  object: config
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: activeConfig
+  attributes:
+    activeConfig:
+      oid: .1.3.6.1.4.1.17163.1.51.3.1
+      name: riverbed.activeConfig
+      syntax: DisplayString
+
+STEELHEAD-EX-MIB::inpath:
+  mib: STEELHEAD-EX-MIB
+  object: inpath
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: inpathSupport
+  attributes:
+    inpathSupport:
+      oid: .1.3.6.1.4.1.17163.1.51.3.2.1
+      name: riverbed.steelhead.inpathSupport
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::outofpath:
+  mib: STEELHEAD-EX-MIB
+  object: outofpath
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: outofpathSupport
+  attributes:
+    outofpathSupport:
+      oid: .1.3.6.1.4.1.17163.1.51.3.3.1
+      name: riverbed.steelhead.outofpathSupport
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::datastoreSync:
+  mib: STEELHEAD-EX-MIB
+  object: datastoreSync
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: datastoreSyncPort
+  attributes:
+    datastoreSyncPort:
+      oid: .1.3.6.1.4.1.17163.1.51.3.4.1
+      name: riverbed.steelhead.datastoreSyncPort
+      syntax: Unsigned32
+    datastoreSyncAddr:
+      oid: .1.3.6.1.4.1.17163.1.51.3.4.2
+      name: riverbed.steelhead.datastoreSyncAddr
+      syntax: IpAddressNoSuffix # IpAddress
+
+STEELHEAD-EX-MIB::cpuLoad:
+  mib: STEELHEAD-EX-MIB
+  object: cpuLoad
+  augments: STEELHEAD-EX-MIB::system
+  discovery_attribute: cpuLoad1
+  attributes:
+    cpuLoad1:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.1
+      name: riverbed.cpuLoad1
+      syntax: PercentCenti100
+    cpuLoad5:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.2
+      name: riverbed.cpuLoad5
+      syntax: PercentCenti100
+    cpuLoad15:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.3
+      name: riverbed.cpuLoad15
+      syntax: PercentCenti100
+    cpuUtil1:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.4
+      name: riverbed.cpuUtil1
+      syntax: PercentCenti100
+
+STEELHEAD-EX-MIB::cpuIndivUtilEntry:
+  mib: STEELHEAD-EX-MIB
+  object: cpuIndivUtilEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.5.1.1
+      name: riverbed.cpuIndivIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cpuIndivId
+  attributes:
+    cpuIndivId:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.5.1.2
+      name: riverbed.cpuIndivId
+      syntax: UnsignedAsID
+    cpuIndivIdleTime:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.5.1.3
+      name: riverbed.cpuIndivIdleTime
+      syntax: Unsigned32
+    cpuIndivSystemTime:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.5.1.4
+      name: riverbed.cpuIndivSystemTime
+      syntax: Unsigned32
+    cpuIndivUserTime:
+      oid: .1.3.6.1.4.1.17163.1.51.5.1.5.1.5
+      name: riverbed.cpuIndivUserTime
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::connectionCounts:
+  mib: STEELHEAD-EX-MIB
+  object: connectionCounts
+  discovery_attribute: optimizedConnections
+  attributes:
+    optimizedConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.1
+      name: riverbed.steelhead.optimizedConnections
+      syntax: Unsigned32
+    passthroughConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.2
+      name: riverbed.steelhead.passthroughConnections
+      syntax: Unsigned32
+    halfOpenedConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.3
+      name: riverbed.steelhead.halfOpenedConnections
+      syntax: Unsigned32
+    halfClosedConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.4
+      name: riverbed.steelhead.halfClosedConnections
+      syntax: Unsigned32
+    establishedConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.5
+      name: riverbed.steelhead.establishedConnections
+      syntax: Unsigned32
+    activeConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.6
+      name: riverbed.steelhead.activeConnections
+      syntax: Unsigned32
+    totalConnections:
+      oid: .1.3.6.1.4.1.17163.1.51.5.2.7
+      name: riverbed.steelhead.totalConnections
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::bandwidthAggregate:
+  mib: STEELHEAD-EX-MIB
+  object: bandwidthAggregate
+  discovery_attribute: bwAggInLan
+  attributes:
+    bwAggInLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.1.1
+      name: riverbed.steelhead.bwAggInLan
+      syntax: BytesB
+    bwAggInWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.1.2
+      name: riverbed.steelhead.bwAggInWan
+      syntax: BytesB
+    bwAggOutLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.1.3
+      name: riverbed.steelhead.bwAggOutLan
+      syntax: BytesB
+    bwAggOutWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.1.4
+      name: riverbed.steelhead.bwAggOutWan
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::bwPortEntry:
+  mib: STEELHEAD-EX-MIB
+  object: bwPortEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.2.1.1.1
+      name: riverbed.steelhead.bwPortNumber
+      syntax: UnsignedAsID
+  discovery_attribute: bwPortInLan
+  attributes:
+    bwPortInLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.2.1.1.2
+      name: riverbed.steelhead.bwPortInLan
+      syntax: BytesB
+    bwPortInWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.2.1.1.3
+      name: riverbed.steelhead.bwPortInWan
+      syntax: BytesB
+    bwPortOutLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.2.1.1.4
+      name: riverbed.steelhead.bwPortOutLan
+      syntax: BytesB
+    bwPortOutWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.2.1.1.5
+      name: riverbed.steelhead.bwPortOutWan
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::bandwidthPassThrough:
+  mib: STEELHEAD-EX-MIB
+  object: bandwidthPassThrough
+  discovery_attribute: bwPassThroughIn
+  attributes:
+    bwPassThroughIn:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.3.1
+      name: riverbed.steelhead.bwPassThroughIn
+      syntax: BytesB
+    bwPassThroughOut:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.3.2
+      name: riverbed.steelhead.bwPassThroughOut
+      syntax: BytesB
+    bwPassThroughTotal:
+      oid: .1.3.6.1.4.1.17163.1.51.5.3.3.3
+      name: riverbed.steelhead.bwPassThroughTotal
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::datastore:
+  mib: STEELHEAD-EX-MIB
+  object: datastore
+  discovery_attribute: dsHitsTotal
+  attributes:
+    dsHitsTotal:
+      oid: .1.3.6.1.4.1.17163.1.51.5.4.1
+      name: riverbed.steelhead.dsHitsTotal
+      syntax: Counter64
+    dsMissTotal:
+      oid: .1.3.6.1.4.1.17163.1.51.5.4.2
+      name: riverbed.steelhead.dsMissTotal
+      syntax: Counter64
+    dsCostPerSegment:
+      oid: .1.3.6.1.4.1.17163.1.51.5.4.3
+      name: riverbed.steelhead.dsCostPerSegment
+      syntax: OpTicksMicroSec
+    dsAveDiskUtilization:
+      oid: .1.3.6.1.4.1.17163.1.51.5.4.4
+      name: riverbed.steelhead.dsAveDiskUtilization
+      syntax: Unsigned32
+
+STEELHEAD-EX-MIB::ttTalkersEntry:
+  mib: STEELHEAD-EX-MIB
+  object: ttTalkersEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.1
+      name: riverbed.steelhead.ttTalkerId
+      syntax: UnsignedAsID
+  discovery_attribute: ttTalkerIp1
+  attributes:
+    ttTalkerIp1:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.2
+      name: riverbed.steelhead.ttTalkerIp1
+      syntax: IpAddressNoSuffix # IpAddress
+    ttTalkerPort1:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.3
+      name: riverbed.steelhead.ttTalkerPort1
+      syntax: Unsigned32
+    ttTalkerIp2:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.4
+      name: riverbed.steelhead.ttTalkerIp2
+      syntax: IpAddressNoSuffix # IpAddress
+    ttTalkerPort2:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.5
+      name: riverbed.steelhead.ttTalkerPort2
+      syntax: Unsigned32
+    ttTalkerByteCount:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.1.1.6
+      name: riverbed.steelhead.ttTalkerByteCount
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::ttSrcHostEntry:
+  mib: STEELHEAD-EX-MIB
+  object: ttSrcHostEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.2.1.1
+      name: riverbed.steelhead.ttSrcHostId
+      syntax: UnsignedAsID
+  discovery_attribute: ttSrcHostIp
+  attributes:
+    ttSrcHostIp:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.2.1.2
+      name: riverbed.steelhead.ttSrcHostIp
+      syntax: IpAddressNoSuffix # IpAddress
+    ttSrcHostByteCount:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.2.1.3
+      name: riverbed.steelhead.ttSrcHostByteCount
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::ttDestHostEntry:
+  mib: STEELHEAD-EX-MIB
+  object: ttDestHostEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.3.1.1
+      name: riverbed.steelhead.ttDestHostId
+      syntax: UnsignedAsID
+  discovery_attribute: ttDestHostIp
+  attributes:
+    ttDestHostIp:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.3.1.2
+      name: riverbed.steelhead.ttDestHostIp
+      syntax: IpAddressNoSuffix # IpAddress
+    ttDestHostByteCount:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.3.1.3
+      name: riverbed.steelhead.ttDestHostByteCount
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::ttAppPortEntry:
+  mib: STEELHEAD-EX-MIB
+  object: ttAppPortEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.4.1.1
+      name: riverbed.steelhead.ttAppPortId
+      syntax: UnsignedAsID
+  discovery_attribute: ttAppPort
+  attributes:
+    ttAppPort:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.4.1.2
+      name: riverbed.steelhead.ttAppPort
+      syntax: Unsigned32
+    ttAppPortByteCount:
+      oid: .1.3.6.1.4.1.17163.1.51.5.5.4.1.3
+      name: riverbed.steelhead.ttAppPortByteCount
+      syntax: BytesB
+
+STEELHEAD-EX-MIB::bandwidthHCAggregate:
+  mib: STEELHEAD-EX-MIB
+  object: bandwidthHCAggregate
+  discovery_attribute: bwHCAggInLan
+  attributes:
+    bwHCAggInLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.1.1
+      name: riverbed.steelhead.bwAggInLan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bandwidthAggregate
+        attribute: bwAggInLan
+    bwHCAggInWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.1.2
+      name: riverbed.steelhead.bwAggInWan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bandwidthAggregate
+        attribute: bwAggInWan
+    bwHCAggOutLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.1.3
+      name: riverbed.steelhead.bwAggOutLan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bandwidthAggregate
+        attribute: bwAggOutLan
+    bwAggHCOutWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.1.4
+      name: riverbed.steelhead.bwAggOutWan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bandwidthAggregate
+        attribute: bwAggOutWan
+
+STEELHEAD-EX-MIB::bwHCPortEntry:
+  mib: STEELHEAD-EX-MIB
+  object: bwHCPortEntry
+  augments: STEELHEAD-EX-MIB::bwPortEntry
+  discovery_attribute: bwHCPortInLan
+  attributes:
+    bwHCPortInLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.2.1.1.2
+      name: riverbed.steelhead.bwPortInLan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bwPortEntry
+        attribute: bwPortInLan
+    bwHCPortInWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.2.1.1.3
+      name: riverbed.steelhead.bwPortInWan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bwPortEntry
+        attribute: bwPortInWan
+    bwHCPortOutLan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.2.1.1.4
+      name: riverbed.steelhead.bwPortOutLan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bwPortEntry
+        attribute: bwPortOutLan
+    bwHCPortOutWan:
+      oid: .1.3.6.1.4.1.17163.1.51.5.6.2.1.1.5
+      name: riverbed.steelhead.bwPortOutWan
+      syntax: BytesB
+      overrides:
+        object: STEELHEAD-EX-MIB::bwPortEntry
+        attribute: bwPortOutWan

@@ -1,0 +1,139 @@
+CONTROLLER-MIB::system:
+  mib: CONTROLLER-MIB
+  object: system
+  discovery_attribute: model
+  attributes:
+    model:
+      oid: .1.3.6.1.4.1.17163.1.4.1.1
+      name: riverbed.model
+      syntax: DisplayString
+    serialNumber:
+      oid: .1.3.6.1.4.1.17163.1.4.1.2
+      name: riverbed.serialNumber
+      syntax: DisplayString
+    systemVersion:
+      oid: .1.3.6.1.4.1.17163.1.4.1.3
+      name: riverbed.systemVersion
+      syntax: DisplayString
+
+CONTROLLER-MIB::status:
+  mib: CONTROLLER-MIB
+  object: status
+  augments: CONTROLLER-MIB::system
+  discovery_attribute: systemClock
+  attributes:
+    systemClock:
+      oid: .1.3.6.1.4.1.17163.1.4.2.1
+      name: riverbed.systemClock
+      syntax: DateAndTime
+    health:
+      oid: .1.3.6.1.4.1.17163.1.4.2.2
+      name: riverbed.health
+      syntax: DisplayString
+    systemTemperature:
+      oid: .1.3.6.1.4.1.17163.1.4.2.4
+      name: riverbed.systemTemperature
+      syntax: TemperatureC
+    healthNotes:
+      oid: .1.3.6.1.4.1.17163.1.4.2.5
+      name: riverbed.healthNotes
+      syntax: DisplayString
+
+CONTROLLER-MIB::procEntry:
+  mib: CONTROLLER-MIB
+  object: procEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.4.2.3.1.1
+      name: riverbed.procIndex
+      syntax: UnsignedAsID
+  discovery_attribute: procName
+  attributes:
+    procName:
+      oid: .1.3.6.1.4.1.17163.1.4.2.3.1.2
+      name: riverbed.procName
+      syntax: DisplayString
+    procStatus:
+      oid: .1.3.6.1.4.1.17163.1.4.2.3.1.3
+      name: riverbed.procStatus
+      syntax: DisplayString
+    procNumFailures:
+      oid: .1.3.6.1.4.1.17163.1.4.2.3.1.4
+      name: riverbed.procNumFailures
+      syntax: Unsigned32
+
+CONTROLLER-MIB::config:
+  mib: CONTROLLER-MIB
+  object: config
+  augments: CONTROLLER-MIB::system
+  discovery_attribute: activeConfig
+  attributes:
+    activeConfig:
+      oid: .1.3.6.1.4.1.17163.1.4.3.1
+      name: riverbed.activeConfig
+      syntax: DisplayString
+
+CONTROLLER-MIB::cpuLoad:
+  mib: CONTROLLER-MIB
+  object: cpuLoad
+  augments: CONTROLLER-MIB::system
+  discovery_attribute: cpuLoad1
+  attributes:
+    cpuLoad1:
+      oid: .1.3.6.1.4.1.17163.1.4.5.1.1
+      name: riverbed.cpuLoad1
+      syntax: PercentCenti100
+    cpuLoad5:
+      oid: .1.3.6.1.4.1.17163.1.4.5.1.2
+      name: riverbed.cpuLoad5
+      syntax: PercentCenti100
+    cpuLoad15:
+      oid: .1.3.6.1.4.1.17163.1.4.5.1.3
+      name: riverbed.cpuLoad15
+      syntax: PercentCenti100
+    cpuUtil1:
+      oid: .1.3.6.1.4.1.17163.1.4.5.1.4
+      name: riverbed.cpuUtil1
+      syntax: PercentCenti100
+
+CONTROLLER-MIB::clientCounts:
+  mib: CONTROLLER-MIB
+  object: clientCounts
+  augments: CONTROLLER-MIB::system
+  discovery_attribute: connectedClients
+  attributes:
+    connectedClients:
+      oid: .1.3.6.1.4.1.17163.1.4.5.2.1
+      name: riverbed.controller.connectedClients
+      syntax: Unsigned32
+    healthyClients:
+      oid: .1.3.6.1.4.1.17163.1.4.5.2.2
+      name: riverbed.controller.healthyClients
+      syntax: Unsigned32
+    degradedClients:
+      oid: .1.3.6.1.4.1.17163.1.4.5.2.3
+      name: riverbed.controller.degradedClients
+      syntax: Unsigned32
+    criticalClients:
+      oid: .1.3.6.1.4.1.17163.1.4.5.2.4
+      name: riverbed.controller.criticalClients
+      syntax: Unsigned32
+    disabledClients:
+      oid: .1.3.6.1.4.1.17163.1.4.5.2.5
+      name: riverbed.controller.disabledClients
+      syntax: Unsigned32
+
+CONTROLLER-MIB::licenseCounts:
+  mib: CONTROLLER-MIB
+  object: licenseCounts
+  augments: CONTROLLER-MIB::system
+  discovery_attribute: totalLicenses
+  attributes:
+    totalLicenses:
+      oid: .1.3.6.1.4.1.17163.1.4.5.3.1
+      name: riverbed.controller.totalLicenses
+      syntax: Unsigned32
+    inUseLicenses:
+      oid: .1.3.6.1.4.1.17163.1.4.5.3.2
+      name: riverbed.controller.inUseLicenses
+      syntax: Unsigned32
