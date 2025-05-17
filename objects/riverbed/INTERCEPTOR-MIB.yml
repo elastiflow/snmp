@@ -1,0 +1,201 @@
+INTERCEPTOR-MIB::system:
+  mib: INTERCEPTOR-MIB
+  object: system
+  discovery_attribute: model
+  attributes:
+    model:
+      oid: .1.3.6.1.4.1.17163.1.3.1.1
+      name: riverbed.model
+      syntax: DisplayString
+    serialNumber:
+      oid: .1.3.6.1.4.1.17163.1.3.1.2
+      name: riverbed.serialNumber
+      syntax: DisplayString
+    systemVersion:
+      oid: .1.3.6.1.4.1.17163.1.3.1.3
+      name: riverbed.systemVersion
+      syntax: DisplayString
+
+INTERCEPTOR-MIB::status:
+  mib: INTERCEPTOR-MIB
+  object: status
+  augments: INTERCEPTOR-MIB::system
+  discovery_attribute: systemClock
+  attributes:
+    systemClock:
+      oid: .1.3.6.1.4.1.17163.1.3.2.1
+      name: riverbed.systemClock
+      syntax: DateAndTime
+    health:
+      oid: .1.3.6.1.4.1.17163.1.3.2.2
+      name: riverbed.health
+      syntax: DisplayString
+    serviceStatus:
+      oid: .1.3.6.1.4.1.17163.1.3.2.3
+      name: riverbed.serviceStatus
+      syntax: DisplayString
+    serviceUptime:
+      oid: .1.3.6.1.4.1.17163.1.3.2.4
+      name: riverbed.serviceUptime
+      syntax: TimeTicks
+    healthNotes:
+      oid: .1.3.6.1.4.1.17163.1.3.2.7
+      name: riverbed.healthNotes
+      syntax: DisplayString
+
+INTERCEPTOR-MIB::procEntry:
+  mib: INTERCEPTOR-MIB
+  object: procEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.3.2.5.1.1
+      name: riverbed.procIndex
+      syntax: UnsignedAsID
+  discovery_attribute: procName
+  attributes:
+    procName:
+      oid: .1.3.6.1.4.1.17163.1.3.2.5.1.2
+      name: riverbed.procName
+      syntax: DisplayString
+    procStatus:
+      oid: .1.3.6.1.4.1.17163.1.3.2.5.1.3
+      name: riverbed.procStatus
+      syntax: DisplayString
+    procNumFailures:
+      oid: .1.3.6.1.4.1.17163.1.3.2.5.1.4
+      name: riverbed.procNumFailures
+      syntax: Unsigned32
+
+INTERCEPTOR-MIB::neighborEntry:
+  mib: INTERCEPTOR-MIB
+  object: neighborEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.3.2.6.1.1
+      name: riverbed.interceptor.neighborIndex
+      syntax: UnsignedAsID
+  discovery_attribute: neighborId
+  attributes:
+    neighborId:
+      oid: .1.3.6.1.4.1.17163.1.3.2.6.1.2
+      name: riverbed.interceptor.neighborId
+      syntax: DisplayString
+    neighborName:
+      oid: .1.3.6.1.4.1.17163.1.3.2.6.1.3
+      name: riverbed.interceptor.neighborName
+      syntax: DisplayString
+    neighborConnectionCount:
+      oid: .1.3.6.1.4.1.17163.1.3.2.6.1.4
+      name: riverbed.interceptor.neighborConnectionCount
+      syntax: Unsigned32
+    neighborConnectionEnable:
+      oid: .1.3.6.1.4.1.17163.1.3.2.6.1.5
+      name: riverbed.interceptor.neighborConnectionEnable
+      syntax: Unsigned32
+
+INTERCEPTOR-MIB::instanceEntry:
+  mib: INTERCEPTOR-MIB
+  object: instanceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.3.2.8.1.1
+      name: riverbed.interceptor.instanceIndex
+      syntax: UnsignedAsID
+  discovery_attribute: instanceInfo
+  attributes:
+    instanceInfo:
+      oid: .1.3.6.1.4.1.17163.1.3.2.8.1.2
+      name: riverbed.interceptor.instanceInfo
+      syntax: DisplayString
+
+INTERCEPTOR-MIB::interfaceEntry:
+  mib: INTERCEPTOR-MIB
+  object: interfaceEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.1
+      name: riverbed.interceptor.interfaceIndex
+      syntax: UnsignedAsID
+  discovery_attribute: interfaceName
+  attributes:
+    interfaceName:
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.2
+      name: riverbed.interceptor.interfaceName
+      syntax: DisplayString
+    interfaceRxDrops:
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.3
+      name: riverbed.interceptor.interfaceRxDrops
+      syntax: Unsigned32
+    interfaceTxDrops:
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.4
+      name: riverbed.interceptor.interfaceTxDrops
+      syntax: Unsigned32
+    interfaceSoftwareDrops:
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.5
+      name: riverbed.interceptor.interfaceSoftwareDrops
+      syntax: Unsigned32
+    interfaceFlowCtrlPkts:
+      oid: .1.3.6.1.4.1.17163.1.3.2.9.1.6
+      name: riverbed.interceptor.interfaceFlowCtrlPkts
+      syntax: Unsigned32
+
+INTERCEPTOR-MIB::config:
+  mib: INTERCEPTOR-MIB
+  object: config
+  augments: INTERCEPTOR-MIB::system
+  discovery_attribute: activeConfig
+  attributes:
+    activeConfig:
+      oid: .1.3.6.1.4.1.17163.1.3.3.1
+      name: riverbed.activeConfig
+      syntax: DisplayString
+
+INTERCEPTOR-MIB::cpuLoad:
+  mib: INTERCEPTOR-MIB
+  object: cpuLoad
+  augments: INTERCEPTOR-MIB::system
+  discovery_attribute: cpuLoad1
+  attributes:
+    cpuLoad1:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.1
+      name: riverbed.cpuLoad1
+      syntax: PercentCenti100
+    cpuLoad5:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.2
+      name: riverbed.cpuLoad5
+      syntax: PercentCenti100
+    cpuLoad15:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.3
+      name: riverbed.cpuLoad15
+      syntax: PercentCenti100
+    cpuUtil1:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.4
+      name: riverbed.cpuUtil1
+      syntax: PercentCenti100
+
+INTERCEPTOR-MIB::cpuIndivUtilEntry:
+  mib: INTERCEPTOR-MIB
+  object: cpuIndivUtilEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.5.1.1
+      name: riverbed.cpuIndivIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cpuIndivId
+  attributes:
+    cpuIndivId:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.5.1.2
+      name: riverbed.cpuIndivId
+      syntax: UnsignedAsID
+    cpuIndivIdleTime:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.5.1.3
+      name: riverbed.cpuIndivIdleTime
+      syntax: Unsigned32
+    cpuIndivSystemTime:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.5.1.4
+      name: riverbed.cpuIndivSystemTime
+      syntax: Unsigned32
+    cpuIndivUserTime:
+      oid: .1.3.6.1.4.1.17163.1.3.5.1.5.1.5
+      name: riverbed.cpuIndivUserTime
+      syntax: Unsigned32
