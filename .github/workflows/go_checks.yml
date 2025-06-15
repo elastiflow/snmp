@@ -11,6 +11,21 @@ on:
       - main
 
 jobs:
+  unit-test:
+    name: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run Tests
+        run: make test
+        
   go-mod-tidy:
     name: go-mod-tidy
     runs-on: ubuntu-latest
