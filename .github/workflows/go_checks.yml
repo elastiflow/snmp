@@ -1,0 +1,34 @@
+name: Go checks
+
+concurrency:
+  group: go-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  go-mod-tidy:
+    name: go-mod-tidy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run Tidy
+        run: |
+          find . -type f -name 'go.mod' | while read -r svc; do
+            cd $(dirname "${svc}");
+            echo "In $(pwd)";
+            go mod tidy;
+            cd -;
+          done
+          git diff --exit-code
