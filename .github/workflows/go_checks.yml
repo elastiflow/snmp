@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Tests
         run: make test
-        
+
   go-mod-tidy:
     name: go-mod-tidy
     runs-on: ubuntu-latest
@@ -47,3 +47,25 @@ jobs:
             cd -;
           done
           git diff --exit-code
+
+  staticcheck:
+    name: staticcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Run Staticcheck
+        run: |
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          find . -type f -name 'go.mod' | while read -r svc; do
+            cd $(dirname "${svc}");
+            echo "In $(pwd)";
+            staticcheck ./...;
+            cd -;
+          done
