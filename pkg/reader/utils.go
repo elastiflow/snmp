@@ -8,10 +8,13 @@ import (
 )
 
 func walkDirectory(dirPath string) ([]string, error) {
-	test, _ := filepath.Abs(dirPath)
+	absDirPath, err := filepath.Abs(dirPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get absolute path of directory '%s': %w", dirPath, err)
+	}
 
 	dir := &directory{}
-	err := filepath.WalkDir(test, dir.walk)
+	err = filepath.WalkDir(absDirPath, dir.walk)
 	if err != nil {
 		return nil, fmt.Errorf("error while walking directory '%s' - %w", dirPath, err)
 	}

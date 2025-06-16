@@ -14,7 +14,29 @@ type Definition interface {
 	Validate() error
 }
 
-func ReadAndValidateDefinitions(
+func ReadSNMPTrapEnterprises(rulesDir, enterpriseFile string) (map[string]def.Enterprise, error) {
+	fileBytes, err := os.ReadFile(enterpriseFile)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file %s: %w", enterpriseFile, err)
+	}
+
+	enterprises := make(map[string]def.Enterprise)
+	err = yaml.Unmarshal(fileBytes, &enterprises)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal file %s: %w", enterpriseFile, err)
+	}
+
+	for enterpriseName, enterprise := range enterprises {
+		err = enterprise.Validate(rulesDir)
+		if err != nil {
+			return nil, fmt.Errorf("failed to validate enterprise %s: %w", enterpriseName, err)
+		}
+	}
+
+	return enterprises, nil
+}
+
+func ReadSNMPDefinitions(
 	devicesDir string,
 	deviceGroupsDir string,
 	objectGroupsDir string,
@@ -26,50 +48,50 @@ func ReadAndValidateDefinitions(
 	map[string]def.Object,
 	error,
 ) {
-	devices, err := ReadAndValidate[def.Device](devicesDir)
+	devices, err := Read[def.Device](devicesDir)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to read and validate devices: %w", err)
 	}
 
-	deviceGroups, err := ReadAndValidate[def.DeviceGroup](deviceGroupsDir)
+	deviceGroups, err := Read[def.DeviceGroup](deviceGroupsDir)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to read and validate device groups: %w", err)
 	}
 
-	objectGroups, err := ReadAndValidate[def.ObjectGroup](objectGroupsDir)
+	objectGroups, err := Read[def.ObjectGroup](objectGroupsDir)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to read and validate object groups: %w", err)
 	}
 
-	objects, err := ReadAndValidate[def.Object](objectsDir)
+	objects, err := Read[def.Object](objectsDir)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to read and validate objects: %w", err)
 	}
 
-	if err = validateDefinitions(devices, deviceGroups, objectGroups, objects); err != nil {
+	if err = validateSNMPDefinitions(devices, deviceGroups, objectGroups, objects); err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to validate definitions: %w", err)
 	}
 
 	return devices, deviceGroups, objectGroups, objects, err
 }
 
-func ReadAndValidateEnums(enumsDir string) (
+func ReadSNMPEnums(enumsDir string) (
 	map[string]def.IntegerEnum,
 	map[string]def.BitMapEnum,
 	map[string]def.OidEnum,
 	error,
 ) {
-	integerEnums, err := ReadAndValidate[def.IntegerEnum](fmt.Sprintf("%s/integer", enumsDir))
+	integerEnums, err := Read[def.IntegerEnum](fmt.Sprintf("%s/integer", enumsDir))
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to read and validate integer enums: %w", err)
 	}
 
-	bitMapEnums, err := ReadAndValidate[def.BitMapEnum](fmt.Sprintf("%s/bitmap", enumsDir))
+	bitMapEnums, err := Read[def.BitMapEnum](fmt.Sprintf("%s/bitmap", enumsDir))
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to read and validate bit map enums: %w", err)
 	}
 
-	oidEnums, err := ReadAndValidate[def.OidEnum](fmt.Sprintf("%s/oid", enumsDir))
+	oidEnums, err := Read[def.OidEnum](fmt.Sprintf("%s/oid", enumsDir))
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to read and validate oid enums: %w", err)
 	}
@@ -77,7 +99,7 @@ func ReadAndValidateEnums(enumsDir string) (
 	return integerEnums, bitMapEnums, oidEnums, nil
 }
 
-func ReadAndValidate[T Definition](dirPath string) (map[string]T, error) {
+func Read[T Definition](dirPath string) (map[string]T, error) {
 	filePaths, err := walkDirectory(dirPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to walk directory: %w", err)
@@ -96,7 +118,7 @@ func ReadAndValidate[T Definition](dirPath string) (map[string]T, error) {
 			return nil, fmt.Errorf("failed to validate definitions in file %s: %w", filePath, err)
 		}
 
-		err = validateEach(definitionsInFile)
+		err = validateDefinition(definitionsInFile)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate definitions in file %s: %w", filePath, err)
 		}
@@ -131,7 +153,7 @@ func validateUniqueness[T Definition](definitionsA, definitionsB map[string]T) e
 	return nil
 }
 
-func validateEach[T Definition](definitions map[string]T) error {
+func validateDefinition[T Definition](definitions map[string]T) error {
 	for id, definition := range definitions {
 		err := definition.Validate()
 		if err != nil {
@@ -147,7 +169,7 @@ func mergeDefinitions[T Definition](definitionsA, definitionsB map[string]T) {
 	}
 }
 
-func validateDefinitions(
+func validateSNMPDefinitions(
 	devices map[string]def.Device,
 	deviceGroups map[string]def.DeviceGroup,
 	objectGroups map[string]def.ObjectGroup,

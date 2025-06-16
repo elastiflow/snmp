@@ -7,7 +7,14 @@ import (
 )
 
 func main() {
-	devices, deviceGroups, objectGroups, objects, defErr := reader.ReadAndValidateDefinitions(
+	enterprises, enterprisesErr := reader.ReadSNMPTrapEnterprises("traps/rules", "traps/enterprises.yml")
+	if enterprisesErr != nil {
+		log.Println(enterprisesErr)
+	} else {
+		log.Printf("Validated %d enterprises", len(enterprises))
+	}
+
+	devices, deviceGroups, objectGroups, objects, defErr := reader.ReadSNMPDefinitions(
 		"devices", "device_groups", "object_groups", "objects",
 	)
 	if defErr != nil {
@@ -19,7 +26,7 @@ func main() {
 		log.Printf("Validated %d objects", len(objects))
 	}
 
-	integerEnums, bitMapEnums, oidEnums, enumErr := reader.ReadAndValidateEnums("enums")
+	integerEnums, bitMapEnums, oidEnums, enumErr := reader.ReadSNMPEnums("enums")
 	if enumErr != nil {
 		log.Println(enumErr)
 	} else {
@@ -28,7 +35,7 @@ func main() {
 		log.Printf("Validated %d oid enums", len(oidEnums))
 	}
 
-	if defErr != nil || enumErr != nil {
+	if enterprisesErr != nil || defErr != nil || enumErr != nil {
 		log.Fatal("Validation failed")
 	}
 }
