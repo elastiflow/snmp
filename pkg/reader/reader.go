@@ -108,9 +108,9 @@ func Read[T Definition](dirPath string) (map[string]T, error) {
 	definitions := make(map[string]T)
 
 	for _, filePath := range filePaths {
-		definitionsInFile, parseErr := read[T](filePath)
-		if parseErr != nil {
-			return nil, fmt.Errorf("failed to parse definitions: %w", err)
+		definitionsInFile, readErr := read[T](filePath)
+		if readErr != nil {
+			return nil, fmt.Errorf("failed to read definitions: %w", err)
 		}
 
 		err = validateUniqueness(definitions, definitionsInFile)

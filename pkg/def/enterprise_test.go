@@ -43,7 +43,7 @@ func TestEnterprise_Validate(t *testing.T) {
 			err := tt.enterprise.Validate("testdata/traps/rules")
 			if tt.wantErr {
 				assert.Error(t, err)
-				assert.Contains(t, err.Error(), tt.errMsg)
+				assert.ErrorContains(t, err, tt.errMsg)
 			} else {
 				assert.NoError(t, err)
 			}
