@@ -1,0 +1,821 @@
+ATEN-IPMI-MIB::ipmi:
+  mib: ATEN-IPMI-MIB
+  object: ipmi
+  discovery_attribute: sel
+  attributes:
+    sel:
+      oid: .1.3.6.1.4.1.21317.1.2
+      name: aten.ipmi.sel
+      syntax: Integer32
+    powerStatus:
+      oid: .1.3.6.1.4.1.21317.1.4
+      name: aten.ipmi.powerStatus
+      syntax: EnumInteger
+    fanMode:
+      oid: .1.3.6.1.4.1.21317.1.15
+      name: aten.ipmi.fanMode
+      syntax: EnumInteger
+    mouseMode:
+      oid: .1.3.6.1.4.1.21317.1.23
+      name: aten.ipmi.mouseMode
+      syntax: EnumInteger
+    sysBootOrder:
+      oid: .1.3.6.1.4.1.21317.1.24
+      name: aten.ipmi.sysBootOrder
+      syntax: EnumInteger
+
+ATEN-IPMI-MIB::sensorEntry:
+  mib: ATEN-IPMI-MIB
+  object: sensorEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.3.1.1
+      name: aten.ipmi.sensor.Number
+      syntax: IntegerAsID
+  discovery_attribute: sensorReading
+  attributes:
+    sensorReading:
+      oid: .1.3.6.1.4.1.21317.1.3.1.2
+      name: aten.ipmi.sensor.Reading
+      syntax: DisplayString
+    sensorPositiveHysteresis:
+      oid: .1.3.6.1.4.1.21317.1.3.1.3
+      name: aten.ipmi.sensor.PositiveHysteresis
+      syntax: Integer32
+    sensorNegativeHysteresis:
+      oid: .1.3.6.1.4.1.21317.1.3.1.4
+      name: aten.ipmi.sensor.NegativeHysteresis
+      syntax: Integer32
+    lncThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.5
+      name: aten.ipmi.sensor.lncThreshold
+      syntax: DisplayString
+    lcThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.6
+      name: aten.ipmi.sensor.lcThreshold
+      syntax: DisplayString
+    lnrThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.7
+      name: aten.ipmi.sensor.lnrThreshold
+      syntax: DisplayString
+    uncThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.8
+      name: aten.ipmi.sensor.uncThreshold
+      syntax: DisplayString
+    ucThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.9
+      name: aten.ipmi.sensor.ucThreshold
+      syntax: DisplayString
+    unrThreshold:
+      oid: .1.3.6.1.4.1.21317.1.3.1.10
+      name: aten.ipmi.sensor.unrThreshold
+      syntax: DisplayString
+    eventAssertionEnable:
+      oid: .1.3.6.1.4.1.21317.1.3.1.11
+      name: aten.ipmi.sensor.eventAssertionEnable
+      syntax: Integer32
+    eventDeassertionEnable:
+      oid: .1.3.6.1.4.1.21317.1.3.1.12
+      name: aten.ipmi.sensor.eventDeassertionEnable
+      syntax: Integer32
+    sensorIDString:
+      oid: .1.3.6.1.4.1.21317.1.3.1.13
+      name: aten.ipmi.sensor.IDString
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::boardinfo:
+  mib: ATEN-IPMI-MIB
+  object: boardinfo
+  discovery_attribute: bmcMajorVesion
+  attributes:
+    bmcMajorVesion:
+      oid: .1.3.6.1.4.1.21317.1.5.1
+      name: aten.ipmi.bmc.MajorVersion
+      syntax: Integer32
+    bmcMinorVesion:
+      oid: .1.3.6.1.4.1.21317.1.5.2
+      name: aten.ipmi.bmc.MinorVersion
+      syntax: Integer32
+    bmcBuildDate:
+      oid: .1.3.6.1.4.1.21317.1.5.3
+      name: aten.ipmi.bmc.BuildDate
+      syntax: DisplayString
+    biosVesion:
+      oid: .1.3.6.1.4.1.21317.1.5.4
+      name: aten.ipmi.bios.Version
+      syntax: DisplayString
+    biosBuildDate:
+      oid: .1.3.6.1.4.1.21317.1.5.5
+      name: aten.ipmi.bios.BuildDate
+      syntax: DisplayString
+    hostName:
+      oid: .1.3.6.1.4.1.21317.1.5.6
+      name: aten.ipmi.board.hostName
+      syntax: DisplayString
+    bmcBuildVesion:
+      oid: .1.3.6.1.4.1.21317.1.5.7
+      name: aten.ipmi.bmc.BuildVesion
+      syntax: Integer32
+
+ATEN-IPMI-MIB::hardwareinfo:
+  mib: ATEN-IPMI-MIB
+  object: hardwareinfo
+  discovery_attribute: serialNumber
+  attributes:
+    serialNumber:
+      oid: .1.3.6.1.4.1.21317.1.6.1
+      name: aten.ipmi.hardware.serialNumber
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::cpuEntry:
+  mib: ATEN-IPMI-MIB
+  object: cpuEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.1
+      name: aten.ipmi.cpu.Number
+      syntax: IntegerAsID
+  discovery_attribute: processor
+  attributes:
+    processor:
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.2
+      name: aten.ipmi.cpu.processor
+      syntax: DisplayString
+    speed:
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.3
+      name: aten.ipmi.cpu.speed
+      syntax: FreqMHz
+    core:
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.4
+      name: aten.ipmi.cpu.cores
+      syntax: Integer32
+    coreActive:
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.5
+      name: aten.ipmi.cpu.coresActive
+      syntax: Integer32
+    manufacturer:
+      oid: .1.3.6.1.4.1.21317.1.6.2.1.6
+      name: aten.ipmi.cpu.manufacturer
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::dimmEntry:
+  mib: ATEN-IPMI-MIB
+  object: dimmEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.1
+      name: aten.ipmi.dimm.Number
+      syntax: IntegerAsID
+  discovery_attribute: dimmLocation
+  attributes:
+    dimmLocation:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.2
+      name: aten.ipmi.dimm.Location
+      syntax: DisplayString
+    dimmMaxCapSpeed:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.3
+      name: aten.ipmi.dimm.MaxCapSpeed
+      syntax: FreqMHz
+    dimmOpSpeed:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.4
+      name: aten.ipmi.dimm.OpSpeed
+      syntax: FreqMHz
+    dimmSize:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.5
+      name: aten.ipmi.dimm.Size
+      syntax: BytesMB
+    dimmSerialNo:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.6
+      name: aten.ipmi.dimm.SerialNo
+      syntax: DisplayString
+    dimmPartNo:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.7
+      name: aten.ipmi.dimm.PartNo
+      syntax: DisplayString
+    dimmManufacturer:
+      oid: .1.3.6.1.4.1.21317.1.6.3.1.8
+      name: aten.ipmi.dimm.Manufacturer
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::controllerEntry:
+  mib: ATEN-IPMI-MIB
+  object: controllerEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.1
+      name: aten.ipmi.controller.Number
+      syntax: IntegerAsID
+  discovery_attribute: controllerProductName
+  attributes:
+    controllerProductName:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.2
+      name: aten.ipmi.controller.ProductName
+      syntax: DisplayString
+    serial:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.3
+      name: aten.ipmi.controller.serial
+      syntax: DisplayString
+    package:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.4
+      name: aten.ipmi.controller.package
+      syntax: DisplayString
+    fwVersion:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.5
+      name: aten.ipmi.controller.fwVersion
+      syntax: DisplayString
+    biosVersion:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.6
+      name: aten.ipmi.controller.biosVersion
+      syntax: DisplayString
+    bootBlockVersion:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.7
+      name: aten.ipmi.controller.bootBlockVersion
+      syntax: DisplayString
+    batteryStatus:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.8
+      name: aten.ipmi.controller.batteryStatus
+      syntax: EnumInteger
+    pcieLocation:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.9
+      name: aten.ipmi.controller.pcieLocation
+      syntax: EnumInteger
+    pcieSlot:
+      oid: .1.3.6.1.4.1.21317.1.7.1.1.10
+      name: aten.ipmi.controller.pcieSlot
+      syntax: IntegerAsID
+
+ATEN-IPMI-MIB::hddEntry:
+  mib: ATEN-IPMI-MIB
+  object: hddEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.1
+      name: aten.ipmi.hdd.Number
+      syntax: IntegerAsID
+  discovery_attribute: hddControllerNumber
+  attributes:
+    hddControllerNumber:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.2
+      name: aten.ipmi.hdd.ControllerNumber
+      syntax: IntegerAsID
+    enclosureNumber:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.3
+      name: aten.ipmi.hdd.enclosureNumber
+      syntax: IntegerAsID
+    status:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.4
+      name: aten.ipmi.hdd.status
+      syntax: EnumInteger
+    temperature:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.5
+      name: aten.ipmi.hdd.temperature
+      syntax: TemperatureC
+    capacity:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.6
+      name: aten.ipmi.hdd.capacity
+      syntax: BytesGB
+    vendor:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.7
+      name: aten.ipmi.hdd.vendor
+      syntax: DisplayString
+    modelName:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.8
+      name: aten.ipmi.hdd.modelName
+      syntax: DisplayString
+    revision:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.9
+      name: aten.ipmi.hdd.revision
+      syntax: DisplayString
+    sn:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.10
+      name: aten.ipmi.hdd.sn
+      syntax: DisplayString
+    linkSpeed:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.11
+      name: aten.ipmi.hdd.linkSpeed
+      syntax: EnumInteger
+    fwState:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.12
+      name: aten.ipmi.hdd.fwState
+      syntax: EnumInteger
+    otherErrCount:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.13
+      name: aten.ipmi.hdd.otherErrCount
+      syntax: Integer32
+    predictedFailCount:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.14
+      name: aten.ipmi.hdd.predictedFailCount
+      syntax: Integer32
+    mediaErrCount:
+      oid: .1.3.6.1.4.1.21317.1.7.2.1.15
+      name: aten.ipmi.hdd.mediaErrCount
+      syntax: Integer32
+
+ATEN-IPMI-MIB::volumeEntry:
+  mib: ATEN-IPMI-MIB
+  object: volumeEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.1
+      name: aten.ipmi.vol.Number
+      syntax: IntegerAsID
+  discovery_attribute: volControllerNumber
+  attributes:
+    volControllerNumber:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.2
+      name: aten.ipmi.vol.ControllerNumber
+      syntax: IntegerAsID
+    volStatus:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.3
+      name: aten.ipmi.vol.Status
+      syntax: EnumInteger
+    volCapacity:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.4
+      name: aten.ipmi.vol.Capacity
+      syntax: BytesGB
+    priRaidLevel:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.5
+      name: aten.ipmi.vol.priRaidLevel
+      syntax: Integer32
+    raidLevelQualifier:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.6
+      name: aten.ipmi.vol.raidLevelQualifier
+      syntax: Integer32
+    secRaidLevel:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.7
+      name: aten.ipmi.vol.secRaidLevel
+      syntax: Integer32
+    ldStripSize:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.8
+      name: aten.ipmi.vol.ldStripSize
+      syntax: EnumInteger
+    numDevices:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.9
+      name: aten.ipmi.vol.numDevices
+      syntax: Integer32
+    spanDepth:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.10
+      name: aten.ipmi.vol.spanDepth
+      syntax: Integer32
+    state:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.11
+      name: aten.ipmi.vol.state
+      syntax: EnumInteger
+    volName:
+      oid: .1.3.6.1.4.1.21317.1.7.3.1.12
+      name: aten.ipmi.vol.Name
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::powerinfo:
+  mib: ATEN-IPMI-MIB
+  object: powerinfo
+  augments: ATEN-IPMI-MIB::ipmi
+  discovery_attribute: psuNumber
+  attributes:
+    psuNumber:
+      oid: .1.3.6.1.4.1.21317.1.14.1
+      name: aten.ipmi.psuNumber
+      syntax: Integer32
+
+ATEN-IPMI-MIB::psuEntry:
+  mib: ATEN-IPMI-MIB
+  object: psuEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.1
+      name: aten.ipmi.psu.Index
+      syntax: IntegerAsID
+  discovery_attribute: psuStatus
+  attributes:
+    psuStatus:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.2
+      name: aten.ipmi.psu.Status
+      syntax: EnumInteger
+    inputVoltage:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.3
+      name: aten.ipmi.psu.inputVoltage
+      syntax: OctetString
+    inputCurrent:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.4
+      name: aten.ipmi.psu.inputCurrent
+      syntax: OctetString
+    inputPower:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.5
+      name: aten.ipmi.psu.inputPower
+      syntax: PowerWatt
+    outputVoltage:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.6
+      name: aten.ipmi.psu.outputVoltage
+      syntax: OctetString
+    outputCurrent:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.7
+      name: aten.ipmi.psu.outputCurrent
+      syntax: OctetString
+    outputPower:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.8
+      name: aten.ipmi.psu.outputPower
+      syntax: PowerWatt
+    temperature1:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.9
+      name: aten.ipmi.psu.temperature1
+      syntax: TemperatureC
+    temperature2:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.10
+      name: aten.ipmi.psu.temperature2
+      syntax: TemperatureC
+    fanRPM1:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.11
+      name: aten.ipmi.psu.fanRPM1
+      syntax: Integer32
+    fanRPM2:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.12
+      name: aten.ipmi.psu.fanRPM2
+      syntax: Integer32
+    psuSerialNumber:
+      oid: .1.3.6.1.4.1.21317.1.14.2.1.13
+      name: aten.ipmi.psu.SerialNumber
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::chassis:
+  mib: ATEN-IPMI-MIB
+  object: chassis
+  discovery_attribute: chassisType
+  attributes:
+    chassisType:
+      oid: .1.3.6.1.4.1.21317.1.16.1.1
+      name: aten.ipmi.chassis.Type.id
+      syntax: IntegerAsID
+    chassisPartNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.1.2
+      name: aten.ipmi.chassis.PartNumber
+      syntax: DisplayString
+    chassisSerialNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.1.3
+      name: aten.ipmi.chassis.SerialNumber
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::board:
+  mib: ATEN-IPMI-MIB
+  object: board
+  discovery_attribute: boardLanguage
+  attributes:
+    boardLanguage:
+      oid: .1.3.6.1.4.1.21317.1.16.2.1
+      name: aten.ipmi.board.Language
+      syntax: EnumInteger
+    boardManufacturer:
+      oid: .1.3.6.1.4.1.21317.1.16.2.2
+      name: aten.ipmi.board.Manufacturer
+      syntax: DisplayString
+    boardProductName:
+      oid: .1.3.6.1.4.1.21317.1.16.2.3
+      name: aten.ipmi.board.ProductName
+      syntax: DisplayString
+    boardSerialNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.2.4
+      name: aten.ipmi.board.SerialNumber
+      syntax: DisplayString
+    boardPartNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.2.5
+      name: aten.ipmi.board.PartNumber
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::product:
+  mib: ATEN-IPMI-MIB
+  object: product
+  discovery_attribute: productLanguage
+  attributes:
+    productLanguage:
+      oid: .1.3.6.1.4.1.21317.1.16.3.1
+      name: aten.ipmi.product.Language
+      syntax: EnumInteger
+    productManufacturer:
+      oid: .1.3.6.1.4.1.21317.1.16.3.2
+      name: aten.ipmi.product.Manufacturer
+      syntax: DisplayString
+    productName:
+      oid: .1.3.6.1.4.1.21317.1.16.3.3
+      name: aten.ipmi.product.Name
+      syntax: DisplayString
+    productPartNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.3.4
+      name: aten.ipmi.product.PartNumber
+      syntax: DisplayString
+    productVersion:
+      oid: .1.3.6.1.4.1.21317.1.16.3.5
+      name: aten.ipmi.product.Version
+      syntax: Integer32
+    productSerialNumber:
+      oid: .1.3.6.1.4.1.21317.1.16.3.6
+      name: aten.ipmi.product.SerialNumber
+      syntax: DisplayString
+    productAssetTag:
+      oid: .1.3.6.1.4.1.21317.1.16.3.7
+      name: aten.ipmi.product.AssetTag
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::ntpinfo:
+  mib: ATEN-IPMI-MIB
+  object: ntpinfo
+  discovery_attribute: timeZone
+  attributes:
+    timeZone:
+      oid: .1.3.6.1.4.1.21317.1.17.1
+      name: aten.ipmi.time.Zone
+      syntax: DisplayString
+    ntpEnable:
+      oid: .1.3.6.1.4.1.21317.1.17.2
+      name: aten.ipmi.time.ntpEnable
+      syntax: EnumInteger
+    primaryNTPServer:
+      oid: .1.3.6.1.4.1.21317.1.17.3
+      name: aten.ipmi.time.primaryNTPServer
+      syntax: DisplayString
+    secondaryNTPServer:
+      oid: .1.3.6.1.4.1.21317.1.17.4
+      name: aten.ipmi.time.secondaryNTPServer
+      syntax: DisplayString
+    dst:
+      oid: .1.3.6.1.4.1.21317.1.17.5
+      name: aten.ipmi.time.dst
+      syntax: EnumInteger
+
+ATEN-IPMI-MIB::selEntry:
+  mib: ATEN-IPMI-MIB
+  object: selEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.18.1.1
+      name: aten.ipmi.sel.Eid
+      syntax: IntegerAsID
+  discovery_attribute: selTimeStamp
+  attributes:
+    selTimeStamp:
+      oid: .1.3.6.1.4.1.21317.1.18.1.2
+      name: aten.ipmi.sel.TimeStamp
+      syntax: DateAndTime
+    selSensorName:
+      oid: .1.3.6.1.4.1.21317.1.18.1.3
+      name: aten.ipmi.sel.SensorName
+      syntax: DisplayString
+    selSensorType:
+      oid: .1.3.6.1.4.1.21317.1.18.1.4
+      name: aten.ipmi.sel.SensorType
+      syntax: DisplayString
+    selDescription:
+      oid: .1.3.6.1.4.1.21317.1.18.1.5
+      name: aten.ipmi.sel.Description
+      syntax: DisplayString
+    selRawData:
+      oid: .1.3.6.1.4.1.21317.1.18.1.6
+      name: aten.ipmi.sel.RawData
+      syntax: OctetString
+
+ATEN-IPMI-MIB::nvmeCtrlEntry:
+  mib: ATEN-IPMI-MIB
+  object: nvmeCtrlEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.1
+      name: aten.ipmi.nvmeCtrl.Present
+      syntax: EnumInteger
+  discovery_attribute: maxTemp
+  attributes:
+    maxTemp:
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.2
+      name: aten.ipmi.nvmeCtrl.maxTemp
+      syntax: TemperatureC
+    maxSlotNum:
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.3
+      name: aten.ipmi.nvmeCtrl.maxSlotNum
+      syntax: Integer32
+    onboard:
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.4
+      name: aten.ipmi.nvmeCtrl.onboard
+      syntax: EnumInteger
+    driverIndex:
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.5
+      name: aten.ipmi.nvmeCtrl.driverIndex
+      syntax: IntegerAsID
+    cpldVer:
+      oid: .1.3.6.1.4.1.21317.1.19.1.1.6
+      name: aten.ipmi.nvmeCtrl.cpldVer
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::nvmeDriveEntry:
+  mib: ATEN-IPMI-MIB
+  object: nvmeDriveEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.1
+      name: aten.ipmi.nvmeDrive.slotId
+      syntax: IntegerAsID
+  discovery_attribute: groupId
+  attributes:
+    groupId:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.2
+      name: aten.ipmi.nvmeDrive.groupId
+      syntax: IntegerAsID
+    nvmeDrivePresent:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.3
+      name: aten.ipmi.nvmeDrive.Present
+      syntax: EnumInteger
+    locate:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.4
+      name: aten.ipmi.nvmeDrive.locate
+      syntax: EnumInteger
+    save2Remove:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.5
+      name: aten.ipmi.nvmeDrive.save2Remove
+      syntax: EnumInteger
+    vmdMode:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.6
+      name: aten.ipmi.nvmeDrive.vmdMode
+      syntax: EnumInteger
+    temp:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.7
+      name: aten.ipmi.nvmeDrive.temp
+      syntax: TemperatureC
+    classCode:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.8
+      name: aten.ipmi.nvmeDrive.classCode
+      syntax: DisplayString
+    vendorID:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.9
+      name: aten.ipmi.nvmeDrive.vendorID
+      syntax: DisplayString
+    serialNum:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.10
+      name: aten.ipmi.nvmeDrive.serialNum
+      syntax: DisplayString
+    modelNum:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.11
+      name: aten.ipmi.nvmeDrive.modelNum
+      syntax: DisplayString
+    port0MaxLinkSpd:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.12
+      name: aten.ipmi.nvmeDrive.port0MaxLinkSpd
+      syntax: DisplayString
+    port0MaxLinkWidth:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.13
+      name: aten.ipmi.nvmeDrive.port0MaxLinkWidth
+      syntax: DisplayString
+    port1MaxLinkSpd:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.14
+      name: aten.ipmi.nvmeDrive.port1MaxLinkSpd
+      syntax: DisplayString
+    port1MaxLinkWidth:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.15
+      name: aten.ipmi.nvmeDrive.port1MaxLinkWidth
+      syntax: DisplayString
+    initPowerRequirement:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.16
+      name: aten.ipmi.nvmeDrive.initPowerRequirement
+      syntax: PowerWatt
+    maxPowerRequirement:
+      oid: .1.3.6.1.4.1.21317.1.19.2.1.17
+      name: aten.ipmi.nvmeDrive.maxPowerRequirement
+      syntax: PowerWatt
+
+ATEN-IPMI-MIB::nicEntry:
+  mib: ATEN-IPMI-MIB
+  object: nicEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.21317.1.20.1.1
+      name: aten.ipmi.nic.Number
+      syntax: IntegerAsID
+  discovery_attribute: nicName
+  attributes:
+    nicName:
+      oid: .1.3.6.1.4.1.21317.1.20.1.2
+      name: aten.ipmi.nic.Name
+      syntax: DisplayString
+    nicMac:
+      oid: .1.3.6.1.4.1.21317.1.20.1.3
+      name: aten.ipmi.nic.Mac
+      syntax: MacAddressNoSuffix
+    nicIpv4Addr:
+      oid: .1.3.6.1.4.1.21317.1.20.1.4
+      name: aten.ipmi.nic.Ipv4Addr
+      syntax: IpAddressNoSuffix
+    nicIpv6Addr:
+      oid: .1.3.6.1.4.1.21317.1.20.1.5
+      name: aten.ipmi.nic.Ipv6Addr
+      syntax: IpAddressNoSuffix
+    nicGateway:
+      oid: .1.3.6.1.4.1.21317.1.20.1.6
+      name: aten.ipmi.nic.Gateway
+      syntax: IpAddressNoSuffix
+    nicNetmask:
+      oid: .1.3.6.1.4.1.21317.1.20.1.7
+      name: aten.ipmi.nic.Netmask
+      syntax: IpAddressNoSuffix
+    nicFqdn:
+      oid: .1.3.6.1.4.1.21317.1.20.1.8
+      name: aten.ipmi.nic.Fqdn
+      syntax: DisplayString
+    nicDns:
+      oid: .1.3.6.1.4.1.21317.1.20.1.9
+      name: aten.ipmi.nic.Dns
+      syntax: DisplayString
+    nicSpeed:
+      oid: .1.3.6.1.4.1.21317.1.20.1.10
+      name: aten.ipmi.nic.Speed
+      syntax: BandwidthMBits
+    nicDescript:
+      oid: .1.3.6.1.4.1.21317.1.20.1.11
+      name: aten.ipmi.nic.Descript
+      syntax: DisplayString
+    nicStatus:
+      oid: .1.3.6.1.4.1.21317.1.20.1.12
+      name: aten.ipmi.nic.Status
+      syntax: DisplayString
+
+ATEN-IPMI-MIB::network:
+  mib: ATEN-IPMI-MIB
+  object: network
+  discovery_attribute: ipv4DNSServer
+  attributes:
+    ipv4DNSServer:
+      oid: .1.3.6.1.4.1.21317.1.21.1
+      name: aten.ipmi.network.ipv4DNSServer
+      syntax: IpAddressNoSuffix
+    ipv4Gateway:
+      oid: .1.3.6.1.4.1.21317.1.21.2
+      name: aten.ipmi.network.ipv4Gateway
+      syntax: IpAddressNoSuffix
+    ipv6DNSServer:
+      oid: .1.3.6.1.4.1.21317.1.21.3
+      name: aten.ipmi.network.ipv6DNSServer
+      syntax: DisplayString
+    ipv6DUID:
+      oid: .1.3.6.1.4.1.21317.1.21.4
+      name: aten.ipmi.network.ipv6DUID
+      syntax: DisplayString
+    dhcpv6State:
+      oid: .1.3.6.1.4.1.21317.1.21.5
+      name: aten.ipmi.network.dhcpv6State
+      syntax: EnumInteger
+    hostname:
+      oid: .1.3.6.1.4.1.21317.1.21.6
+      name: aten.ipmi.network.hostname
+      syntax: DisplayString
+    dhcpEnabled:
+      oid: .1.3.6.1.4.1.21317.1.21.7
+      name: aten.ipmi.network.dhcpEnabled
+      syntax: EnumInteger
+    vlanIDEnabled:
+      oid: .1.3.6.1.4.1.21317.1.21.8
+      name: aten.ipmi.network.vlanIDEnabled
+      syntax: EnumInteger
+    vlanID:
+      oid: .1.3.6.1.4.1.21317.1.21.9
+      name: aten.ipmi.network.vlanID
+      syntax: IntegerAsID
+    lanInterface:
+      oid: .1.3.6.1.4.1.21317.1.21.10
+      name: aten.ipmi.network.lanInterface
+      syntax: EnumInteger
+    rmcpPort:
+      oid: .1.3.6.1.4.1.21317.1.21.11
+      name: aten.ipmi.network.rmcpPort
+      syntax: Integer32
+    activeLanInterface:
+      oid: .1.3.6.1.4.1.21317.1.21.12
+      name: aten.ipmi.network.activeLanInterface
+      syntax: EnumInteger
+    dedicatedLanDuplex:
+      oid: .1.3.6.1.4.1.21317.1.21.13
+      name: aten.ipmi.network.dedicatedLanDuplex
+      syntax: EnumInteger
+    sharedLanDuplex:
+      oid: .1.3.6.1.4.1.21317.1.21.14
+      name: aten.ipmi.network.sharedLanDuplex
+      syntax: EnumInteger
+
+ATEN-IPMI-MIB::smtp:
+  mib: ATEN-IPMI-MIB
+  object: smtp
+  discovery_attribute: smtpEnabled
+  attributes:
+    smtpEnabled:
+      oid: .1.3.6.1.4.1.21317.1.22.1
+      name: aten.ipmi.smtp.Enabled
+      syntax: EnumInteger
+    smtpServer:
+      oid: .1.3.6.1.4.1.21317.1.22.2
+      name: aten.ipmi.smtp.Server
+      syntax: DisplayString
+    smtpPort:
+      oid: .1.3.6.1.4.1.21317.1.22.3
+      name: aten.ipmi.smtp.Port
+      syntax: Integer32
+    smtpUsername:
+      oid: .1.3.6.1.4.1.21317.1.22.4
+      name: aten.ipmi.smtp.Username
+      syntax: DisplayString
+    smtpSenderEmail:
+      oid: .1.3.6.1.4.1.21317.1.22.5
+      name: aten.ipmi.smtp.SenderEmail
+      syntax: DisplayString
