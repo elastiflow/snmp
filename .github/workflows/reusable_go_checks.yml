@@ -1,14 +1,6 @@
 on:
   workflow_call:
     inputs:
-      configure_git_goprivate:
-        type: boolean
-        default: false
-        description: "Configure git with a github token to fetch private deps. `go_dependency_fetcher_token` is required if true"
-      goprivate:
-        type: string
-        default: "github.com/elastiflow/"
-        description: "GOPRIVATE value"
       gosec_args:
         type: string
         default: "-severity high -exclude-dir examples -exclude=G115 ./..."
@@ -69,15 +61,9 @@ on:
       go_dependency_fetcher_token:
         required: false
         description: "GitHub token with read access to the Golang dependency repositories"
-      git_ssh_key:
-        required: false
-        description: "Git ssh key with access to ElastiFlow repositories"
       sonarcloud_token:
         required: false
         description: "SonarCloud token (required if sonarcloud_run is true)"
-
-env:
-  GOPRIVATE: ${{ inputs.goprivate }}
 
 jobs:
   go-mod-tidy:
@@ -87,13 +73,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Configure Git with goprivate
-        if: ${{ inputs.configure_git_goprivate }}
-        run: |
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@github.com/elastiflow/collectors".insteadOf "https://github.com/elastiflow/flowcoll"
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@${{ inputs.goprivate }}".insteadOf "https://${{ inputs.goprivate }}"
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -114,13 +93,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Configure Git with goprivate
-        if: ${{ inputs.configure_git_goprivate }}
-        run: |
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@github.com/elastiflow/collectors".insteadOf "https://github.com/elastiflow/flowcoll"
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@${{ inputs.goprivate }}".insteadOf "https://${{ inputs.goprivate }}"
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -137,13 +109,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Configure Git with goprivate
-        if: ${{ inputs.configure_git_goprivate }}
-        run: |
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@github.com/elastiflow/collectors".insteadOf "https://github.com/elastiflow/flowcoll"
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@${{ inputs.goprivate }}".insteadOf "https://${{ inputs.goprivate }}"
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -168,13 +133,6 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: ${{ inputs.go_version_file }}
-      - name: Security Scan with private
-        if: ${{ inputs.configure_git_goprivate }}
-        uses: securego/gosec@v2.22.2
-        with:
-          args: ${{ inputs.gosec_args }}
-        env:
-          GITHUB_AUTHENTICATION_TOKEN: ${{ secrets.go_dependency_fetcher_token }}
       - name: Security Scan
         uses: securego/gosec@v2.22.2
         with:
@@ -199,19 +157,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Configure Git with goprivate
-        if: ${{ inputs.configure_git_goprivate }}
-        run: |
-          if [ -n "${{ secrets.git_ssh_key }}" ]; then
-            mkdir -p ~/.ssh
-            echo "${{ secrets.git_ssh_key }}" > ~/.ssh/id_rsa && chmod 0600 ~/.ssh/id_rsa
-          else
-            echo "No git_ssh_key secret set."
-          fi
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@github.com/elastiflow/collectors".insteadOf "https://github.com/elastiflow/flowcoll"
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@${{ inputs.goprivate }}".insteadOf "https://${{ inputs.goprivate }}"
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -245,19 +190,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Configure Git with goprivate
-        if: ${{ inputs.configure_git_goprivate }}
-        run: |
-          if [ -n "${{ secrets.git_ssh_key }}" ]; then
-            mkdir -p ~/.ssh
-            echo "${{ secrets.git_ssh_key }}" > ~/.ssh/id_rsa && chmod 0600 ~/.ssh/id_rsa
-          else
-            echo "No git_ssh_key secret set."
-          fi
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@github.com/elastiflow/collectors".insteadOf "https://github.com/elastiflow/flowcoll"
-          git config \
-            --global url."https://${{ secrets.go_dependency_fetcher_token }}@${{ inputs.goprivate }}".insteadOf "https://${{ inputs.goprivate }}"
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
