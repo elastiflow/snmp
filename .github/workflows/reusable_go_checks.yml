@@ -135,11 +135,10 @@ jobs:
         with:
           go-version-file: ${{ inputs.go_version_file }}
       - name: Run tests
-        run: make test
+        run: make coverage
       - name: Report coverage
         if: always()
         run: |
-          make coverage
           COVERAGE=$(go tool cover -func coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
           COVERAGE_PASS=$(echo $COVERAGE 80 | awk '{ print ($1 >= $2) ? "true" : "false" }')
           if [ $COVERAGE_PASS = "false" ]; then
