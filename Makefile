@@ -9,3 +9,8 @@ validate:
 .PHONY: test
 test:
 	go test ./...
+
+
+.PHONY: coverage
+coverage:
+	go test -race ./... -coverprofile=coverage.out.tmp -coverpkg=$(go list ./... | paste -sd ',' -) ./... && cat coverage.out.tmp | grep -v 'mock' > coverage.out
