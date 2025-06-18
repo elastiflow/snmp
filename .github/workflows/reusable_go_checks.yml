@@ -5,34 +5,10 @@ on:
         type: string
         default: "-severity high -exclude-dir examples -exclude=G115 ./..."
         description: "gosec tool command line arguments"
-      semgrep_cmd:
-        type: string
-        default: "semgrep scan --config auto --error"
-        description: "Semgrep command to run"
-      unit_test_cmd:
-        type: string
-        default: "make test"
-        description: "Golang unit test command to run"
-      unit_test_report_coverage_cmd:
-        type: string
-        default: "make report-coverage"
-        description: "Command to report the unit tests coverage"
       unit_test_runs-on:
         type: string
         default: ubuntu-latest
         description: "GHA runner for the Unit Test job (ubuntu-latest, ubuntu-latest-4c, ubuntu-latest-8c)"
-      integration_test_enabled:
-        type: boolean
-        default: false
-        description: "Golang integration test command to run"
-      integration_test_cmd:
-        type: string
-        default: "make test-integration"
-        description: "Golang integration test command to run"
-      integration_test_runs-on:
-        type: string
-        default: ubuntu-latest
-        description: "GHA runner for the Integration Test job (ubuntu-latest, ubuntu-latest-4c, ubuntu-latest-8c)"
       runs-on:
         type: string
         default: ubuntu-latest
@@ -58,9 +34,6 @@ on:
         default: "elastiflow"
         description: "SonarCloud organization"
     secrets:
-      go_dependency_fetcher_token:
-        required: false
-        description: "GitHub token with read access to the Golang dependency repositories"
       sonarcloud_token:
         required: false
         description: "SonarCloud token (required if sonarcloud_run is true)"
@@ -147,7 +120,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: semgrep scan
-        run: ${{ inputs.semgrep_cmd }}
+        run: semgrep scan --config auto --error
   unit_test:
     name: 'unit test'
     runs-on: ${{ inputs.unit_test_runs-on }}
@@ -162,14 +135,18 @@ jobs:
         with:
           go-version-file: ${{ inputs.go_version_file }}
       - name: Run tests
-        run: ${{ inputs.unit_test_cmd }}
+        run: make test
       - name: Report coverage
         if: always()
         run: |
-          echo "Coverage:" >> ${GITHUB_STEP_SUMMARY}
-          echo '```' >> ${GITHUB_STEP_SUMMARY}
-          ${{ inputs.unit_test_report_coverage_cmd }} >> ${GITHUB_STEP_SUMMARY}
-          echo '```' >> ${GITHUB_STEP_SUMMARY}
+          make coverage
+          COVERAGE=$(go tool cover -func coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
+          COVERAGE_PASS=$(echo $COVERAGE 80 | awk '{ print ($1 >= $2) ? "true" : "false" }')
+          if [ $COVERAGE_PASS = "false" ]; then
+            echo "test coverage failed - expected >= 80 / actual = $COVERAGE"
+            exit 1
+          fi
+          echo "coverage passed: $COVERAGE"
       - name: SonarCloud Scan
         if: ${{ inputs.sonarcloud_run }}
         uses: SonarSource/sonarqube-scan-action@v5
@@ -180,19 +157,3 @@ jobs:
             -Dsonar.go.coverage.reportPaths=coverage.out
         env:
           SONAR_TOKEN: ${{ secrets.sonarcloud_token }}
-  integration_test:
-    name: 'integration test'
-    if: ${{ inputs.integration_test_enabled }}
-    runs-on: ${{ inputs.integration_test_runs-on }}
-    timeout-minutes: ${{ inputs.timeout-minutes }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: ${{ inputs.go_version_file }}
-      - name: Run tests
-        run: ${{ inputs.integration_test_cmd }}

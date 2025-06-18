@@ -15,15 +15,4 @@ jobs:
     name: Go checks
     uses: ./.github/workflows/reusable_go_checks.yml
     with:
-      unit_test_cmd: make test
-      unit_test_report_coverage_cmd: |
-        make coverage
-        COVERAGE=$(go tool cover -func coverage.out | grep total | awk '{print substr($3, 1, length($3)-1)}')
-        COVERAGE_PASS=$(echo $COVERAGE 80 | awk '{ print ($1 >= $2) ? "true" : "false" }')
-        if [ $COVERAGE_PASS = "false" ]; then
-          echo "test coverage failed - expected >= 80 / actual = $COVERAGE"
-          exit 1
-        fi
       go_version_file: "go.mod"
-    secrets:
-      go_dependency_fetcher_token: ${{ secrets.GO_DEPENDENCY_FETCH_TOKEN }}
