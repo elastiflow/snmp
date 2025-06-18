@@ -1,6 +1,6 @@
 module github.com/elastiflow/snmp
 
-go 1.24.4
+go 1.24
 
 require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
