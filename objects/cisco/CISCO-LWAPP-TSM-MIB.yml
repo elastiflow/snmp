@@ -1,0 +1,189 @@
+CISCO-LWAPP-TSM-MIB::ciscoLwappTsmDot11Config:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: ciscoLwappTsmDot11Config
+  discovery_attribute: cLTsmDot11aConfig
+  attributes:
+    cLTsmDot11aConfig:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.1
+      name: cisco.cLTsmDot11aConfig
+      syntax: TruthValue
+    cLTsmDot11bgConfig:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.2
+      name: cisco.cLTsmDot11bgConfig
+      syntax: TruthValue
+    cLTsmDot11MaxClientsPerDot11Intf:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.3
+      name: cisco.cLTsmDot11MaxClientsPerDot11Intf
+      syntax: Unsigned32
+    cLTsmDot11MaxTsmStatsEntries:
+      oid: .1.3.6.1.4.1.9.9.525.1.1.4
+      name: cisco.cLTsmDot11MaxTsmStatsEntries
+      syntax: Unsigned32
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11ClientEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11ClientEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
+      name: cisco.cLApDot11IfSlotId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.1
+      name: cisco.cLTsmDot11ClientIndex
+      syntax: UnsignedAsID
+  discovery_attribute: cLTsmDot11ClientMacAddress
+  attributes:
+    cLTsmDot11ClientMacAddress:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cisco.cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11UplinkEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11UplinkEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cisco.cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.1
+      name: cisco.cLTsmDot11UplinkApMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.2
+      name: cisco.cLTsmDot11UplinkApIfSlotId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.3
+      name: cisco.cLTsmDot11UplinkTimeStamp
+      syntax: TimeStamp
+  discovery_attribute: cLTsmDot11UplinkAvgPktQDelay
+  attributes:
+    cLTsmDot11UplinkAvgPktQDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.4
+      name: cisco.cLTsmDot11UplinkAvgPktQDelay
+      syntax: OpTicksCentiSec
+    cLTsmDot11UplinkLt10Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.5
+      name: cisco.cLTsmDot11UplinkLt10Packets
+      syntax: Gauge32
+    cLTsmDot11UplinkPktGt10Lt20Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.6
+      name: cisco.cLTsmDot11UplinkPktGt10Lt20Packets
+      syntax: Gauge32
+    cLTsmDot11UplinkPktGt20Lt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.7
+      name: cisco.cLTsmDot11UplinkPktGt20Lt40Packets
+      syntax: Gauge32
+    cLTsmDot11UplinkPktGt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.8
+      name: cisco.cLTsmDot11UplinkPktGt40Packets
+      syntax: Gauge32
+    cLTsmDot11UplinkLostPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.9
+      name: cisco.cLTsmDot11UplinkLostPackets
+      syntax: Gauge32
+    cLTsmDot11UplinkTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.10
+      name: cisco.cLTsmDot11UplinkTotalPackets
+      syntax: Gauge32
+    cLTsmDot11UplinkRoamingPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.11
+      name: cisco.cLTsmDot11UplinkRoamingPackets
+      syntax: Gauge32
+    cLTsmDot11UplinkRoamingDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.2.1.12
+      name: cisco.cLTsmDot11UplinkRoamingDelay
+      syntax: OpTicksCentiSec
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11DnlinkEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11DnlinkEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.1.1.2
+      name: cisco.cLTsmDot11ClientMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.1
+      name: cisco.cLTsmDot11DnlinkApMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.2
+      name: cisco.cLTsmDot11DnlinkApIfSlotId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.3
+      name: cisco.cLTsmDot11DnlinkTimeStamp
+      syntax: TimeStamp
+  discovery_attribute: cLTsmDot11DnlinkAvgPktQDelay
+  attributes:
+    cLTsmDot11DnlinkAvgPktQDelay:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.4
+      name: cisco.cLTsmDot11DnlinkAvgPktQDelay
+      syntax: OpTicksCentiSec
+    cLTsmDot11DnlinkLt10Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.5
+      name: cisco.cLTsmDot11DnlinkLt10Packets
+      syntax: Gauge32
+    cLTsmDot11DnlinkPktGt10Lt20Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.6
+      name: cisco.cLTsmDot11DnlinkPktGt10Lt20Packets
+      syntax: Gauge32
+    cLTsmDot11DnlinkPktGt20Lt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.7
+      name: cisco.cLTsmDot11DnlinkPktGt20Lt40Packets
+      syntax: Gauge32
+    cLTsmDot11DnlinkPktGt40Packets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.8
+      name: cisco.cLTsmDot11DnlinkPktGt40Packets
+      syntax: Gauge32
+    cLTsmDot11DnlinkLostPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.9
+      name: cisco.cLTsmDot11DnlinkLostPackets
+      syntax: Gauge32
+    cLTsmDot11DnlinkTotalPackets:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.3.1.10
+      name: cisco.cLTsmDot11DnlinkTotalPackets
+      syntax: Gauge32
+
+CISCO-LWAPP-TSM-MIB::cLTsmDot11CUEntry:
+  mib: CISCO-LWAPP-TSM-MIB
+  object: cLTsmDot11CUEntry
+  index:
+    - type: MacAddress
+      oid: .1.3.6.1.4.1.9.9.513.1.1.1.1.1
+      name: cisco.cLApSysMacAddress
+      syntax: MacAddressNoSuffix # MacAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.513.1.2.1.1.1
+      name: cisco.cLApDot11IfSlotId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.1
+      name: cisco.cLTsmDot11CUTimeStamp
+      syntax: TimeStamp
+  discovery_attribute: cLTsmDot11CUFiftyPercentilePicc
+  attributes:
+    cLTsmDot11CUFiftyPercentilePicc:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.2
+      name: cisco.cLTsmDot11CUFiftyPercentilePicc
+      syntax: Percent100
+    cLTsmDot11CUNinetyPercentilePicc:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.3
+      name: cisco.cLTsmDot11CUNinetyPercentilePicc
+      syntax: Percent100
+    cLTsmDot11CUFiftyPercentilePib:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.4
+      name: cisco.cLTsmDot11CUFiftyPercentilePib
+      syntax: Percent100
+    cLTsmDot11CUNinetyPercentilePib:
+      oid: .1.3.6.1.4.1.9.9.525.1.2.4.1.5
+      name: cisco.cLTsmDot11CUNinetyPercentilePib
+      syntax: Percent100

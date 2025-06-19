@@ -1,0 +1,303 @@
+DIAL-CONTROL-MIB::dialCtlConfiguration:
+  mib: DIAL-CONTROL-MIB
+  object: dialCtlConfiguration
+  discovery_attribute: dialCtlAcceptMode
+  attributes:
+    dialCtlAcceptMode:
+      oid: .1.3.6.1.2.1.10.21.1.1.1
+      name: ietf.dialCtlAcceptMode
+      syntax: EnumInteger
+    dialCtlTrapEnable:
+      oid: .1.3.6.1.2.1.10.21.1.1.2
+      name: ietf.dialCtlTrapEnable
+      syntax: EnumInteger
+
+DIAL-CONTROL-MIB::dialCtlPeerCfgEntry:
+  mib: DIAL-CONTROL-MIB
+  object: dialCtlPeerCfgEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.1
+      name: ietf.dialCtlPeerCfgId
+      syntax: Integer32
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: dialCtlPeerCfgIfType
+  attributes:
+    dialCtlPeerCfgIfType:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.2
+      name: ietf.dialCtlPeerCfgIfType
+      syntax: IANAifType
+    dialCtlPeerCfgLowerIf:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.3
+      name: ietf.dialCtlPeerCfgLowerIf
+      syntax: InterfaceIndexOrZero
+    dialCtlPeerCfgOriginateAddress:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.4
+      name: ietf.dialCtlPeerCfgOriginateAddress
+      syntax: DisplayString
+    dialCtlPeerCfgAnswerAddress:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.5
+      name: ietf.dialCtlPeerCfgAnswerAddress
+      syntax: DisplayString
+    dialCtlPeerCfgSubAddress:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.6
+      name: ietf.dialCtlPeerCfgSubAddress
+      syntax: DisplayString
+    dialCtlPeerCfgClosedUserGroup:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.7
+      name: ietf.dialCtlPeerCfgClosedUserGroup
+      syntax: DisplayString
+    dialCtlPeerCfgSpeed:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.8
+      name: ietf.dialCtlPeerCfgSpeed
+      syntax: BandwidthBits
+    dialCtlPeerCfgInfoType:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.9
+      name: ietf.dialCtlPeerCfgInfoType
+      syntax: EnumInteger
+    dialCtlPeerCfgPermission:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.10
+      name: ietf.dialCtlPeerCfgPermission
+      syntax: EnumInteger
+    dialCtlPeerCfgInactivityTimer:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.11
+      name: ietf.dialCtlPeerCfgInactivityTimer
+      syntax: TicksSec
+    dialCtlPeerCfgMinDuration:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.12
+      name: ietf.dialCtlPeerCfgMinDuration
+      syntax: TicksSec
+    dialCtlPeerCfgMaxDuration:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.13
+      name: ietf.dialCtlPeerCfgMaxDuration
+      syntax: TicksSec
+    dialCtlPeerCfgCarrierDelay:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.14
+      name: ietf.dialCtlPeerCfgCarrierDelay
+      syntax: TicksSec
+    dialCtlPeerCfgCallRetries:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.15
+      name: ietf.dialCtlPeerCfgCallRetries
+      syntax: Integer32
+    dialCtlPeerCfgRetryDelay:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.16
+      name: ietf.dialCtlPeerCfgRetryDelay
+      syntax: TicksSec
+    dialCtlPeerCfgFailureDelay:
+      oid: .1.3.6.1.2.1.10.21.1.2.1.1.17
+      name: ietf.dialCtlPeerCfgFailureDelay
+      syntax: TicksSec
+    # dialCtlPeerCfgTrapEnable:
+    #   oid: .1.3.6.1.2.1.10.21.1.2.1.1.18
+    #   name: ietf.dialCtlPeerCfgTrapEnable
+    #   syntax: EnumInteger
+
+DIAL-CONTROL-MIB::dialCtlPeerStatsEntry:
+  mib: DIAL-CONTROL-MIB
+  object: dialCtlPeerStatsEntry
+  augments: DIAL-CONTROL-MIB::dialCtlPeerCfgEntry
+  discovery_attribute: dialCtlPeerStatsChargedUnits
+  attributes:
+    dialCtlPeerStatsConnectTime:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.1
+      name: ietf.dialCtlPeerStatsConnectTime
+      syntax: TicksSec
+    dialCtlPeerStatsChargedUnits:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.2
+      name: ietf.dialCtlPeerStatsChargedUnits
+      syntax: Unsigned32
+    dialCtlPeerStatsSuccessCalls:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.3
+      name: ietf.dialCtlPeerStatsSuccessCalls
+      syntax: Unsigned32
+    dialCtlPeerStatsFailCalls:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.4
+      name: ietf.dialCtlPeerStatsFailCalls
+      syntax: Unsigned32
+    dialCtlPeerStatsAcceptCalls:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.5
+      name: ietf.dialCtlPeerStatsAcceptCalls
+      syntax: Unsigned32
+    dialCtlPeerStatsRefuseCalls:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.6
+      name: ietf.dialCtlPeerStatsRefuseCalls
+      syntax: Unsigned32
+    dialCtlPeerStatsLastDisconnectCause:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.7
+      name: ietf.dialCtlPeerStatsLastDisconnectCause
+      syntax: OctetString
+    dialCtlPeerStatsLastDisconnectText:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.8
+      name: ietf.dialCtlPeerStatsLastDisconnectText
+      syntax: DisplayString
+    dialCtlPeerStatsLastSetupTime:
+      oid: .1.3.6.1.2.1.10.21.1.2.2.1.9
+      name: ietf.dialCtlPeerStatsLastSetupTime
+      syntax: TimeStamp
+
+DIAL-CONTROL-MIB::callActiveEntry:
+  mib: DIAL-CONTROL-MIB
+  object: callActiveEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.1
+      name: ietf.callActiveSetupTime
+      syntax: TimeStamp
+    - type: Integer32
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.2
+      name: ietf.callActiveIndex
+      syntax: IntegerAsID
+  discovery_attribute: callActivePeerAddress
+  attributes:
+    callActivePeerAddress:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.3
+      name: ietf.callActivePeerAddress
+      syntax: DisplayString
+    callActivePeerSubAddress:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.4
+      name: ietf.callActivePeerSubAddress
+      syntax: DisplayString
+    callActivePeerId:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.5
+      name: ietf.callActivePeerId
+      syntax: IntegerAsID
+    callActivePeerIfIndex:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.6
+      name: ietf.callActivePeerIfIndex
+      syntax: InterfaceIndexOrZero
+    callActiveLogicalIfIndex:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.7
+      name: ietf.callActiveLogicalIfIndex
+      syntax: InterfaceIndexOrZero
+    callActiveConnectTime:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.8
+      name: ietf.callActiveConnectTime
+      syntax: TimeStamp
+    callActiveCallState:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.9
+      name: ietf.callActiveCallState
+      syntax: EnumInteger
+    callActiveCallOrigin:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.10
+      name: ietf.callActiveCallOrigin
+      syntax: EnumInteger
+    callActiveChargedUnits:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.11
+      name: ietf.callActiveChargedUnits
+      syntax: Unsigned32
+    callActiveInfoType:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.12
+      name: ietf.callActiveInfoType
+      syntax: EnumInteger
+    callActiveTransmitPackets:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.13
+      name: ietf.callActiveTransmitPackets
+      syntax: Unsigned32
+    callActiveTransmitBytes:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.14
+      name: ietf.callActiveTransmitBytes
+      syntax: BytesB
+    callActiveReceivePackets:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.15
+      name: ietf.callActiveReceivePackets
+      syntax: Unsigned32
+    callActiveReceiveBytes:
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.16
+      name: ietf.callActiveReceiveBytes
+      syntax: BytesB
+
+DIAL-CONTROL-MIB::callHistory:
+  mib: DIAL-CONTROL-MIB
+  object: callHistory
+  discovery_attribute: callHistoryTableMaxLength
+  attributes:
+    callHistoryTableMaxLength:
+      oid: .1.3.6.1.2.1.10.21.1.4.1
+      name: ietf.callHistoryTableMaxLength
+      syntax: Integer32
+    callHistoryRetainTimer:
+      oid: .1.3.6.1.2.1.10.21.1.4.2
+      name: ietf.callHistoryRetainTimer
+      syntax: TicksMin
+
+DIAL-CONTROL-MIB::callHistoryEntry:
+  mib: DIAL-CONTROL-MIB
+  object: callHistoryEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.1
+      name: ietf.callActiveSetupTime
+      syntax: TimeStamp
+    - type: Integer32
+      oid: .1.3.6.1.2.1.10.21.1.3.1.1.2
+      name: ietf.callActiveIndex
+      syntax: IntegerAsID
+  discovery_attribute: callHistoryPeerSubAddress
+  attributes:
+    callHistoryPeerAddress:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.1
+      name: ietf.callHistoryPeerAddress
+      syntax: DisplayString
+    callHistoryPeerSubAddress:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.2
+      name: ietf.callHistoryPeerSubAddress
+      syntax: DisplayString
+    callHistoryPeerId:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.3
+      name: ietf.callHistoryPeerId
+      syntax: IntegerAsID
+    callHistoryPeerIfIndex:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.4
+      name: ietf.callHistoryPeerIfIndex
+      syntax: InterfaceIndexOrZero
+    callHistoryLogicalIfIndex:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.5
+      name: ietf.callHistoryLogicalIfIndex
+      syntax: InterfaceIndex
+    callHistoryDisconnectCause:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.6
+      name: ietf.callHistoryDisconnectCause
+      syntax: OctetString
+    callHistoryDisconnectText:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.7
+      name: ietf.callHistoryDisconnectText
+      syntax: DisplayString
+    callHistoryConnectTime:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.8
+      name: ietf.callHistoryConnectTime
+      syntax: TimeStamp
+    callHistoryDisconnectTime:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.9
+      name: ietf.callHistoryDisconnectTime
+      syntax: TimeStamp
+    callHistoryCallOrigin:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.10
+      name: ietf.callHistoryCallOrigin
+      syntax: EnumInteger
+    callHistoryChargedUnits:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.11
+      name: ietf.callHistoryChargedUnits
+      syntax: Unsigned32
+    callHistoryInfoType:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.12
+      name: ietf.callHistoryInfoType
+      syntax: EnumInteger
+    callHistoryTransmitPackets:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.13
+      name: ietf.callHistoryTransmitPackets
+      syntax: Unsigned32
+    callHistoryTransmitBytes:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.14
+      name: ietf.callHistoryTransmitBytes
+      syntax: BytesB
+    callHistoryReceivePackets:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.15
+      name: ietf.callHistoryReceivePackets
+      syntax: Unsigned32
+    callHistoryReceiveBytes:
+      oid: .1.3.6.1.2.1.10.21.1.4.3.1.16
+      name: ietf.callHistoryReceiveBytes
+      syntax: BytesB

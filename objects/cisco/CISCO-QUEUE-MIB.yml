@@ -1,0 +1,60 @@
+# CISCO-QUEUE-MIB::cQIfEntry:
+#   mib: CISCO-QUEUE-MIB
+#   object: cQIfEntry
+#   index:
+#     - type: Integer
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: cQIfTxLimit
+#   attributes:
+#     cQIfQType:
+#       oid: .1.3.6.1.4.1.9.9.37.1.1.1.1
+#       name: cisco.cQIfQType
+#       syntax: EnumInteger
+#     cQIfTxLimit:
+#       oid: .1.3.6.1.4.1.9.9.37.1.1.1.2
+#       name: cisco.cQIfTxLimit
+#       syntax: Integer32
+#     cQIfSubqueues:
+#       oid: .1.3.6.1.4.1.9.9.37.1.1.1.3
+#       name: cisco.cQIfSubqueues
+#       syntax: Integer32
+
+CISCO-QUEUE-MIB::cQStatsEntry:
+  mib: CISCO-QUEUE-MIB
+  object: cQStatsEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.37.1.2.1.1
+      name: cisco.cQStatsQNumber
+      syntax: Integer32
+  discovery_attribute: cQStatsDepth
+  attributes:
+    cQStatsDepth:
+      oid: .1.3.6.1.4.1.9.9.37.1.2.1.2
+      name: cisco.cQStatsDepth
+      syntax: Gauge32
+    cQStatsMaxDepth:
+      oid: .1.3.6.1.4.1.9.9.37.1.2.1.3
+      name: cisco.cQStatsMaxDepth
+      syntax: Integer32
+    cQStatsDiscards:
+      oid: .1.3.6.1.4.1.9.9.37.1.2.1.4
+      name: cisco.cQStatsDiscards
+      syntax: Counter32
+
+CISCO-QUEUE-MIB::cQRotationEntry:
+  mib: CISCO-QUEUE-MIB
+  object: cQRotationEntry
+  augments: CISCO-QUEUE-MIB::cQStatsEntry
+  discovery_attribute: cQRotationOctets
+  attributes:
+    cQRotationOctets:
+      oid: .1.3.6.1.4.1.9.9.37.1.3.1.1
+      name: cisco.cQRotationOctets
+      syntax: BytesB
