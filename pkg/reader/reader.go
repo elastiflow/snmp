@@ -100,9 +100,9 @@ func ReadSNMPEnums(enumsDir string) (
 }
 
 func Read[T Definition](dirPath string) (map[string]T, error) {
-	filePaths, err := walkDirectory(dirPath)
-	if err != nil {
-		return nil, fmt.Errorf("failed to walk directory: %w", err)
+	filePaths, walkDirErr := walkDirectory(dirPath)
+	if walkDirErr != nil {
+		return nil, fmt.Errorf("failed to walk directory: %w", walkDirErr)
 	}
 
 	definitions := make(map[string]T)
@@ -110,10 +110,10 @@ func Read[T Definition](dirPath string) (map[string]T, error) {
 	for _, filePath := range filePaths {
 		definitionsInFile, readErr := read[T](filePath)
 		if readErr != nil {
-			return nil, fmt.Errorf("failed to read definitions: %w", err)
+			return nil, fmt.Errorf("failed to read definitions: %w", readErr)
 		}
 
-		err = validateUniqueness(definitions, definitionsInFile)
+		err := validateUniqueness(definitions, definitionsInFile)
 		if err != nil {
 			return nil, fmt.Errorf("failed to validate definitions in file %s: %w", filePath, err)
 		}

@@ -417,6 +417,11 @@ func TestRead(t *testing.T) {
 		{
 			name:    "duplicate object keys",
 			dirPath: "testdata/objects_duplicate_keys",
+			wantErr: "failed to unmarshal file",
+		},
+		{
+			name:    "duplicate objects",
+			dirPath: "testdata/objects_duplicate",
 			wantErr: "found duplicate object with id test_object",
 		},
 		{
