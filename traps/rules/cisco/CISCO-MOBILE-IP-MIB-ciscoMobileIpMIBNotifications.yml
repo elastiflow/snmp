@@ -1,0 +1,185 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-MOBILE-IP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cmi_mr_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.mnState = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.44.1.3.1.1")
+        - label: cmi_mr_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrStateChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrStateChange"
+            root.out.event.category.name = "Mobile Router Status"
+            root.out.object.name = ""
+        - label: cmi_mr_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: cmi_mr_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Home"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: cmi_mr_state_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Registered"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(0).Value == 3
+              processors:
+                - label: cmi_mr_state_change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Pending"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(0).Value == 4
+              processors:
+                - label: cmi_mr_state_change_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Isolated"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(0).Value == 5
+              processors:
+                - label: cmi_mr_state_change_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - processors:
+                - label: cmi_mr_state_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Mobile Router Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cmi_mr_state_change_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cmi_mr_coa_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.mnRegCOA = this.trap.VarBinds.index(0).Value
+            root.out.cisco.mnRegAgentAddress = this.trap.VarBinds.index(1).Value
+        - label: cmi_mr_coa_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrCoaChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrCoaChange"
+            root.out.event.category.name = "Mobile Router CoA Change"
+            root.out.object.name = "mnRegistrationEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Mobile Router Care-of-Address Changed to " + this.trap.VarBinds.index(0).Value.string() + "  ( MR Agent: " + this.trap.VarBinds.index(1).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cmi_mr_new_ma_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cmiMrMaIsHa = this.trap.VarBinds.index(0).Value.bool()
+            root.out.cisco.cmiMrMaAdvFlags = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.5.4.1.1.7")
+            root.out.cisco.cmiMrMaAdvRcvIf = this.trap.VarBinds.index(2).Value
+        - label: cmi_mr_new_ma_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrNewMA"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiMrNewMA"
+            root.out.event.category.name = "Mobile Router Agent Discovery"
+            root.out.object.name = "cmiMrMaAdvEntry.."
+            root.out.event.message = "Mobile Router Discovered New Mobile Agent  ( Mobile Agent: , Interface: ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cmi_ha_mn_reg_req_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cmiNtRegCOAType = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.3")
+            root.out.cisco.cmiNtRegCOA = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cmiNtRegHAAddrType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.5")
+            root.out.cisco.cmiNtRegHomeAgent = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.cisco.cmiNtRegHomeAddressType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.7")
+            root.out.cisco.cmiNtRegHomeAddress = this.trap.VarBinds.index(5).Value
+            root.out.cisco.cmiNtRegNAI = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.cisco.cmiNtRegDeniedCode = this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.10")
+        - label: cmi_ha_mn_reg_req_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiHaMnRegReqFailed"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-MOBILE-IP-MIB-cmiHaMnRegReqFailed"
+            root.out.event.category.name = "Mobile Node Registration Status"
+            root.out.object.name = "Network Access Identifier: " + this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            root.out.event.message = "Mobile Node Registration Failed, " + this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.9.9.174.1.6.10").string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cmi_ha_max_bindings_notif_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cmiHaRegTotalMobilityBindings = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cmiHaMaximumBindings = this.trap.VarBinds.index(1).Value
+        - label: cmi_ha_max_bindings_notif_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

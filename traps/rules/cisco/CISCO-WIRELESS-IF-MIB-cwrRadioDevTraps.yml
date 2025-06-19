@@ -1,0 +1,563 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WIRELESS-IF-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cwr_trap_config_mismatch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrTrapReason = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cwr_trap_config_mismatch_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapConfigMismatch"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapConfigMismatch"
+            root.out.event.category.name = "Configuration Mismatch"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Configuration Inconsistent, " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cwr_trap_init_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrTrapReason = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cwr_trap_init_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapInitFailure"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapInitFailure"
+            root.out.event.category.name = "Hardware Initialization"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Hardware Initialization Failure, " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cwr_trap_link_quality_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrTrapReason = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cwr_trap_link_quality_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkQuality"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkQuality"
+            root.out.event.category.name = "Link Quality"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Link Quality Change, " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cwr_trap_link_sync_lost_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+        - label: cwr_trap_link_sync_lost_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkSyncLost"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkSyncLost"
+            root.out.event.category.name = "Link Syncronization Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Radio Link Lost Synchronization with Remote End  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cwr_trap_link_sync_acquired_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+        - label: cwr_trap_link_sync_acquired_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkSyncAcquired"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLinkSyncAcquired"
+            root.out.event.category.name = "Link Syncronization Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Radio Link Acquired Synchronization with Remote End  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cwr_trap_if_rx_osc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrIfRxOscState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.2.1.2")
+        - label: cwr_trap_if_rx_osc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfRxOsc"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfRxOsc"
+            root.out.event.category.name = "IF Receive Oscillator Status"
+            root.out.object.name = "cwrIntFreqEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cwr_trap_if_rx_osc_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_if_rx_osc_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Receive Frequency Oscillator Ok"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_if_rx_osc_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Receive Frequency Oscillator Bad"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_if_rx_osc_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Receive Frequency Oscillator Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_if_rx_osc_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cwr_trap_if_tx_osc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrIfTxOscState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.2.1.1")
+        - label: cwr_trap_if_tx_osc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfTxOsc"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfTxOsc"
+            root.out.event.category.name = "IF Transmit Oscillator Status"
+            root.out.object.name = "cwrIntFreqEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cwr_trap_if_tx_osc_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_if_tx_osc_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Transmit Frequency Oscillator Ok"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_if_tx_osc_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Transmit Frequency Oscillator Bad"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_if_tx_osc_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Transmit Frequency Oscillator Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_if_tx_osc_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: cwr_trap_if_ref_osc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrIfRefOscState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.2.1.3")
+        - label: cwr_trap_if_ref_osc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfRefOsc"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapIfRefOsc"
+            root.out.event.category.name = "IF Reference Oscillator Status"
+            root.out.object.name = "cwrIntFreqEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cwr_trap_if_ref_osc_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_if_ref_osc_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Reference Frequency Oscillator Ok"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_if_ref_osc_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Reference Frequency Oscillator Bad"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_if_ref_osc_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "IF Reference Frequency Oscillator Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_if_ref_osc_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: cwr_trap_rf_supply_voltage_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrRfSupplyVoltageState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.1.1.14")
+        - label: cwr_trap_rf_supply_voltage_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfSupplyVoltage"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfSupplyVoltage"
+            root.out.event.category.name = "RF Supply Voltage Status"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+        - label: cwr_trap_rf_supply_voltage_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_rf_supply_voltage_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Supply Voltage Within Specification"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_rf_supply_voltage_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Supply Voltage Outside Specification"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_rf_supply_voltage_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Supply Voltage Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_rf_supply_voltage_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: cwr_trap_rf_rx_osc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrRfRxOscState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.1.1.12")
+        - label: cwr_trap_rf_rx_osc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfRxOsc"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfRxOsc"
+            root.out.event.category.name = "RF Receive Oscillator Status"
+            root.out.object.name = "cwrRfEntry." + this.trap.VarBinds.index(0).Value.string() + ".10"
+        - label: cwr_trap_rf_rx_osc_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_rf_rx_osc_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Receive Frequency Oscillator Ok"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_rf_rx_osc_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Receive Frequency Oscillator Bad"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_rf_rx_osc_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Receive Frequency Oscillator Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_rf_rx_osc_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: cwr_trap_rf_tx_osc_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrRfTxOscState = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.1.1.10")
+        - label: cwr_trap_rf_tx_osc_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfTxOsc"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfTxOsc"
+            root.out.event.category.name = "RF Transmit Oscillator"
+            root.out.object.name = "cwrRfEntry." + this.trap.VarBinds.index(0).Value.string() + ".11"
+        - label: cwr_trap_rf_tx_osc_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_rf_tx_osc_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Transmit Frequency Oscillator Ok"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_rf_tx_osc_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Transmit Frequency Oscillator Bad"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_rf_tx_osc_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Transmit Frequency Oscillator Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_rf_tx_osc_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: cwr_trap_rf_temp_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrRfTemperature = this.trap.VarBinds.index(1).Value
+        - label: cwr_trap_rf_temp_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfTemp"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfTemp"
+            root.out.event.category.name = "RF Module Temperature"
+            root.out.object.name = "cwrRfEntry." + this.trap.VarBinds.index(0).Value.string() + ".12"
+            root.out.event.message = "RF Module Temperature, " + this.trap.VarBinds.index(1).Value.string() + "C, Exceeds Threshold  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: cwr_trap_rf_status_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrRfStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.136.1.5.1.1.15")
+        - label: cwr_trap_rf_status_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfStatusChange"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapRfStatusChange"
+            root.out.event.category.name = "RF Resource Status"
+            root.out.object.name = "cwrRfEntry." + this.trap.VarBinds.index(0).Value.string() + ".13"
+        - label: cwr_trap_rf_status_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: cwr_trap_rf_status_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Resource Online"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: cwr_trap_rf_status_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Resource Offline"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cwr_trap_rf_status_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "RF Resource Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cwr_trap_rf_status_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: cwr_trap_link1hr_thresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrTrapReason = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cwr_trap_link1hr_thresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLink1HrThresh"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLink1HrThresh"
+            root.out.event.category.name = "Link 1hr. Threshold"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Link 1Hr. Threshold Exceeded, " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: cwr_trap_link24hr_thresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrTrapReason = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cwr_trap_link24hr_thresh_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLink24HrThresh"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-WIRELESS-IF-MIB-cwrTrapLink24HrThresh"
+            root.out.event.category.name = "Link 24hr. Threshold"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = "Link 24Hr. Threshold Exceeded, " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

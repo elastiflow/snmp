@@ -1,0 +1,795 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "OSPF-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: ospf_virt_if_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtIfNeighbor = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfVirtIfState = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.9.1.7")
+        - label: ospf_virt_if_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfStateChange"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfStateChange"
+            root.out.event.category.name = "OSPF Virtual Interface Status"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+        - label: ospf_virt_if_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(3).Value == 1
+              processors:
+                - label: ospf_virt_if_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Interface Down"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(3).Value == 4
+              processors:
+                - label: ospf_virt_if_state_change_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Interface Point-to-Point"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: ospf_virt_if_state_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Interface Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: ospf_virt_if_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: ospf_nbr_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfNbrIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfNbrAddressLessIndex = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfNbrRtrId = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfNbrState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.10.1.6")
+        - label: ospf_nbr_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfNbrStateChange"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfNbrStateChange"
+            root.out.event.category.name = "OSPF Neighbor Status"
+            root.out.object.name = "ospfNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+        - label: ospf_nbr_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: ospf_nbr_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Down"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: ospf_nbr_state_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Attempt"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: ospf_nbr_state_change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Init"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: ospf_nbr_state_change_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor 2-Way"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: ospf_nbr_state_change_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Exchange Start"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: ospf_nbr_state_change_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Exchange"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: ospf_nbr_state_change_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Loading"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value == 8
+              processors:
+                - label: ospf_nbr_state_change_rules_2_8
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor Fully Adjacent"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: ospf_nbr_state_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Neighbor State Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: ospf_nbr_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Neighbor: " + this.trap.VarBinds.index(1).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: ospf_virt_nbr_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtNbrArea = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtNbrRtrId = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfVirtNbrState = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.11.1.5")
+        - label: ospf_virt_nbr_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtNbrStateChange"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtNbrStateChange"
+            root.out.event.category.name = "OSPF Virtual Neighbor Status"
+            root.out.object.name = "ospfVirtNbrEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+        - label: ospf_virt_nbr_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(3).Value == 1
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Down"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(3).Value == 2
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Attempt"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 3
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Init"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 4
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor 2-Way"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 5
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Exchange Start"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 6
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Exchange"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 7
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Loading"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 8
+              processors:
+                - label: ospf_virt_nbr_state_change_rules_2_8
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor Fully Adjacent"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: ospf_virt_nbr_state_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Virtual Neighbor State Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: ospf_virt_nbr_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: ospf_if_config_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAddressLessIf = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfPacketSrc = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfConfigErrorType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2")
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_if_config_error_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfConfigError"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfConfigError"
+            root.out.event.category.name = "OSPF Interface Configuration"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Neighbor: " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: ospf_virt_if_config_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtIfNeighbor = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfConfigErrorType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2")
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_virt_if_config_error_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfConfigError"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfConfigError"
+            root.out.event.category.name = "OSPF Virtual Interface Configuration"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: ospf_if_auth_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAddressLessIf = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfPacketSrc = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfConfigErrorType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2")
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_if_auth_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfAuthFailure"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfAuthFailure"
+            root.out.event.category.name = "OSPF Interface Authorization"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: ospf_virt_if_auth_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtIfNeighbor = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfConfigErrorType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2")
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_virt_if_auth_failure_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfAuthFailure"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfAuthFailure"
+            root.out.event.category.name = "OSPF Virtual Interface Authorization"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet, " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.2").string() + "  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: ospf_if_rx_bad_packet_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAddressLessIf = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfPacketSrc = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_if_rx_bad_packet_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfRxBadPacket"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfRxBadPacket"
+            root.out.event.category.name = "OSPF Interface Rx Packet"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Cannot Be Parsed  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: ospf_virt_if_rx_bad_packet_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtIfNeighbor = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+        - label: ospf_virt_if_rx_bad_packet_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfRxBadPacket"
+            root.out.event.category.name = "OSPF Virtual Interface Rx Packet"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: Received " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Cannot Be Parsed  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: ospf_tx_retransmit_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAddressLessIf = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfNbrRtrId = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+            root.out.IETF.ospfLsdbType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2")
+            root.out.IETF.ospfLsdbLsid = this.trap.VarBinds.index(6).Value
+            root.out.IETF.ospfLsdbRouterId = this.trap.VarBinds.index(7).Value
+        - label: ospf_tx_retransmit_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfTxRetransmit"
+            root.out.event.category.name = "OSPF Interface Retransmit"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Retransmitted to " + this.trap.VarBinds.index(3).Value.string() + "  ( " + "ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: ospf_virt_if_tx_retransmit_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtIfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtIfNeighbor = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfPacketType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3")
+            root.out.IETF.ospfLsdbType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2")
+            root.out.IETF.ospfLsdbLsid = this.trap.VarBinds.index(5).Value
+            root.out.IETF.ospfLsdbRouterId = this.trap.VarBinds.index(6).Value
+        - label: ospf_virt_if_tx_retransmit_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfTxRetransmit"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfVirtIfTxRetransmit"
+            root.out.event.category.name = "OSPF Virtual Interface Retransmit"
+            root.out.object.name = "ospfVirtIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "OSPF: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.16.1.3").string() + " Packet Retransmitted  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Virt. Neighbor: " + this.trap.VarBinds.index(2).Value.string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: ospf_originate_lsa_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfLsdbAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfLsdbType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2")
+            root.out.IETF.ospfLsdbLsid = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfLsdbRouterId = this.trap.VarBinds.index(4).Value
+        - label: ospf_originate_lsa_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfOriginateLsa"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfOriginateLsa"
+            root.out.event.category.name = "OSPF LSA Status"
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.message = "New LSA Originated  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: ospf_max_age_lsa_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfLsdbAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfLsdbType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2")
+            root.out.IETF.ospfLsdbLsid = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfLsdbRouterId = this.trap.VarBinds.index(4).Value
+        - label: ospf_max_age_lsa_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfMaxAgeLsa"
+            root.out.event.category.name = "OSPF LSA Age"
+            root.out.object.name = "ospfLsdbEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + "." + this.trap.VarBinds.index(3).Value.string() + "." + this.trap.VarBinds.index(4).Value.string()
+            root.out.event.message = "LSA Aged to MaxAge  ( Area: " + this.trap.VarBinds.index(1).Value.string() + ", Type: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.4.1.2").string() + ", LSID: " + this.trap.VarBinds.index(3).Value.string() + ", Router: " + this.trap.VarBinds.index(4).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: ospf_lsdb_overflow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfExtLsdbLimit = this.trap.VarBinds.index(1).Value
+        - label: ospf_lsdb_overflow_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbOverflow"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbOverflow"
+            root.out.event.category.name = "OSPF LSDB Status"
+            root.out.object.name = ""
+            root.out.event.message = "Number of LSAs Exceeds ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: ospf_lsdb_approaching_overflow_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfExtLsdbLimit = this.trap.VarBinds.index(1).Value
+        - label: ospf_lsdb_approaching_overflow_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbApproachingOverflow"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfLsdbApproachingOverflow"
+            root.out.event.category.name = "OSPF LSDB Status"
+            root.out.object.name = ""
+            root.out.event.message = "Number of LSAs Exceeds 90% of ospfExtLsdbLimit ( " + this.trap.VarBinds.index(1).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: ospf_if_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfIfIpAddress = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAddressLessIf = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfIfState = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.7.1.12")
+        - label: ospf_if_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfStateChange"
+            root.out.event.id = "SNMPTRAP-IETF-OSPF-TRAP-MIB-ospfIfStateChange"
+            root.out.event.category.name = "OSPF Interface Status"
+            root.out.object.name = "ospfIfEntry." + this.trap.VarBinds.index(1).Value.string() + "." + this.trap.VarBinds.index(2).Value.string()
+        - label: ospf_if_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(3).Value == 1
+              processors:
+                - label: ospf_if_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Down"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(3).Value == 2
+              processors:
+                - label: ospf_if_state_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Loopback"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 3
+              processors:
+                - label: ospf_if_state_change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Waiting"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(3).Value == 4
+              processors:
+                - label: ospf_if_state_change_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Point-To-Point"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(3).Value == 5
+              processors:
+                - label: ospf_if_state_change_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Designated Router"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(3).Value == 6
+              processors:
+                - label: ospf_if_state_change_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Backup Designated Router"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(3).Value == 7
+              processors:
+                - label: ospf_if_state_change_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Other Designated Router"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: ospf_if_state_change_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "OSPF Interface Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: ospf_if_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + "Interface: ifEntry." + this.trap.VarBinds.index(2).Value.string() + " )"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: ospf_nssa_translator_status_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfAreaId = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfAreaNssaTranslatorState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.14.2.1.12")
+        - label: ospf_nssa_translator_status_change_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: ospf_restart_status_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfRestartStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.14.1.21")
+            root.out.IETF.ospfRestartInterval = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfRestartExitReason = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.1.23")
+        - label: ospf_restart_status_change_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: ospf_nbr_restart_helper_status_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfNbrIpAddr = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfNbrAddressLessIndex = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfNbrRtrId = this.trap.VarBinds.index(3).Value
+            root.out.IETF.ospfNbrRestartHelperStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.2.1.14.10.1.12")
+            root.out.IETF.ospfNbrRestartHelperAge = this.trap.VarBinds.index(5).Value
+            root.out.IETF.ospfNbrRestartHelperExitReason = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.2.1.14.10.1.14")
+        - label: ospf_nbr_restart_helper_status_change_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: ospf_virt_nbr_restart_helper_status_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ospfRouterId = this.trap.VarBinds.index(0).Value
+            root.out.IETF.ospfVirtNbrArea = this.trap.VarBinds.index(1).Value
+            root.out.IETF.ospfVirtNbrRtrId = this.trap.VarBinds.index(2).Value
+            root.out.IETF.ospfVirtNbrRestartHelperStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.2.1.14.11.1.9")
+            root.out.IETF.ospfVirtNbrRestartHelperAge = this.trap.VarBinds.index(4).Value
+            root.out.IETF.ospfVirtNbrRestartHelperExitReason = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.14.11.1.11")
+        - label: ospf_virt_nbr_restart_helper_status_change_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

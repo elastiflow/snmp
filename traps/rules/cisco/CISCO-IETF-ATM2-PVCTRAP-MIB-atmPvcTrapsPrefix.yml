@@ -1,0 +1,34 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-IETF-ATM2-PVCTRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: atm_intf_pvc_failures_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.atmIntfPvcFailures = this.trap.VarBinds.index(1).Value
+            root.out.cisco.atmIntfCurrentlyFailingPVcls = this.trap.VarBinds.index(2).Value
+        - label: atm_intf_pvc_failures_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-IETF-ATM2-PVCTRAP-MIB-atmIntfPvcFailuresTrap"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-IETF-ATM2-PVCTRAP-MIB-atmIntfPvcFailuresTrap"
+            root.out.event.category.name = "ATM Interface PVCL Status"
+            root.out.object.name = "atmInterfaceConfEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(2).Value.string() + " PVCLs Failed on ATM Interface  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

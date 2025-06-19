@@ -1,0 +1,26 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-SIBU-MANAGERS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_sibu_managers_console_logon_intruder_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-SIBU-MANAGERS-MIB-ciscoSibuManagersConsoleLogonIntruder"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-SIBU-MANAGERS-MIB-ciscoSibuManagersConsoleLogonIntruder"
+            root.out.event.category.name = "Console Logon Intruder"
+            root.out.object.name = ""
+            root.out.event.message = "User Repeatedly Trying to Logon with Invalid Password"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

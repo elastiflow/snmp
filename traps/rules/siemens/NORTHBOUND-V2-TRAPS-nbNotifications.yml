@@ -1,0 +1,34 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "NORTHBOUND-V2-TRAPS"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: alarm_info_v2_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Non-X.733 Alarm"
+            root.out.event.category.name = lookup($10, ipmanagerX733EventType) ( lookup($9, ipmanagerX733ProbableCause) )"
+            root.out.object.name = "Alarm Instance: $14
+            root.out.event.message = ""
+            root.out.event.message = $8, lookup($9, ipmanagerX733ProbableCause)
+            root.out.event.message = $8, lookup($9, ipmanagerX733ProbableCause)
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+        - label: alarm_info_v2_rules_2
+          mapping: |
+            #!blobl
+            root = this
+        - label: alarm_info_v2_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,1639 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CPQHLTH-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 6001
+      processors:
+        - label: cpq_he2correctable_memory_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.cpqHeCorrMemTotalErrs = this.trap.VarBinds.index(0).Value
+        - label: cpq_he2correctable_memory_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6002
+      processors:
+        - label: cpq_he2correctable_memory_log_disabled_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.cpqHeCorrMemLogStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.3.1")
+        - label: cpq_he2correctable_memory_log_disabled_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6003
+      processors:
+        - label: cpq_he_thermal_temp_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6004
+      processors:
+        - label: cpq_he_thermal_temp_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.cpqHeThermalDegradedAction = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.2")
+        - label: cpq_he_thermal_temp_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6005
+      processors:
+        - label: cpq_he_thermal_temp_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6006
+      processors:
+        - label: cpq_he_thermal_system_fan_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.cpqHeThermalDegradedAction = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.2")
+        - label: cpq_he_thermal_system_fan_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6007
+      processors:
+        - label: cpq_he_thermal_system_fan_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6008
+      processors:
+        - label: cpq_he_thermal_system_fan_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6009
+      processors:
+        - label: cpq_he_thermal_cpu_fan_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6010
+      processors:
+        - label: cpq_he_thermal_cpu_fan_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6011
+      processors:
+        - label: cpq_he_asr_confirmation_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6012
+      processors:
+        - label: cpq_he_thermal_confirmation_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6013
+      processors:
+        - label: cpq_he_post_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6014
+      processors:
+        - label: cpq_he_flt_tol_pwr_supply_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6015
+      processors:
+        - label: cpq_he3correctable_memory_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeCorrMemTotalErrs = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3correctable_memory_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6016
+      processors:
+        - label: cpq_he3correctable_memory_log_disabled_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeCorrMemLogStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.3.1")
+        - label: cpq_he3correctable_memory_log_disabled_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6017
+      processors:
+        - label: cpq_he3thermal_temp_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_temp_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6018
+      processors:
+        - label: cpq_he3thermal_temp_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeThermalDegradedAction = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.2")
+        - label: cpq_he3thermal_temp_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6019
+      processors:
+        - label: cpq_he3thermal_temp_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_temp_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6020
+      processors:
+        - label: cpq_he3thermal_system_fan_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeThermalDegradedAction = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.2")
+        - label: cpq_he3thermal_system_fan_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6021
+      processors:
+        - label: cpq_he3thermal_system_fan_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_system_fan_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6022
+      processors:
+        - label: cpq_he3thermal_system_fan_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_system_fan_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6023
+      processors:
+        - label: cpq_he3thermal_cpu_fan_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_cpu_fan_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6024
+      processors:
+        - label: cpq_he3thermal_cpu_fan_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_cpu_fan_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6025
+      processors:
+        - label: cpq_he3asr_confirmation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3asr_confirmation_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6026
+      processors:
+        - label: cpq_he3thermal_confirmation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3thermal_confirmation_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6027
+      processors:
+        - label: cpq_he3post_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3post_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6028
+      processors:
+        - label: cpq_he3flt_tol_pwr_supply_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3flt_tol_pwr_supply_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6029
+      processors:
+        - label: cpq_he3corr_mem_replace_mem_module_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3corr_mem_replace_mem_module_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6030
+      processors:
+        - label: cpq_he3flt_tol_power_supply_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_power_supply_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6031
+      processors:
+        - label: cpq_he3flt_tol_power_supply_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_power_supply_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6032
+      processors:
+        - label: cpq_he3flt_tol_power_redundancy_lost_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3flt_tol_power_redundancy_lost_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6033
+      processors:
+        - label: cpq_he3flt_tol_power_supply_inserted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_power_supply_inserted_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6034
+      processors:
+        - label: cpq_he3flt_tol_power_supply_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_power_supply_removed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6035
+      processors:
+        - label: cpq_he3flt_tol_fan_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolFanIndex = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_fan_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6036
+      processors:
+        - label: cpq_he3flt_tol_fan_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolFanIndex = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_fan_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6037
+      processors:
+        - label: cpq_he3flt_tol_fan_redundancy_lost_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3flt_tol_fan_redundancy_lost_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6038
+      processors:
+        - label: cpq_he3flt_tol_fan_inserted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolFanIndex = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_fan_inserted_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6039
+      processors:
+        - label: cpq_he3flt_tol_fan_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolFanIndex = this.trap.VarBinds.index(3).Value
+        - label: cpq_he3flt_tol_fan_removed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6040
+      processors:
+        - label: cpq_he3temperature_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeTemperatureChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeTemperatureLocale = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.8.1.3")
+        - label: cpq_he3temperature_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6041
+      processors:
+        - label: cpq_he3temperature_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeThermalDegradedAction = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.2")
+            root.out.compaq.cpqHeTemperatureChassis = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeTemperatureLocale = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.8.1.3")
+        - label: cpq_he3temperature_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6042
+      processors:
+        - label: cpq_he3temperature_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeTemperatureChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeTemperatureLocale = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.6.8.1.3")
+        - label: cpq_he3temperature_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6043
+      processors:
+        - label: cpq_he3power_converter_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHePwrConvChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHePwrConvSlot = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHePwrConvSocket = this.trap.VarBinds.index(4).Value
+        - label: cpq_he3power_converter_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6044
+      processors:
+        - label: cpq_he3power_converter_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHePwrConvChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHePwrConvSlot = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHePwrConvSocket = this.trap.VarBinds.index(4).Value
+        - label: cpq_he3power_converter_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6045
+      processors:
+        - label: cpq_he3power_converter_redundancy_lost_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHePwrConvChassis = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3power_converter_redundancy_lost_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6046
+      processors:
+        - label: cpq_he3cache_accel_parity_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he3cache_accel_parity_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6047
+      processors:
+        - label: cpq_he_resilient_mem_online_spare_engaged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_resilient_mem_online_spare_engaged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6048
+      processors:
+        - label: cpq_he4flt_tol_power_supply_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.9.3.1.5")
+            root.out.compaq.cpqHeFltTolPowerSupplyModel = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySerialNumber = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyAutoRev = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyFirmwareRev = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySparePartNum = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(10).Value.snmp_display_string()
+        - label: cpq_he4flt_tol_power_supply_ok_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6049
+      processors:
+        - label: cpq_he4flt_tol_power_supply_degraded_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.9.3.1.5")
+            root.out.compaq.cpqHeFltTolPowerSupplyModel = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySerialNumber = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyAutoRev = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyFirmwareRev = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySparePartNum = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(10).Value.snmp_display_string()
+        - label: cpq_he4flt_tol_power_supply_degraded_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6050
+      processors:
+        - label: cpq_he4flt_tol_power_supply_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.9.3.1.5")
+            root.out.compaq.cpqHeFltTolPowerSupplyModel = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySerialNumber = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyAutoRev = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyFirmwareRev = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySparePartNum = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(10).Value.snmp_display_string()
+        - label: cpq_he4flt_tol_power_supply_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6051
+      processors:
+        - label: cpq_he_resilient_mem_mirrored_memory_engaged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_resilient_mem_mirrored_memory_engaged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6052
+      processors:
+        - label: cpq_he_resilient_advanced_eccmemory_engaged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_resilient_advanced_eccmemory_engaged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6053
+      processors:
+        - label: cpq_he_resilient_mem_xor_memory_engaged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_resilient_mem_xor_memory_engaged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6054
+      processors:
+        - label: cpq_he3flt_tol_power_redundancy_restored_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3flt_tol_power_redundancy_restored_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6055
+      processors:
+        - label: cpq_he3flt_tol_fan_redundancy_restored_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolFanChassis = this.trap.VarBinds.index(2).Value
+        - label: cpq_he3flt_tol_fan_redundancy_restored_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6056
+      processors:
+        - label: cpq_he4corr_mem_replace_mem_module_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMemBoardIndex = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeResMemModuleIndex = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeResMemModuleSparePartNo = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.compaq.cpqSiMemModuleSize = this.trap.VarBinds.index(5).Value
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(6).Value.snmp_display_string()
+        - label: cpq_he4corr_mem_replace_mem_module_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6057
+      processors:
+        - label: cpq_he_res_mem_board_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMemBoardSlotIndex = this.trap.VarBinds.index(2).Value
+        - label: cpq_he_res_mem_board_removed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6058
+      processors:
+        - label: cpq_he_res_mem_board_inserted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMemBoardSlotIndex = this.trap.VarBinds.index(2).Value
+        - label: cpq_he_res_mem_board_inserted_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6059
+      processors:
+        - label: cpq_he_res_mem_board_bus_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMemBoardSlotIndex = this.trap.VarBinds.index(2).Value
+        - label: cpq_he_res_mem_board_bus_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6060
+      processors:
+        - label: cpq_he_event_occurred_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeEventLogEntryNumber = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeEventLogEntrySeverity = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.11.3.1.2")
+            root.out.compaq.cpqHeEventLogUpdateTime = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.compaq.cpqHeEventLogErrorDesc = this.trap.VarBinds.index(5).Value.snmp_display_string()
+        - label: cpq_he_event_occurred_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6061
+      processors:
+        - label: cpq_he_management_proc_in_reset_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_management_proc_in_reset_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6062
+      processors:
+        - label: cpq_he_management_proc_ready_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_management_proc_ready_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6063
+      processors:
+        - label: cpq_he_management_proc_failed_reset_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_management_proc_failed_reset_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6064
+      processors:
+        - label: cpq_he5corr_mem_replace_mem_module_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMem2BoardNum = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeResMem2CpuNum = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeResMem2RiserNum = this.trap.VarBinds.index(4).Value
+            root.out.compaq.cpqHeResMem2ModuleNum = this.trap.VarBinds.index(5).Value
+            root.out.compaq.cpqHeResMem2ModulePartNo = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeResMem2ModuleSize = this.trap.VarBinds.index(7).Value
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(8).Value.snmp_display_string()
+        - label: cpq_he5corr_mem_replace_mem_module_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6065
+      processors:
+        - label: cpq_he5res_mem_board_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMem2BoardSlotNum = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeResMem2BoardCpuNum = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeResMem2BoardRiserNum = this.trap.VarBinds.index(4).Value
+        - label: cpq_he5res_mem_board_removed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6066
+      processors:
+        - label: cpq_he5res_mem_board_inserted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMem2BoardSlotNum = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeResMem2BoardCpuNum = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeResMem2BoardRiserNum = this.trap.VarBinds.index(4).Value
+        - label: cpq_he5res_mem_board_inserted_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6067
+      processors:
+        - label: cpq_he5res_mem_board_bus_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeResMem2BoardSlotNum = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeResMem2BoardCpuNum = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeResMem2BoardRiserNum = this.trap.VarBinds.index(4).Value
+        - label: cpq_he5res_mem_board_bus_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6068
+      processors:
+        - label: cpq_he_resilient_mem_lock_step_memory_engaged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+        - label: cpq_he_resilient_mem_lock_step_memory_engaged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6069
+      processors:
+        - label: cpq_he4flt_tol_power_supply_acpowerloss_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyChassis = this.trap.VarBinds.index(2).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyBay = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeFltTolPowerSupplyStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.9.3.1.5")
+            root.out.compaq.cpqHeFltTolPowerSupplyModel = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySerialNumber = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyAutoRev = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.compaq.cpqHeFltTolPowerSupplyFirmwareRev = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.compaq.cpqHeFltTolPowerSupplySparePartNum = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.compaq.cpqSiServerSystemId = this.trap.VarBinds.index(10).Value.snmp_display_string()
+        - label: cpq_he4flt_tol_power_supply_acpowerloss_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6070
+      processors:
+        - label: cpq_he_sys_battery_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.compaq.cpqHeSysBatteryChassis = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeSysBatteryIndex = this.trap.VarBinds.index(4).Value
+            root.out.compaq.cpqHeSysBatteryStatus = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.17.2.1.5")
+            root.out.compaq.cpqHeSysBatteryModel = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHeSysBatterySerialNumber = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.compaq.cpqHeSysBatterySparePartNum = this.trap.VarBinds.index(8).Value.snmp_display_string()
+        - label: cpq_he_sys_battery_failed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6071
+      processors:
+        - label: cpq_he_sys_battery_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.compaq.cpqHeSysBatteryChassis = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeSysBatteryIndex = this.trap.VarBinds.index(4).Value
+        - label: cpq_he_sys_battery_removed_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6072
+      processors:
+        - label: cpq_he_sys_pwr_allocation_not_optimized_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: cpq_he_sys_pwr_allocation_not_optimized_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6073
+      processors:
+        - label: cpq_he_sys_pwr_on_denied_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.compaq.cpqHeSysBoardFruStatus = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: cpq_he_sys_pwr_on_denied_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6074
+      processors:
+        - label: cpq_he_power_failure_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.compaq.cpqHePowerFailureIndex = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHePowerFailureType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.20.2.1.8")
+            root.out.compaq.cpqHePowerFailureArea = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.20.2.1.4")
+            root.out.compaq.cpqHePowerFailureGroupString = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.compaq.cpqHePowerFailureDeviceBitMap = this.trap.VarBinds.index(7).Value
+            root.out.compaq.cpqHePowerFailureRepairSteps = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.20.2.1.7")
+        - label: cpq_he_power_failure_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6075
+      processors:
+        - label: cpq_he_interlock_failure_error_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.compaq.sysName = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.compaq.cpqHoTrapFlags = this.trap.VarBinds.index(1).Value
+            root.out.compaq.cpqHoGUIDCanonical = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.compaq.cpqHeInterlockFailureIndex = this.trap.VarBinds.index(3).Value
+            root.out.compaq.cpqHeInterlockFailureType = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.232.6.2.21.2.1.6")
+            root.out.compaq.cpqHeInterlockFailureDeviceName = this.trap.VarBinds.index(5).Value.snmp_display_string()
+        - label: cpq_he_interlock_failure_error_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

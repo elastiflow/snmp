@@ -1,0 +1,121 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ISDN-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: isdn_mib_call_information_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.IETF.isdnBearerOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.2.1.1.2")
+            root.out.IETF.isdnBearerPeerAddress = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.IETF.isdnBearerPeerSubAddress = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.IETF.isdnBearerCallSetupTime = this.trap.VarBinds.index(4).Value
+            root.out.IETF.isdnBearerInfoType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.2.1.1.7")
+            root.out.IETF.isdnBearerCallOrigin = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.2.1.1.6")
+        - label: isdn_mib_call_information_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-ISDN-MIB-isdnMibCallInformation"
+            root.out.event.id = "SNMPTRAP-IETF-ISDN-MIB-isdnMibCallInformation"
+            root.out.event.category.name = "ISDN Call Status"
+            root.out.object.name = "isdnBearerEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.2.1.1.6").string() + " "
+            root.out.event.message = root.out.event.message + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.2.1.10.20.1.2.1.1.7").string() + " "
+            root.out.event.message = root.out.event.message + "ISDN Call"
+        - label: isdn_mib_call_information_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(6).Value == 2
+              processors:
+                - label: isdn_mib_call_information_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " to " + this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+            - check: this.trap.VarBinds.index(6).Value == 3
+              processors:
+                - label: isdn_mib_call_information_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " from " + this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+            - check: this.trap.VarBinds.index(6).Value == 4
+              processors:
+                - label: isdn_mib_call_information_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " from " + this.trap.VarBinds.index(2).Value.snmp_display_string().string()
+        - label: isdn_mib_call_information_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(1).Value == 1
+              processors:
+                - label: isdn_mib_call_information_rules_3_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Idle"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(1).Value == 2
+              processors:
+                - label: isdn_mib_call_information_rules_3_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Connecting"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(1).Value == 3
+              processors:
+                - label: isdn_mib_call_information_rules_3_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Connected"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(1).Value == 4
+              processors:
+                - label: isdn_mib_call_information_rules_3_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Active"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - processors:
+                - label: isdn_mib_call_information_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = root.out.event.message + " Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: isdn_mib_call_information_rules_4
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

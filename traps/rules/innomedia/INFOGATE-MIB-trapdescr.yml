@@ -1,0 +1,168 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "INFOGATE-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: info_gate_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.innomedia.trapGateVal = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3354.1.1.1.2.3.1")
+        - label: info_gate_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "InfoGate Status"
+            root.out.object.name = ""
+        - label: info_gate_trap_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 0
+              processors:
+                - label: info_gate_trap_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Reset"
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: info_gate_trap_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Up"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: info_gate_trap_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Down"
+            - processors:
+                - label: info_gate_trap_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Status Unknown"
+        - label: info_gate_trap_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: info_gate_gktrap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.innomedia.trapGateVal = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3354.1.1.1.2.3.1")
+        - label: info_gate_gktrap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "GateKeeper Status"
+            root.out.object.name = ""
+        - label: info_gate_gktrap_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 0
+              processors:
+                - label: info_gate_gktrap_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "GateKeeper Reset"
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: info_gate_gktrap_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "GateKeeper Up"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: info_gate_gktrap_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "GateKeeper Down"
+            - processors:
+                - label: info_gate_gktrap_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "GateKeeper Status Unknown"
+        - label: info_gate_gktrap_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: info_gate_explicit_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.innomedia.trapExplicitGateVal = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.3354.1.1.1.2.3.2")
+        - label: info_gate_explicit_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "InfoGate Explicit Status"
+            root.out.object.name = ""
+        - label: info_gate_explicit_trap_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(0).Value == 0
+              processors:
+                - label: info_gate_explicit_trap_rules_2_0
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Explicitly Reset"
+            - check: this.trap.VarBinds.index(0).Value == 1
+              processors:
+                - label: info_gate_explicit_trap_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Explicitly Up"
+            - check: this.trap.VarBinds.index(0).Value == 2
+              processors:
+                - label: info_gate_explicit_trap_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Explicitly Down"
+            - processors:
+                - label: info_gate_explicit_trap_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "InfoGate Explicit Status Unknown"
+        - label: info_gate_explicit_trap_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

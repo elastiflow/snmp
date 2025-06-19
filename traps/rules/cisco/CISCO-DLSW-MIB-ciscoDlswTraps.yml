@@ -1,0 +1,118 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-DLSW-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_dlsw_trap_tconn_partner_reject_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_tconn_partner_reject_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Partner"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "Transport Connection Rejected Partner DLSw during Capabilities Exchanges  ( TransDomain
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_dlsw_trap_tconn_prot_violation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_tconn_prot_violation_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Protocol"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "Protocol Violation Detected for DLSw Transport Connection  ( TransDomain
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cisco_dlsw_trap_tconn_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_tconn_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "DLSw Transport Connected  ( TransDomain
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cisco_dlsw_trap_tconn_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswTConnOperTDomain = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ciscoDlswTConnOperRemoteTAddr = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_tconn_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Transport Connection Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string()
+            root.out.event.message = "DLSw Transport Connection Disconnected  ( TransDomain
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cisco_dlsw_trap_circuit_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswCircuitS1Mac = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.cisco.ciscoDlswCircuitS1Sap = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.ciscoDlswCircuitS2Mac = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+            root.out.cisco.ciscoDlswCircuitS2Sap = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_circuit_up_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Circuit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_mac_address().string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + "." + this.trap.VarBinds.index(2).Value.snmp_mac_address().string() + "." + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            root.out.event.message = "DLSw Circuit Connected  ( S1Mac
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cisco_dlsw_trap_circuit_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoDlswCircuitS1Mac = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+            root.out.cisco.ciscoDlswCircuitS1Sap = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.ciscoDlswCircuitS2Mac = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+            root.out.cisco.ciscoDlswCircuitS2Sap = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: cisco_dlsw_trap_circuit_down_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "DLSw Circuit Status"
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_mac_address().string() + "." + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + "." + this.trap.VarBinds.index(2).Value.snmp_mac_address().string() + "." + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            root.out.event.message = "DLSw Circuit Disconnected  ( S1Mac
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

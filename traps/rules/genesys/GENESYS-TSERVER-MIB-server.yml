@@ -1,0 +1,60 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "GENESYS-TSERVER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: gp_server_down_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.genesys.gpServersLastTrap = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: gp_server_down_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Server Status"
+            root.out.object.name = ""
+            root.out.event.message = "Server has ceased operating or has failed to restart"
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: gp_server_up_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.genesys.gpServersLastTrap = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: gp_server_up_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Server Status"
+            root.out.object.name = ""
+            root.out.event.message = "Server has resumed operating"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: gp_polling_signal_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.genesys.gpPollingLastTrap = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: gp_polling_signal_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "SNMP Polling"
+            root.out.object.name = ""
+            root.out.event.message = "SNMP polling signal received from server"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

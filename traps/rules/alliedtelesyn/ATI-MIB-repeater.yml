@@ -1,0 +1,107 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ATI-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: intruder_protection_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.rptrAddrTrackNewLastSrcAddress = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: intruder_protection_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATI-MIB-intruderProtectionTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATI-MIB-intruderProtectionTrap"
+            root.out.event.category.name = "Intruder Protection"
+            root.out.object.name = "rptrAddrTrackEntry.1.2"
+            root.out.event.message = "Intruder Alert, Unauthorized Source MAC Address: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string() + "  ( Group: 1, Port: 2 )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: ati_intruder_protection_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.atiTrapIntruderModuleNumber = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.atiTrapIntruderPortNumber = this.trap.VarBinds.index(1).Value
+            root.out.alliedtelesyn.atiTrapIntruderMacAddress = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+        - label: ati_intruder_protection_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATI-MIB-atiIntruderProtectionTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATI-MIB-atiIntruderProtectionTrap"
+            root.out.event.category.name = "Intruder Protection"
+            root.out.object.name = "Module: " + this.trap.VarBinds.index(0).Value.string() + ", Port: " + this.trap.VarBinds.index(1).Value.string()
+            root.out.event.message = "Intruder Alert, Unauthorized Source MAC Address: " + this.trap.VarBinds.index(0).Value.string() + "  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: ati_redundant_port_change_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.alliedtelesyn.atiPortGroupIndex = this.trap.VarBinds.index(0).Value
+            root.out.alliedtelesyn.atiPortIndex = this.trap.VarBinds.index(1).Value
+            root.out.alliedtelesyn.portRedundantPort = this.trap.VarBinds.index(2).Value
+            root.out.alliedtelesyn.atiPortChangeDirection = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.207.9.4")
+        - label: ati_redundant_port_change_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-alliedtelesyn-ATI-MIB-atiRedundantPortChangeTrap"
+            root.out.event.id = "SNMPTRAP-alliedtelesyn-ATI-MIB-atiRedundantPortChangeTrap"
+            root.out.event.category.name = "Redundant Port Change"
+            root.out.object.name = "atiPortEntry." + this.trap.VarBinds.index(0).Value.string() + "." + this.trap.VarBinds.index(1).Value.string()
+        - label: ati_redundant_port_change_trap_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(3).Value == 1
+              processors:
+                - label: ati_redundant_port_change_trap_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Redundant Port, " + this.trap.VarBinds.index(2).Value.string() + ", Changed from Primary to Secondary"
+            - check: this.trap.VarBinds.index(3).Value == 2
+              processors:
+                - label: ati_redundant_port_change_trap_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Redundant Port, " + this.trap.VarBinds.index(2).Value.string() + ", Changed from Secondary to Primary"
+            - processors:
+                - label: ati_redundant_port_change_trap_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Redundant Port, " + this.trap.VarBinds.index(2).Value.string() + ", Status Unknown"
+        - label: ati_redundant_port_change_trap_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Group: " + this.trap.VarBinds.index(0).Value.string() + ", Port: " + this.trap.VarBinds.index(1).Value.string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

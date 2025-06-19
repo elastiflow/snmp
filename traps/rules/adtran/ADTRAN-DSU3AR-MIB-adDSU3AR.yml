@@ -1,0 +1,232 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "ADTRAN-DSU3AR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1400
+      processors:
+        - label: ad_dsu3arcold_start_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arcold_start_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARColdStart"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARColdStart"
+            root.out.event.category.name = "DSU III AR Cold Start"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Cold Start  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 1401
+      processors:
+        - label: ad_dsu3arin_test_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arin_test_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInTest"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInTest"
+            root.out.event.category.name = "DSU III AR Test Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR In Test Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 1411
+      processors:
+        - label: ad_dsu3arend_test_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arend_test_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndTest"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndTest"
+            root.out.event.category.name = "DSU III AR Test Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Exited Test Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 1402
+      processors:
+        - label: ad_dsu3arin_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arin_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInAlarm"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInAlarm"
+            root.out.event.category.name = "DSU III AR Alarm Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR In Alarm Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 1412
+      processors:
+        - label: ad_dsu3arend_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arend_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndAlarm"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndAlarm"
+            root.out.event.category.name = "DSU III AR Alarm Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Exited Alarm Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 1403
+      processors:
+        - label: ad_dsu3arremote_cfgdisable_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arremote_cfgdisable_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteCFGDisable"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteCFGDisable"
+            root.out.event.category.name = "DSU III AR Remote CFG Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Cannot Establish Remote Configuration  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 1413
+      processors:
+        - label: ad_dsu3arremote_cfgenable_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arremote_cfgenable_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteCFGEnable"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteCFGEnable"
+            root.out.event.category.name = "DSU III AR Remote CFG Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Can Establish Remote Configuration  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 1404
+      processors:
+        - label: ad_dsu3arremote_master_on_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arremote_master_on_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteMasterOn"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteMasterOn"
+            root.out.event.category.name = "DSU III AR Remote CFG Master Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR In Remote Configuration Master Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 1414
+      processors:
+        - label: ad_dsu3arremote_master_off_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arremote_master_off_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteMasterOff"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARRemoteMasterOff"
+            root.out.event.category.name = "DSU III AR Remote CFG Master Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Exited Remote Configuration Master Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 1405
+      processors:
+        - label: ad_dsu3arin_dial_backup_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arin_dial_backup_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInDialBackup"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3ARInDialBackup"
+            root.out.event.category.name = "DSU III AR Dial Backup Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR In Dial Backup Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 1415
+      processors:
+        - label: ad_dsu3arend_dial_backup_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.adtran.adProdPhysAddress = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+        - label: ad_dsu3arend_dial_backup_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndDialBackup"
+            root.out.event.id = "SNMPTRAP-adtran-ADTRAN-DSU3AR-MIB-adDSU3AREndDialBackup"
+            root.out.event.category.name = "DSU III AR Dial Backup Status"
+            root.out.object.name = "Physical Address: " + this.trap.VarBinds.index(0).Value.snmp_mac_address().string()
+            root.out.event.message = "DSU III AR Exited Dial Backup Mode  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

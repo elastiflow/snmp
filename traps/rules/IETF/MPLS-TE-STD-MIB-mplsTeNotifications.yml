@@ -1,0 +1,96 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "MPLS-TE-STD-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: mpls_tunnel_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.mplsTunnelAdminStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+            root.out.IETF.mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.35")
+        - label: mpls_tunnel_up_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelUp"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelUp"
+            root.out.event.category.name = "MPLS Tunnel Status"
+            root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
+            root.out.event.message = "MPLS Tunnel Up  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: mpls_tunnel_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.mplsTunnelAdminStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+            root.out.IETF.mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.35")
+        - label: mpls_tunnel_down_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelDown"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelDown"
+            root.out.event.category.name = "MPLS Tunnel Status"
+            root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
+            root.out.event.message = "MPLS Tunnel Down  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: mpls_tunnel_rerouted_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.mplsTunnelAdminStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+            root.out.IETF.mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.35")
+        - label: mpls_tunnel_rerouted_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelRerouted"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelRerouted"
+            root.out.event.category.name = "MPLS Tunnel Status"
+            root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
+            root.out.event.message = "MPLS Tunnel Re-Routed  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: mpls_tunnel_reoptimized_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.IETF.mplsTunnelAdminStatus = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+            root.out.IETF.mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.35")
+        - label: mpls_tunnel_reoptimized_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelReoptimized"
+            root.out.event.id = "SNMPTRAP-IETF-MPLS-TE-STD-MIB-mplsTunnelReoptimized"
+            root.out.event.category.name = "MPLS Tunnel Status"
+            root.out.object.name = "mplsTunnelEntry.$mplsTunnelIndex.$mplsTunnelInstance.$mplsTunnelIngressLSRId.$mplsTunnelEgressLSRId
+            root.out.event.message = "MPLS Tunnel Re-Optimized  ( Ingress LSR: $mplsTunnelIngressLSRId, Egress LSR: $mplsTunnelEgressLSRId, Tunnel Index: $mplsTunnelIndex, Tunnel Instance: $mplsTunnelInstance )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

@@ -1,0 +1,150 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-FIREWALL-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cfw_security_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicSecurityEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.3")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_security_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Security"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwSecurityEvent)  (see Details)"
+        - label: cfw_security_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cfw_content_inspect_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicContentInspEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.4")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_content_inspect_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Content Inspection"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwContentInspectionEvent)  (see Details)"
+        - label: cfw_content_inspect_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cfw_conn_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicConnectionEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.5")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_conn_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Connection"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwConnectionEvent)  (see Details)"
+        - label: cfw_conn_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cfw_access_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicAccessEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.6")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_access_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Access"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwAccessEvent)  (see Details)"
+        - label: cfw_access_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cfw_auth_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicAuthenticationEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.7")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_auth_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Authentication"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwAuthenticationEvent)  (see Details)"
+        - label: cfw_auth_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: cfw_generic_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cfwBasicEventTime = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+            root.out.cisco.cfwBasicGenericEventType = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.9.147.1.1.1.2.1.8")
+            root.out.cisco.cfwBasicEventDescription = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cfwBasicEventDetailsTableRow = this.trap.VarBinds.index(3).Value
+        - label: cfw_generic_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "FW-Generic"
+            root.out.object.name = "2"
+            root.out.event.message = "FIREWALL: lookup($2, ciscoFwGenericEvent)  (see Details)"
+        - label: cfw_generic_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

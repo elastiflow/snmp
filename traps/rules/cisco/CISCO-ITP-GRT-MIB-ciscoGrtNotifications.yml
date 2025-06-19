@@ -1,0 +1,236 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-ITP-GRT-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_grt_dest_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgrtDestNotifSupFlag = this.trap.VarBinds.index(2).Value.bool()
+            root.out.cisco.cgrtDestNotifChanges = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: cisco_grt_dest_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "GRT Destination Status"
+            root.out.object.name = "Network: $String
+        - label: cisco_grt_dest_state_change_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "GRT Destination Status Unknown"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+            root.out.event.message = "[Multiple Destinations! See Details!] " + root.out.event.message
+        - label: cisco_grt_dest_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "GRT Destination Status"
+            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            root.out.event.message = "GRT Destination State Change, See Details [MTTrapd Probe Not in Use]"
+            root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtDestStateChange"
+            root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtDestStateChange"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_grt_mgmt_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgrtMgmtNotifSupFlag = this.trap.VarBinds.index(2).Value.bool()
+            root.out.cisco.cgrtMgmtNotifChanges = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+        - label: cisco_grt_mgmt_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "GRT Management Route Status"
+            root.out.object.name = "Destination: $String
+        - label: cisco_grt_mgmt_state_change_rules_2
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = "GRT Management Route Status Unknown"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+            root.out.event.message = "[Multiple Destinations! See Details!] " + root.out.event.message
+        - label: cisco_grt_mgmt_state_change_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "GRT Management Route Status"
+            root.out.object.name = "Destination: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            root.out.event.message = "GRT Management Route State Change, See Details [MTTrapd Probe Not in Use]"
+            root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtMgmtStateChange"
+            root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtMgmtStateChange"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: cisco_grt_route_table_load_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgrtInstLoadStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.334.1.2.1.1.3")
+            root.out.cisco.cgrtInstTableName = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.cisco.cgrtInstLastURL = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+        - label: cisco_grt_route_table_load_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtRouteTableLoad"
+            root.out.event.id = "SNMPTRAP-CISCO-ITP-GRT-MIB-ciscoGrtRouteTableLoad"
+            root.out.event.category.name = "GRT Route Table Load Status"
+            root.out.object.name = "cgrtInstEntry."
+        - label: cisco_grt_route_table_load_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: cisco_grt_route_table_load_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load Not Requested"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: cisco_grt_route_table_load_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load In Progress"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: cisco_grt_route_table_load_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load Complete"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: cisco_grt_route_table_load_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load Complete with Errors"
+            - check: this.trap.VarBinds.index(2).Value == 5
+              processors:
+                - label: cisco_grt_route_table_load_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load Failed"
+            - processors:
+                - label: cisco_grt_route_table_load_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Route Table Load Status Unknown"
+        - label: cisco_grt_route_table_load_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( Route Table: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string() + " )"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: cisco_grt_dest_state_change_rev1_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgrtDestNotifSuppressed = this.trap.VarBinds.index(2).Value
+            root.out.cisco.cgrtDestDisplay = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.cisco.cgrtDestStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.9.334.1.2.2.1.1")
+            root.out.cisco.cgrtDestCongestion = this.trap.VarBinds.index(5).Value
+        - label: cisco_grt_dest_state_change_rev1_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: cisco_grt_mgmt_state_change_rev1_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgrtRouteStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.334.1.2.3.1.6")
+            root.out.cisco.cgrtRouteMgmtStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.334.1.2.3.1.7")
+            root.out.cisco.cgrtRouteDynamic = this.trap.VarBinds.index(4).Value.bool()
+            root.out.cisco.cgrtRouteAdminStatus = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.334.1.2.3.1.10")
+            root.out.cisco.cgrtRouteNotifSuppressed = this.trap.VarBinds.index(6).Value
+            root.out.cisco.cgrtRouteDisplay = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+        - label: cisco_grt_mgmt_state_change_rev1_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: cisco_grt_no_route_msudiscards_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cgspEventSequenceNumber = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cgspCLLICode = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.cgspInstDisplayName = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.cisco.cgrtNoRouteMSUsInterval = this.trap.VarBinds.index(3).Value
+            root.out.cisco.cgrtIntervalNoRouteMSUs = this.trap.VarBinds.index(4).Value
+        - label: cisco_grt_no_route_msudiscards_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

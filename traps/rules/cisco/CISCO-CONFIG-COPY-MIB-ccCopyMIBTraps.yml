@@ -1,0 +1,91 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-CONFIG-COPY-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cc_copy_completion_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ccCopyServerAddress = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ccCopyFileName = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.ccCopyState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.10")
+            root.out.cisco.ccCopyTimeStarted = this.trap.VarBinds.index(3).Value
+            root.out.cisco.ccCopyTimeCompleted = this.trap.VarBinds.index(4).Value
+            root.out.cisco.ccCopyFailCause = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.13")
+        - label: cc_copy_completion_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONFIG-COPY-MIB-ccCopyCompletion"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CONFIG-COPY-MIB-ccCopyCompletion"
+            root.out.event.category.name = "Configuration Copy Status"
+            root.out.object.name = "ccCopyEntry.1"
+        - label: cc_copy_completion_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value == 1
+              processors:
+                - label: cc_copy_completion_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Configuration Copy Waiting"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(2).Value == 2
+              processors:
+                - label: cc_copy_completion_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Configuration Copy Running"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(2).Value == 3
+              processors:
+                - label: cc_copy_completion_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Configuration Copy Successful"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+            - check: this.trap.VarBinds.index(2).Value == 4
+              processors:
+                - label: cc_copy_completion_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Configuration Copy Failed, " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.13").string()
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - processors:
+                - label: cc_copy_completion_rules_2_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Configuration Copy Status Unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+        - label: cc_copy_completion_rules_3
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = root.out.event.message + "  ( TFTP Server: " + this.trap.VarBinds.index(0).Value.string() + ", File: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() +  " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

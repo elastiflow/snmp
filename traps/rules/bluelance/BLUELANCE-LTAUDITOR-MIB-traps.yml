@@ -1,0 +1,272 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "BLUELANCE-LTAUDITOR-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: trap_file_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_file_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapFile"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapFile"
+            root.out.event.category.name = "File/Directory Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: trap_login_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_login_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapLogin"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapLogin"
+            root.out.event.category.name = "Login/Logout Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: trap_bindery_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_bindery_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapBindery"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapBindery"
+            root.out.event.category.name = "Bindery Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: trap_server_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_server_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapServer"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapServer"
+            root.out.event.category.name = "Server Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: trap_system_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_system_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapSystem"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapSystem"
+            root.out.event.category.name = "System Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[[^]\\]+\\] (.*)$").index(0).index(-1)
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: trap_nds_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_nds_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNDS"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNDS"
+            root.out.event.category.name = "NDS Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: trap_nt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_nt_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNT"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapNT"
+            root.out.event.category.name = "NT Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: trap_windows_system_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_system_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsSystem"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsSystem"
+            root.out.event.category.name = "Windows System Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: trap_windows_admin_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_admin_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsAdmin"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsAdmin"
+            root.out.event.category.name = "Windows System Administration Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: trap_windows_login_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_login_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsLogin"
+            root.out.event.category.name = "Windows System Login Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: trap_windows_file_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_file_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsFile"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsFile"
+            root.out.event.category.name = "Windows File Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: trap_windows_efs_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_efs_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsEFS"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsEFS"
+            root.out.event.category.name = "Windows System EFS Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: trap_windows_exch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.bluelance.trapDescrpt = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+        - label: trap_windows_exch_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsExch"
+            root.out.event.id = "SNMPTRAP-bluelance-BLUELANCE-LTAUDITOR-MIB-trapWindowsExch"
+            root.out.event.category.name = "Windows System Exchange Status ( " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[([^]\\]+)\\] \\[[^]\\]+\\] .*$").index(0).index(-1) + " )"
+            root.out.object.name = "Object: " + this.trap.VarBinds.index(0).Value.snmp_octet_string().string().re_find_all_submatch("^\\[[^]\\]+\\] \\[([^]\\]+)\\] .*$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_octet_string().string()
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

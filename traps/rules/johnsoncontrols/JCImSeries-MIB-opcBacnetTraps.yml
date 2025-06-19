@@ -1,0 +1,2330 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "JCImSeries-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: bacnet_device_failure_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(13).Value
+        - label: bacnet_device_failure_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: bacnet_device_failure_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(13).Value
+        - label: bacnet_device_failure_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: bacnet_device_failure_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(13).Value
+        - label: bacnet_device_failure_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: bacnet_hvac_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_hvac_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: bacnet_hvac_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_hvac_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: bacnet_hvac_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_hvac_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: bacnet_fire_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_fire_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: bacnet_fire_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_fire_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: bacnet_fire_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_fire_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: bacnet_security_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_security_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: bacnet_security_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_security_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: bacnet_security_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_security_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: bacnet_services_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_services_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: bacnet_services_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_services_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: bacnet_services_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_services_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 16
+      processors:
+        - label: bacnet_admin_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_admin_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: bacnet_admin_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_admin_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: bacnet_admin_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(23).Value
+        - label: bacnet_admin_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: bacnet_general_alarm_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_alarm_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: bacnet_general_alarm_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_alarm_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: bacnet_general_alarm_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_alarm_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: bacnet_general_event_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_event_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 23
+      processors:
+        - label: bacnet_general_event_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_event_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 24
+      processors:
+        - label: bacnet_general_event_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.deviceTimePresent = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_general_event_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 25
+      processors:
+        - label: bacnet_panel_event_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_event_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 26
+      processors:
+        - label: bacnet_panel_event_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_event_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 27
+      processors:
+        - label: bacnet_panel_event_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_event_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 28
+      processors:
+        - label: bacnet_panel_hwstatus_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_hwstatus_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 29
+      processors:
+        - label: bacnet_panel_hwstatus_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_hwstatus_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 30
+      processors:
+        - label: bacnet_panel_hwstatus_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_panel_hwstatus_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 31
+      processors:
+        - label: bacnet_host_log_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(23).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(24).Value
+        - label: bacnet_host_log_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 32
+      processors:
+        - label: bacnet_host_log_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(23).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(24).Value
+        - label: bacnet_host_log_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 33
+      processors:
+        - label: bacnet_host_log_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(22).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(23).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(24).Value
+        - label: bacnet_host_log_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 34
+      processors:
+        - label: bacnet_output_point_status_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_output_point_status_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 35
+      processors:
+        - label: bacnet_output_point_status_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_output_point_status_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 36
+      processors:
+        - label: bacnet_output_point_status_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_output_point_status_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 37
+      processors:
+        - label: bacnet_input_point_status_active_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_input_point_status_active_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 38
+      processors:
+        - label: bacnet_input_point_status_inactive_conditional_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcAckRequired = this.trap.VarBinds.index(12).Value
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_input_point_status_inactive_conditional_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 39
+      processors:
+        - label: bacnet_input_point_status_conditional_event_acknowledged_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcNewStateText = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcChangeMaskText = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActorID = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ackComment = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.completeAcknowledge = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.reliability = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(21).Value
+        - label: bacnet_input_point_status_conditional_event_acknowledged_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 40
+      processors:
+        - label: bacnet_hvac_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_hvac_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 41
+      processors:
+        - label: bacnet_fire_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_fire_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 42
+      processors:
+        - label: bacnet_security_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_security_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 43
+      processors:
+        - label: bacnet_services_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_services_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 44
+      processors:
+        - label: bacnet_admin_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.unit = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_admin_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 45
+      processors:
+        - label: bacnet_access_grant_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeTrace = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeNumber = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.lastName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.firstName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.issueLevel = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.timedOverride = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.facilityCode = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.direction = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(22).Value
+        - label: bacnet_access_grant_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 46
+      processors:
+        - label: bacnet_access_deny_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeTrace = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeNumber = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.lastName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.firstName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.issueLevel = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.timedOverride = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.facilityCode = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.direction = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(22).Value
+        - label: bacnet_access_deny_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 47
+      processors:
+        - label: bacnet_card_trace_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeTrace = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeNumber = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.lastName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.firstName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.issueLevel = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.timedOverride = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.facilityCode = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.direction = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(22).Value
+        - label: bacnet_card_trace_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 48
+      processors:
+        - label: bacnet_taaccess_grant_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeTrace = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.badgeNumber = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.lastName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.firstName = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.timedOverride = this.trap.VarBinds.index(18).Value.snmp_display_string()
+            root.out.johnsoncontrols.direction = this.trap.VarBinds.index(19).Value.snmp_display_string()
+            root.out.johnsoncontrols.functionKey = this.trap.VarBinds.index(20).Value.snmp_display_string()
+            root.out.johnsoncontrols.barcodeAttach = this.trap.VarBinds.index(21).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(22).Value
+        - label: bacnet_taaccess_grant_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 49
+      processors:
+        - label: bacnet_output_point_status_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(15).Value
+        - label: bacnet_output_point_status_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 50
+      processors:
+        - label: bacnet_input_point_status_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.propertyValue = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(15).Value
+        - label: bacnet_input_point_status_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 51
+      processors:
+        - label: bacnet_audit_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(18).Value
+        - label: bacnet_audit_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 52
+      processors:
+        - label: bacnet_host_event_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(18).Value
+        - label: bacnet_host_event_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 53
+      processors:
+        - label: bacnet_host_log_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.userName = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.auditItemName = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.pegasysEventName = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.errorLogType = this.trap.VarBinds.index(17).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(18).Value
+        - label: bacnet_host_log_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 54
+      processors:
+        - label: bacnet_host_logic_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.triggerCode = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.triggerText = this.trap.VarBinds.index(15).Value.snmp_display_string()
+            root.out.johnsoncontrols.triggerValue = this.trap.VarBinds.index(16).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(17).Value
+        - label: bacnet_host_logic_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 55
+      processors:
+        - label: bacnet_panel_event_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(15).Value
+        - label: bacnet_panel_event_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 56
+      processors:
+        - label: bacnet_panel_hwstatus_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.bacnetEventType = this.trap.VarBinds.index(10).Value.snmp_display_string()
+            root.out.johnsoncontrols.vendorIdentifier = this.trap.VarBinds.index(11).Value.snmp_display_string()
+            root.out.johnsoncontrols.areas = this.trap.VarBinds.index(12).Value.snmp_display_string()
+            root.out.johnsoncontrols.fromState = this.trap.VarBinds.index(13).Value.snmp_display_string()
+            root.out.johnsoncontrols.terminalName = this.trap.VarBinds.index(14).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(15).Value
+        - label: bacnet_panel_hwstatus_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 57
+      processors:
+        - label: bacnet_comm_error_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(10).Value
+        - label: bacnet_comm_error_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 58
+      processors:
+        - label: bacnet_general_simple_event_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.johnsoncontrols.opcSeverity = this.trap.VarBinds.index(0).Value
+            root.out.johnsoncontrols.opcCondition = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSource = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcMessage = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcTimeStamp = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventTypeText = this.trap.VarBinds.index(5).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcEventCategoryText = this.trap.VarBinds.index(6).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcSubCondition = this.trap.VarBinds.index(7).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcActiveTime = this.trap.VarBinds.index(8).Value.snmp_display_string()
+            root.out.johnsoncontrols.opcQualityText = this.trap.VarBinds.index(9).Value.snmp_display_string()
+            root.out.johnsoncontrols.ifIndex = this.trap.VarBinds.index(10).Value
+        - label: bacnet_general_simple_event_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

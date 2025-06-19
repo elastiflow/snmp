@@ -1,0 +1,117 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "APS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: aps_event_switchover_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.apsChanStatusSwitchovers = this.trap.VarBinds.index(0).Value
+            root.out.juniper.apsChanStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.6.1.1")
+        - label: aps_event_switchover_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventSwitchover"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventSwitchover"
+            root.out.event.category.name = "APS Channel Status"
+            root.out.object.name = "apsChanStatusEntry..2"
+            root.out.event.message = "APS Channel Switchover  ( Group: $String, Channel: 2 )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: aps_event_mode_mismatch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.apsStatusModeMismatches = this.trap.VarBinds.index(0).Value
+            root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
+        - label: aps_event_mode_mismatch_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventModeMismatch"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventModeMismatch"
+            root.out.event.category.name = "APS Group Status"
+            root.out.object.name = "apsStatusEntry."
+            root.out.event.message = "APS Group Mode Mismatch  ( Group: $String )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: aps_event_channel_mismatch_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.apsStatusChannelMismatches = this.trap.VarBinds.index(0).Value
+            root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
+        - label: aps_event_channel_mismatch_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventChannelMismatch"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventChannelMismatch"
+            root.out.event.category.name = "APS Group Status"
+            root.out.object.name = "apsStatusEntry."
+            root.out.event.message = "APS Group Channel Mismatch  ( Group: $String )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: aps_event_psbf_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.apsStatusPSBFs = this.trap.VarBinds.index(0).Value
+            root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
+        - label: aps_event_psbf_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventPSBF"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventPSBF"
+            root.out.event.category.name = "APS Group Status"
+            root.out.object.name = "apsStatusEntry."
+            root.out.event.message = "APS Group Protection Switch Byte Failure  ( Group: $String )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: aps_event_feplf_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.juniper.apsStatusFEPLFs = this.trap.VarBinds.index(0).Value
+            root.out.juniper.apsStatusCurrent = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.2636.3.24.1.2.1.3")
+        - label: aps_event_feplf_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
+            root.out.event.id = "SNMPTRAP-juniper-APS-MIB-apsEventFEPLF"
+            root.out.event.category.name = "APS Group Status"
+            root.out.object.name = "apsStatusEntry."
+            root.out.event.message = "APS Group Far-End Protection-Line Failure  ( Group: $String )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

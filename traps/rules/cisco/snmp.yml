@@ -1,0 +1,183 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCOTRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: cold_start_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.whyReload = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: cold_start_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: zone_service_req_rej_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.zoneMemberFormat = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.11.1.4")
+            root.out.cisco.zoneMemberID = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.cisco.zoneServiceRejReasonCode = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.1")
+            root.out.cisco.zoneServiceRejReasonCodeExp = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.2")
+        - label: zone_service_req_rej_notify_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneServiceReqRejNotify"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-ZS-MIB-zoneServiceReqRejNotify"
+            root.out.event.category.name = "Registration Request Status"
+            root.out.object.name = "zoneMemberEntry.9.294.1.4"
+            root.out.event.message = "Registration Request Rejected by Local Zone Server, " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.3.1").string() + "  ( " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.11.1.4").string() + ": " + this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + " )"
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: link_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.ifType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+            root.out.cisco.locIfReason = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: link_down_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 3
+      processors:
+        - label: link_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ifIndex = this.trap.VarBinds.index(0).Value
+            root.out.cisco.ifDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.ifType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+            root.out.cisco.locIfReason = this.trap.VarBinds.index(3).Value.snmp_display_string()
+        - label: link_up_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: authentication_failure_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.authAddr = this.trap.VarBinds.index(0).Value
+        - label: authentication_failure_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: egp_neighbor_loss_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.egpNeighAddr = this.trap.VarBinds.index(0).Value
+        - label: egp_neighbor_loss_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: zone_activate_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.zoneSetActivateResult = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.9.294.1.1.5.1.2")
+            root.out.cisco.zoneSwitchWwn = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+        - label: zone_activate_notify_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: zone_compact_notify_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.zoneCompactVsan = this.trap.VarBinds.index(0).Value
+        - label: zone_compact_notify_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

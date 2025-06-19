@@ -1,0 +1,975 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SMARTS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 4
+      processors:
+        - label: sm_trap_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.smarts.smNotifTimestamp = this.trap.VarBinds.index(0).Value
+            root.out.smarts.smNotifServer = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.smarts.smNotifClass = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstance = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.smarts.smNotifEventName = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstanceID = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.smarts.smNotifDescription = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.smarts.smNotifCertainty = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.smarts.smNotifSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.733.2.1.9")
+        - label: sm_trap_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " )"
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+        - label: sm_trap_notification_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Bridge
+              processors:
+                - label: sm_trap_notification_rules_2_bridge
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == DuplicateIP
+              processors:
+                - label: sm_trap_notification_rules_2_duplicate_ip
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Host
+              processors:
+                - label: sm_trap_notification_rules_2_host
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Hub
+              processors:
+                - label: sm_trap_notification_rules_2_hub
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Interface
+              processors:
+                - label: sm_trap_notification_rules_2_interface
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == MSFC
+              processors:
+                - label: sm_trap_notification_rules_2_msfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Port
+              processors:
+                - label: sm_trap_notification_rules_2_port
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Probe
+              processors:
+                - label: sm_trap_notification_rules_2_probe
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSFC
+              processors:
+                - label: sm_trap_notification_rules_2_rsfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSM
+              processors:
+                - label: sm_trap_notification_rules_2_rsm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Router
+              processors:
+                - label: sm_trap_notification_rules_2_router
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPAgent
+              processors:
+                - label: sm_trap_notification_rules_2_snmpagent
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPTrap
+              processors:
+                - label: sm_trap_notification_rules_2_snmptrap
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1) + " ) )"
+                    root.out.event.message = this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1)
+        - label: sm_trap_notification_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == InformAlarm
+              processors:
+                - label: sm_trap_notification_rules_3_inform_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MajorAlarm
+              processors:
+                - label: sm_trap_notification_rules_3_major_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MinorAlarm
+              processors:
+                - label: sm_trap_notification_rules_3_minor_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Switch
+              processors:
+                - label: sm_trap_notification_rules_3_switch
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Uncertified
+              processors:
+                - label: sm_trap_notification_rules_3_uncertified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Undiscovered
+              processors:
+                - label: sm_trap_notification_rules_3_undiscovered
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == VLAN
+              processors:
+                - label: sm_trap_notification_rules_3_vlan
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - processors:
+                - label: sm_trap_notification_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+        - label: sm_trap_notification_rules_4
+          mapping: |
+            #!blobl
+            root = this
+        - label: sm_trap_notification_rules_5
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-smarts-SMARTS-MIB-smTrapNotification"
+            root.out.event.id = "SNMPTRAP-smarts-SMARTS-MIB-smTrapNotification"
+    - check: this.trap.SpecificTrap == 5
+      processors:
+        - label: sm_trap_certainty_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.smarts.smNotifTimestamp = this.trap.VarBinds.index(0).Value
+            root.out.smarts.smNotifServer = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.smarts.smNotifClass = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstance = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.smarts.smNotifEventName = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstanceID = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.smarts.smNotifDescription = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.smarts.smNotifCertainty = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.smarts.smNotifSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.733.2.1.9")
+        - label: sm_trap_certainty_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " )"
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+        - label: sm_trap_certainty_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Bridge
+              processors:
+                - label: sm_trap_certainty_change_rules_2_bridge
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == DuplicateIP
+              processors:
+                - label: sm_trap_certainty_change_rules_2_duplicate_ip
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Host
+              processors:
+                - label: sm_trap_certainty_change_rules_2_host
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Hub
+              processors:
+                - label: sm_trap_certainty_change_rules_2_hub
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Interface
+              processors:
+                - label: sm_trap_certainty_change_rules_2_interface
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == MSFC
+              processors:
+                - label: sm_trap_certainty_change_rules_2_msfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Port
+              processors:
+                - label: sm_trap_certainty_change_rules_2_port
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Probe
+              processors:
+                - label: sm_trap_certainty_change_rules_2_probe
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSFC
+              processors:
+                - label: sm_trap_certainty_change_rules_2_rsfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSM
+              processors:
+                - label: sm_trap_certainty_change_rules_2_rsm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Router
+              processors:
+                - label: sm_trap_certainty_change_rules_2_router
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPAgent
+              processors:
+                - label: sm_trap_certainty_change_rules_2_snmpagent
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPTrap
+              processors:
+                - label: sm_trap_certainty_change_rules_2_snmptrap
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1) + " ) )"
+                    root.out.event.message = this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1)
+        - label: sm_trap_certainty_change_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == InformAlarm
+              processors:
+                - label: sm_trap_certainty_change_rules_3_inform_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MajorAlarm
+              processors:
+                - label: sm_trap_certainty_change_rules_3_major_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MinorAlarm
+              processors:
+                - label: sm_trap_certainty_change_rules_3_minor_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Switch
+              processors:
+                - label: sm_trap_certainty_change_rules_3_switch
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Uncertified
+              processors:
+                - label: sm_trap_certainty_change_rules_3_uncertified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Undiscovered
+              processors:
+                - label: sm_trap_certainty_change_rules_3_undiscovered
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == VLAN
+              processors:
+                - label: sm_trap_certainty_change_rules_3_vlan
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - processors:
+                - label: sm_trap_certainty_change_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+        - label: sm_trap_certainty_change_rules_4
+          mapping: |
+            #!blobl
+            root = this
+        - label: sm_trap_certainty_change_rules_5
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-smarts-SMARTS-MIB-smTrapCertaintyChange"
+            root.out.event.id = "SNMPTRAP-smarts-SMARTS-MIB-smTrapCertaintyChange"
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: sm_trap_severity_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.smarts.smNotifTimestamp = this.trap.VarBinds.index(0).Value
+            root.out.smarts.smNotifServer = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.smarts.smNotifClass = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstance = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.smarts.smNotifEventName = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstanceID = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.smarts.smNotifDescription = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.smarts.smNotifCertainty = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.smarts.smNotifSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.733.2.1.9")
+        - label: sm_trap_severity_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " )"
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+        - label: sm_trap_severity_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Bridge
+              processors:
+                - label: sm_trap_severity_change_rules_2_bridge
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == DuplicateIP
+              processors:
+                - label: sm_trap_severity_change_rules_2_duplicate_ip
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Host
+              processors:
+                - label: sm_trap_severity_change_rules_2_host
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Hub
+              processors:
+                - label: sm_trap_severity_change_rules_2_hub
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Interface
+              processors:
+                - label: sm_trap_severity_change_rules_2_interface
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == MSFC
+              processors:
+                - label: sm_trap_severity_change_rules_2_msfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Port
+              processors:
+                - label: sm_trap_severity_change_rules_2_port
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Probe
+              processors:
+                - label: sm_trap_severity_change_rules_2_probe
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSFC
+              processors:
+                - label: sm_trap_severity_change_rules_2_rsfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSM
+              processors:
+                - label: sm_trap_severity_change_rules_2_rsm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Router
+              processors:
+                - label: sm_trap_severity_change_rules_2_router
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPAgent
+              processors:
+                - label: sm_trap_severity_change_rules_2_snmpagent
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPTrap
+              processors:
+                - label: sm_trap_severity_change_rules_2_snmptrap
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1) + " ) )"
+                    root.out.event.message = this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1)
+        - label: sm_trap_severity_change_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == InformAlarm
+              processors:
+                - label: sm_trap_severity_change_rules_3_inform_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MajorAlarm
+              processors:
+                - label: sm_trap_severity_change_rules_3_major_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MinorAlarm
+              processors:
+                - label: sm_trap_severity_change_rules_3_minor_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Switch
+              processors:
+                - label: sm_trap_severity_change_rules_3_switch
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Uncertified
+              processors:
+                - label: sm_trap_severity_change_rules_3_uncertified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Undiscovered
+              processors:
+                - label: sm_trap_severity_change_rules_3_undiscovered
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == VLAN
+              processors:
+                - label: sm_trap_severity_change_rules_3_vlan
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - processors:
+                - label: sm_trap_severity_change_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+        - label: sm_trap_severity_change_rules_4
+          mapping: |
+            #!blobl
+            root = this
+        - label: sm_trap_severity_change_rules_5
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-smarts-SMARTS-MIB-smTrapSeverityChange"
+            root.out.event.id = "SNMPTRAP-smarts-SMARTS-MIB-smTrapSeverityChange"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: sm_trap_notification_clear_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.smarts.smNotifTimestamp = this.trap.VarBinds.index(0).Value
+            root.out.smarts.smNotifServer = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.smarts.smNotifClass = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstance = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+            root.out.smarts.smNotifEventName = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+            root.out.smarts.smNotifInstanceID = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+            root.out.smarts.smNotifDescription = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.smarts.smNotifCertainty = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+            root.out.smarts.smNotifSeverity = this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.733.2.1.9")
+        - label: sm_trap_notification_clear_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " )"
+            root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+        - label: sm_trap_notification_clear_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Bridge
+              processors:
+                - label: sm_trap_notification_clear_rules_2_bridge
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == DuplicateIP
+              processors:
+                - label: sm_trap_notification_clear_rules_2_duplicate_ip
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Host
+              processors:
+                - label: sm_trap_notification_clear_rules_2_host
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Hub
+              processors:
+                - label: sm_trap_notification_clear_rules_2_hub
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Interface
+              processors:
+                - label: sm_trap_notification_clear_rules_2_interface
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == MSFC
+              processors:
+                - label: sm_trap_notification_clear_rules_2_msfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Port
+              processors:
+                - label: sm_trap_notification_clear_rules_2_port
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Interface: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string().re_find_all_submatch("^[IP][FO][R]?[T]?-[^/]+/[0-9.]+ \\[([A-Za-z0-9/:._-]+)\\]").index(0).index(-1)
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = root.out.event.message + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Probe
+              processors:
+                - label: sm_trap_notification_clear_rules_2_probe
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSFC
+              processors:
+                - label: sm_trap_notification_clear_rules_2_rsfc
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == RSM
+              processors:
+                - label: sm_trap_notification_clear_rules_2_rsm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == Router
+              processors:
+                - label: sm_trap_notification_clear_rules_2_router
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPAgent
+              processors:
+                - label: sm_trap_notification_clear_rules_2_snmpagent
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+            - check: this.trap.VarBinds.index(2).Value.snmp_octet_string().string() == SNMPTrap
+              processors:
+                - label: sm_trap_notification_clear_rules_2_snmptrap
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.category.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(4).Value.snmp_octet_string().string() + " ( " + this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1) + " ) )"
+                    root.out.event.message = this.trap.VarBinds.index(5).Value.snmp_octet_string().string().re_find_all_submatch(": ([^:]+)$").index(0).index(-1)
+        - label: sm_trap_notification_clear_rules_3
+          switch:
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == InformAlarm
+              processors:
+                - label: sm_trap_notification_clear_rules_3_inform_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MajorAlarm
+              processors:
+                - label: sm_trap_notification_clear_rules_3_major_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == MinorAlarm
+              processors:
+                - label: sm_trap_notification_clear_rules_3_minor_alarm
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Switch
+              processors:
+                - label: sm_trap_notification_clear_rules_3_switch
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Uncertified
+              processors:
+                - label: sm_trap_notification_clear_rules_3_uncertified
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == Undiscovered
+              processors:
+                - label: sm_trap_notification_clear_rules_3_undiscovered
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = ""
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string().re_find_all_submatch("^[^,]+, (.*)$").index(0).index(-1)
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string()
+            - check: this.trap.VarBinds.index(4).Value.snmp_octet_string().string() == VLAN
+              processors:
+                - label: sm_trap_notification_clear_rules_3_vlan
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+            - processors:
+                - label: sm_trap_notification_clear_rules_3_default
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.name = "Object: " + this.trap.VarBinds.index(3).Value.snmp_octet_string().string()
+                    root.out.event.message = this.trap.VarBinds.index(6).Value.snmp_octet_string().string() + " ( " + root.out.object.name + " )"
+        - label: sm_trap_notification_clear_rules_4
+          mapping: |
+            #!blobl
+            root = this
+        - label: sm_trap_notification_clear_rules_5
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-smarts-SMARTS-MIB-smTrapNotificationClear"
+            root.out.event.id = "SNMPTRAP-smarts-SMARTS-MIB-smTrapNotificationClear"
+            root.out.event.message = "End of " + root.out.event.message
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

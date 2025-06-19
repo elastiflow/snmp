@@ -1,0 +1,56 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-CALL-TRACKER-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cct_call_setup_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cctActiveSetupTime = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cctActiveCalledPartyId = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.cisco.cctActiveCallingPartyId = this.trap.VarBinds.index(2).Value.snmp_display_string()
+            root.out.cisco.cctActiveCallCategory = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.163.1.2.3.1.13")
+        - label: cct_call_setup_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CALL-TRACKER-MIB-cctCallSetupNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CALL-TRACKER-MIB-cctCallSetupNotification"
+            root.out.event.category.name = "Call Status"
+            root.out.object.name = "cctActiveEntry.2"
+            root.out.event.message = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.9.163.1.2.3.1.13").string() + " Call Setup  ( Called Party: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Calling Party: " + this.trap.VarBinds.index(2).Value.snmp_display_string().string() + " )"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cct_call_terminate_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cctHistoryCallId = this.trap.VarBinds.index(0).Value
+        - label: cct_call_terminate_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CALL-TRACKER-MIB-cctCallTerminateNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-CALL-TRACKER-MIB-cctCallTerminateNotification"
+            root.out.event.category.name = "Call Status"
+            root.out.object.name = "cctActiveEntry." + this.trap.VarBinds.index(0).Value.string()
+            root.out.object.name = "cctHistoryEntry.2"
+            root.out.event.message = "Call Terminated  ( " + root.out.object.name + " )"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

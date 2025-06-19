@@ -1,0 +1,37 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Access-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: acc_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.ebs.accTrapCount = this.trap.VarBinds.index(0).Value
+            root.out.ebs.accTrapText = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+            root.out.ebs.accTrapSeverity = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1056.1.1.1.1.3")
+            root.out.ebs.accTrapAlrmtyp = this.trap.VarBinds.index(3).Value
+            root.out.ebs.accTrapGrpid = this.trap.VarBinds.index(4).Value
+            root.out.ebs.accTrapModid = this.trap.VarBinds.index(5).Value
+        - label: acc_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "AccessMANAGER Alarm ( Alarm Type: " + this.trap.VarBinds.index(3).Value.string() + " )"
+            root.out.object.name = "Group: " + this.trap.VarBinds.index(4).Value.string() + ", Module: " + this.trap.VarBinds.index(5).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(1).Value.snmp_octet_string().string() + "  ( " + root.out.object.name + " )"
+        - label: acc_alarm_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

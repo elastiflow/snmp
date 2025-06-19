@@ -1,0 +1,110 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Generic SNMP Trap"
+- switch:
+    - check: this.trap.GenericTrap == 0
+      processors:
+        - label: cold_start
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "Generic"
+            root.out.event.id = "SNMPTRAP-coldStart"
+            root.out.event.message = "Cold Start"
+            root.out.event.class.name = "SNMPTRAP-coldStart"
+
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.GenericTrap == 1
+      processors:
+        - label: warm_start
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "Generic"
+            root.out.event.id = "SNMPTRAP-warmStart"
+            root.out.event.message = "Warm Start"
+            root.out.event.class.name = "SNMPTRAP-warmStart"
+
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"
+    - check: this.trap.GenericTrap == 2
+      processors:
+        - label: link_down_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.generic.ifIndex = this.trap.VarBinds.index(0).Value
+        - label: link_down
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "Generic Link Status"
+            root.out.event.id = "SNMPTRAP-linkDown"
+            root.out.event.message = "Link Down"
+            root.out.event.class.name = "SNMPTRAP-linkDown"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+
+            root.out.event.severity.code = 2
+            root.out.event.severity.level = "Critical"
+    - check: this.trap.GenericTrap == 3
+      processors:
+        - label: link_up_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.generic.ifIndex = this.trap.VarBinds.index(0).Value
+        - label: link_up
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "Generic Link Status"
+            root.out.event.id = "SNMPTRAP-linkUp"
+            root.out.event.message = "Link Up"
+            root.out.event.class.name = "SNMPTRAP-linkUp"
+            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+    - check: this.trap.GenericTrap == 4
+      processors:
+        - label: authentication_failure
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "Generic Authentication"
+            root.out.event.id = "SNMPTRAP-authenticationFailure"
+            root.out.event.message = "Authentication Failure"
+            root.out.event.class.name = "SNMPTRAP-authenticationFailure"
+
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - check: this.trap.GenericTrap == 5
+      processors:
+        - label: egp_neighbor_loss_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.generic.egpNeighAddr = this.trap.VarBinds.index(0).Value
+        - label: egp_neighbor_loss
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = "EGP Neighbor Status"
+            root.out.event.id = "SNMPTRAP-egpNeighborLoss"
+            root.out.event.message = "EGP Neighbor Loss"
+            root.out.event.class.name = "SNMPTRAP-egpNeighborLoss"
+
+            root.out.event.severity.code = 3
+            root.out.event.severity.level = "Error"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Invalid Generic Trap"

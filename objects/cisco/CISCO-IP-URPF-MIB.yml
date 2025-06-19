@@ -1,0 +1,121 @@
+# CISCO-IP-URPF-MIB::cipUrpfScalar:
+#   mib: CISCO-IP-URPF-MIB
+#   object: cipUrpfScalar
+#   discovery_attribute: cipUrpfDropRateWindow
+#   attributes:
+#     cipUrpfDropRateWindow:
+#       oid: .1.3.6.1.4.1.9.9.451.1.1.1
+#       name: cisco.cipUrpfDropRateWindow
+#       syntax: TicksSec
+#     cipUrpfComputeInterval:
+#       oid: .1.3.6.1.4.1.9.9.451.1.1.2
+#       name: cisco.cipUrpfComputeInterval
+#       syntax: TicksSec
+#     cipUrpfDropNotifyHoldDownTime:
+#       oid: .1.3.6.1.4.1.9.9.451.1.1.3
+#       name: cisco.cipUrpfDropNotifyHoldDownTime
+#       syntax: TicksSec
+
+CISCO-IP-URPF-MIB::cipUrpfEntry:
+  mib: CISCO-IP-URPF-MIB
+  object: cipUrpfEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.451.1.2.1.1.1
+      name: cisco.cipUrpfIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cipUrpfDrops
+  attributes:
+    cipUrpfDrops:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.1.1.2
+      name: cisco.cipUrpfDrops
+      syntax: Counter32
+    cipUrpfDropRate:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.1.1.3
+      name: cisco.cipUrpfDropRate
+      syntax: Gauge32
+
+CISCO-IP-URPF-MIB::cipUrpfIfMonEntry:
+  mib: CISCO-IP-URPF-MIB
+  object: cipUrpfIfMonEntry
+  index:
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.451.1.2.2.1.1
+      name: cisco.cipUrpfIfIpVersion
+      syntax: EnumInteger
+  discovery_attribute: cipUrpfIfDrops
+  attributes:
+    cipUrpfIfDrops:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.2.1.2
+      name: cisco.cipUrpfIfDrops
+      syntax: Counter32
+    cipUrpfIfSuppressedDrops:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.2.1.3
+      name: cisco.cipUrpfIfSuppressedDrops
+      syntax: Counter32
+    cipUrpfIfDropRate:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.2.1.4
+      name: cisco.cipUrpfIfDropRate
+      syntax: Gauge32
+    cipUrpfIfDiscontinuityTime:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.2.1.5
+      name: cisco.cipUrpfIfDiscontinuityTime
+      syntax: TimeStamp
+
+CISCO-IP-URPF-MIB::cipUrpfVrfIfEntry:
+  mib: CISCO-IP-URPF-MIB
+  object: cipUrpfVrfIfEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.9.9.451.1.4.1.1.1
+      name: cisco.cipUrpfVrfName
+      syntax: DisplayString # SnmpAdminString
+    - type: Integer
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: cipUrpfVrfIfDrops
+  attributes:
+    cipUrpfVrfIfDrops:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.3.1.2
+      name: cisco.cipUrpfVrfIfDrops
+      syntax: Counter32
+    cipUrpfVrfIfDiscontinuityTime:
+      oid: .1.3.6.1.4.1.9.9.451.1.2.3.1.3
+      name: cisco.cipUrpfVrfIfDiscontinuityTime
+      syntax: TimeStamp
+
+CISCO-IP-URPF-MIB::cipUrpfIfConfEntry:
+  mib: CISCO-IP-URPF-MIB
+  object: cipUrpfIfConfEntry
+  augments: CISCO-IP-URPF-MIB::cipUrpfIfMonEntry
+  discovery_attribute: cipUrpfIfVrfName
+  attributes:
+    # cipUrpfIfDropRateNotifyEnable:
+    #   oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.1
+    #   name: cisco.cipUrpfIfDropRateNotifyEnable
+    #   syntax: TruthValue
+    # cipUrpfIfNotifyDropRateThreshold:
+    #   oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.2
+    #   name: cisco.cipUrpfIfNotifyDropRateThreshold
+    #   syntax: Unsigned32
+    # cipUrpfIfNotifyDrHoldDownReset:
+    #   oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.3
+    #   name: cisco.cipUrpfIfNotifyDrHoldDownReset
+    #   syntax: TruthValue
+    # cipUrpfIfCheckStrict:
+    #   oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.4
+    #   name: cisco.cipUrpfIfCheckStrict
+    #   syntax: EnumInteger
+    # cipUrpfIfWhichRouteTableID:
+    #   oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.5
+    #   name: cisco.cipUrpfIfWhichRouteTableID
+    #   syntax: EnumInteger
+    cipUrpfIfVrfName:
+      oid: .1.3.6.1.4.1.9.9.451.1.3.1.1.6
+      name: cisco.cipUrpfIfVrfName
+      syntax: DisplayString # SnmpAdminString

@@ -1,0 +1,34 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-WIRELESS-IF-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cwr_trap_thresh_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.cwrThreshValue = this.trap.VarBinds.index(0).Value
+            root.out.cisco.cwrThreshHysteresisTime = this.trap.VarBinds.index(1).Value
+            root.out.cisco.cwrThreshLimitTime = this.trap.VarBinds.index(2).Value
+        - label: cwr_trap_thresh_template
+          mapping: |
+            #!blobl
+            root = this
+            root.out.event.category.name = ""
+            root.out.event.id = ""
+            root.out.event.message = ""
+            root.out.object.name = ""
+            root.out.event.class.name = ""
+
+            root.out.event.severity.code = 7
+            root.out.event.severity.level = "Debug"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

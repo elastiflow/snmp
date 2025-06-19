@@ -1,0 +1,30 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "TRIPWIRE-FOR-SERVERS-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 0
+      processors:
+        - label: violation_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.tripwire.tripwireReportDetails = this.trap.VarBinds.index(0).Value.snmp_display_string()
+        - label: violation_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "System Integrity"
+            root.out.object.name = "Report: " + this.trap.VarBinds.index(0).Value.snmp_display_string().string().re_find_all_submatch("^TWReport ([A-Za-z0-9_-]+) 200[0-9]+ V:[0-9]+ S:[0-9]+ A:[0-9]+ R:[0-9]+ C:[0-9]+ L:[0-9]+ M:[0-9]+ H:[0-9]+$").index(0).index(-1) + "-substr($DateTimeRaw, 1, 8)-substr($DateTimeRaw, 9, 6).twr"
+            root.out.event.message = "System Integrity OK"
+            root.out.event.message = "System Integrity Violation, see Details"
+            root.out.event.message = root.out.event.message + "  ( " + root.out.object.name + " )"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

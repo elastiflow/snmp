@@ -1,0 +1,76 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "CISCO-RHINO-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      processors:
+        - label: cisco_ls1010chassis_failure_notification_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.cisco.ciscoLS1010ChassisPs0Status = this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.5")
+            root.out.cisco.ciscoLS1010ChassisPs1Status = this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.9")
+            root.out.cisco.ciscoLS1010ChassisFanStatus = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.11")
+            root.out.cisco.ciscoLS1010Chassis12VoltStatus = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.15")
+            root.out.cisco.ciscoLS1010ChassisTempStatus = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.16")
+        - label: cisco_ls1010chassis_failure_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RHINO-MIB-ciscoLS1010ChassisFailureNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-RHINO-MIB-ciscoLS1010ChassisFailureNotification"
+            root.out.event.category.name = "LS1010 Chassis Status"
+            root.out.object.name = ""
+            root.out.event.message = "LS1010 Chassis OK, PS0: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.5").string() + ", PS1: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.9").string() + ", Fan: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.11").string() + ", 12V: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.15").string() + ", Temp: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.16").string()
+            root.out.event.message = "LS1010 Chassis Failure, PS0: " + this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.5").string() + ", PS1: " + this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.9").string() + ", Fan: " + this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.11").string() + ", 12V: " + this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.15").string() + ", Temp: " + this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.9.5.11.1.1.16").string()
+        - label: cisco_ls1010chassis_failure_notification_rules_7
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 2
+      processors:
+        - label: cisco_ls1010chassis_change_notification_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-RHINO-MIB-ciscoLS1010ChassisChangeNotification"
+            root.out.event.id = "SNMPTRAP-cisco-CISCO-RHINO-MIB-ciscoLS1010ChassisChangeNotification"
+            root.out.event.category.name = "LS1010 Chassis Status"
+            root.out.object.name = ""
+            root.out.event.message = "LS1010 Chassis OK, PS0: lookup($1, ciscoLS1010OperStatus), PS1: lookup($2, ciscoLS1010OperStatus), Fan: lookup($3, ciscoLS1010OperStatus), 12V: lookup($4, ciscoLS1010Chassis12VoltStatus), Temp: lookup($5, ciscoLS1010ChassisTempStatus)
+            root.out.event.message = "LS1010 Chassis Failure, PS0: lookup($1, ciscoLS1010OperStatus), PS1: lookup($2, ciscoLS1010OperStatus), Fan: lookup($3, ciscoLS1010OperStatus), 12V: lookup($4, ciscoLS1010Chassis12VoltStatus), Temp: lookup($5, ciscoLS1010ChassisTempStatus)
+        - label: cisco_ls1010chassis_change_notification_rules_2
+          mapping: |
+            #!blobl
+            root = this
+        - label: cisco_ls1010chassis_change_notification_rules_3
+          mapping: |
+            #!blobl
+            root = this
+        - label: cisco_ls1010chassis_change_notification_rules_4
+          mapping: |
+            #!blobl
+            root = this
+        - label: cisco_ls1010chassis_change_notification_rules_5
+          mapping: |
+            #!blobl
+            root = this
+        - label: cisco_ls1010chassis_change_notification_rules_6
+          mapping: |
+            #!blobl
+            root = this
+        - label: cisco_ls1010chassis_change_notification_rules_7
+          mapping: |
+            #!blobl
+            root = this
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"

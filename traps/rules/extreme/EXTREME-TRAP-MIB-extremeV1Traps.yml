@@ -1,0 +1,387 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "EXTREME-TRAP-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 6
+      processors:
+        - label: extreme_overheat_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremeCurrentTemperature = this.trap.VarBinds.index(2).Value
+        - label: extreme_overheat_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Temperature"
+            root.out.object.name = ""
+            root.out.event.message = "Tempature sensor has reported an Overheat condition: System will shutdown"
+    - check: this.trap.SpecificTrap == 7
+      processors:
+        - label: extreme_fanfailed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremeFanNumber = this.trap.VarBinds.index(2).Value
+        - label: extreme_fanfailed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "One or more of the Cooling Fans has Failed"
+    - check: this.trap.SpecificTrap == 8
+      processors:
+        - label: extreme_fan_ok_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremeFanNumber = this.trap.VarBinds.index(2).Value
+        - label: extreme_fan_ok_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Fan Status"
+            root.out.object.name = ""
+            root.out.event.message = "Fan is now operating Correctly"
+    - check: this.trap.SpecificTrap == 9
+      processors:
+        - label: extreme_invalid_login_attempt_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: extreme_invalid_login_attempt_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Login"
+            root.out.object.name = ""
+            root.out.event.message = "User login via telnet Refused: Incorrect username or password"
+    - check: this.trap.SpecificTrap == 10
+      processors:
+        - label: extreme_power_supply_fail_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremePowerSupplyNumber = this.trap.VarBinds.index(2).Value
+        - label: extreme_power_supply_fail_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "One or more Power Sources to this agent has Failed"
+    - check: this.trap.SpecificTrap == 11
+      processors:
+        - label: extreme_power_supply_good_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremePowerSupplyNumber = this.trap.VarBinds.index(2).Value
+        - label: extreme_power_supply_good_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "One or more previously bad Power Sources has come back to life"
+    - check: this.trap.SpecificTrap == 12
+      processors:
+        - label: extreme_rps_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: extreme_rps_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Redundant Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Redundant Power Supply device indicating an Alarm"
+    - check: this.trap.SpecificTrap == 13
+      processors:
+        - label: extreme_rps_no_alarm_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: extreme_rps_no_alarm_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Redundant Power Supply Status"
+            root.out.object.name = ""
+            root.out.event.message = "Redundant Power Supply device no longer indicating an Alarm"
+    - check: this.trap.SpecificTrap == 14
+      processors:
+        - label: extreme_smart_trap_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+        - label: extreme_smart_trap_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Smart Trap"
+            root.out.object.name = ""
+            root.out.event.message = "New entry has been created in the extremeSmartTrapInstanceTable"
+    - check: this.trap.SpecificTrap == 15
+      processors:
+        - label: extreme_module_state_changed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.extremeSlotNumber = this.trap.VarBinds.index(1).Value
+            root.out.extreme.extremeSlotModuleConfiguredType = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1916.1.1.2.2.1.3")
+            root.out.extreme.extremeSlotModuleInsertedType = this.trap.VarBinds.index(3).Value.enum_enrich(".1.3.6.1.4.1.1916.1.1.2.2.1.4")
+            root.out.extreme.extremeSlotModuleState = this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1916.1.1.2.2.1.5")
+        - label: extreme_module_state_changed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Module Status"
+            root.out.object.name = this.trap.VarBinds.index(1).Value.string()
+        - label: extreme_module_state_changed_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(4).Value == 1
+              processors:
+                - label: extreme_module_state_changed_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Not Present"
+            - check: this.trap.VarBinds.index(4).Value == 2
+              processors:
+                - label: extreme_module_state_changed_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Testing"
+            - check: this.trap.VarBinds.index(4).Value == 3
+              processors:
+                - label: extreme_module_state_changed_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Mismatch"
+            - check: this.trap.VarBinds.index(4).Value == 4
+              processors:
+                - label: extreme_module_state_changed_rules_2_4
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Failed"
+            - check: this.trap.VarBinds.index(4).Value == 5
+              processors:
+                - label: extreme_module_state_changed_rules_2_5
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Operational"
+            - check: this.trap.VarBinds.index(4).Value == 6
+              processors:
+                - label: extreme_module_state_changed_rules_2_6
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Power Down"
+            - check: this.trap.VarBinds.index(4).Value == 7
+              processors:
+                - label: extreme_module_state_changed_rules_2_7
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Module ( lookup($3, extremeSlotModuleConfiguredType) ) in slot " + this.trap.VarBinds.index(1).Value.string() + " Unknown"
+        - label: extreme_module_state_changed_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 17
+      processors:
+        - label: extreme_esrp_state_change_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremeVlanIfIndex = this.trap.VarBinds.index(2).Value
+            root.out.extreme.extremeVlanIfDescr = this.trap.VarBinds.index(3).Value.snmp_display_string()
+            root.out.extreme.extremeEsrpGroup = this.trap.VarBinds.index(4).Value
+            root.out.extreme.extremeEsrpState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1916.1.12.2.1.5")
+            root.out.extreme.extremeEsrpNetAddress = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+            root.out.extreme.ifPhysAddress = this.trap.VarBinds.index(7).Value.snmp_mac_address()
+            root.out.extreme.extremeEsrpActivePorts = this.trap.VarBinds.index(8).Value
+            root.out.extreme.extremeEsrpInternalActivePorts = this.trap.VarBinds.index(9).Value
+            root.out.extreme.extremeEsrpTrackedActivePorts = this.trap.VarBinds.index(10).Value
+            root.out.extreme.extremeEsrpTrackedIpRoutes = this.trap.VarBinds.index(11).Value
+        - label: extreme_esrp_state_change_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "ESRP Status"
+            root.out.object.name = ""
+        - label: extreme_esrp_state_change_rules_2
+          switch:
+            - check: this.trap.VarBinds.index(5).Value == 1
+              processors:
+                - label: extreme_esrp_state_change_rules_2_1
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Extreme Standby Routing Protocol(ESRP) state: Neutral"
+            - check: this.trap.VarBinds.index(5).Value == 2
+              processors:
+                - label: extreme_esrp_state_change_rules_2_2
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Extreme Standby Routing Protocol(ESRP) state: Master"
+            - check: this.trap.VarBinds.index(5).Value == 3
+              processors:
+                - label: extreme_esrp_state_change_rules_2_3
+                  mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.message = "Extreme Standby Routing Protocol(ESRP) state: Slave"
+        - label: extreme_esrp_state_change_rules_3
+          mapping: |
+            #!blobl
+            root = this
+    - check: this.trap.SpecificTrap == 18
+      processors:
+        - label: extreme_slb_unit_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Server Load Balancer"
+            root.out.object.name = ""
+            root.out.event.message = "Server Load Balancer activated a group of virtual servers that it normally would not activate"
+    - check: this.trap.SpecificTrap == 19
+      processors:
+        - label: extreme_slb_unit_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Server Load Balancer"
+            root.out.object.name = ""
+            root.out.event.message = "Server Load Balancer deactivated a group of virtual servers that it normally has active"
+    - check: this.trap.SpecificTrap == 20
+      processors:
+        - label: extreme_edp_neighbor_added_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.extremeEdpPortIfIndex = this.trap.VarBinds.index(1).Value
+            root.out.extreme.extremeEdpNeighborId = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.extreme.extremeEdpEntryAge = this.trap.VarBinds.index(3).Value
+            root.out.extreme.ifAlias = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.extreme.ifDescr = this.trap.VarBinds.index(5).Value.snmp_display_string()
+        - label: extreme_edp_neighbor_added_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Extreme Discovery Protocol"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = "Node discovers a new neighbor ( " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ) via Extreme Discovery Protocol(EDP)"
+    - check: this.trap.SpecificTrap == 21
+      processors:
+        - label: extreme_edp_neighbor_removed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.extremeEdpPortIfIndex = this.trap.VarBinds.index(1).Value
+            root.out.extreme.extremeEdpNeighborId = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+            root.out.extreme.extremeEdpEntryAge = this.trap.VarBinds.index(3).Value
+            root.out.extreme.ifAlias = this.trap.VarBinds.index(4).Value.snmp_display_string()
+            root.out.extreme.ifDescr = this.trap.VarBinds.index(5).Value.snmp_display_string()
+        - label: extreme_edp_neighbor_removed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Extreme Discovery Protocol"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.snmp_octet_string().string()
+            root.out.event.message = "No EDP updates received, neighbor ( " + this.trap.VarBinds.index(2).Value.snmp_octet_string().string() + " ) entry is aged out by the device"
+    - check: this.trap.SpecificTrap == 22
+      processors:
+        - label: extreme_cpu_health_check_failed_variables
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.extreme.sysUpTime = this.trap.VarBinds.index(0).Value
+            root.out.extreme.sysDescr = this.trap.VarBinds.index(1).Value.snmp_display_string()
+            root.out.extreme.extremeSlotNumber = this.trap.VarBinds.index(2).Value
+        - label: extreme_cpu_health_check_failed_rules_1
+          mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "CPU Health"
+            root.out.object.name = this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = "CPU HealthCheck has failed"
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.category.name = "Unknown Trap"
