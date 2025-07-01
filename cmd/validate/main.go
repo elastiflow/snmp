@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/elastiflow/snmp/pkg/def"
 	"github.com/elastiflow/snmp/pkg/reader"
 )
 
@@ -35,7 +36,15 @@ func main() {
 		log.Printf("Validated %d oid enums", len(oidEnums))
 	}
 
-	if enterprisesErr != nil || defErr != nil || enumErr != nil {
+	sysObjectIDs, sysErr := reader.Read[def.SysObjectID]("autodiscover")
+	if sysErr != nil {
+		log.Println(sysErr)
+	} else {
+		log.Printf("Validated %d sysObjectID", len(sysObjectIDs))
+	}
+
+	if enterprisesErr != nil || defErr != nil || enumErr != nil || sysErr != nil {
 		log.Fatal("Validation failed")
 	}
+
 }
