@@ -14,15 +14,15 @@ func (d DeviceGroup) Type() string {
 	return "device_group"
 }
 
-// SysObjectID is a string that represents the device group for a specific sysObjectID.
-type SysObjectID string
+// DeviceGroupName is a string that represents the name of a device group.
+type DeviceGroupName string
 
-func (s SysObjectID) Type() string {
-	return "sys_object_id"
+func (d DeviceGroupName) Type() string {
+	return "device_group"
 }
 
-func (s SysObjectID) Validate() error {
-	if s == "" {
+func (d DeviceGroupName) Validate() error {
+	if d == "" {
 		return fmt.Errorf("device group cannot be empty")
 	}
 	return nil

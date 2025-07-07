@@ -41,32 +41,32 @@ func TestDeviceGroup_Type(t *testing.T) {
 	assert.Equal(t, "device_group", deviceGroup.Type())
 }
 
-func TestSysObjectID_Type(t *testing.T) {
-	sysObjectID := SysObjectID("sysObjectID")
-	assert.Equal(t, "sys_object_id", sysObjectID.Type())
+func TestDeviceGroupName_Type(t *testing.T) {
+	dg := DeviceGroupName("device_group")
+	assert.Equal(t, "device_group", dg.Type())
 }
 
 func TestSysObjectID_Validate(t *testing.T) {
 	tests := []struct {
-		name        string
-		sysObjectID SysObjectID
-		expected    error
+		name            string
+		deviceGroupName DeviceGroupName
+		expected        error
 	}{
 		{
-			name:        "valid sysObjectID",
-			sysObjectID: SysObjectID("sysObjectID"),
-			expected:    nil,
+			name:            "valid deviceGroupName",
+			deviceGroupName: DeviceGroupName("deviceGroupName"),
+			expected:        nil,
 		},
 		{
-			name:        "empty sysObjectID",
-			sysObjectID: SysObjectID(""),
-			expected:    fmt.Errorf("device group cannot be empty"),
+			name:            "empty deviceGroupName",
+			deviceGroupName: DeviceGroupName(""),
+			expected:        fmt.Errorf("device group cannot be empty"),
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.expected, tt.sysObjectID.Validate())
+			assert.Equal(t, tt.expected, tt.deviceGroupName.Validate())
 		})
 	}
 }
