@@ -1,5 +1,34 @@
 package def
 
+import (
+	"fmt"
+	"strings"
+)
+
+func ValidateDevices(d map[string]Device) error {
+	invalidDefinitions := make([]string, 0)
+
+	// Ensure every device has a unique IP address.
+	for deviceName, device := range d {
+		for otherDeviceName, otherDevice := range d {
+			if deviceName != otherDeviceName && device.IP == otherDevice.IP {
+				errorMsg := fmt.Sprintf("device %s has the same IP address (%s) as device %s", deviceName, device.IP, otherDeviceName)
+				invalidDefinitions = append(invalidDefinitions, errorMsg)
+			}
+		}
+	}
+
+	if len(invalidDefinitions) > 0 {
+		return fmt.Errorf("found %d invalid device definitions:\n%s",
+			len(invalidDefinitions),
+			strings.Join(invalidDefinitions, "\n"),
+		)
+
+	}
+
+	return nil
+}
+
 type Device struct {
 	IP                 string         `yaml:"ip,omitempty" json:"ip,omitempty"`
 	Port               uint16         `yaml:"port,omitempty" json:"port,omitempty"`
