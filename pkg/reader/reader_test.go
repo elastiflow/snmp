@@ -291,7 +291,7 @@ func TestValidateSNMPDefinitions(t *testing.T) {
 			objects: map[string]def.Object{
 				"object1": {},
 			},
-			wantErr: "device device2 has the same IP address (192.168.1.1) as device device1",
+			wantErr: "failed to validate devices: found 2 invalid device definitions:\ndevice device1 has the same IP address (192.168.1.1) as device device2",
 		},
 		{
 			name: "undefined object group",
@@ -343,9 +343,6 @@ func TestValidateSNMPDefinitions(t *testing.T) {
 				"device1": {
 					IP: "192.168.1.1",
 				},
-				"device2": {
-					IP: "192.168.1.1", // Same IP as device1
-				},
 			},
 			deviceGroups: map[string]def.DeviceGroup{
 				"device_group1": {
@@ -360,7 +357,7 @@ func TestValidateSNMPDefinitions(t *testing.T) {
 			objects: map[string]def.Object{
 				"object1": {},
 			},
-			wantErr: "found 4 invalid definitions",
+			wantErr: "found 2 invalid definitions:",
 		},
 	}
 

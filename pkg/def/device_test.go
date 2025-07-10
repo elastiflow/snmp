@@ -1,10 +1,66 @@
 package def
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func TestValidateDevices(t *testing.T) {
+	tests := []struct {
+		name     string
+		devices  map[string]Device
+		expected error
+	}{
+		{
+			name: "valid devices",
+			devices: map[string]Device{
+				"device1": {
+					IP: "192.168.1.1",
+				},
+				"device2": {
+					IP: "192.168.1.2",
+				},
+			},
+		},
+		{
+			name: "duplicate IP addresses",
+			devices: map[string]Device{
+				"device1": {
+					IP: "192.168.1.1",
+				},
+				"device2": {
+					IP: "192.168.1.1", // Same IP as device1
+				},
+			},
+			expected: fmt.Errorf("found 2 invalid device definitions:\ndevice device1 has the same IP address (192.168.1.1) as device device2\ndevice device2 has the same IP address (192.168.1.1) as device device1"),
+		},
+		{
+			name:    "empty device map",
+			devices: map[string]Device{},
+		},
+		{
+			name: "single device",
+			devices: map[string]Device{
+				"device1": {
+					IP: "192.168.1.1",
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := ValidateDevices(tt.devices)
+			if tt.expected == nil {
+				assert.Nil(t, err)
+			} else {
+				assert.Equal(t, tt.expected.Error(), err.Error())
+			}
+		})
+	}
+}
 
 func TestDevice_Validate(t *testing.T) {
 	tests := []struct {

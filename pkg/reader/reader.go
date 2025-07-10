@@ -175,17 +175,12 @@ func validateSNMPDefinitions(
 	objectGroups map[string]def.ObjectGroup,
 	objects map[string]def.Object,
 ) error {
-	invalidDefinitions := make([]string, 0)
-
-	// Ensure every device has a unique IP address.
-	for deviceName, device := range devices {
-		for otherDeviceName, otherDevice := range devices {
-			if deviceName != otherDeviceName && device.IP == otherDevice.IP {
-				errorMsg := fmt.Sprintf("device %s has the same IP address (%s) as device %s", deviceName, device.IP, otherDeviceName)
-				invalidDefinitions = append(invalidDefinitions, errorMsg)
-			}
-		}
+	err := def.ValidateDevices(devices)
+	if err != nil {
+		return fmt.Errorf("failed to validate devices: %w", err)
 	}
+
+	invalidDefinitions := make([]string, 0)
 
 	// Ensure every object group in every device group is defined.
 	for deviceGroupName, deviceGroup := range deviceGroups {
