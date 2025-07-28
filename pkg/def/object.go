@@ -33,7 +33,7 @@ type ObjectAttribute struct {
 	Tag        bool                    `yaml:"tag,omitempty" json:"tag,omitempty"`
 	Name       string                  `yaml:"name,omitempty" json:"name,omitempty"`
 	Syntax     string                  `yaml:"syntax,omitempty" json:"syntax,omitempty"`
-	Semantics  string                  `yaml:"semantics,omitempty" json:"semantics,omitempty"`
+	Semantic   string                  `yaml:"semantic,omitempty" json:"semantics,omitempty"`
 	Metric     string                  `yaml:"metric,omitempty" json:"metric,omitempty"`
 	Rediscover string                  `yaml:"rediscover,omitempty" json:"rediscover,omitempty"`
 	Overrides  ObjectAttributeOverride `yaml:"overrides,omitempty" json:"overrides,omitempty"`
