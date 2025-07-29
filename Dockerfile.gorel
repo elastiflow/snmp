@@ -1,0 +1,61 @@
+# syntax=docker/dockerfile:1
+
+FROM debian:bookworm AS base
+ARG GO_VERSION=1.23.11
+
+SHELL ["/bin/bash", "-c"]
+
+# hadolint ignore=DL3059
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates vim git wget curl gpg gpg-agent jq \
+    openssl \
+    build-essential rpm gcc-aarch64-linux-gnu libc-dev-arm64-cross
+
+RUN wget -c --progress=dot:giga https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz \
+  && tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz \
+  && rm -f go${GO_VERSION}.linux-amd64.tar.gz
+ENV PATH=${PATH}:/usr/local/go/bin:/root/go/bin
+
+# hadolint ignore=DL3059
+RUN wget --progress=dot:giga -c -O /tmp/goreleaser.tar.gz https://github.com/goreleaser/goreleaser/releases/download/v2.11.1/goreleaser_Linux_x86_64.tar.gz \
+  && echo "a01e2e9b72d9ee922361ef05263cf6fa77db4686df861b2b0d43713919c495c0  /tmp/goreleaser.tar.gz" | sha256sum -c - \
+  && tar xfvpz /tmp/goreleaser.tar.gz -C /tmp \
+  && cp /tmp/goreleaser /usr/local/bin/ && chmod 0755 /usr/local/bin/goreleaser
+RUN wget --progress=dot:giga -c -O /tmp/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v4.3.3/gomplate_linux-amd64 \
+  && echo "ca281666e86f2f09218c1653e1908f572c0e349e9de64cb4ea93ade9333f0596  /tmp/gomplate" | sha256sum -c - \
+  && cp /tmp/gomplate /usr/local/bin/ && chmod 0755 /usr/local/bin/gomplate
+
+
+
+FROM base AS builder
+ARG APP_ROOT=/app
+ARG GPG_KEY_PATH=/var/run/secrets/key.gpg
+ARG GORELEASER_TEMPLATE=.goreleaser.yml.tpl
+ARG GORELEASER_ARGS="--skip=publish"
+ARG BINARY PKG_NAME PKG_DESCRIPTION
+
+WORKDIR ${APP_ROOT}
+
+ENV BINARY=${BINARY} \
+  PKG_NAME=${PKG_NAME} \
+  PKG_DESCRIPTION=${PKG_DESCRIPTION} \
+  GPG_KEY_PATH=${GPG_KEY_PATH}
+
+COPY go.mod go.sum ${APP_ROOT}/
+RUN go mod download -x \
+  && go get -x -v ./...
+
+COPY . ${APP_ROOT}
+
+RUN gomplate --left-delim="[[" --right-delim="]]" -f  "${GORELEASER_TEMPLATE}" -o .goreleaser.yml
+RUN --mount=type=secret,id=gpg_key,dst=${GPG_KEY_PATH} \
+  --mount=type=secret,id=gpg_passphrase,env=NFPM_PASSPHRASE \
+  --mount=type=secret,id=gpg_passphrase,env=GPG_PASSPHRASE \
+  goreleaser release ${GORELEASER_ARGS} --clean -f .goreleaser.yml
+
+
+
+FROM alpine:latest AS artifacter
+ARG APP_ROOT=/app
+
+COPY --from=builder ${APP_ROOT}/dist /dist
