@@ -29,6 +29,7 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.6
       name: ospf.lsdb.as_scope.lsas
       syntax: Gauge32
+      metric: gauge
     ospfv3AsScopeLsaCksumSum:
       oid: .1.3.6.1.2.1.191.1.1.7
       name: ospf.lsdb.as_scope.checksum
@@ -37,22 +38,27 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.8
       name: ospf.lsas.new.out
       syntax: Counter32
+      metric: counter
     ospfv3RxNewLsas:
       oid: .1.3.6.1.2.1.191.1.1.9
       name: ospf.lsas.new.in
       syntax: Counter32
+      metric: counter
     ospfv3ExtLsaCount:
       oid: .1.3.6.1.2.1.191.1.1.10
       name: ospf.lsdb.as_extern.lsas
       syntax: Gauge32
+      metric: gauge
     ospfv3ExtAreaLsdbLimit:
       oid: .1.3.6.1.2.1.191.1.1.11
       name: ospf.lsdb.as_extern.limit
       syntax: Integer32
+      metric: gauge
     ospfv3ExitOverflowInterval:
       oid: .1.3.6.1.2.1.191.1.1.12
       name: ospf.lsdb.as_extern.overflow_interval
       syntax: Unsigned32
+      metric: gauge
     ospfv3DemandExtensions:
       oid: .1.3.6.1.2.1.191.1.1.13
       name: ospf.demand.support
@@ -61,6 +67,7 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.14
       name: ospf.reference_bandwidth
       syntax: BandwidthKBits
+      metric: gauge
     ospfv3RestartSupport:
       oid: .1.3.6.1.2.1.191.1.1.15
       name: ospf.graceful_restart.support
@@ -69,6 +76,7 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.16
       name: ospf.graceful_restart.interval
       syntax: Unsigned32 # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3RestartStrictLsaChecking:
       oid: .1.3.6.1.2.1.191.1.1.17
       name: ospf.graceful_restart.strict_check
@@ -81,6 +89,7 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.19
       name: ospf.graceful_restart.age
       syntax: Unsigned32 # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3RestartExitReason:
       oid: .1.3.6.1.2.1.191.1.1.20
       name: ospf.graceful_restart.exit_reason
@@ -97,10 +106,12 @@ OSPFV3-MIB::ospfv3GeneralGroup:
       oid: .1.3.6.1.2.1.191.1.1.24
       name: ospf.discontinuity_time
       syntax: TimeStamp
+      metric: counter
     ospfv3RestartTime:
       oid: .1.3.6.1.2.1.191.1.1.25
       name: ospf.graceful_restart.sysuptime
       syntax: TimeStamp
+      metric: counter
 
 OSPFV3-MIB::ospfv3AreaEntry:
   mib: OSPFV3-MIB
@@ -120,18 +131,22 @@ OSPFV3-MIB::ospfv3AreaEntry:
       oid: .1.3.6.1.2.1.191.1.2.1.3
       name: ospf.area.spf.runs
       syntax: Counter32
+      metric: counter
     ospfv3AreaBdrRtrCount:
       oid: .1.3.6.1.2.1.191.1.2.1.4
       name: ospf.area.area_border_routers
       syntax: Gauge32
+      metric: gauge
     ospfv3AreaAsBdrRtrCount:
       oid: .1.3.6.1.2.1.191.1.2.1.5
       name: ospf.area.as_border_routers
       syntax: Gauge32
+      metric: gauge
     ospfv3AreaScopeLsaCount:
       oid: .1.3.6.1.2.1.191.1.2.1.6
       name: ospf.area.lsdb.area_scope.lsas
       syntax: Gauge32
+      metric: gauge
     ospfv3AreaScopeLsaCksumSum:
       oid: .1.3.6.1.2.1.191.1.2.1.7
       name: ospf.area.lsdb.area_scope.checksum
@@ -144,6 +159,7 @@ OSPFV3-MIB::ospfv3AreaEntry:
       oid: .1.3.6.1.2.1.191.1.2.1.10
       name: ospf.area.stub.metric.value
       syntax: Unsigned32 # BigMetric
+      metric: gauge
     ospfv3AreaNssaTranslatorRole:
       oid: .1.3.6.1.2.1.191.1.2.1.11
       name: ospf.area.nssa_translator.role
@@ -156,10 +172,12 @@ OSPFV3-MIB::ospfv3AreaEntry:
       oid: .1.3.6.1.2.1.191.1.2.1.13
       name: ospf.area.nssa_translator.stability_interval
       syntax: Unsigned32
+      metric: gauge
     ospfv3AreaNssaTranslatorEvents:
       oid: .1.3.6.1.2.1.191.1.2.1.14
       name: ospf.area.nssa_translator.events
       syntax: Counter32
+      metric: counter
     ospfv3AreaStubMetricType:
       oid: .1.3.6.1.2.1.191.1.2.1.15
       name: ospf.area.stub.metric.type
@@ -168,135 +186,6 @@ OSPFV3-MIB::ospfv3AreaEntry:
       oid: .1.3.6.1.2.1.191.1.2.1.16
       name: ospf.area.te.enable
       syntax: TruthValue
-
-# OSPFV3-MIB::ospfv3AsLsdbEntry:
-#   mib: OSPFV3-MIB
-#   object: ospfv3AsLsdbEntry
-#   index:
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.3.1.1
-#       name: ospf.lsdb.as_scope.lsa.type.id # ospfv3AsLsdbType
-#       syntax: UnsignedAsID
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.3.1.2
-#       name: ospf.lsdb.as_scope.lsa.router.id # ospfv3AsLsdbRouterId
-#       syntax: UnsignedAsID # Ospfv3RouterIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.3.1.3
-#       name: ospf.lsdb.as_scope.lsa.lsid # ospfv3AsLsdbLsid
-#       syntax: UnsignedAsID # Ospfv3LsIdTC
-#   discovery_attribute: ospfv3AsLsdbSequence
-#   attributes:
-#     ospfv3AsLsdbSequence:
-#       oid: .1.3.6.1.2.1.191.1.3.1.4
-#       name: ospf.lsdb.as_scope.lsa.seq
-#       syntax: Integer32 # Ospfv3LsaSequenceTC
-#     ospfv3AsLsdbAge:
-#       oid: .1.3.6.1.2.1.191.1.3.1.5
-#       name: ospf.lsdb.as_scope.lsa.age
-#       syntax: Unsigned32 # Ospfv3LsaAgeTC
-#     ospfv3AsLsdbChecksum:
-#       oid: .1.3.6.1.2.1.191.1.3.1.6
-#       name: ospf.lsdb.as_scope.lsa.checksum
-#       syntax: Unsigned32
-#     ospfv3AsLsdbAdvertisement:
-#       oid: .1.3.6.1.2.1.191.1.3.1.7
-#       name: ospf.lsdb.as_scope.lsa.advert
-#       syntax: OctetString
-#     ospfv3AsLsdbTypeKnown:
-#       oid: .1.3.6.1.2.1.191.1.3.1.8
-#       name: ospf.lsdb.as_scope.lsa.recognized
-#       syntax: TruthValue
-
-# OSPFV3-MIB::ospfv3AreaLsdbEntry:
-#   mib: OSPFV3-MIB
-#   object: ospfv3AreaLsdbEntry
-#   index:
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.4.1.1
-#       name: ospf.lsdb.area_scope.lsa.area.id # ospfv3AreaLsdbAreaId
-#       syntax: UnsignedAsID # Ospfv3AreaIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.4.1.2
-#       name: ospf.lsdb.area_scope.lsa.type.id # ospfv3AreaLsdbType
-#       syntax: UnsignedAsID
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.4.1.3
-#       name: ospf.lsdb.area_scope.lsa.router.id # ospfv3AreaLsdbRouterId
-#       syntax: UnsignedAsID # Ospfv3RouterIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.4.1.4
-#       name: ospf.lsdb.area_scope.lsa.lsid # ospfv3AreaLsdbLsid
-#       syntax: UnsignedAsID # Ospfv3LsIdTC
-#   discovery_attribute: ospfv3AreaLsdbSequence
-#   attributes:
-#     ospfv3AreaLsdbSequence:
-#       oid: .1.3.6.1.2.1.191.1.4.1.5
-#       name: ospf.lsdb.area_scope.lsa.seq
-#       syntax: Integer32 # Ospfv3LsaSequenceTC
-#     ospfv3AreaLsdbAge:
-#       oid: .1.3.6.1.2.1.191.1.4.1.6
-#       name: ospf.lsdb.area_scope.lsa.age
-#       syntax: Unsigned32 # Ospfv3LsaAgeTC
-#     ospfv3AreaLsdbChecksum:
-#       oid: .1.3.6.1.2.1.191.1.4.1.7
-#       name: ospf.lsdb.area_scope.lsa.checksum
-#       syntax: Unsigned32
-#     ospfv3AreaLsdbAdvertisement:
-#       oid: .1.3.6.1.2.1.191.1.4.1.8
-#       name: ospf.lsdb.area_scope.lsa.advert
-#       syntax: OctetString
-#     ospfv3AreaLsdbTypeKnown:
-#       oid: .1.3.6.1.2.1.191.1.4.1.9
-#       name: ospf.lsdb.area_scope.lsa.recognized
-#       syntax: TruthValue
-
-# OSPFV3-MIB::ospfv3LinkLsdbEntry:
-#   mib: OSPFV3-MIB
-#   object: ospfv3LinkLsdbEntry
-#   index:
-#     - type: Integer32
-#       oid: .1.3.6.1.2.1.191.1.5.1.1
-#       name: ospf.lsdb.link_scope.lsa.netif # ospfv3LinkLsdbIfIndex
-#       syntax: InterfaceIndex
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.5.1.2
-#       name: ospf.lsdb.link_scope.lsa.netif.inst.id # ospfv3LinkLsdbIfInstId
-#       syntax: UnsignedAsID # Ospfv3IfInstIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.5.1.3
-#       name: ospf.lsdb.link_scope.lsa.type.id # ospfv3LinkLsdbType
-#       syntax: UnsignedAsID
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.5.1.4
-#       name: ospf.lsdb.link_scope.lsa.router.id # ospfv3LinkLsdbRouterId
-#       syntax: UnsignedAsID # Ospfv3RouterIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.5.1.5
-#       name: ospf.lsdb.link_scope.lsa.lsid # ospfv3LinkLsdbLsid
-#       syntax: UnsignedAsID # Ospfv3LsIdTC
-#   discovery_attribute: ospfv3LinkLsdbSequence
-#   attributes:
-#     ospfv3LinkLsdbSequence:
-#       oid: .1.3.6.1.2.1.191.1.5.1.6
-#       name: ospf.lsdb.link_scope.lsa.seq
-#       syntax: Integer32 # Ospfv3LsaSequenceTC
-#     ospfv3LinkLsdbAge:
-#       oid: .1.3.6.1.2.1.191.1.5.1.7
-#       name: ospf.lsdb.link_scope.lsa.age
-#       syntax: Unsigned32 # Ospfv3LsaAgeTC
-#     ospfv3LinkLsdbChecksum:
-#       oid: .1.3.6.1.2.1.191.1.5.1.8
-#       name: ospf.lsdb.link_scope.lsa.checksum
-#       syntax: Unsigned32
-#     ospfv3LinkLsdbAdvertisement:
-#       oid: .1.3.6.1.2.1.191.1.5.1.9
-#       name: ospf.lsdb.link_scope.lsa.advert
-#       syntax: OctetString
-#     ospfv3LinkLsdbTypeKnown:
-#       oid: .1.3.6.1.2.1.191.1.5.1.10
-#       name: ospf.lsdb.link_scope.lsa.recognized
-#       syntax: TruthValue
 
 OSPFV3-MIB::ospfv3IfEntry:
   mib: OSPFV3-MIB
@@ -329,26 +218,32 @@ OSPFV3-MIB::ospfv3IfEntry:
       oid: .1.3.6.1.2.1.191.1.7.1.6
       name: ospf.netif.designated_router.priority
       syntax: Integer32 # DesignatedRouterPriority
+      metric: gauge
     ospfv3IfTransitDelay:
       oid: .1.3.6.1.2.1.191.1.7.1.7
       name: ospf.netif.lsa.transit_delay
       syntax: Unsigned32 # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3IfRetransInterval:
       oid: .1.3.6.1.2.1.191.1.7.1.8
       name: ospf.netif.lsa.retrans_interval
       syntax: Unsigned32 # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3IfHelloInterval:
       oid: .1.3.6.1.2.1.191.1.7.1.9
       name: ospf.netif.hello_interval
       syntax: Unsigned32 # HelloRange
+      metric: gauge
     ospfv3IfRtrDeadInterval:
       oid: .1.3.6.1.2.1.191.1.7.1.10
       name: ospf.netif.router_dead_interval
       syntax: Unsigned32 # Ospfv3DeadIntervalRangeTC
+      metric: gauge
     ospfv3IfPollInterval:
       oid: .1.3.6.1.2.1.191.1.7.1.11
       name: ospf.netif.poll_interval
       syntax: Unsigned32
+      metric: gauge
     ospfv3IfState:
       oid: .1.3.6.1.2.1.191.1.7.1.12
       name: ospf.netif.state
@@ -365,18 +260,21 @@ OSPFV3-MIB::ospfv3IfEntry:
       oid: .1.3.6.1.2.1.191.1.7.1.15
       name: ospf.netif.state.chgs
       syntax: Counter32
+      metric: counter
     ospfv3IfDemand:
       oid: .1.3.6.1.2.1.191.1.7.1.17
-      name: ospf.netif.demand.state
+      name: ospf.netif.demand
       syntax: TruthValue
     ospfv3IfMetricValue:
       oid: .1.3.6.1.2.1.191.1.7.1.18
       name: ospf.netif.metric
       syntax: Unsigned32 # Metric
+      metric: gauge
     ospfv3IfLinkScopeLsaCount:
       oid: .1.3.6.1.2.1.191.1.7.1.19
       name: ospf.netif.lsdb.link_scope.lsas
       syntax: Gauge32
+      metric: gauge
     ospfv3IfLinkLsaCksumSum:
       oid: .1.3.6.1.2.1.191.1.7.1.20
       name: ospf.netif.lsdb.link_scope.checksum
@@ -389,10 +287,12 @@ OSPFV3-MIB::ospfv3IfEntry:
       oid: .1.3.6.1.2.1.191.1.7.1.22
       name: ospf.netif.neighbor.probe.retrans_limit
       syntax: Unsigned32
+      metric: gauge
     ospfv3IfDemandNbrProbeInterval:
       oid: .1.3.6.1.2.1.191.1.7.1.23
       name: ospf.netif.neighbor.probe_interval
       syntax: Unsigned32
+      metric: gauge
     ospfv3IfTEDisabled:
       oid: .1.3.6.1.2.1.191.1.7.1.24
       name: ospf.netif.te.disable
@@ -430,18 +330,22 @@ OSPFV3-MIB::ospfv3VirtIfEntry:
       oid: .1.3.6.1.2.1.191.1.8.1.5
       name: ospf.virt_netif.lsa.transit_delay
       syntax: TicksSec # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3VirtIfRetransInterval:
       oid: .1.3.6.1.2.1.191.1.8.1.6
       name: ospf.virt_netif.lsa.retrans_interval
       syntax: TicksSec # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3VirtIfHelloInterval:
       oid: .1.3.6.1.2.1.191.1.8.1.7
       name: ospf.virt_netif.hello_interval
       syntax: TicksSec # HelloRange
+      metric: gauge
     ospfv3VirtIfRtrDeadInterval:
       oid: .1.3.6.1.2.1.191.1.8.1.8
       name: ospf.virt_netif.router_dead_interval
       syntax: TicksSec # Ospfv3DeadIntervalRangeTC
+      metric: gauge
     ospfv3VirtIfState:
       oid: .1.3.6.1.2.1.191.1.8.1.9
       name: ospf.virt_netif.state
@@ -450,10 +354,12 @@ OSPFV3-MIB::ospfv3VirtIfEntry:
       oid: .1.3.6.1.2.1.191.1.8.1.10
       name: ospf.virt_netif.state.chgs
       syntax: Counter32
+      metric: counter
     ospfv3VirtIfLinkScopeLsaCount:
       oid: .1.3.6.1.2.1.191.1.8.1.12
       name: ospf.virt_netif.lsdb.link_scope.lsas
       syntax: Gauge32
+      metric: gauge
     ospfv3VirtIfLinkLsaCksumSum:
       oid: .1.3.6.1.2.1.191.1.8.1.13
       name: ospf.virt_netif.lsdb.link_scope.checksum
@@ -490,6 +396,7 @@ OSPFV3-MIB::ospfv3NbrEntry:
       oid: .1.3.6.1.2.1.191.1.9.1.7
       name: ospf.neighbor.designated_router.priority
       syntax: Integer32 # DesignatedRouterPriority
+      metric: gauge
     ospfv3NbrState:
       oid: .1.3.6.1.2.1.191.1.9.1.8
       name: ospf.neighbor.state
@@ -498,10 +405,12 @@ OSPFV3-MIB::ospfv3NbrEntry:
       oid: .1.3.6.1.2.1.191.1.9.1.9
       name: ospf.neighbor.state.changes
       syntax: Counter32
+      metric: counter
     ospfv3NbrLsRetransQLen:
       oid: .1.3.6.1.2.1.191.1.9.1.10
       name: ospf.neighbor.link_state_retrans_queue
       syntax: Gauge32
+      metric: gauge
     ospfv3NbrHelloSuppressed:
       oid: .1.3.6.1.2.1.191.1.9.1.11
       name: ospf.neighbor.hello_suppress
@@ -518,6 +427,7 @@ OSPFV3-MIB::ospfv3NbrEntry:
       oid: .1.3.6.1.2.1.191.1.9.1.14
       name: ospf.neighbor.graceful_restart.helper.age
       syntax: Unsigned32 # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3NbrRestartHelperExitReason:
       oid: .1.3.6.1.2.1.191.1.9.1.15
       name: ospf.neighbor.graceful_restart.helper.exit_reason
@@ -564,10 +474,12 @@ OSPFV3-MIB::ospfv3VirtNbrEntry:
       oid: .1.3.6.1.2.1.191.1.11.1.9
       name: ospf.virt_neighbor.state.changes
       syntax: Counter32
+      metric: counter
     ospfv3VirtNbrLsRetransQLen:
       oid: .1.3.6.1.2.1.191.1.11.1.10
       name: ospf.virt_neighbor.link_state_retrans_queue
       syntax: Gauge32
+      metric: gauge
     ospfv3VirtNbrHelloSuppressed:
       oid: .1.3.6.1.2.1.191.1.11.1.11
       name: ospf.virt_neighbor.hello_suppress
@@ -584,54 +496,8 @@ OSPFV3-MIB::ospfv3VirtNbrEntry:
       oid: .1.3.6.1.2.1.191.1.11.1.14
       name: ospf.virt_neighbor.graceful_restart.helper.age
       syntax: TicksSec # Ospfv3UpToRefreshIntervalTC
+      metric: gauge
     ospfv3VirtNbrRestartHelperExitReason:
       oid: .1.3.6.1.2.1.191.1.11.1.15
       name: ospf.virt_neighbor.graceful_restart.helper.exit_reason
       syntax: EnumInteger
-
-# OSPFV3-MIB::ospfv3VirtLinkLsdbEntry:
-#   mib: OSPFV3-MIB
-#   object: ospfv3VirtLinkLsdbEntry
-#   index:
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.13.1.1
-#       name: ospf.lsdb.virt_link_scope.lsa.transit_area.id # ospfv3VirtLinkLsdbIfAreaId
-#       syntax: UnsignedAsID # Ospfv3AreaIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.13.1.2
-#       name: ospf.lsdb.virt_link_scope.lsa.neigbor.router.id # ospfv3VirtLinkLsdbIfNeighbor
-#       syntax: UnsignedAsID # Ospfv3RouterIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.13.1.3
-#       name: ospf.lsdb.virt_link_scope.lsa.type.id # ospfv3VirtLinkLsdbType
-#       syntax: UnsignedAsID
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.13.1.4
-#       name: ospf.lsdb.virt_link_scope.lsa.router.id # ospfv3VirtLinkLsdbRouterId
-#       syntax: UnsignedAsID # Ospfv3RouterIdTC
-#     - type: Unsigned32
-#       oid: .1.3.6.1.2.1.191.1.13.1.5
-#       name: ospf.lsdb.virt_link_scope.lsa.lsid # ospfv3VirtLinkLsdbLsid
-#       syntax: UnsignedAsID # Ospfv3LsIdTC
-#   discovery_attribute: ospfv3VirtLinkLsdbSequence
-#   attributes:
-#     ospfv3VirtLinkLsdbSequence:
-#       oid: .1.3.6.1.2.1.191.1.13.1.6
-#       name: ospf.lsdb.virt_link_scope.lsa.seq
-#       syntax: Integer32 # Ospfv3LsaSequenceTC
-#     ospfv3VirtLinkLsdbAge:
-#       oid: .1.3.6.1.2.1.191.1.13.1.7
-#       name: ospf.lsdb.virt_link_scope.lsa.age
-#       syntax: Unsigned32 # Ospfv3LsaAgeTC
-#     ospfv3VirtLinkLsdbChecksum:
-#       oid: .1.3.6.1.2.1.191.1.13.1.8
-#       name: ospf.lsdb.virt_link_scope.lsa.checksum
-#       syntax: Unsigned32
-#     ospfv3VirtLinkLsdbAdvertisement:
-#       oid: .1.3.6.1.2.1.191.1.13.1.9
-#       name: ospf.lsdb.virt_link_scope.lsa.advert
-#       syntax: OctetString
-#     ospfv3VirtLinkLsdbTypeKnown:
-#       oid: .1.3.6.1.2.1.191.1.13.1.10
-#       name: ospf.lsdb.virt_link_scope.lsa.recognized
-#       syntax: TruthValue
