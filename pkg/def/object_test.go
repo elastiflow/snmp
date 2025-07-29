@@ -1,16 +1,16 @@
 package def
 
 import (
-	"github.com/stretchr/testify/assert"
-
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestObject_Validate(t *testing.T) {
 	tests := []struct {
-		name     string
-		object   *Object
-		expected error
+		name        string
+		object      *Object
+		expectedErr string
 	}{
 		{
 			name: "valid IF-MIB::system",
@@ -24,10 +24,10 @@ func TestObject_Validate(t *testing.T) {
 						Oid:    ".1.3.6.1.2.1.2.1",
 						Name:   "system.netifs",
 						Syntax: "Integer32",
+						Metric: "gauge",
 					},
 				},
 			},
-			expected: nil,
 		},
 		{
 			name: "valid IF-MIB::ifEntry",
@@ -52,13 +52,53 @@ func TestObject_Validate(t *testing.T) {
 					},
 				},
 			},
-			expected: nil,
+		},
+		{
+			name: "invalid syntax field",
+			object: &Object{
+				Mib:                "IF-MIB",
+				ObjectName:         "system",
+				Augments:           "SNMPv2-MIB::system",
+				DiscoveryAttribute: "ifNumber",
+				Attributes: ObjectAttributes{
+					"ifNumber": {
+						Oid:    ".1.3.6.1.2.1.2.1",
+						Name:   "system.netifs",
+						Syntax: "invalid",
+						Metric: "gauge",
+					},
+				},
+			},
+			expectedErr: "value must be one of \"skip\", \"none\", \"ip_address\", \"Integer\", ",
+		},
+		{
+			name: "invalid metric field",
+			object: &Object{
+				Mib:                "IF-MIB",
+				ObjectName:         "system",
+				Augments:           "SNMPv2-MIB::system",
+				DiscoveryAttribute: "ifNumber",
+				Attributes: ObjectAttributes{
+					"ifNumber": {
+						Oid:    ".1.3.6.1.2.1.2.1",
+						Name:   "system.netifs",
+						Syntax: "Integer32",
+						Metric: "invalid",
+					},
+				},
+			},
+			expectedErr: "value must be one of \"gauge\", \"counter\"",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.expected, tt.object.Validate())
+			if tt.expectedErr != "" {
+				err := tt.object.Validate()
+				assert.ErrorContains(t, err, tt.expectedErr)
+			} else {
+				assert.NoError(t, tt.object.Validate())
+			}
 		})
 	}
 }
