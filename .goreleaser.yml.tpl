@@ -69,7 +69,7 @@ nfpms:
 
     contents:
       [[ range $p := ("./" | file.Walk) -]]
-      [[ if has $etcDirs ($p | filepath.Dir) -]]
+      [[ if has $etcDirs (index ($p | strings.Split "/") 0) -]]
       [[ if not ($p | file.IsDir) -]]
       - src: [[ $p ]]
         dst: [[ printf "/etc/elastiflow/snmp/%s" $p ]]
