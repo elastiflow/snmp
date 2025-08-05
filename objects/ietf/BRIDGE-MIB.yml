@@ -11,6 +11,7 @@ BRIDGE-MIB::dot1dBase:
       oid: .1.3.6.1.2.1.17.1.2
       name: bridge.ports
       syntax: Integer32
+      metric: gauge
     dot1dBaseType:
       oid: .1.3.6.1.2.1.17.1.3
       name: bridge.type
@@ -40,10 +41,12 @@ BRIDGE-MIB::dot1dBasePortEntry:
       oid: .1.3.6.1.2.1.17.1.4.1.4
       name: bridge.port.frames.discard.delay
       syntax: Counter32
+      metric: counter
     dot1dBasePortMtuExceededDiscards:
       oid: .1.3.6.1.2.1.17.1.4.1.5
       name: bridge.port.frames.discard.mtu
       syntax: Counter32
+      metric: counter
 
 BRIDGE-MIB::dot1dStp:
   mib: BRIDGE-MIB
@@ -58,14 +61,17 @@ BRIDGE-MIB::dot1dStp:
       oid: .1.3.6.1.2.1.17.2.2
       name: stp.priority
       syntax: Integer32
+      metric: gauge
     dot1dStpTimeSinceTopologyChange:
       oid: .1.3.6.1.2.1.17.2.3
       name: stp.topo_chg.duration
       syntax: TimeTicks
+      metric: gauge
     dot1dStpTopChanges:
       oid: .1.3.6.1.2.1.17.2.4
       name: stp.topo_chgs
       syntax: Counter32
+      metric: counter
     dot1dStpDesignatedRoot:
       oid: .1.3.6.1.2.1.17.2.5
       name: stp.designated.root
@@ -74,6 +80,7 @@ BRIDGE-MIB::dot1dStp:
       oid: .1.3.6.1.2.1.17.2.6
       name: stp.root.cost
       syntax: Integer32
+      metric: gauge
     dot1dStpRootPort:
       oid: .1.3.6.1.2.1.17.2.7
       name: stp.root.port
@@ -81,31 +88,38 @@ BRIDGE-MIB::dot1dStp:
     dot1dStpMaxAge:
       oid: .1.3.6.1.2.1.17.2.8
       name: stp.max_age
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpHelloTime:
       oid: .1.3.6.1.2.1.17.2.9
       name: stp.hello_time
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpHoldTime:
       oid: .1.3.6.1.2.1.17.2.10
       name: stp.hold_time
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpForwardDelay:
       oid: .1.3.6.1.2.1.17.2.11
       name: stp.fwd_delay
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpBridgeMaxAge:
       oid: .1.3.6.1.2.1.17.2.12
       name: stp.as_root.max_age
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpBridgeHelloTime:
       oid: .1.3.6.1.2.1.17.2.13
       name: stp.as_root.hello_time
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
     dot1dStpBridgeForwardDelay:
       oid: .1.3.6.1.2.1.17.2.14
       name: stp.as_root.fwd_delay
-      syntax: Integer32
+      syntax: TicksCentiSec
+      metric: gauge
 
 BRIDGE-MIB::dot1dStpPortEntry:
   mib: BRIDGE-MIB
@@ -117,6 +131,7 @@ BRIDGE-MIB::dot1dStpPortEntry:
       oid: .1.3.6.1.2.1.17.2.15.1.2
       name: bridge.port.stp.priority
       syntax: Integer32
+      metric: gauge
     dot1dStpPortState:
       oid: .1.3.6.1.2.1.17.2.15.1.3
       name: bridge.port.stp.state
@@ -129,6 +144,7 @@ BRIDGE-MIB::dot1dStpPortEntry:
       oid: .1.3.6.1.2.1.17.2.15.1.5
       name: bridge.port.stp.path_cost.oper
       syntax: Integer32
+      metric: gauge
     dot1dStpPortDesignatedRoot:
       oid: .1.3.6.1.2.1.17.2.15.1.6
       name: bridge.port.stp.designated.root
@@ -137,6 +153,7 @@ BRIDGE-MIB::dot1dStpPortEntry:
       oid: .1.3.6.1.2.1.17.2.15.1.7
       name: bridge.port.stp.designated.cost
       syntax: Integer32
+      metric: gauge
     dot1dStpPortDesignatedBridge:
       oid: .1.3.6.1.2.1.17.2.15.1.8
       name: bridge.port.stp.designated.bridge
@@ -149,10 +166,12 @@ BRIDGE-MIB::dot1dStpPortEntry:
       oid: .1.3.6.1.2.1.17.2.15.1.10
       name: bridge.port.stp.fwd_transitions
       syntax: Counter32
+      metric: counter
     dot1dStpPortPathCost32:
       oid: .1.3.6.1.2.1.17.2.15.1.11
       name: bridge.port.stp.path_cost.oper
       syntax: Integer32
+      metric: gauge
       overrides:
         object: BRIDGE-MIB::dot1dStpPortEntry
         attribute: dot1dStpPortPathCost
@@ -167,29 +186,12 @@ BRIDGE-MIB::dot1dTp:
       oid: .1.3.6.1.2.1.17.4.1
       name: bridge.transparent.fwd_db.discard.no_space
       syntax: Counter32
+      metric: counter
     dot1dTpAgingTime:
       oid: .1.3.6.1.2.1.17.4.2
       name: bridge.transparent.fwd_db.ttl
       syntax: TicksSec # Integer32
-
-# BRIDGE-MIB::dot1dTpFdbEntry:
-#   mib: BRIDGE-MIB
-#   object: dot1dTpFdbEntry
-#   index:
-#     - type: MacAddress
-#       oid: .1.3.6.1.2.1.17.4.3.1.1
-#       name: dot1dTpFdbAddress
-#       syntax: MacAddress
-#   discovery_attribute: dot1dTpFdbPort
-#   attributes:
-#     dot1dTpFdbPort:
-#       oid: .1.3.6.1.2.1.17.4.3.1.2
-#       name: dot1dTpFdbPort
-#       syntax: IntegerAsID
-#     dot1dTpFdbStatus:
-#       oid: .1.3.6.1.2.1.17.4.3.1.3
-#       name: dot1dTpFdbStatus
-#       syntax: EnumInteger
+      metric: gauge
 
 BRIDGE-MIB::dot1dTpPortEntry:
   mib: BRIDGE-MIB
@@ -201,38 +203,19 @@ BRIDGE-MIB::dot1dTpPortEntry:
       oid: .1.3.6.1.2.1.17.4.4.1.2
       name: bridge.port.transparent.info_max
       syntax: Integer32
+      metric: gauge
     dot1dTpPortInFrames:
       oid: .1.3.6.1.2.1.17.4.4.1.3
       name: bridge.port.transparent.frames.in
       syntax: Counter32
+      metric: counter
     dot1dTpPortOutFrames:
       oid: .1.3.6.1.2.1.17.4.4.1.4
       name: bridge.port.transparent.frames.out
       syntax: Counter32
+      metric: counter
     dot1dTpPortInDiscards:
       oid: .1.3.6.1.2.1.17.4.4.1.5
       name: bridge.port.transparent.frames.discard.in
       syntax: Counter32
-
-# BRIDGE-MIB::dot1dStaticEntry:
-#   mib: BRIDGE-MIB
-#   object: dot1dStaticEntry
-#   index:
-#     - type: MacAddress
-#       oid: .1.3.6.1.2.1.17.5.1.1.1
-#       name: dot1dStaticAddress
-#       syntax: MacAddress
-#     - type: Integer32
-#       oid: .1.3.6.1.2.1.17.5.1.1.2
-#       name: dot1dStaticReceivePort
-#       syntax: IntegerAsID
-#   discovery_attribute: dot1dStaticAllowedToGoTo
-#   attributes:
-#     dot1dStaticAllowedToGoTo:
-#       oid: .1.3.6.1.2.1.17.5.1.1.3
-#       name: dot1dStaticAllowedToGoTo
-#       syntax: OctetString
-#     dot1dStaticStatus:
-#       oid: .1.3.6.1.2.1.17.5.1.1.4
-#       name: dot1dStaticStatus
-#       syntax: EnumInteger
+      metric: counter

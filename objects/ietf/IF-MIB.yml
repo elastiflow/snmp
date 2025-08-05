@@ -8,16 +8,19 @@ IF-MIB::system:
       oid: .1.3.6.1.2.1.2.1
       name: system.netifs
       syntax: Integer32
+      metric: gauge
       #rediscover: OnChange
     ifTableLastChange:
       oid: .1.3.6.1.2.1.31.1.5
       name: netif.count.last_chg
-      syntax: Integer32
+      syntax: TimeTicks
+      metric: counter
       #rediscover: OnChange
     ifStackLastChange:
       oid: .1.3.6.1.2.1.31.1.6
       name: netif.stack.last_chg
-      syntax: Integer32
+      syntax: TimeTicks
+      metric: counter
       #rediscover: OnChange
 
 IF-MIB::ifEntry:
@@ -44,10 +47,12 @@ IF-MIB::ifEntry:
       oid: .1.3.6.1.2.1.2.2.1.4
       name: netif.mtu
       syntax: Integer32
+      metric: gauge
     ifSpeed:
       oid: .1.3.6.1.2.1.2.2.1.5
       name: netif.bandwidth.bw
       syntax: Gauge32
+      metric: gauge
     ifPhysAddress:
       oid: .1.3.6.1.2.1.2.2.1.6
       tag: true
@@ -65,54 +70,67 @@ IF-MIB::ifEntry:
       oid: .1.3.6.1.2.1.2.2.1.9
       name: netif.last_change
       syntax: TimeTicks
+      metric: counter
     ifInOctets:
       oid: .1.3.6.1.2.1.2.2.1.10
       name: netif.bytes.in
-      syntax: Counter32
+      syntax: BytesB
+      metric: counter
     ifInUcastPkts:
       oid: .1.3.6.1.2.1.2.2.1.11
       name: netif.packets.ucast.in
       syntax: Counter32
+      metric: counter
     ifInNUcastPkts:
       oid: .1.3.6.1.2.1.2.2.1.12
       name: netif.packets.nucast.in
       syntax: Counter32
+      metric: counter
     ifInDiscards:
       oid: .1.3.6.1.2.1.2.2.1.13
       name: netif.packets.discard.in
       syntax: Counter32
+      metric: counter
     ifInErrors:
       oid: .1.3.6.1.2.1.2.2.1.14
       name: netif.packets.error.in
       syntax: Counter32
+      metric: counter
     ifInUnknownProtos:
       oid: .1.3.6.1.2.1.2.2.1.15
       name: netif.packets.unkproto.in
       syntax: Counter32
+      metric: counter
     ifOutOctets:
       oid: .1.3.6.1.2.1.2.2.1.16
       name: netif.bytes.out
-      syntax: Counter32
+      syntax: BytesB
+      metric: counter
     ifOutUcastPkts:
       oid: .1.3.6.1.2.1.2.2.1.17
       name: netif.packets.ucast.out
       syntax: Counter32
+      metric: counter
     ifOutNUcastPkts:
       oid: .1.3.6.1.2.1.2.2.1.18
       name: netif.packets.nucast.out
       syntax: Counter32
+      metric: counter
     ifOutDiscards:
       oid: .1.3.6.1.2.1.2.2.1.19
       name: netif.packets.discard.out
       syntax: Counter32
+      metric: counter
     ifOutErrors:
       oid: .1.3.6.1.2.1.2.2.1.20
       name: netif.packets.error.out
       syntax: Counter32
+      metric: counter
     ifOutQLen:
       oid: .1.3.6.1.2.1.2.2.1.21
       name: netif.queue.out
       syntax: Gauge32
+      metric: gauge
 
 IF-MIB::ifXEntry:
   mib: IF-MIB
@@ -129,22 +147,27 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.2
       name: netif.packets.mcast.in
       syntax: Counter32
+      metric: counter
     ifInBroadcastPkts:
       oid: .1.3.6.1.2.1.31.1.1.1.3
       name: netif.packets.bcast.in
       syntax: Counter32
+      metric: counter
     ifOutMulticastPkts:
       oid: .1.3.6.1.2.1.31.1.1.1.4
       name: netif.packets.mcast.out
       syntax: Counter32
+      metric: counter
     ifOutBroadcastPkts:
       oid: .1.3.6.1.2.1.31.1.1.1.5
       name: netif.packets.bcast.out
       syntax: Counter32
+      metric: counter
     ifHCInOctets:
       oid: .1.3.6.1.2.1.31.1.1.1.6
       name: netif.bytes.in
-      syntax: Counter64
+      syntax: BytesB
+      metric: counter
       overrides:
         object: IF-MIB::ifEntry
         attribute: ifInOctets
@@ -152,6 +175,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.7
       name: netif.packets.ucast.in
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifEntry
         attribute: ifInUcastPkts
@@ -159,6 +183,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.8
       name: netif.packets.mcast.in
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifXEntry
         attribute: ifInMulticastPkts
@@ -166,13 +191,15 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.9
       name: netif.packets.bcast.in
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifXEntry
         attribute: ifInBroadcastPkts
     ifHCOutOctets:
       oid: .1.3.6.1.2.1.31.1.1.1.10
       name: netif.bytes.out
-      syntax: Counter64
+      syntax: BytesB
+      metric: counter
       overrides:
         object: IF-MIB::ifEntry
         attribute: ifOutOctets
@@ -180,6 +207,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.11
       name: netif.packets.ucast.out
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifEntry
         attribute: ifOutUcastPkts
@@ -187,6 +215,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.12
       name: netif.packets.mcast.out
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifXEntry
         attribute: ifOutMulticastPkts
@@ -194,6 +223,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.13
       name: netif.packets.bcast.out
       syntax: Counter64
+      metric: counter
       overrides:
         object: IF-MIB::ifXEntry
         attribute: ifOutBroadcastPkts
@@ -205,6 +235,7 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.15
       name: netif.bandwidth.bw
       syntax: BandwidthMBits
+      metric: gauge
       overrides:
         object: IF-MIB::ifEntry
         attribute: ifSpeed
@@ -225,3 +256,4 @@ IF-MIB::ifXEntry:
       oid: .1.3.6.1.2.1.31.1.1.1.19
       name: netif.stats.discontinuity_time
       syntax: TimeTicks
+      metric: counter
