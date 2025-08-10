@@ -14,112 +14,149 @@ CISCO-PROCESS-MIB::cpmCPUTotalEntry:
       syntax: Integer32
     cpmCPUTotal5sec:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.3
-      name: cisco.cpmCPUTotal5sec
+      name: cpu.util.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: OLD-CISCO-SYS-MIB::lsystem
+        attribute: busyPer
     cpmCPUTotal1min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.4
-      name: cisco.cpmCPUTotal1min
+      name: cpu.util.1min_avg.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: OLD-CISCO-SYS-MIB::lsystem
+        attribute: avgBusy1
     cpmCPUTotal5min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.5
-      name: cisco.cpmCPUTotal5min
+      name: cpu.util.5min_avg.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: OLD-CISCO-SYS-MIB::lsystem
+        attribute: avgBusy5
     cpmCPUTotal5secRev:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.6
-      name: cisco.cpmCPUTotal5secRev
+      name: cpu.util.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUTotal5sec
     cpmCPUTotal1minRev:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.7
-      name: cisco.cpmCPUTotal1minRev
+      name: cpu.util.1min_avg.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUTotal1min
     cpmCPUTotal5minRev:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.8
-      name: cisco.cpmCPUTotal5minRev
+      name: cpu.util.5min_avg.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUTotal5min
     cpmCPUMonInterval:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.9
       name: cisco.cpmCPUMonInterval
       syntax: TicksSec
     cpmCPUTotalMonIntervalValue:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.10
-      name: cisco.cpmCPUTotalMonIntervalValue
+      name: cpu.util.pct
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUTotal5secRev
     cpmCPUInterruptMonIntervalValue:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.11
       name: cisco.cpmCPUInterruptMonIntervalValue
       syntax: Percent100
+      metric: gauge
     cpmCPUMemoryUsed:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.12
-      name: cisco.cpmCPUMemoryUsed
+      name: mem.used.bytes
       syntax: BytesKB
+      metric: gauge
     cpmCPUMemoryFree:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.13
-      name: cisco.cpmCPUMemoryFree
+      name: mem.free.bytes
       syntax: BytesKB
+      metric: gauge
     cpmCPUMemoryKernelReserved:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.14
       name: cisco.cpmCPUMemoryKernelReserved
       syntax: BytesKB
+      metric: gauge
     cpmCPUMemoryLowest:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.15
       name: cisco.cpmCPUMemoryLowest
       syntax: BytesB
-    cpmCPUMemoryUsedOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.16
-      name: cisco.cpmCPUMemoryUsedOvrflw
-      syntax: BytesKB
+      metric: gauge
     cpmCPUMemoryHCUsed:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.17
-      name: cisco.cpmCPUMemoryHCUsed
+      name: mem.used.bytes
       syntax: BytesKB
-    cpmCPUMemoryFreeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.18
-      name: cisco.cpmCPUMemoryFreeOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUMemoryUsed
     cpmCPUMemoryHCFree:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.19
-      name: cisco.cpmCPUMemoryHCFree
+      name: mem.free.bytes
       syntax: BytesKB
-    cpmCPUMemoryKernelReservedOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.20
-      name: cisco.cpmCPUMemoryKernelReservedOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUMemoryFree
     cpmCPUMemoryHCKernelReserved:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.21
-      name: cisco.cpmCPUMemoryHCKernelReserved
+      name: cisco.cpmCPUMemoryKernelReserved
       syntax: BytesKB
-    cpmCPUMemoryLowestOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.22
-      name: cisco.cpmCPUMemoryLowestOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUMemoryKernelReserved
     cpmCPUMemoryHCLowest:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.23
-      name: cisco.cpmCPUMemoryHCLowest
+      name: cisco.cpmCPUMemoryLowest
       syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUMemoryLowest
     cpmCPULoadAvg1min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.24
-      name: cisco.cpmCPULoadAvg1min
+      name: cpu.load.1min_avg.procs
       syntax: Unsigned32
+      metric: gauge
     cpmCPULoadAvg5min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.25
-      name: cisco.cpmCPULoadAvg5min
+      name: cpu.load.5min_avg.procs
       syntax: Unsigned32
+      metric: gauge
     cpmCPULoadAvg15min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.26
-      name: cisco.cpmCPULoadAvg15min
+      name: cpu.load.15min_avg.procs
       syntax: Unsigned32
+      metric: gauge
     cpmCPUMemoryCommitted:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.27
       name: cisco.cpmCPUMemoryCommitted
       syntax: BytesB
-    cpmCPUMemoryCommittedOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.28
-      name: cisco.cpmCPUMemoryCommittedOvrflw
-      syntax: BytesB
+      metric: gauge
     cpmCPUMemoryHCCommitted:
       oid: .1.3.6.1.4.1.9.9.109.1.1.1.1.29
-      name: cisco.cpmCPUMemoryHCCommitted
+      name: cisco.cpmCPUMemoryCommitted
       syntax: BytesB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmCPUTotalEntry
+        attribute: cpmCPUMemoryCommitted
 
 CISCO-PROCESS-MIB::cpmCoreEntry:
   mib: CISCO-PROCESS-MIB
@@ -141,28 +178,34 @@ CISCO-PROCESS-MIB::cpmCoreEntry:
       syntax: Integer32
     cpmCore5sec:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.3
-      name: cisco.cpmCore5sec
+      name: cpu.core.util.pct
       syntax: Percent100
+      metric: gauge
     cpmCore1min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.4
-      name: cisco.cpmCore1min
+      name: cpu.core.util.1min_avg.pct
       syntax: Percent100
+      metric: gauge
     cpmCore5min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.5
-      name: cisco.cpmCore5min
+      name: cpu.core.util.5min_avg.pct
       syntax: Percent100
+      metric: gauge
     cpmCoreLoadAvg1min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.6
-      name: cisco.cpmCoreLoadAvg1min
+      name: cpu.core.load.1min_avg.procs
       syntax: Unsigned32
+      metric: gauge
     cpmCoreLoadAvg5min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.7
-      name: cisco.cpmCoreLoadAvg5min
+      name: cpu.core.load.5min_avg.procs
       syntax: Unsigned32
+      metric: gauge
     cpmCoreLoadAvg15min:
       oid: .1.3.6.1.4.1.9.9.109.1.1.2.1.8
-      name: cisco.cpmCoreLoadAvg15min
+      name: cpu.core.load.15min_avg.procs
       syntax: Unsigned32
+      metric: gauge
 
 CISCO-PROCESS-MIB::cpmProcessEntry:
   mib: CISCO-PROCESS-MIB
@@ -188,8 +231,9 @@ CISCO-PROCESS-MIB::cpmProcessEntry:
       syntax: EnumInteger
     cpmProcessuSecs:
       oid: .1.3.6.1.4.1.9.9.109.1.2.1.1.4
-      name: cisco.cpmProcessuSecs
+      name: cisco.cpmProcessAverageUSecs
       syntax: OpTicksMicroSec
+      metric: gauge
     cpmProcessTimeCreated:
       oid: .1.3.6.1.4.1.9.9.109.1.2.1.1.5
       name: cisco.cpmProcessTimeCreated
@@ -198,6 +242,10 @@ CISCO-PROCESS-MIB::cpmProcessEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.2.1.1.6
       name: cisco.cpmProcessAverageUSecs
       syntax: OpTicksMicroSec
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcessuSecs
 
 CISCO-PROCESS-MIB::cpmProcessExtEntry:
   mib: CISCO-PROCESS-MIB
@@ -209,30 +257,37 @@ CISCO-PROCESS-MIB::cpmProcessExtEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.1
       name: cisco.cpmProcExtMemAllocated
       syntax: BytesB
+      metric: gauge
     cpmProcExtMemFreed:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.2
       name: cisco.cpmProcExtMemFreed
       syntax: BytesB
+      metric: gauge
     cpmProcExtInvoked:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.3
       name: cisco.cpmProcExtInvoked
       syntax: Counter32
+      metric: counter
     cpmProcExtRuntime:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.4
       name: cisco.cpmProcExtRuntime
       syntax: OpTicksMicroSec
+      metric: counter
     cpmProcExtUtil5Sec:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.5
       name: cisco.cpmProcExtUtil5Sec
       syntax: Percent100
+      metric: gauge
     cpmProcExtUtil1Min:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.6
       name: cisco.cpmProcExtUtil1Min
       syntax: Percent100
+      metric: gauge
     cpmProcExtUtil5Min:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.7
       name: cisco.cpmProcExtUtil5Min
       syntax: Percent100
+      metric: gauge
     cpmProcExtPriority:
       oid: .1.3.6.1.4.1.9.9.109.1.2.2.1.8
       name: cisco.cpmProcExtPriority
@@ -246,36 +301,67 @@ CISCO-PROCESS-MIB::cpmProcessExtRevEntry:
   attributes:
     cpmProcExtMemAllocatedRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.1
-      name: cisco.cpmProcExtMemAllocatedRev
+      name: cisco.cpmProcExtMemAllocated
       syntax: BytesB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtMemAllocated
     cpmProcExtMemFreedRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.2
-      name: cisco.cpmProcExtMemFreedRev
+      name: cisco.cpmProcExtMemFreed
       syntax: BytesB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtMemFreed
     cpmProcExtInvokedRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.3
-      name: cisco.cpmProcExtInvokedRev
-      syntax: OpTicksMicroSec
+      name: cisco.cpmProcExtInvoked
+      syntax: Counter32
+      metric: counter
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtInvoked
     cpmProcExtRuntimeRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.4
-      name: cisco.cpmProcExtRuntimeRev
-      syntax: Counter32
+      name: cisco.cpmProcExtRuntime
+      syntax: OpTicksMicroSec
+      metric: counter
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtRuntime
     cpmProcExtUtil5SecRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.5
-      name: cisco.cpmProcExtUtil5SecRev
+      name: cisco.cpmProcExtUtil5Sec
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtUtil5Sec
     cpmProcExtUtil1MinRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.6
-      name: cisco.cpmProcExtUtil1MinRev
+      name: cisco.cpmProcExtUtil1Min
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtUtil1Min
     cpmProcExtUtil5MinRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.7
-      name: cisco.cpmProcExtUtil5MinRev
+      name: cisco.cpmProcExtUtil5Min
       syntax: Percent100
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtUtil5Min
     cpmProcExtPriorityRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.8
-      name: cisco.cpmProcExtPriorityRev
+      name: cisco.cpmProcExtPriority
       syntax: EnumInteger
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessEntry
+        attribute: cpmProcExtPriority
     cpmProcessType:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.9
       name: cisco.cpmProcessType
@@ -288,10 +374,12 @@ CISCO-PROCESS-MIB::cpmProcessExtRevEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.11
       name: cisco.cpmProcessRespawnCount
       syntax: Counter32
+      metric: counter
     cpmProcessRespawnAfterLastPatch:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.12
       name: cisco.cpmProcessRespawnAfterLastPatch
       syntax: Counter32
+      metric: counter
     cpmProcessMemoryCore:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.13
       name: cisco.cpmProcessMemoryCore
@@ -304,66 +392,70 @@ CISCO-PROCESS-MIB::cpmProcessExtRevEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.15
       name: cisco.cpmProcessTextSegmentSize
       syntax: BytesKB
+      metric: gauge
     cpmProcessDataSegmentSize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.16
       name: cisco.cpmProcessDataSegmentSize
       syntax: BytesKB
+      metric: gauge
     cpmProcessStackSize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.17
       name: cisco.cpmProcessStackSize
       syntax: BytesKB
+      metric: gauge
     cpmProcessDynamicMemorySize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.18
       name: cisco.cpmProcessDynamicMemorySize
       syntax: BytesKB
-    cpmProcExtMemAllocatedRevOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.19
-      name: cisco.cpmProcExtMemAllocatedRevOvrflw
-      syntax: BytesB
+      metric: gauge
     cpmProcExtHCMemAllocatedRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.20
-      name: cisco.cpmProcExtHCMemAllocatedRev
+      name: cisco.cpmProcExtMemAllocated
       syntax: BytesB
-    cpmProcExtMemFreedRevOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.21
-      name: cisco.cpmProcExtMemFreedRevOvrflw
-      syntax: BytesB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcExtMemAllocatedRev
     cpmProcExtHCMemFreedRev:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.22
-      name: cisco.cpmProcExtHCMemFreedRev
+      name: cisco.cpmProcExtMemFreed
       syntax: BytesB
-    cpmProcessTextSegmentSizeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.23
-      name: cisco.cpmProcessTextSegmentSizeOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcExtMemFreedRev
     cpmProcessHCTextSegmentSize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.24
-      name: cisco.cpmProcessHCTextSegmentSize
+      name: cisco.cpmProcessTextSegmentSize
       syntax: BytesKB
-    cpmProcessDataSegmentSizeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.25
-      name: cisco.cpmProcessDataSegmentSizeOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcessTextSegmentSize
     cpmProcessHCDataSegmentSize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.26
-      name: cisco.cpmProcessHCDataSegmentSize
+      name: cisco.cpmProcessDataSegmentSize
       syntax: BytesKB
-    cpmProcessStackSizeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.27
-      name: cisco.cpmProcessStackSizeOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcessDataSegmentSize
     cpmProcessHCStackSize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.28
-      name: cisco.cpmProcessHCStackSize
+      name: cisco.cpmProcessStackSize
       syntax: BytesKB
-    cpmProcessDynamicMemorySizeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.29
-      name: cisco.cpmProcessDynamicMemorySizeOvrflw
-      syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcessStackSize
     cpmProcessHCDynamicMemorySize:
       oid: .1.3.6.1.4.1.9.9.109.1.2.3.1.30
-      name: cisco.cpmProcessHCDynamicMemorySize
+      name: cisco.cpmProcessDynamicMemorySize
       syntax: BytesKB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmProcessExtRevEntry
+        attribute: cpmProcessDynamicMemorySize
 
 CISCO-PROCESS-MIB::cpmThreadEntry:
   mib: CISCO-PROCESS-MIB
@@ -391,6 +483,7 @@ CISCO-PROCESS-MIB::cpmThreadEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.3
       name: cisco.cpmThreadPriority
       syntax: Unsigned32
+      metric: gauge
     cpmThreadState:
       oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.4
       name: cisco.cpmThreadState
@@ -399,18 +492,20 @@ CISCO-PROCESS-MIB::cpmThreadEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.6
       name: cisco.cpmThreadCpuUtilization
       syntax: OpTicksMilliSec
+      metric: gauge
     cpmThreadStackSize:
       oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.7
       name: cisco.cpmThreadStackSize
       syntax: BytesB
-    cpmThreadStackSizeOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.8
-      name: cisco.cpmThreadStackSizeOvrflw
-      syntax: BytesB
+      metric: gauge
     cpmThreadHCStackSize:
       oid: .1.3.6.1.4.1.9.9.109.1.3.1.1.9
-      name: cisco.cpmThreadHCStackSize
+      name: cisco.cpmThreadStackSize
       syntax: BytesB
+      metric: gauge
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmThreadEntry
+        attribute: cpmThreadStackSize
 
 CISCO-PROCESS-MIB::cpmVirtualProcessEntry:
   mib: CISCO-PROCESS-MIB
@@ -438,43 +533,48 @@ CISCO-PROCESS-MIB::cpmVirtualProcessEntry:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.3
       name: cisco.cpmVirtualProcessUtil5Sec
       syntax: Percent100
+      metric: gauge
     cpmVirtualProcessUtil1Min:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.4
       name: cisco.cpmVirtualProcessUtil1Min
       syntax: Percent100
+      metric: gauge
     cpmVirtualProcessUtil5Min:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.5
       name: cisco.cpmVirtualProcessUtil5Min
       syntax: Percent100
+      metric: gauge
     cpmVirtualProcessMemAllocated:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.6
       name: cisco.cpmVirtualProcessMemAllocated
       syntax: BytesB
+      metric: gauge
     cpmVirtualProcessMemFreed:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.7
       name: cisco.cpmVirtualProcessMemFreed
       syntax: BytesB
+      metric: gauge
     cpmVirtualProcessInvokeCount:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.8
       name: cisco.cpmVirtualProcessInvokeCount
       syntax: Counter32
+      metric: counter
     cpmVirtualProcessRuntime:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.9
       name: cisco.cpmVirtualProcessRuntime
       syntax: OpTicksMicroSec
-    cpmVirtualProcessMemAllocatedOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.10
-      name: cisco.cpmVirtualProcessMemAllocatedOvrflw
-      syntax: BytesB
+      metric: counter
     cpmVirtualProcessHCMemAllocated:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.11
-      name: cisco.cpmVirtualProcessHCMemAllocated
+      name: cisco.cpmVirtualProcessMemAllocated
       syntax: BytesB
-    cpmVirtualProcessMemFreedOvrflw:
-      oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.12
-      name: cisco.cpmVirtualProcessMemFreedOvrflw
-      syntax: BytesB
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmVirtualProcessEntry
+        attribute: cpmVirtualProcessMemAllocated
     cpmVirtualProcessHCMemFreed:
       oid: .1.3.6.1.4.1.9.9.109.1.4.1.1.13
-      name: cisco.cpmVirtualProcessHCMemFreed
+      name: cisco.cpmVirtualProcessMemFreed
       syntax: BytesB
+      overrides:
+        object: CISCO-PROCESS-MIB::cpmVirtualProcessEntry
+        attribute: cpmVirtualProcessMemFreed
