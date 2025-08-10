@@ -4,8 +4,8 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
   index:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.14179.2.1.1.1.1
-      name: cisco.bsnDot11EssIndex # bsnDot11EssIndex
-      syntax: Unsigned32
+      name: cisco.bsnDot11EssIndex
+      syntax: UnsignedAsID
   discovery_attribute: bsnDot11EssSsid
   attributes:
     bsnDot11EssSsid:
@@ -15,7 +15,7 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
     bsnDot11EssSessionTimeout:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.4
       name: cisco.bsnDot11EssSessionTimeout
-      syntax: Unsigned32
+      syntax: TicksSec # Unsigned32
     bsnDot11EssMacFiltering:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.5
       name: cisco.bsnDot11EssMacFiltering
@@ -39,11 +39,11 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
     bsnDot11EssStaticWEPDefaultKey:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.10
       name: cisco.bsnDot11EssStaticWEPDefaultKey
-      syntax: OctetString
+      syntax: OctetString # WEPKeytype
     bsnDot11EssStaticWEPKeyIndex:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.11
       name: cisco.bsnDot11EssStaticWEPKeyIndex
-      syntax: Integer
+      syntax: IntegerAsID
     bsnDot11EssStaticWEPKeyFormat:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.12
       name: cisco.bsnDot11EssStaticWEPKeyFormat
@@ -107,7 +107,7 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
     bsnDot11EssVpnPassthruGateway:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.28
       name: cisco.bsnDot11EssVpnPassthruGateway
-      syntax: IpAddress
+      syntax: IpAddressNoSuffix
     bsnDot11EssWebSecurity:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.29
       name: cisco.bsnDot11EssWebSecurity
@@ -127,7 +127,7 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
     bsnDot11EssDhcpServerIpAddress:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.33
       name: cisco.bsnDot11EssDhcpServerIpAddress
-      syntax: IpAddress
+      syntax: IpAddressNoSuffix
     bsnDot11EssVpnContivityMode:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.34
       name: cisco.bsnDot11EssVpnContivityMode
@@ -135,7 +135,7 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
     bsnDot11EssVpnQotdServerAddress:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.35
       name: cisco.bsnDot11EssVpnQotdServerAddress
-      syntax: IpAddress
+      syntax: IpAddressNoSuffix
     bsnDot11EssBlacklistTimeout:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.37
       name: cisco.bsnDot11EssBlacklistTimeout
@@ -144,6 +144,7 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.38
       name: cisco.bsnDot11EssNumberOfMobileStations
       syntax: Counter32
+      metric: counter
     bsnDot11EssWebPassthru:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.39
       name: cisco.bsnDot11EssWebPassthru
@@ -228,10 +229,6 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.59
       name: cisco.bsnDot11EssIPv6Bridging
       syntax: EnumInteger
-    bsnDot11EssRowStatus:
-      oid: .1.3.6.1.4.1.14179.2.1.1.1.60
-      name: cisco.bsnDot11EssRowStatus
-      syntax: RowStatus
     bsnDot11EssWmePolicySetting:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.61
       name: cisco.bsnDot11EssWmePolicySetting
@@ -248,6 +245,16 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.64
       name: cisco.bsnDot11Ess7920PhoneSupport
       syntax: EnumInteger
+    bsnDot11EssNumApsUp:
+      oid: .1.3.6.1.4.1.14179.2.1.1.1.66
+      name: cisco.bsnDot11EssNumApsUp
+      syntax: Unsigned32
+      metric: gauge
+    bsnDot11EssNumApsDown:
+      oid: .1.3.6.1.4.1.14179.2.1.1.1.67
+      name: cisco.bsnDot11EssNumApsDown
+      syntax: Unsigned32
+      metric: gauge
     bsnDot11EssRadiusAuthPrimaryServer:
       oid: .1.3.6.1.4.1.14179.2.1.1.1.95
       name: cisco.bsnDot11EssRadiusAuthPrimaryServer
@@ -273,130 +280,878 @@ AIRESPACE-WIRELESS-MIB::bsnDot11EssEntry:
       name: cisco.bsnDot11EssRadiusAcctTertiaryServer
       syntax: DisplayString
 
-AIRESPACE-WIRELESS-MIB::bsnAPIfLoadParametersEntry:
+AIRESPACE-WIRELESS-MIB::bsnMobileStationEntry:
   mib: AIRESPACE-WIRELESS-MIB
-  object: bsnAPIfLoadParametersEntry
+  object: bsnMobileStationEntry
   index:
-    - type: MacAddress
-      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
-      name: cisco.bsnAPDot3MacAddress 
-      syntax: MacAddress
-    - type: Unsigned32
-      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
-      name: cisco.bsnAPIfSlotId 
-      syntax: Unsigned32
-  discovery_attribute: bsnAPIfLoadTxUtilization
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.1
+      name: cisco.bsnMobileStationMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnMobileStationIpAddress
   attributes:
-    bsnAPIfLoadRxUtilization:
-      oid: .1.3.6.1.4.1.14179.2.2.13.1.1
-      name: cisco.bsnAPIfLoadRxUtilization 
-      syntax: Gauge32
-    bsnAPIfLoadTxUtilization:
-      oid: .1.3.6.1.4.1.14179.2.2.13.1.2
-      name: cisco.bsnAPIfLoadTxUtilization
-      syntax: Gauge32
-    bsnAPIfLoadChannelUtilization:
-      oid: .1.3.6.1.4.1.14179.2.2.13.1.3
-      name: cisco.bsnAPIfLoadChannelUtilization
-      syntax: Gauge32
-    bsnAPIfLoadNumOfClients:
-      oid: .1.3.6.1.4.1.14179.2.2.13.1.4
-      name: cisco.bsnAPIfLoadNumOfClients
+    bsnMobileStationIpAddress:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.2
+      name: cisco.bsnMobileStationIpAddress
+      syntax: IpAddressNoSuffix
+    bsnMobileStationUserName:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.3
+      name: cisco.bsnMobileStationUserName
+      syntax: DisplayString
+    bsnMobileStationAPMacAddr:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.4
+      name: cisco.bsnMobileStationAPMacAddr
+      syntax: MacAddressNoSuffix
+    bsnMobileStationAPIfSlotId:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.5
+      name: cisco.bsnMobileStationAPIfSlotId
+      syntax: IntegerAsID
+    bsnMobileStationEssIndex:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.6
+      name: cisco.bsnMobileStationEssIndex
+      syntax: IntegerAsID
+    bsnMobileStationSsid:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.7
+      name: cisco.bsnMobileStationSsid
+      syntax: DisplayString
+    bsnMobileStationAID:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.8
+      name: cisco.bsnMobileStationAID
+      syntax: UnsignedAsID
+    bsnMobileStationStatus:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.9
+      name: cisco.bsnMobileStationStatus
+      syntax: EnumInteger
+    bsnMobileStationReasonCode:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.10
+      name: cisco.bsnMobileStationReasonCode
+      syntax: EnumInteger
+    bsnMobileStationMobilityStatus:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.11
+      name: cisco.bsnMobileStationMobilityStatus
+      syntax: EnumInteger
+    bsnMobileStationAnchorAddress:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.12
+      name: cisco.bsnMobileStationAnchorAddress
+      syntax: IpAddressNoSuffix
+    bsnMobileStationCFPollable:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.13
+      name: cisco.bsnMobileStationCFPollable
+      syntax: EnumInteger
+    bsnMobileStationCFPollRequest:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.14
+      name: cisco.bsnMobileStationCFPollRequest
+      syntax: EnumInteger
+    bsnMobileStationChannelAgilityEnabled:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.15
+      name: cisco.bsnMobileStationChannelAgilityEnabled
+      syntax: EnumInteger
+    bsnMobileStationPBCCOptionImplemented:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.16
+      name: cisco.bsnMobileStationPBCCOptionImplemented
+      syntax: EnumInteger
+    bsnMobileStationShortPreambleOptionImplemented:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.17
+      name: cisco.bsnMobileStationShortPreambleOptionImplemented
+      syntax: EnumInteger
+    bsnMobileStationSessionTimeout:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.18
+      name: cisco.bsnMobileStationSessionTimeout
+      syntax: Unsigned32
+      metric: gauge
+    bsnMobileStationAuthenticationAlgorithm:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.19
+      name: cisco.bsnMobileStationAuthenticationAlgorithm
+      syntax: EnumInteger
+    bsnMobileStationWepState:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.20
+      name: cisco.bsnMobileStationWepState
+      syntax: EnumInteger
+    bsnMobileStationPortNumber:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.21
+      name: cisco.bsnMobileStationPortNumber
+      syntax: UnsignedAsID
+    bsnMobileStationDeleteAction:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.22
+      name: cisco.bsnMobileStationDeleteAction
+      syntax: EnumInteger
+    bsnMobileStationPolicyManagerState:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.23
+      name: cisco.bsnMobileStationPolicyManagerState
+      syntax: DisplayString
+    bsnMobileStationSecurityPolicyStatus:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.24
+      name: cisco.bsnMobileStationSecurityPolicyStatus
+      syntax: EnumInteger
+    bsnMobileStationProtocol:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.25
+      name: cisco.bsnMobileStationProtocol
+      syntax: EnumInteger
+    bsnMobileStationMirrorMode:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.26
+      name: cisco.bsnMobileStationMirrorMode
+      syntax: EnumInteger
+    bsnMobileStationInterface:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.27
+      name: cisco.bsnMobileStationInterface
+      syntax: DisplayString
+    bsnMobileStationApMode:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.28
+      name: cisco.bsnMobileStationApMode
+      syntax: EnumInteger
+    bsnMobileStationVlanId:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.29
+      name: cisco.bsnMobileStationVlanId
+      syntax: IntegerAsID
+    bsnMobileStationPolicyType:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.30
+      name: cisco.bsnMobileStationPolicyType
+      syntax: EnumInteger
+    bsnMobileStationEncryptionCypher:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.31
+      name: cisco.bsnMobileStationEncryptionCypher
+      syntax: EnumInteger
+    bsnMobileStationEapType:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.32
+      name: cisco.bsnMobileStationEapType
+      syntax: EnumInteger
+    bsnMobileStationCcxVersion:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.33
+      name: cisco.bsnMobileStationCcxVersion
+      syntax: EnumInteger
+    bsnMobileStationE2eVersion:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.34
+      name: cisco.bsnMobileStationE2eVersion
+      syntax: EnumInteger
+    bsnMobileStationStatusCode:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.42
+      name: cisco.bsnMobileStationStatusCode
       syntax: Integer32
-    bsnAPIfPoorSNRClients:
-      oid: .1.3.6.1.4.1.14179.2.2.13.1.24
-      name: cisco.bsnAPIfPoorSNRClients
-      syntax: Integer32
+    bsnMobileStationAAAOverridePassphrase:
+      oid: .1.3.6.1.4.1.14179.2.1.4.1.43
+      name: cisco.bsnMobileStationAAAOverridePassphrase
+      syntax: TruthValue
 
-AIRESPACE-WIRELESS-MIB::bsnAPIfDot11CountersEntry:
+# AIRESPACE-WIRELESS-MIB::bsnMobileStationPerRadioPerVapEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMobileStationPerRadioPerVapEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.1.1.1
+#       name: cisco.bsnDot11EssIndex
+#       syntax: UnsignedAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.1.5.1.1
+#       name: cisco.bsnMobileStationPerRadioPerVapIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnMobileStationMacAddr
+#   attributes:
+#     bsnMobileStationMacAddr:
+#       oid: .1.3.6.1.4.1.14179.2.1.5.1.20
+#       name: cisco.bsnMobileStationMacAddr
+#       syntax: MacAddressNoSuffix
+
+AIRESPACE-WIRELESS-MIB::bsnMobileStationStatsEntry:
   mib: AIRESPACE-WIRELESS-MIB
-  object: bsnAPIfDot11CountersEntry
-  index:
-    - type: MacAddress
-      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
-      name: cisco.bsnAPDot3MacAddress 
-      syntax: MacAddress
-    - type: Unsigned32
-      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
-      name: cisco.bsnAPIfSlotId 
-      syntax: Unsigned32
-  discovery_attribute: bsnAPIfDot11MulticastTransmittedFrameCount
+  object: bsnMobileStationStatsEntry
+  augments: AIRESPACE-WIRELESS-MIB::bsnMobileStationEntry
+  discovery_attribute: bsnMobileStationBytesReceived
   attributes:
-    bsnAPIfDot11TransmittedFragmentCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.1
-      name: cisco.bsnAPIfDot11TransmittedFragmentCount 
-      syntax: Counter32
-    bsnAPIfDot11MulticastTransmittedFrameCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.2
-      name: cisco.bsnAPIfDot11MulticastTransmittedFrameCount
-      syntax: Counter32
-    bsnAPIfDot11RetryCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.3
-      name: cisco.bsnAPIfDot11RetryCount
-      syntax: Counter32
-    bsnAPIfDot11MultipleRetryCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.4
-      name: cisco.bsnAPIfDot11MultipleRetryCount
-      syntax: Counter32
-    bsnAPIfDot11FrameDuplicateCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.5
-      name: cisco.bsnAPIfDot11FrameDuplicateCount
-      syntax: Counter32
-    bsnAPIfDot11RTSSuccessCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.6
-      name: cisco.bsnAPIfDot11RTSSuccessCount
-      syntax: Counter32
-    bsnAPIfDot11RTSFailureCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.7
-      name: cisco.bsnAPIfDot11RTSFailureCount
-      syntax: Counter32
-    bsnAPIfDot11ACKFailureCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.8
-      name: cisco.bsnAPIfDot11ACKFailureCount
-      syntax: Counter32
-    bsnAPIfDot11ReceivedFragmentCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.9
-      name: cisco.bsnAPIfDot11ReceivedFragmentCount
-      syntax: Counter32
-    bsnAPIfDot11MulticastReceivedFrameCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.10
-      name: cisco.bsnAPIfDot11MulticastReceivedFrameCount
-      syntax: Counter32
-    bsnAPIfDot11FCSErrorCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.11
-      name: cisco.bsnAPIfDot11FCSErrorCount
-      syntax: Counter32
-    bsnAPIfDot11TransmittedFrameCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.12
-      name: cisco.bsnAPIfDot11TransmittedFrameCount
-      syntax: Counter32
-    bsnAPIfDot11WEPUndecryptableCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.13
-      name: cisco.bsnAPIfDot11WEPUndecryptableCount
-      syntax: Counter32
-    bsnAPIfDot11FailedCount:
-      oid: .1.3.6.1.4.1.14179.2.2.6.1.33
-      name: cisco.bsnAPIfDot11FailedCount
-      syntax: Counter32
+    bsnMobileStationRSSI:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.1
+      name: cisco.bsnMobileStationRSSI
+      syntax: Integer32
+      metric: gauge
+    bsnMobileStationBytesReceived:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.2
+      name: cisco.bsnMobileStationBytesReceived
+      syntax: BytesB # Counter64
+      metric: counter
+    bsnMobileStationBytesSent:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.3
+      name: cisco.bsnMobileStationBytesSent
+      syntax: BytesB # Counter64
+      metric: counter
+    bsnMobileStationPolicyErrors:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.4
+      name: cisco.bsnMobileStationPolicyErrors
+      syntax: Counter64
+      metric: counter
+    bsnMobileStationPacketsReceived:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.5
+      name: cisco.bsnMobileStationPacketsReceived
+      syntax: Counter64
+      metric: counter
+    bsnMobileStationPacketsSent:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.6
+      name: cisco.bsnMobileStationPacketsSent
+      syntax: Counter64
+      metric: counter
+    bsnMobileStationSnr:
+      oid: .1.3.6.1.4.1.14179.2.1.6.1.26
+      name: cisco.bsnMobileStationSnr
+      syntax: SignalDBm # Integer32
+      metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnRogueAPEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRogueAPEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.1
+#       name: cisco.bsnRogueAPDot11MacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnRogueAPTotalDetectingAPs
+#   attributes:
+#     bsnRogueAPTotalDetectingAPs:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.2
+#       name: cisco.bsnRogueAPTotalDetectingAPs
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueAPFirstReported:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.3
+#       name: cisco.bsnRogueAPFirstReported
+#       syntax: DisplayString
+#     bsnRogueAPLastReported:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.4
+#       name: cisco.bsnRogueAPLastReported
+#       syntax: DisplayString
+#     bsnRogueAPContainmentLevel:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.5
+#       name: cisco.bsnRogueAPContainmentLevel
+#       syntax: EnumInteger
+#     bsnRogueAPType:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.6
+#       name: cisco.bsnRogueAPType
+#       syntax: EnumInteger
+#     bsnRogueAPOnNetwork:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.7
+#       name: cisco.bsnRogueAPOnNetwork
+#       syntax: EnumInteger
+#     bsnRogueAPTotalClients:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.8
+#       name: cisco.bsnRogueAPTotalClients
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueAPMaxDetectedRSSI:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.10
+#       name: cisco.bsnRogueAPMaxDetectedRSSI
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueAPSSID:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.11
+#       name: cisco.bsnRogueAPSSID
+#       syntax: DisplayString
+#     bsnRogueAPDetectingAPRadioType:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.12
+#       name: cisco.bsnRogueAPDetectingAPRadioType
+#       syntax: EnumBitmap
+#     bsnRogueAPDetectingAPMacAddress:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.13
+#       name: cisco.bsnRogueAPDetectingAPMacAddress
+#       syntax: MacAddressNoSuffix
+#     bsnRogueAPMaxRssiRadioType:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.14
+#       name: cisco.bsnRogueAPMaxRssiRadioType
+#       syntax: EnumInteger
+#     bsnRogueAPState:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.24
+#       name: cisco.bsnRogueAPState
+#       syntax: EnumInteger
+#     bsnRogueAPClassType:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.25
+#       name: cisco.bsnRogueAPClassType
+#       syntax: EnumInteger
+#     bsnRogueAPChannel:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.26
+#       name: cisco.bsnRogueAPChannel
+#       syntax: IntegerAsID
+#     bsnRogueAPDetectingAPName:
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.27
+#       name: cisco.bsnRogueAPDetectingAPName
+#       syntax: DisplayString
+
+# AIRESPACE-WIRELESS-MIB::bsnRogueAPAirespaceAPEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRogueAPAirespaceAPEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.7.1.1
+#       name: cisco.bsnRogueAPDot11MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.1
+#       name: cisco.bsnRogueAPAirespaceAPMacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.2
+#       name: cisco.bsnRogueAPAirespaceAPSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnRogueAPRadioType
+#   attributes:
+#     bsnRogueAPRadioType:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.3
+#       name: cisco.bsnRogueAPRadioType
+#       syntax: EnumInteger
+#     bsnRogueAPAirespaceAPName:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.4
+#       name: cisco.bsnRogueAPAirespaceAPName
+#       syntax: DisplayString
+#     bsnRogueAPChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.5
+#       name: cisco.bsnRogueAPChannelNumber
+#       syntax: IntegerAsID
+#     bsnRogueAPSsid:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.6
+#       name: cisco.bsnRogueAPSsid
+#       syntax: DisplayString
+#     bsnRogueAPAirespaceAPRSSI:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.7
+#       name: cisco.bsnRogueAPAirespaceAPRSSI
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueAPContainmentMode:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.8
+#       name: cisco.bsnRogueAPContainmentMode
+#       syntax: EnumInteger
+#     bsnRogueAPContainmentChannelCount:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.9
+#       name: cisco.bsnRogueAPContainmentChannelCount
+#       syntax: Unsigned32
+#       metric: gauge
+#     bsnRogueAPContainmentChannels:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.10
+#       name: cisco.bsnRogueAPContainmentChannels
+#       syntax: DisplayString
+#     bsnRogueAPAirespaceAPLastHeard:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.11
+#       name: cisco.bsnRogueAPAirespaceAPLastHeard
+#       syntax: Counter32
+#       metric: counter
+#     bsnRogueAPAirespaceAPWepMode:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.12
+#       name: cisco.bsnRogueAPAirespaceAPWepMode
+#       syntax: EnumInteger
+#     bsnRogueAPAirespaceAPPreamble:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.13
+#       name: cisco.bsnRogueAPAirespaceAPPreamble
+#       syntax: EnumInteger
+#     bsnRogueAPAirespaceAPWpaMode:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.14
+#       name: cisco.bsnRogueAPAirespaceAPWpaMode
+#       syntax: EnumInteger
+#     bsnRogueAPAirespaceAPSNR:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.27
+#       name: cisco.bsnRogueAPAirespaceAPSNR
+#       syntax: SignalDBm # Integer32
+#       metric: gauge
+#     bsnRogueAPChannelWidth:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.28
+#       name: cisco.bsnRogueAPChannelWidth
+#       syntax: EnumInteger
+#     bsnRogueAPPhysicalAPSlot:
+#       oid: .1.3.6.1.4.1.14179.2.1.8.1.29
+#       name: cisco.bsnRogueAPPhysicalAPSlot
+#       syntax: IntegerAsID
+
+# AIRESPACE-WIRELESS-MIB::bsnThirdPartyAPEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnThirdPartyAPEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.9.1.1
+#       name: cisco.bsnThirdPartyAPMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnThirdPartyAPInterface
+#   attributes:
+#     bsnThirdPartyAPInterface:
+#       oid: .1.3.6.1.4.1.14179.2.1.9.1.2
+#       name: cisco.bsnThirdPartyAPInterface
+#       syntax: IntegerAsID
+#     bsnThirdPartyAPIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.1.9.1.3
+#       name: cisco.bsnThirdPartyAPIpAddress
+#       syntax: IpAddressNoSuffix
+#     bsnThirdPartyAP802Dot1XRequired:
+#       oid: .1.3.6.1.4.1.14179.2.1.9.1.4
+#       name: cisco.bsnThirdPartyAP802Dot1XRequired
+#       syntax: EnumInteger
+#     bsnThirdPartyAPMirrorMode:
+#       oid: .1.3.6.1.4.1.14179.2.1.9.1.5
+#       name: cisco.bsnThirdPartyAPMirrorMode
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnMobileStationByIpEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMobileStationByIpEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.10.1.1
+#       name: cisco.bsnMobileStationByIpAddress
+#       syntax: IpAddressNoSuffix
+#   discovery_attribute: bsnMobileStationByIpMacAddress
+#   attributes:
+#     bsnMobileStationByIpMacAddress:
+#       oid: .1.3.6.1.4.1.14179.2.1.10.1.2
+#       name: cisco.bsnMobileStationByIpMacAddress
+#       syntax: MacAddressNoSuffix
+
+# AIRESPACE-WIRELESS-MIB::bsnMobileStationRssiDataEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMobileStationRssiDataEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.4.1.1
+#       name: cisco.bsnMobileStationMacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.1
+#       name: cisco.bsnMobileStationRssiDataApMacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.2
+#       name: cisco.bsnMobileStationRssiDataApIfSlotId
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.6
+#       name: cisco.bsnAPIfPhyAntennaIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnMobileStationRssiDataLastHeard
+#   attributes:
+#     bsnMobileStationRssiDataApIfType:
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.3
+#       name: cisco.bsnMobileStationRssiDataApIfType
+#       syntax: EnumInteger
+#     bsnMobileStationRssiDataApName:
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.4
+#       name: cisco.bsnMobileStationRssiDataApName
+#       syntax: DisplayString
+#     bsnMobileStationRssiData:
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.5
+#       name: cisco.bsnMobileStationRssiData
+#       syntax: Integer32
+#       metric: gauge
+#     bsnMobileStationRssiDataLastHeard:
+#       oid: .1.3.6.1.4.1.14179.2.1.11.1.25
+#       name: cisco.bsnMobileStationRssiDataLastHeard
+#       syntax: Counter32
+#       metric: counter
+
+# AIRESPACE-WIRELESS-MIB::bsnRogueClientEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRogueClientEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.1
+#       name: cisco.bsnRogueClientDot11MacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnRogueClientTotalDetectingAPs
+#   attributes:
+#     bsnRogueClientTotalDetectingAPs:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.2
+#       name: cisco.bsnRogueClientTotalDetectingAPs
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueClientFirstReported:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.3
+#       name: cisco.bsnRogueClientFirstReported
+#       syntax: DisplayString
+#     bsnRogueClientLastReported:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.4
+#       name: cisco.bsnRogueClientLastReported
+#       syntax: DisplayString
+#     bsnRogueClientBSSID:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.5
+#       name: cisco.bsnRogueClientBSSID
+#       syntax: MacAddressNoSuffix
+#     bsnRogueClientContainmentLevel:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.6
+#       name: cisco.bsnRogueClientContainmentLevel
+#       syntax: EnumInteger
+#     bsnRogueClientLastHeard:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.7
+#       name: cisco.bsnRogueClientLastHeard
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueClientState:
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.24
+#       name: cisco.bsnRogueClientState
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnRogueClientAirespaceAPEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRogueClientAirespaceAPEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.14.1.1
+#       name: cisco.bsnRogueClientDot11MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.1
+#       name: cisco.bsnRogueClientAirespaceAPMacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.2
+#       name: cisco.bsnRogueClientAirespaceAPSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnRogueClientRadioType
+#   attributes:
+#     bsnRogueClientRadioType:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.3
+#       name: cisco.bsnRogueClientRadioType
+#       syntax: EnumInteger
+#     bsnRogueClientAirespaceAPName:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.4
+#       name: cisco.bsnRogueClientAirespaceAPName
+#       syntax: DisplayString
+#     bsnRogueClientChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.5
+#       name: cisco.bsnRogueClientChannelNumber
+#       syntax: IntegerAsID
+#     bsnRogueClientAirespaceAPRSSI:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.7
+#       name: cisco.bsnRogueClientAirespaceAPRSSI
+#       syntax: Integer32
+#       metric: gauge
+#     bsnRogueClientAirespaceAPLastHeard:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.11
+#       name: cisco.bsnRogueClientAirespaceAPLastHeard
+#       syntax: DisplayString
+#     bsnRogueClientAirespaceAPSNR:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.27
+#       name: cisco.bsnRogueClientAirespaceAPSNR
+#       syntax: SignalDBm # Integer32
+#       metric: gauge
+#     bsnRogueClientPhysicalAPSlot:
+#       oid: .1.3.6.1.4.1.14179.2.1.15.1.28
+#       name: cisco.bsnRogueClientPhysicalAPSlot
+#       syntax: IntegerAsID
+
+# AIRESPACE-WIRELESS-MIB::bsnDot11QosProfileEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnDot11QosProfileEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.1
+#       name: cisco.bsnDot11QosProfileName
+#       syntax: DisplayString
+#   discovery_attribute: bsnDot11QosProfileDesc
+#   attributes:
+#     bsnDot11QosProfileDesc:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.2
+#       name: cisco.bsnDot11QosProfileDesc
+#       syntax: DisplayString
+#     bsnDot11QosAverageDataRate:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.3
+#       name: cisco.bsnDot11QosAverageDataRate
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11QosBurstDataRate:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.4
+#       name: cisco.bsnDot11QosBurstDataRate
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11QosAvgRealTimeDataRate:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.5
+#       name: cisco.bsnDot11QosAvgRealTimeDataRate
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11QosBurstRealTimeDataRate:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.6
+#       name: cisco.bsnDot11QosBurstRealTimeDataRate
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11QosMaxRFUsagePerAP:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.7
+#       name: cisco.bsnDot11QosMaxRFUsagePerAP
+#       syntax: Percent100
+#       metric: gauge
+#     bsnDot11QosProfileQueueDepth:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.8
+#       name: cisco.bsnDot11QosProfileQueueDepth
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11WiredQosProtocol:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.9
+#       name: cisco.bsnDot11WiredQosProtocol
+#       syntax: EnumInteger
+#     bsnDot11802Dot1PTag:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.10
+#       name: cisco.bsnDot11802Dot1PTag
+#       syntax: Integer32
+#       metric: gauge
+#     bsnDot11ResetProfileToDefault:
+#       oid: .1.3.6.1.4.1.14179.2.1.17.1.40
+#       name: cisco.bsnDot11ResetProfileToDefault
+#       syntax: EnumInteger
+
+AIRESPACE-WIRELESS-MIB::bsnTagEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnTagEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.1.18.1.1
+      name: cisco.bsnTagDot11MacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnTagType
+  attributes:
+    bsnTagType:
+      oid: .1.3.6.1.4.1.14179.2.1.18.1.2
+      name: cisco.bsnTagType
+      syntax: EnumInteger
+    bsnTagTimeInterval:
+      oid: .1.3.6.1.4.1.14179.2.1.18.1.3
+      name: cisco.bsnTagTimeInterval
+      syntax: Unsigned32
+    bsnTagBatteryStatus:
+      oid: .1.3.6.1.4.1.14179.2.1.18.1.4
+      name: cisco.bsnTagBatteryStatus
+      syntax: EnumInteger
+    bsnTagLastReported:
+      oid: .1.3.6.1.4.1.14179.2.1.18.1.23
+      name: cisco.bsnTagLastReported
+      syntax: Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnTagRssiDataEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnTagRssiDataEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.18.1.1
+#       name: cisco.bsnTagDot11MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.1
+#       name: cisco.bsnTagRssiDataApMacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.2
+#       name: cisco.bsnTagRssiDataApIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnTagRssiDataApIfType
+#   attributes:
+#     bsnTagRssiDataApIfType:
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.3
+#       name: cisco.bsnTagRssiDataApIfType
+#       syntax: EnumInteger
+#     bsnTagRssiDataApName:
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.4
+#       name: cisco.bsnTagRssiDataApName
+#       syntax: DisplayString
+#     bsnTagRssiDataLastHeard:
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.5
+#       name: cisco.bsnTagRssiDataLastHeard
+#       syntax: Counter32
+#       metric: counter
+#     bsnTagRssiData:
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.6
+#       name: cisco.bsnTagRssiData
+#       syntax: Integer32
+#       metric: gauge
+#     bsnTagRssiDataSnr:
+#       oid: .1.3.6.1.4.1.14179.2.1.19.1.26
+#       name: cisco.bsnTagRssiDataSnr
+#       syntax: SignalDBm # Integer32
+#       metric: gauge
+
+AIRESPACE-WIRELESS-MIB::bsnTagStatsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnTagStatsEntry
+  augments: AIRESPACE-WIRELESS-MIB::bsnTagEntry
+  discovery_attribute: bsnTagPacketsReceived
+  attributes:
+    bsnTagBytesReceived:
+      oid: .1.3.6.1.4.1.14179.2.1.20.1.1
+      name: cisco.bsnTagBytesReceived
+      syntax: BytesB # Unsigned32
+      metric: counter
+    bsnTagPacketsReceived:
+      oid: .1.3.6.1.4.1.14179.2.1.20.1.20
+      name: cisco.bsnTagPacketsReceived
+      syntax: Unsigned32
+      metric: counter
+
+AIRESPACE-WIRELESS-MIB::bsnMobileStationExtStatsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnMobileStationExtStatsEntry
+  augments: AIRESPACE-WIRELESS-MIB::bsnMobileStationEntry
+  discovery_attribute: bsnMobileStationTxExcessiveRetries
+  attributes:
+    bsnMobileStationSampleTime:
+      oid: .1.3.6.1.4.1.14179.2.1.21.1.1
+      name: cisco.bsnMobileStationSampleTime
+      syntax: Integer32
+      metric: counter
+    bsnMobileStationTxExcessiveRetries:
+      oid: .1.3.6.1.4.1.14179.2.1.21.1.2
+      name: cisco.bsnMobileStationTxExcessiveRetries
+      syntax: Counter64
+      metric: counter
+    bsnMobileStationTxRetries:
+      oid: .1.3.6.1.4.1.14179.2.1.21.1.3
+      name: cisco.bsnMobileStationTxRetries
+      syntax: Counter64
+      metric: counter
+    bsnMobileStationTxFiltered:
+      oid: .1.3.6.1.4.1.14179.2.1.21.1.20
+      name: cisco.bsnMobileStationTxFiltered
+      syntax: Counter64
+      metric: counter
+
+AIRESPACE-WIRELESS-MIB::bsnAPEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnAPEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnAPNumOfSlots
+  attributes:
+    bsnAPNumOfSlots:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.2
+      name: cisco.bsnAPNumOfSlots
+      syntax: Integer32
+      metric: gauge
+    bsnAPName:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.3
+      name: cisco.bsnAPName
+      syntax: DisplayString
+    bsnAPLocation:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.4
+      name: cisco.bsnAPLocation
+      syntax: DisplayString
+    bsnAPMonitorOnlyMode:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.5
+      name: cisco.bsnAPMonitorOnlyMode
+      syntax: EnumInteger
+    bsnAPOperationStatus:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.6
+      name: cisco.bsnAPOperationStatus
+      syntax: EnumInteger
+    bsnAPSoftwareVersion:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.8
+      name: cisco.bsnAPSoftwareVersion
+      syntax: DisplayString
+    bsnAPBootVersion:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.9
+      name: cisco.bsnAPBootVersion
+      syntax: DisplayString
+    bsnAPPrimaryMwarName:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.10
+      name: cisco.bsnAPPrimaryMwarName
+      syntax: DisplayString
+    bsnAPReset:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.11
+      name: cisco.bsnAPReset
+      syntax: EnumInteger
+    bsnAPStatsTimer:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.12
+      name: cisco.bsnAPStatsTimer
+      syntax: TicksSec # Integer32
+    bsnAPPortNumber:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.13
+      name: cisco.bsnAPPortNumber
+      syntax: IntegerAsID
+    bsnAPModel:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.16
+      name: cisco.bsnAPModel
+      syntax: DisplayString
+    bsnAPSerialNumber:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.17
+      name: cisco.bsnAPSerialNumber
+      syntax: DisplayString
+    bsnAPClearConfig:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.18
+      name: cisco.bsnAPClearConfig
+      syntax: EnumInteger
+    bsnApIpAddress:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.19
+      name: cisco.bsnApIpAddress
+      syntax: IpAddressNoSuffix
+    bsnAPMirrorMode:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.20
+      name: cisco.bsnAPMirrorMode
+      syntax: EnumInteger
+    bsnAPRemoteModeSupport:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.21
+      name: cisco.bsnAPRemoteModeSupport
+      syntax: EnumInteger
+    bsnAPType:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.22
+      name: cisco.bsnAPType
+      syntax: EnumInteger
+    bsnAPSecondaryMwarName:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.23
+      name: cisco.bsnAPSecondaryMwarName
+      syntax: DisplayString
+    bsnAPTertiaryMwarName:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.24
+      name: cisco.bsnAPTertiaryMwarName
+      syntax: DisplayString
+    bsnAPIsStaticIP:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.25
+      name: cisco.bsnAPIsStaticIP
+      syntax: EnumInteger
+    bsnAPNetmask:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.26
+      name: cisco.bsnAPNetmask
+      syntax: IpAddressNoSuffix
+    bsnAPGateway:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.27
+      name: cisco.bsnAPGateway
+      syntax: IpAddressNoSuffix
+    bsnAPStaticIPAddress:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.28
+      name: cisco.bsnAPStaticIPAddress
+      syntax: IpAddressNoSuffix
+    bsnAPBridgingSupport:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.29
+      name: cisco.bsnAPBridgingSupport
+      syntax: EnumInteger
+    bsnAPGroupVlanName:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.30
+      name: cisco.bsnAPGroupVlanName
+      syntax: DisplayString
+    bsnAPIOSVersion:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.31
+      name: cisco.bsnAPIOSVersion
+      syntax: DisplayString
+    bsnAPCertificateType:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.32
+      name: cisco.bsnAPCertificateType
+      syntax: EnumInteger
+    bsnAPEthernetMacAddress:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.33
+      name: cisco.bsnAPEthernetMacAddress
+      syntax: MacAddressNoSuffix
+    bsnAPAdminStatus:
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.37
+      name: cisco.bsnAPAdminStatus
+      syntax: EnumInteger
 
 AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
   mib: AIRESPACE-WIRELESS-MIB
   object: bsnAPIfEntry
   index:
-    - type: MacAddress
+    - type: OctetString
       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
-      name: cisco.bsnAPDot3MacAddress 
-      syntax: MacAddress
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
-      name: cisco.bsnAPIfSlotId 
-      syntax: Unsigned32
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
   discovery_attribute: bsnAPIfType
   attributes:
-    bsnAPIfSlotId:
-      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
-      name: cisco.bsnAPIfSlotId
-      syntax: Unsigned32
     bsnAPIfType:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.2
       name: cisco.bsnAPIfType
@@ -416,7 +1171,8 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
     bsnAPIfPhyTxPowerLevel:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.6
       name: cisco.bsnAPIfPhyTxPowerLevel
-      syntax: Gauge32
+      syntax: Integer32
+      metric: gauge
     bsnAPIfPhyAntennaMode:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.7
       name: cisco.bsnAPIfPhyAntennaMode
@@ -432,11 +1188,12 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
     bsnAPIfCellSiteConfigId:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.10
       name: cisco.bsnAPIfCellSiteConfigId
-      syntax: Unsigned32
+      syntax: UnsignedAsID
     bsnAPIfNumberOfVaps:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.11
       name: cisco.bsnAPIfNumberOfVaps
-      syntax: Gauge32
+      syntax: Integer32
+      metric: gauge
     bsnAPIfOperStatus:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.12
       name: cisco.bsnAPIfOperStatus
@@ -444,7 +1201,7 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
     bsnAPIfPortNumber:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.13
       name: cisco.bsnAPIfPortNumber
-      syntax: Integer32
+      syntax: IntegerAsID
     bsnAPIfPhyAntennaOptions:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.14
       name: cisco.bsnAPIfPhyAntennaOptions
@@ -453,6 +1210,7 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.15
       name: cisco.bsnApIfNoOfUsers
       syntax: Counter32
+      metric: counter
     bsnAPIfWlanOverride:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.16
       name: cisco.bsnAPIfWlanOverride
@@ -465,14 +1223,15 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.18
       name: cisco.bsnAPIfSniffChannel
       syntax: EnumInteger
-    bsnAPIfSniffServerIpAddress:
+    bsnAPIfSniffServerIPAddress:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.19
-      name: cisco.bsnAPIfSniffServerIpAddress
-      syntax: IpAddress
+      name: cisco.bsnAPIfSniffServerIPAddress
+      syntax: IpAddressNoSuffix
     bsnAPIfAntennaGain:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.20
       name: cisco.bsnAPIfAntennaGain
-      syntax: Gauge32
+      syntax: Integer32
+      metric: gauge
     bsnAPIfChannelList:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.21
       name: cisco.bsnAPIfChannelList
@@ -485,38 +1244,3116 @@ AIRESPACE-WIRELESS-MIB::bsnAPIfEntry:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.23
       name: cisco.bsnAPIfRegulatoryDomainSupport
       syntax: EnumInteger
+    bsnAPIfPhyS80EightyChannelNumber:
+      oid: .1.3.6.1.4.1.14179.2.2.2.1.28
+      name: cisco.bsnAPIfPhyS80EightyChannelNumber
+      syntax: IntegerAsID
     bsnAPIfAdminStatus:
       oid: .1.3.6.1.4.1.14179.2.2.2.1.34
       name: cisco.bsnAPIfAdminStatus
       syntax: EnumInteger
 
-AIRESPACE-WIRELESS-MIB::bsnAPIfProfileStateEntry:
+# AIRESPACE-WIRELESS-MIB::bsnAPIfSmtParamEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfSmtParamEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfDot11MediumOccupancyLimit
+#   attributes:
+#     bsnAPIfDot11BeaconPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.1
+#       name: cisco.bsnAPIfDot11BeaconPeriod
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MediumOccupancyLimit:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.2
+#       name: cisco.bsnAPIfDot11MediumOccupancyLimit
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11CFPPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.3
+#       name: cisco.bsnAPIfDot11CFPPeriod
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11CFPMaxDuration:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.4
+#       name: cisco.bsnAPIfDot11CFPMaxDuration
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11OperationalRateSet:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.5
+#       name: cisco.bsnAPIfDot11OperationalRateSet
+#       syntax: OctetString
+#     bsnAPIfDot11DTIMPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.6
+#       name: cisco.bsnAPIfDot11DTIMPeriod
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MultiDomainCapabilityImplemented:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.7
+#       name: cisco.bsnAPIfDot11MultiDomainCapabilityImplemented
+#       syntax: EnumInteger
+#     bsnAPIfDot11MultiDomainCapabilityEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.8
+#       name: cisco.bsnAPIfDot11MultiDomainCapabilityEnabled
+#       syntax: EnumInteger
+#     bsnAPIfDot11CountryString:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.9
+#       name: cisco.bsnAPIfDot11CountryString
+#       syntax: OctetString
+#     bsnAPIfDot11SmtParamsConfigType:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.10
+#       name: cisco.bsnAPIfDot11SmtParamsConfigType
+#       syntax: EnumInteger
+#     bsnAPIfDot11BSSID:
+#       oid: .1.3.6.1.4.1.14179.2.2.3.1.30
+#       name: cisco.bsnAPIfDot11BSSID
+#       syntax: MacAddressNoSuffix
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfMultiDomainCapabilityEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfMultiDomainCapabilityEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfDot11FirstChannelNumber
+#   attributes:
+#     bsnAPIfDot11MaximumTransmitPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.2.4.1.1
+#       name: cisco.bsnAPIfDot11MaximumTransmitPowerLevel
+#       syntax: SignalDBm # Integer32
+#       metric: gauge
+#     bsnAPIfDot11FirstChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.2.4.1.2
+#       name: cisco.bsnAPIfDot11FirstChannelNumber
+#       syntax: IntegerAsID
+#     bsnAPIfDot11NumberofChannels:
+#       oid: .1.3.6.1.4.1.14179.2.2.4.1.20
+#       name: cisco.bsnAPIfDot11NumberofChannels
+#       syntax: Integer32
+#       metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfMacOperationParamEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfMacOperationParamEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfDot11MacShortRetryLimit
+#   attributes:
+#     bsnAPIfDot11MacRTSThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.1
+#       name: cisco.bsnAPIfDot11MacRTSThreshold
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MacShortRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.2
+#       name: cisco.bsnAPIfDot11MacShortRetryLimit
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MacLongRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.3
+#       name: cisco.bsnAPIfDot11MacLongRetryLimit
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MacFragmentationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.4
+#       name: cisco.bsnAPIfDot11MacFragmentationThreshold
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11MacMaxTransmitMSDULifetime:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.5
+#       name: cisco.bsnAPIfDot11MacMaxTransmitMSDULifetime
+#       syntax: Unsigned32
+#       metric: gauge
+#     bsnAPIfDot11MacParamsConfigType:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.6
+#       name: cisco.bsnAPIfDot11MacParamsConfigType
+#       syntax: EnumInteger
+#     bsnAPIfDot11MacMaxReceiveLifetime:
+#       oid: .1.3.6.1.4.1.14179.2.2.5.1.25
+#       name: cisco.bsnAPIfDot11MacMaxReceiveLifetime
+#       syntax: Unsigned32
+#       metric: gauge
+
+AIRESPACE-WIRELESS-MIB::bsnAPIfDot11CountersEntry:
   mib: AIRESPACE-WIRELESS-MIB
-  object: bsnAPIfProfileStateEntry
+  object: bsnAPIfDot11CountersEntry
   index:
-    - type: MacAddress
+    - type: OctetString
       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
-      name: cisco.bsnAPDot3MacAddress 
-      syntax: MacAddress
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
     - type: Unsigned32
       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
-      name: cisco.bsnAPIfSlotId 
-      syntax: Unsigned32
-  discovery_attribute: bsnAPIfInterferenceProfileState
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
+  discovery_attribute: bsnAPIfDot11MulticastTransmittedFrameCount
   attributes:
-    bsnAPIfLoadProfileState:
-      oid: .1.3.6.1.4.1.14179.2.2.16.1.1
-      name: cisco.bsnAPIfLoadProfileState
+    bsnAPIfDot11TransmittedFragmentCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.1
+      name: cisco.bsnAPIfDot11TransmittedFragmentCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11MulticastTransmittedFrameCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.2
+      name: cisco.bsnAPIfDot11MulticastTransmittedFrameCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11RetryCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.3
+      name: cisco.bsnAPIfDot11RetryCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11MultipleRetryCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.4
+      name: cisco.bsnAPIfDot11MultipleRetryCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11FrameDuplicateCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.5
+      name: cisco.bsnAPIfDot11FrameDuplicateCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11RTSSuccessCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.6
+      name: cisco.bsnAPIfDot11RTSSuccessCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11RTSFailureCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.7
+      name: cisco.bsnAPIfDot11RTSFailureCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11ACKFailureCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.8
+      name: cisco.bsnAPIfDot11ACKFailureCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11ReceivedFragmentCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.9
+      name: cisco.bsnAPIfDot11ReceivedFragmentCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11MulticastReceivedFrameCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.10
+      name: cisco.bsnAPIfDot11MulticastReceivedFrameCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11FCSErrorCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.11
+      name: cisco.bsnAPIfDot11FCSErrorCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11TransmittedFrameCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.12
+      name: cisco.bsnAPIfDot11TransmittedFrameCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11WEPUndecryptableCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.13
+      name: cisco.bsnAPIfDot11WEPUndecryptableCount
+      syntax: Counter32
+      metric: counter
+    bsnAPIfDot11FailedCount:
+      oid: .1.3.6.1.4.1.14179.2.2.6.1.33
+      name: cisco.bsnAPIfDot11FailedCount
+      syntax: Counter32
+      metric: counter
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfDot11PhyTxPowerEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfDot11PhyTxPowerEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfDot11TxPowerLevel1
+#   attributes:
+#     bsnAPIfDot11NumberSupportedPowerLevels:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.1
+#       name: cisco.bsnAPIfDot11NumberSupportedPowerLevels
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel1:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.2
+#       name: cisco.bsnAPIfDot11TxPowerLevel1
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel2:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.3
+#       name: cisco.bsnAPIfDot11TxPowerLevel2
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel3:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.4
+#       name: cisco.bsnAPIfDot11TxPowerLevel3
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel4:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.5
+#       name: cisco.bsnAPIfDot11TxPowerLevel4
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel5:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.6
+#       name: cisco.bsnAPIfDot11TxPowerLevel5
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel6:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.7
+#       name: cisco.bsnAPIfDot11TxPowerLevel6
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel7:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.8
+#       name: cisco.bsnAPIfDot11TxPowerLevel7
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+#     bsnAPIfDot11TxPowerLevel8:
+#       oid: .1.3.6.1.4.1.14179.2.2.8.1.28
+#       name: cisco.bsnAPIfDot11TxPowerLevel8
+#       syntax: PowerMilliWatt # Integer32
+#       metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfDot11PhyChannelEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfDot11PhyChannelEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfDot11EDThreshold
+#   attributes:
+#     bsnAPIfDot11CurrentCCAMode:
+#       oid: .1.3.6.1.4.1.14179.2.2.9.1.1
+#       name: cisco.bsnAPIfDot11CurrentCCAMode
+#       syntax: EnumInteger
+#     bsnAPIfDot11EDThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.9.1.2
+#       name: cisco.bsnAPIfDot11EDThreshold
+#       syntax: Integer32
+#     bsnAPIfDot11TIThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.9.1.23
+#       name: cisco.bsnAPIfDot11TIThreshold
+#       syntax: Integer32
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfProfileThresholdConfigEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfProfileThresholdConfigEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfForeignInterferenceThreshold
+#   attributes:
+#     bsnAPIfProfileParamAssignment:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.1
+#       name: cisco.bsnAPIfProfileParamAssignment
+#       syntax: EnumInteger
+#     bsnAPIfForeignInterferenceThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.2
+#       name: cisco.bsnAPIfForeignInterferenceThreshold
+#       syntax: Integer32
+#     bsnAPIfForeignNoiseThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.3
+#       name: cisco.bsnAPIfForeignNoiseThreshold
+#       syntax: Integer32
+#     bsnAPIfRFUtilizationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.4
+#       name: cisco.bsnAPIfRFUtilizationThreshold
+#       syntax: Integer32
+#     bsnAPIfThroughputThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.5
+#       name: cisco.bsnAPIfThroughputThreshold
+#       syntax: Unsigned32
+#     bsnAPIfMobilesThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.6
+#       name: cisco.bsnAPIfMobilesThreshold
+#       syntax: Integer32
+#     bsnAPIfCoverageThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.7
+#       name: cisco.bsnAPIfCoverageThreshold
+#       syntax: Integer32
+#     bsnAPIfMobileMinExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.8
+#       name: cisco.bsnAPIfMobileMinExceptionLevel
+#       syntax: Integer32
+#     bsnAPIfCoverageExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.2.12.1.28
+#       name: cisco.bsnAPIfCoverageExceptionLevel
+#       syntax: Integer32
+
+AIRESPACE-WIRELESS-MIB::bsnAPIfLoadParametersEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnAPIfLoadParametersEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
+  discovery_attribute: bsnAPIfLoadTxUtilization
+  attributes:
+    bsnAPIfLoadRxUtilization:
+      oid: .1.3.6.1.4.1.14179.2.2.13.1.1
+      name: cisco.bsnAPIfLoadRxUtilization
+      syntax: Percent100
+      metric: gauge
+    bsnAPIfLoadTxUtilization:
+      oid: .1.3.6.1.4.1.14179.2.2.13.1.2
+      name: cisco.bsnAPIfLoadTxUtilization
+      syntax: Percent100
+      metric: gauge
+    bsnAPIfLoadChannelUtilization:
+      oid: .1.3.6.1.4.1.14179.2.2.13.1.3
+      name: cisco.bsnAPIfLoadChannelUtilization
+      syntax: Percent100
+      metric: gauge
+    bsnAPIfLoadNumOfClients:
+      oid: .1.3.6.1.4.1.14179.2.2.13.1.4
+      name: cisco.bsnAPIfLoadNumOfClients
+      syntax: Integer32
+      metric: gauge
+    bsnAPIfPoorSNRClients:
+      oid: .1.3.6.1.4.1.14179.2.2.13.1.24
+      name: cisco.bsnAPIfPoorSNRClients
+      syntax: Integer32
+      metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfChannelInterferenceInfoEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfChannelInterferenceInfoEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.2.14.1.1
+#       name: cisco.bsnAPIfInterferenceChannelNo
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnAPIfInterferencePower
+#   attributes:
+#     bsnAPIfInterferencePower:
+#       oid: .1.3.6.1.4.1.14179.2.2.14.1.2
+#       name: cisco.bsnAPIfInterferencePower
+#       syntax: Integer32
+#     bsnAPIfInterferenceUtilization:
+#       oid: .1.3.6.1.4.1.14179.2.2.14.1.22
+#       name: cisco.bsnAPIfInterferenceUtilization
+#       syntax: Integer32
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfChannelNoiseInfoEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfChannelNoiseInfoEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.2.15.1.1
+#       name: cisco.bsnAPIfNoiseChannelNo
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnAPIfDBNoisePower
+#   attributes:
+#     bsnAPIfDBNoisePower:
+#       oid: .1.3.6.1.4.1.14179.2.2.15.1.21
+#       name: cisco.bsnAPIfDBNoisePower
+#       syntax: Percent100
+#       metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfProfileStateEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfProfileStateEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfInterferenceProfileState
+#   attributes:
+#     bsnAPIfLoadProfileState:
+#       oid: .1.3.6.1.4.1.14179.2.2.16.1.1
+#       name: cisco.bsnAPIfLoadProfileState
+#       syntax: EnumInteger
+#     bsnAPIfInterferenceProfileState:
+#       oid: .1.3.6.1.4.1.14179.2.2.16.1.2
+#       name: cisco.bsnAPIfInterferenceProfileState
+#       syntax: EnumInteger
+#     bsnAPIfNoiseProfileState:
+#       oid: .1.3.6.1.4.1.14179.2.2.16.1.3
+#       name: cisco.bsnAPIfNoiseProfileState
+#       syntax: EnumInteger
+#     bsnAPIfCoverageProfileState:
+#       oid: .1.3.6.1.4.1.14179.2.2.16.1.24
+#       name: cisco.bsnAPIfCoverageProfileState
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfRxNeighborsEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfRxNeighborsEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.1
+#       name: cisco.bsnAPIfRxNeighborMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnAPIfRxNeighborIpAddress
+#   attributes:
+#     bsnAPIfRxNeighborIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.2
+#       name: cisco.bsnAPIfRxNeighborIpAddress
+#       syntax: IpAddressNoSuffix
+#     bsnAPIfRxNeighborRSSI:
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.3
+#       name: cisco.bsnAPIfRxNeighborRSSI
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfRxNeighborSlot:
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.24
+#       name: cisco.bsnAPIfRxNeighborSlot
+#       syntax: IntegerAsID
+#     bsnAPIfRxNeighborChannel:
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.26
+#       name: cisco.bsnAPIfRxNeighborChannel
+#       syntax: IntegerAsID
+#     bsnAPIfRxNeighborChannelWidth:
+#       oid: .1.3.6.1.4.1.14179.2.2.17.1.27
+#       name: cisco.bsnAPIfRxNeighborChannelWidth
+#       syntax: EnumInteger
+
+AIRESPACE-WIRELESS-MIB::bsnAPIfStationRSSICoverageInfoEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnAPIfStationRSSICoverageInfoEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.2.18.1.1
+      name: cisco.bsnAPIfStationRSSICoverageIndex
+      syntax: IntegerAsID
+  discovery_attribute: bsnAPIfRSSILevel
+  attributes:
+    bsnAPIfRSSILevel:
+      oid: .1.3.6.1.4.1.14179.2.2.18.1.2
+      name: cisco.bsnAPIfRSSILevel
+      syntax: Integer32
+      metric: gauge
+    bsnAPIfStationCountOnRSSI:
+      oid: .1.3.6.1.4.1.14179.2.2.18.1.23
+      name: cisco.bsnAPIfStationCountOnRSSI
+      syntax: Integer32
+      metric: gauge
+
+AIRESPACE-WIRELESS-MIB::bsnAPIfStationSNRCoverageInfoEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnAPIfStationSNRCoverageInfoEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.2.19.1.1
+      name: cisco.bsnAPIfStationSNRCoverageIndex
+      syntax: IntegerAsID
+  discovery_attribute: bsnAPIfSNRLevel
+  attributes:
+    bsnAPIfSNRLevel:
+      oid: .1.3.6.1.4.1.14179.2.2.19.1.2
+      name: cisco.bsnAPIfSNRLevel
+      syntax: Integer32
+      metric: gauge
+    bsnAPIfStationCountOnSNR:
+      oid: .1.3.6.1.4.1.14179.2.2.19.1.23
+      name: cisco.bsnAPIfStationCountOnSNR
+      syntax: Integer32
+      metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfRecommendedRFParametersEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfRecommendedRFParametersEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfRecommendedTxPowerLevel
+#   attributes:
+#     bsnAPIfRecommendedChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.2.20.1.1
+#       name: cisco.bsnAPIfRecommendedChannelNumber
+#       syntax: IntegerAsID
+#     bsnAPIfRecommendedTxPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.2.20.1.2
+#       name: cisco.bsnAPIfRecommendedTxPowerLevel
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAPIfRecommendedRTSThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.20.1.3
+#       name: cisco.bsnAPIfRecommendedRTSThreshold
+#       syntax: Integer32
+#     bsnAPIfRecommendedFragmentationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.2.20.1.24
+#       name: cisco.bsnAPIfRecommendedFragmentationThreshold
+#       syntax: Integer32
+
+# AIRESPACE-WIRELESS-MIB::bsnAPIfWlanOverrideEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPIfWlanOverrideEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+#       name: cisco.bsnAPDot3MacAddress
+#       syntax: MacAddressNoSuffix
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+#       name: cisco.bsnAPIfSlotId
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.2.21.1.1
+#       name: cisco.bsnAPIfWlanOverrideId
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAPIfWlanOverrideSsid
+#   attributes:
+#     bsnAPIfWlanOverrideSsid:
+#       oid: .1.3.6.1.4.1.14179.2.2.21.1.2
+#       name: cisco.bsnAPIfWlanOverrideSsid
+#       syntax: DisplayString
+
+AIRESPACE-WIRELESS-MIB::bsnMeshNodeEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnMeshNodeEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnMeshNodeGroup
+  attributes:
+    bsnMeshNodeRole:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.1
+      name: cisco.bsnMeshNodeRole
       syntax: EnumInteger
-    bsnAPIfInterferenceProfileState:
-      oid: .1.3.6.1.4.1.14179.2.2.16.1.2
-      name: cisco.bsnAPIfInterferenceProfileState
+    bsnMeshNodeGroup:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.2
+      name: cisco.bsnMeshNodeGroup
+      syntax: DisplayString
+    bsnMeshNodeBackhaul:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.3
+      name: cisco.bsnMeshNodeBackhaul
       syntax: EnumInteger
-    bsnAPIfNoiseProfileState:
-      oid: .1.3.6.1.4.1.14179.2.2.16.1.3
-      name: cisco.bsnAPIfNoiseProfileState
+    bsnMeshNodeBackhaulPAP:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.4
+      name: cisco.bsnMeshNodeBackhaulPAP
       syntax: EnumInteger
-    bsnAPIfCoverageProfileState:
-      oid: .1.3.6.1.4.1.14179.2.2.16.1.24
-      name: cisco.bsnAPIfCoverageProfileState
+    bsnMeshNodeBackhaulRAP:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.5
+      name: cisco.bsnMeshNodeBackhaulRAP
       syntax: EnumInteger
+    bsnMeshNodeDataRate:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.6
+      name: cisco.bsnMeshNodeDataRate
+      syntax: BandwidthBits # Integer32
+      metric: gauge
+    bsnMeshNodeChannel:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.7
+      name: cisco.bsnMeshNodeChannel
+      syntax: IntegerAsID
+    bsnMeshNodeRoutingState:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.8
+      name: cisco.bsnMeshNodeRoutingState
+      syntax: EnumInteger
+    bsnMeshNodeMalformedNeighPackets:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.9
+      name: cisco.bsnMeshNodeMalformedNeighPackets
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodePoorNeighSnr:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.10
+      name: cisco.bsnMeshNodePoorNeighSnr
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeBlacklistPackets:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.11
+      name: cisco.bsnMeshNodeBlacklistPackets
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeInsufficientMemory:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.12
+      name: cisco.bsnMeshNodeInsufficientMemory
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeRxNeighReq:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.13
+      name: cisco.bsnMeshNodeRxNeighReq
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeRxNeighRsp:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.14
+      name: cisco.bsnMeshNodeRxNeighRsp
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeTxNeighReq:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.15
+      name: cisco.bsnMeshNodeTxNeighReq
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeTxNeighRsp:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.16
+      name: cisco.bsnMeshNodeTxNeighRsp
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeParentChanges:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.17
+      name: cisco.bsnMeshNodeParentChanges
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeNeighTimeout:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.18
+      name: cisco.bsnMeshNodeNeighTimeout
+      syntax: Counter32
+      metric: counter
+    bsnMeshNodeParentMacAddress:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.19
+      name: cisco.bsnMeshNodeParentMacAddress
+      syntax: MacAddressNoSuffix
+    bsnMeshNodeAPType:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.20
+      name: cisco.bsnMeshNodeAPType
+      syntax: EnumInteger
+    bsnMeshNodeEthernetBridge:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.21
+      name: cisco.bsnMeshNodeEthernetBridge
+      syntax: EnumInteger
+    bsnMeshNodeHops:
+      oid: .1.3.6.1.4.1.14179.2.2.22.1.30
+      name: cisco.bsnMeshNodeHops
+      syntax: Integer32
+      metric: gauge
+
+AIRESPACE-WIRELESS-MIB::bsnMeshNeighsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnMeshNeighsEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.1
+      name: cisco.bsnMeshNeighMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnMeshNeighType
+  attributes:
+    bsnMeshNeighType:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.2
+      name: cisco.bsnMeshNeighType
+      syntax: EnumInteger
+    bsnMeshNeighState:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.3
+      name: cisco.bsnMeshNeighState
+      syntax: EnumInteger
+    bsnMeshNeighSnr:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.4
+      name: cisco.bsnMeshNeighSnr
+      syntax: SignalDBm # Integer32
+      metric: gauge
+    bsnMeshNeighSnrUp:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.5
+      name: cisco.bsnMeshNeighSnrUp
+      syntax: Integer32
+      metric: gauge
+    bsnMeshNeighSnrDown:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.6
+      name: cisco.bsnMeshNeighSnrDown
+      syntax: Integer32
+      metric: gauge
+    bsnMeshNeighLinkSnr:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.7
+      name: cisco.bsnMeshNeighLinkSnr
+      syntax: SignalDBm # Integer32
+      metric: gauge
+    bsnMeshNeighAdjustedEase:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.8
+      name: cisco.bsnMeshNeighAdjustedEase
+      syntax: Integer32
+      metric: gauge
+    bsnMeshNeighUnadjustedEase:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.9
+      name: cisco.bsnMeshNeighUnadjustedEase
+      syntax: Integer32
+      metric: gauge
+    bsnMeshNeighRapEase:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.10
+      name: cisco.bsnMeshNeighRapEase
+      syntax: Integer32
+      metric: gauge
+    bsnMeshNeighTxParent:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.11
+      name: cisco.bsnMeshNeighTxParent
+      syntax: Counter32
+      metric: counter
+    bsnMeshNeighRxParent:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.12
+      name: cisco.bsnMeshNeighRxParent
+      syntax: Counter32
+      metric: counter
+    bsnMeshNeighPoorSnr:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.13
+      name: cisco.bsnMeshNeighPoorSnr
+      syntax: Counter32
+      metric: counter
+    bsnMeshNeighLastUpdate:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.14
+      name: cisco.bsnMeshNeighLastUpdate
+      syntax: Integer32
+      metric: counter
+    bsnMeshNeighParentChange:
+      oid: .1.3.6.1.4.1.14179.2.2.23.1.20
+      name: cisco.bsnMeshNeighParentChange
+      syntax: Integer32
+      metric: counter
+
+AIRESPACE-WIRELESS-MIB::bsnAPIfRadarChannelStatisticsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnAPIfRadarChannelStatisticsEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.2.1.1.1
+      name: cisco.bsnAPDot3MacAddress
+      syntax: MacAddressNoSuffix
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.14179.2.2.2.1.1
+      name: cisco.bsnAPIfSlotId
+      syntax: UnsignedAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.2.24.1.1
+      name: cisco.bsnAPIfRadarDetectedChannelNumber
+      syntax: IntegerAsID
+  discovery_attribute: bsnAPIfRadarSignalLastHeard
+  attributes:
+    bsnAPIfRadarSignalLastHeard:
+      oid: .1.3.6.1.4.1.14179.2.2.24.1.2
+      name: cisco.bsnAPIfRadarSignalLastHeard
+      syntax: TicksSec
+      metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11Config:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11Config
+#   discovery_attribute: bsnGlobalDot11PrivacyOptionImplemented
+#   attributes:
+#     bsnGlobalDot11PrivacyOptionImplemented:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.1
+#       name: cisco.bsnGlobalDot11PrivacyOptionImplemented
+#       syntax: EnumInteger
+#     bsnGlobalDot11AuthenticationResponseTimeOut:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.2
+#       name: cisco.bsnGlobalDot11AuthenticationResponseTimeOut
+#       syntax: Unsigned32
+#       metric: gauge
+#     bsnGlobalDot11MultiDomainCapabilityImplemented:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.3
+#       name: cisco.bsnGlobalDot11MultiDomainCapabilityImplemented
+#       syntax: EnumInteger
+#     bsnGlobalDot11MultiDomainCapabilityEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.4
+#       name: cisco.bsnGlobalDot11MultiDomainCapabilityEnabled
+#       syntax: EnumInteger
+#     bsnGlobalDot11CountryIndex:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.5
+#       name: cisco.bsnGlobalDot11CountryIndex
+#       syntax: EnumInteger
+#     bsnGlobalDot11LoadBalancing:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.6
+#       name: cisco.bsnGlobalDot11LoadBalancing
+#       syntax: EnumInteger
+#     bsnGlobalDot11RogueTimer:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.7
+#       name: cisco.bsnGlobalDot11RogueTimer
+#       syntax: TicksSec # Integer32
+#       metric: gauge
+#     bsnPrimaryMwarForAPs:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.8
+#       name: cisco.bsnPrimaryMwarForAPs
+#       syntax: EnumInteger
+#     bsnRtpProtocolPriority:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.9
+#       name: cisco.bsnRtpProtocolPriority
+#       syntax: EnumInteger
+#     bsnSystemCurrentTime:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.10
+#       name: cisco.bsnSystemCurrentTime
+#       syntax: DisplayString
+#     bsnUpdateSystemTime:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.11
+#       name: cisco.bsnUpdateSystemTime
+#       syntax: DisplayString
+#     bsnOperatingTemperatureEnvironment:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.12
+#       name: cisco.bsnOperatingTemperatureEnvironment
+#       syntax: EnumInteger
+#     bsnSensorTemperature:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.13
+#       name: cisco.bsnSensorTemperature
+#       syntax: TemperatureC # Integer32
+#       metric: gauge
+#     bsnTemperatureAlarmLowLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.14
+#       name: cisco.bsnTemperatureAlarmLowLimit
+#       syntax: TemperatureC # Integer32
+#       metric: gauge
+#     bsnTemperatureAlarmHighLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.15
+#       name: cisco.bsnTemperatureAlarmHighLimit
+#       syntax: TemperatureC # Integer32
+#       metric: gauge
+#     bsnVirtualGatewayAddress:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.16
+#       name: cisco.bsnVirtualGatewayAddress
+#       syntax: IpAddressNoSuffix
+#     bsnRFMobilityDomainName:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.17
+#       name: cisco.bsnRFMobilityDomainName
+#       syntax: DisplayString
+#     bsnClientWatchListFeature:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.18
+#       name: cisco.bsnClientWatchListFeature
+#       syntax: EnumInteger
+#     bsnRogueLocationDiscoveryProtocol:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.19
+#       name: cisco.bsnRogueLocationDiscoveryProtocol
+#       syntax: EnumInteger
+#     bsnRogueAutoContainFeature:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.20
+#       name: cisco.bsnRogueAutoContainFeature
+#       syntax: EnumInteger
+#     bsnOverAirProvisionApMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.21
+#       name: cisco.bsnOverAirProvisionApMode
+#       syntax: EnumInteger
+#     bsnMaximumNumberOfConcurrentLogins:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.22
+#       name: cisco.bsnMaximumNumberOfConcurrentLogins
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAutoContainRoguesAdvertisingSsid:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.23
+#       name: cisco.bsnAutoContainRoguesAdvertisingSsid
+#       syntax: EnumInteger
+#     bsnAutoContainAdhocNetworks:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.24
+#       name: cisco.bsnAutoContainAdhocNetworks
+#       syntax: EnumInteger
+#     bsnAutoContainTrustedClientsOnRogueAps:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.25
+#       name: cisco.bsnAutoContainTrustedClientsOnRogueAps
+#       syntax: EnumInteger
+#     bsnValidateRogueClientsAgainstAAA:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.26
+#       name: cisco.bsnValidateRogueClientsAgainstAAA
+#       syntax: EnumInteger
+#     bsnSystemTimezoneDelta:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.27
+#       name: cisco.bsnSystemTimezoneDelta
+#       syntax: Integer32
+#     bsnSystemTimezoneDaylightSavings:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.28
+#       name: cisco.bsnSystemTimezoneDaylightSavings
+#       syntax: EnumInteger
+#     bsnAllowAuthorizeApAgainstAAA:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.29
+#       name: cisco.bsnAllowAuthorizeApAgainstAAA
+#       syntax: EnumInteger
+#     bsnSystemTimezoneDeltaMinutes:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.30
+#       name: cisco.bsnSystemTimezoneDeltaMinutes
+#       syntax: Integer32
+#     bsnApFallbackEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.31
+#       name: cisco.bsnApFallbackEnabled
+#       syntax: EnumInteger
+#     bsnAppleTalkEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.32
+#       name: cisco.bsnAppleTalkEnabled
+#       syntax: EnumInteger
+#     bsnRFNetworkName:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.45
+#       name: cisco.bsnRFNetworkName
+#       syntax: DisplayString
+#     bsnFastSSIDChangeFeature:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.46
+#       name: cisco.bsnFastSSIDChangeFeature
+#       syntax: EnumInteger
+#     bsnAcceptSelfSignedCertificate:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.48
+#       name: cisco.bsnAcceptSelfSignedCertificate
+#       syntax: EnumInteger
+#     bsnSystemClockTime:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.49
+#       name: cisco.bsnSystemClockTime
+#       syntax: TicksSec
+#       metric: counter
+
+# AIRESPACE-WIRELESS-MIB::bsnTrustedApPolicyConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnTrustedApPolicyConfig
+#   discovery_attribute: bsnPolicyForMisconfiguredAps
+#   attributes:
+#     bsnPolicyForMisconfiguredAps:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.1
+#       name: cisco.bsnPolicyForMisconfiguredAps
+#       syntax: EnumInteger
+#     bsnEncryptionPolicyEnforced:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.2
+#       name: cisco.bsnEncryptionPolicyEnforced
+#       syntax: EnumInteger
+#     bsnPreamblePolicyEnforced:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.3
+#       name: cisco.bsnPreamblePolicyEnforced
+#       syntax: EnumInteger
+#     bsnDot11ModePolicyEnforced:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.4
+#       name: cisco.bsnDot11ModePolicyEnforced
+#       syntax: EnumInteger
+#     bsnRadioTypePolicyEnforced:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.5
+#       name: cisco.bsnRadioTypePolicyEnforced
+#       syntax: EnumInteger
+#     bsnValidateSsidForTrustedAp:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.6
+#       name: cisco.bsnValidateSsidForTrustedAp
+#       syntax: EnumInteger
+#     bsnAlertIfTrustedApMissing:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.7
+#       name: cisco.bsnAlertIfTrustedApMissing
+#       syntax: EnumInteger
+#     bsnTrustedApEntryExpirationTimeout:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.40.8
+#       name: cisco.bsnTrustedApEntryExpirationTimeout
+#       syntax: TicksSec # Integer32
+
+# AIRESPACE-WIRELESS-MIB::bsnClientExclusionPolicyConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnClientExclusionPolicyConfig
+#   discovery_attribute: bsnExcessive80211AssocFailures
+#   attributes:
+#     bsnExcessive80211AssocFailures:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.1
+#       name: cisco.bsnExcessive80211AssocFailures
+#       syntax: EnumInteger
+#     bsnExcessive80211AuthFailures:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.2
+#       name: cisco.bsnExcessive80211AuthFailures
+#       syntax: EnumInteger
+#     bsnExcessive8021xAuthFailures:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.3
+#       name: cisco.bsnExcessive8021xAuthFailures
+#       syntax: EnumInteger
+#     bsnExternalPolicyServerFailures:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.4
+#       name: cisco.bsnExternalPolicyServerFailures
+#       syntax: EnumInteger
+#     bsnExcessiveWebAuthFailures:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.5
+#       name: cisco.bsnExcessiveWebAuthFailures
+#       syntax: EnumInteger
+#     bsnIPTheftORReuse:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.6
+#       name: cisco.bsnIPTheftORReuse
+#       syntax: EnumInteger
+#     bsnExcessive8021xTimeout:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.41.7
+#       name: cisco.bsnExcessive8021xTimeout
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnSignatureConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnSignatureConfig
+#   discovery_attribute: bsnSignatureCheckState
+#   attributes:
+#     bsnSignatureCheckState:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.5
+#       name: cisco.bsnSignatureCheckState
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnStandardSignatureEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnStandardSignatureEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.1
+#       name: cisco.bsnStandardSignaturePrecedence
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnStandardSignatureName
+#   attributes:
+#     bsnStandardSignatureName:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.2
+#       name: cisco.bsnStandardSignatureName
+#       syntax: DisplayString
+#     bsnStandardSignatureDescription:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.3
+#       name: cisco.bsnStandardSignatureDescription
+#       syntax: DisplayString
+#     bsnStandardSignatureFrameType:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.4
+#       name: cisco.bsnStandardSignatureFrameType
+#       syntax: EnumInteger
+#     bsnStandardSignatureAction:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.5
+#       name: cisco.bsnStandardSignatureAction
+#       syntax: EnumInteger
+#     bsnStandardSignatureState:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.6
+#       name: cisco.bsnStandardSignatureState
+#       syntax: EnumInteger
+#     bsnStandardSignatureFrequency:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.7
+#       name: cisco.bsnStandardSignatureFrequency
+#       syntax: Unsigned32
+#     bsnStandardSignatureQuietTime:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.8
+#       name: cisco.bsnStandardSignatureQuietTime
+#       syntax: TicksSec # Unsigned32
+#     bsnStandardSignatureVersion:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.9
+#       name: cisco.bsnStandardSignatureVersion
+#       syntax: Unsigned32
+#     bsnStandardSignatureConfigType:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.10
+#       name: cisco.bsnStandardSignatureConfigType
+#       syntax: EnumInteger
+#     bsnStandardSignatureEnable:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.11
+#       name: cisco.bsnStandardSignatureEnable
+#       syntax: TruthValue
+#     bsnStandardSignatureMacInfo:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.12
+#       name: cisco.bsnStandardSignatureMacInfo
+#       syntax: EnumInteger
+#     bsnStandardSignatureMacFreq:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.13
+#       name: cisco.bsnStandardSignatureMacFreq
+#       syntax: Unsigned32
+#     bsnStandardSignatureInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.21
+#       name: cisco.bsnStandardSignatureInterval
+#       syntax: Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnStandardSignaturePatternEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnStandardSignaturePatternEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.1.1.1
+#       name: cisco.bsnStandardSignaturePrecedence
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.2.1.1
+#       name: cisco.bsnStandardSignaturePatternIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnStandardSignaturePatternOffset
+#   attributes:
+#     bsnStandardSignaturePatternOffset:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.2.1.2
+#       name: cisco.bsnStandardSignaturePatternOffset
+#       syntax: Unsigned32
+#     bsnStandardSignaturePatternString:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.2.1.3
+#       name: cisco.bsnStandardSignaturePatternString
+#       syntax: DisplayString
+#     bsnStandardSignaturePatternMask:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.2.1.4
+#       name: cisco.bsnStandardSignaturePatternMask
+#       syntax: DisplayString
+#     bsnStandardSignaturePatternOffSetStart:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.2.1.5
+#       name: cisco.bsnStandardSignaturePatternOffSetStart
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnCustomSignatureEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnCustomSignatureEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.1
+#       name: cisco.bsnCustomSignaturePrecedence
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnCustomSignatureName
+#   attributes:
+#     bsnCustomSignatureName:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.2
+#       name: cisco.bsnCustomSignatureName
+#       syntax: DisplayString
+#     bsnCustomSignatureDescription:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.3
+#       name: cisco.bsnCustomSignatureDescription
+#       syntax: DisplayString
+#     bsnCustomSignatureFrameType:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.4
+#       name: cisco.bsnCustomSignatureFrameType
+#       syntax: EnumInteger
+#     bsnCustomSignatureAction:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.5
+#       name: cisco.bsnCustomSignatureAction
+#       syntax: EnumInteger
+#     bsnCustomSignatureState:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.6
+#       name: cisco.bsnCustomSignatureState
+#       syntax: EnumInteger
+#     bsnCustomSignatureFrequency:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.7
+#       name: cisco.bsnCustomSignatureFrequency
+#       syntax: Unsigned32
+#     bsnCustomSignatureQuietTime:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.8
+#       name: cisco.bsnCustomSignatureQuietTime
+#       syntax: TicksSec # Unsigned32
+#     bsnCustomSignatureVersion:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.9
+#       name: cisco.bsnCustomSignatureVersion
+#       syntax: Unsigned32
+#     bsnCustomSignatureConfigType:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.10
+#       name: cisco.bsnCustomSignatureConfigType
+#       syntax: EnumInteger
+#     bsnCustomSignatureEnable:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.11
+#       name: cisco.bsnCustomSignatureEnable
+#       syntax: TruthValue
+#     bsnCustomSignatureMacInfo:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.12
+#       name: cisco.bsnCustomSignatureMacInfo
+#       syntax: EnumInteger
+#     bsnCustomSignatureMacFreq:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.13
+#       name: cisco.bsnCustomSignatureMacFreq
+#       syntax: Unsigned32
+#     bsnCustomSignatureInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.21
+#       name: cisco.bsnCustomSignatureInterval
+#       syntax: Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnCustomSignaturePatternEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnCustomSignaturePatternEntry
+#   index:
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.3.1.1
+#       name: cisco.bsnCustomSignaturePrecedence
+#       syntax: UnsignedAsID
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.4.1.1
+#       name: cisco.bsnCustomSignaturePatternIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnCustomSignaturePatternOffset
+#   attributes:
+#     bsnCustomSignaturePatternOffset:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.4.1.2
+#       name: cisco.bsnCustomSignaturePatternOffset
+#       syntax: Unsigned32
+#     bsnCustomSignaturePatternString:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.4.1.3
+#       name: cisco.bsnCustomSignaturePatternString
+#       syntax: DisplayString
+#     bsnCustomSignaturePatternMask:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.4.1.4
+#       name: cisco.bsnCustomSignaturePatternMask
+#       syntax: DisplayString
+#     bsnCustomSignaturePatternOffSetStart:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.42.4.1.5
+#       name: cisco.bsnCustomSignaturePatternOffSetStart
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnRfIdTagConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRfIdTagConfig
+#   discovery_attribute: bsnRfIdTagStatus
+#   attributes:
+#     bsnRfIdTagStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.43.1
+#       name: cisco.bsnRfIdTagStatus
+#       syntax: EnumInteger
+#     bsnRfIdTagDataTimeout:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.43.2
+#       name: cisco.bsnRfIdTagDataTimeout
+#       syntax: TicksSec # Unsigned32
+#     bsnRfIdTagAutoTimeoutStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.43.3
+#       name: cisco.bsnRfIdTagAutoTimeoutStatus
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnAPNeighborAuthConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPNeighborAuthConfig
+#   discovery_attribute: bsnAPNeighborAuthStatus
+#   attributes:
+#     bsnAPNeighborAuthStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.44.1
+#       name: cisco.bsnAPNeighborAuthStatus
+#       syntax: EnumInteger
+#     bsnAPNeighborAuthAlarmThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.44.2
+#       name: cisco.bsnAPNeighborAuthAlarmThreshold
+#       syntax: Integer32
+
+# AIRESPACE-WIRELESS-MIB::bsnBridgingPolicyConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnBridgingPolicyConfig
+#   discovery_attribute: bsnBridgingZeroTouchConfig
+#   attributes:
+#     bsnBridgingZeroTouchConfig:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.47.1
+#       name: cisco.bsnBridgingZeroTouchConfig
+#       syntax: EnumInteger
+#     bsnBridgingSharedSecretKey:
+#       oid: .1.3.6.1.4.1.14179.2.3.1.47.2
+#       name: cisco.bsnBridgingSharedSecretKey
+#       syntax: OctetString
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11bConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11bConfig
+#   discovery_attribute: bsnGlobalDot11bNetworkStatus
+#   attributes:
+#     bsnGlobalDot11bNetworkStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.1
+#       name: cisco.bsnGlobalDot11bNetworkStatus
+#       syntax: EnumInteger
+#     bsnGlobalDot11bBeaconPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.2
+#       name: cisco.bsnGlobalDot11bBeaconPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11bDynamicChannelAssignment:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.3
+#       name: cisco.bsnGlobalDot11bDynamicChannelAssignment
+#       syntax: EnumInteger
+#     bsnGlobalDot11bCurrentChannel:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.4
+#       name: cisco.bsnGlobalDot11bCurrentChannel
+#       syntax: IntegerAsID
+#     bsnGlobalDot11bDynamicChannelUpdateInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.5
+#       name: cisco.bsnGlobalDot11bDynamicChannelUpdateInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnGlobalDot11bInputsForDCA:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.6
+#       name: cisco.bsnGlobalDot11bInputsForDCA
+#       syntax: Unsigned32
+#     bsnGlobalDot11bChannelUpdateCmdInvoke:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.7
+#       name: cisco.bsnGlobalDot11bChannelUpdateCmdInvoke
+#       syntax: EnumInteger
+#     bsnGlobalDot11bChannelUpdateCmdStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.8
+#       name: cisco.bsnGlobalDot11bChannelUpdateCmdStatus
+#       syntax: Integer32
+#     bsnGlobalDot11bDynamicTransmitPowerControl:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.9
+#       name: cisco.bsnGlobalDot11bDynamicTransmitPowerControl
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDynamicTxPowerControlInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.10
+#       name: cisco.bsnGlobalDot11bDynamicTxPowerControlInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnGlobalDot11bCurrentTxPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.11
+#       name: cisco.bsnGlobalDot11bCurrentTxPowerLevel
+#       syntax: Integer32
+#     bsnGlobalDot11bInputsForDTP:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.12
+#       name: cisco.bsnGlobalDot11bInputsForDTP
+#       syntax: Unsigned32
+#     bsnGlobalDot11bPowerUpdateCmdInvoke:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.13
+#       name: cisco.bsnGlobalDot11bPowerUpdateCmdInvoke
+#       syntax: EnumInteger
+#     bsnGlobalDot11bPowerUpdateCmdStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.14
+#       name: cisco.bsnGlobalDot11bPowerUpdateCmdStatus
+#       syntax: Integer32
+#     bsnGlobalDot11bDataRate1Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.15
+#       name: cisco.bsnGlobalDot11bDataRate1Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate2Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.16
+#       name: cisco.bsnGlobalDot11bDataRate2Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate5AndHalfMhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.17
+#       name: cisco.bsnGlobalDot11bDataRate5AndHalfMhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate11Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.18
+#       name: cisco.bsnGlobalDot11bDataRate11Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bShortPreamble:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.19
+#       name: cisco.bsnGlobalDot11bShortPreamble
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDot11gSupport:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.20
+#       name: cisco.bsnGlobalDot11bDot11gSupport
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate6Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.21
+#       name: cisco.bsnGlobalDot11bDataRate6Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate9Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.22
+#       name: cisco.bsnGlobalDot11bDataRate9Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate12Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.23
+#       name: cisco.bsnGlobalDot11bDataRate12Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate18Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.24
+#       name: cisco.bsnGlobalDot11bDataRate18Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate24Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.25
+#       name: cisco.bsnGlobalDot11bDataRate24Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate36Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.26
+#       name: cisco.bsnGlobalDot11bDataRate36Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate48Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.27
+#       name: cisco.bsnGlobalDot11bDataRate48Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDataRate54Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.28
+#       name: cisco.bsnGlobalDot11bDataRate54Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11bPicoCellMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.29
+#       name: cisco.bsnGlobalDot11bPicoCellMode
+#       syntax: EnumInteger
+#     bsnGlobalDot11bFastRoamingMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.30
+#       name: cisco.bsnGlobalDot11bFastRoamingMode
+#       syntax: EnumInteger
+#     bsnGlobalDot11bFastRoamingVoipMinRate:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.31
+#       name: cisco.bsnGlobalDot11bFastRoamingVoipMinRate
+#       syntax: EnumInteger
+#     bsnGlobalDot11bFastRoamingVoipPercentage:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.32
+#       name: cisco.bsnGlobalDot11bFastRoamingVoipPercentage
+#       syntax: EnumInteger
+#     bsnGlobalDot11b80211eMaxBandwidth:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.33
+#       name: cisco.bsnGlobalDot11b80211eMaxBandwidth
+#       syntax: Integer32
+#     bsnGlobalDot11bDTPCSupport:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.34
+#       name: cisco.bsnGlobalDot11bDTPCSupport
+#       syntax: EnumInteger
+#     bsnGlobalDot11bRxSopThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.1.35
+#       name: cisco.bsnGlobalDot11bRxSopThreshold
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11bPhy:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11bPhy
+#   discovery_attribute: bsnGlobalDot11bMediumOccupancyLimit
+#   attributes:
+#     bsnGlobalDot11bMediumOccupancyLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.1
+#       name: cisco.bsnGlobalDot11bMediumOccupancyLimit
+#       syntax: Integer32
+#     bsnGlobalDot11bCFPPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.2
+#       name: cisco.bsnGlobalDot11bCFPPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11bCFPMaxDuration:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.3
+#       name: cisco.bsnGlobalDot11bCFPMaxDuration
+#       syntax: Integer32
+#     bsnGlobalDot11bCFPollable:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.5
+#       name: cisco.bsnGlobalDot11bCFPollable
+#       syntax: EnumInteger
+#     bsnGlobalDot11bCFPollRequest:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.6
+#       name: cisco.bsnGlobalDot11bCFPollRequest
+#       syntax: EnumInteger
+#     bsnGlobalDot11bDTIMPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.7
+#       name: cisco.bsnGlobalDot11bDTIMPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11bMaximumTransmitPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.8
+#       name: cisco.bsnGlobalDot11bMaximumTransmitPowerLevel
+#       syntax: SignalDBm # Integer32
+#       metric: gauge
+#     bsnGlobalDot11bFirstChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.9
+#       name: cisco.bsnGlobalDot11bFirstChannelNumber
+#       syntax: IntegerAsID
+#     bsnGlobalDot11bNumberofChannels:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.10
+#       name: cisco.bsnGlobalDot11bNumberofChannels
+#       syntax: Integer32
+#     bsnGlobalDot11bRTSThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.11
+#       name: cisco.bsnGlobalDot11bRTSThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11bShortRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.12
+#       name: cisco.bsnGlobalDot11bShortRetryLimit
+#       syntax: Integer32
+#     bsnGlobalDot11bLongRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.13
+#       name: cisco.bsnGlobalDot11bLongRetryLimit
+#       syntax: Integer32
+#     bsnGlobalDot11bFragmentationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.14
+#       name: cisco.bsnGlobalDot11bFragmentationThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11bMaxTransmitMSDULifetime:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.15
+#       name: cisco.bsnGlobalDot11bMaxTransmitMSDULifetime
+#       syntax: Unsigned32
+#     bsnGlobalDot11bMaxReceiveLifetime:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.16
+#       name: cisco.bsnGlobalDot11bMaxReceiveLifetime
+#       syntax: Unsigned32
+#     bsnGlobalDot11bEDThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.17
+#       name: cisco.bsnGlobalDot11bEDThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11bChannelAgilityEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.18
+#       name: cisco.bsnGlobalDot11bChannelAgilityEnabled
+#       syntax: EnumInteger
+#     bsnGlobalDot11bPBCCOptionImplemented:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.19
+#       name: cisco.bsnGlobalDot11bPBCCOptionImplemented
+#       syntax: EnumInteger
+#     bsnGlobalDot11bShortPreambleOptionImplemented:
+#       oid: .1.3.6.1.4.1.14179.2.3.2.2.20
+#       name: cisco.bsnGlobalDot11bShortPreambleOptionImplemented
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11aConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11aConfig
+#   discovery_attribute: bsnGlobalDot11aNetworkStatus
+#   attributes:
+#     bsnGlobalDot11aNetworkStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.1
+#       name: cisco.bsnGlobalDot11aNetworkStatus
+#       syntax: EnumInteger
+#     bsnGlobalDot11aLowBandNetwork:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.2
+#       name: cisco.bsnGlobalDot11aLowBandNetwork
+#       syntax: EnumInteger
+#     bsnGlobalDot11aMediumBandNetwork:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.3
+#       name: cisco.bsnGlobalDot11aMediumBandNetwork
+#       syntax: EnumInteger
+#     bsnGlobalDot11aHighBandNetwork:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.4
+#       name: cisco.bsnGlobalDot11aHighBandNetwork
+#       syntax: EnumInteger
+#     bsnGlobalDot11aBeaconPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.5
+#       name: cisco.bsnGlobalDot11aBeaconPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11aDynamicChannelAssignment:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.6
+#       name: cisco.bsnGlobalDot11aDynamicChannelAssignment
+#       syntax: EnumInteger
+#     bsnGlobalDot11aCurrentChannel:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.7
+#       name: cisco.bsnGlobalDot11aCurrentChannel
+#       syntax: IntegerAsID
+#     bsnGlobalDot11aDynamicChannelUpdateInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.8
+#       name: cisco.bsnGlobalDot11aDynamicChannelUpdateInterval
+#       syntax: Unsigned32
+#     bsnGlobalDot11aInputsForDCA:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.9
+#       name: cisco.bsnGlobalDot11aInputsForDCA
+#       syntax: Unsigned32
+#     bsnGlobalDot11aChannelUpdateCmdInvoke:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.10
+#       name: cisco.bsnGlobalDot11aChannelUpdateCmdInvoke
+#       syntax: EnumInteger
+#     bsnGlobalDot11aChannelUpdateCmdStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.11
+#       name: cisco.bsnGlobalDot11aChannelUpdateCmdStatus
+#       syntax: Integer32
+#     bsnGlobalDot11aDynamicTransmitPowerControl:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.12
+#       name: cisco.bsnGlobalDot11aDynamicTransmitPowerControl
+#       syntax: EnumInteger
+#     bsnGlobalDot11aCurrentTxPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.13
+#       name: cisco.bsnGlobalDot11aCurrentTxPowerLevel
+#       syntax: Integer32
+#     bsnGlobalDot11aDynamicTxPowerControlInterval:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.14
+#       name: cisco.bsnGlobalDot11aDynamicTxPowerControlInterval
+#       syntax: Unsigned32
+#     bsnGlobalDot11aInputsForDTP:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.15
+#       name: cisco.bsnGlobalDot11aInputsForDTP
+#       syntax: Unsigned32
+#     bsnGlobalDot11aPowerUpdateCmdInvoke:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.16
+#       name: cisco.bsnGlobalDot11aPowerUpdateCmdInvoke
+#       syntax: EnumInteger
+#     bsnGlobalDot11aPowerUpdateCmdStatus:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.17
+#       name: cisco.bsnGlobalDot11aPowerUpdateCmdStatus
+#       syntax: Integer32
+#     bsnGlobalDot11aDataRate6Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.19
+#       name: cisco.bsnGlobalDot11aDataRate6Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate9Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.20
+#       name: cisco.bsnGlobalDot11aDataRate9Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate12Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.21
+#       name: cisco.bsnGlobalDot11aDataRate12Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate18Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.22
+#       name: cisco.bsnGlobalDot11aDataRate18Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate24Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.23
+#       name: cisco.bsnGlobalDot11aDataRate24Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate36Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.24
+#       name: cisco.bsnGlobalDot11aDataRate36Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate48Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.25
+#       name: cisco.bsnGlobalDot11aDataRate48Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDataRate54Mhz:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.26
+#       name: cisco.bsnGlobalDot11aDataRate54Mhz
+#       syntax: EnumInteger
+#     bsnGlobalDot11aPicoCellMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.27
+#       name: cisco.bsnGlobalDot11aPicoCellMode
+#       syntax: EnumInteger
+#     bsnGlobalDot11aFastRoamingMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.28
+#       name: cisco.bsnGlobalDot11aFastRoamingMode
+#       syntax: EnumInteger
+#     bsnGlobalDot11aFastRoamingVoipMinRate:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.29
+#       name: cisco.bsnGlobalDot11aFastRoamingVoipMinRate
+#       syntax: EnumInteger
+#     bsnGlobalDot11aFastRoamingVoipPercentage:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.30
+#       name: cisco.bsnGlobalDot11aFastRoamingVoipPercentage
+#       syntax: EnumInteger
+#     bsnGlobalDot11a80211eMaxBandwidth:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.31
+#       name: cisco.bsnGlobalDot11a80211eMaxBandwidth
+#       syntax: Percent100 # Integer32
+#     bsnGlobalDot11aDTPCSupport:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.32
+#       name: cisco.bsnGlobalDot11aDTPCSupport
+#       syntax: EnumInteger
+#     bsnGlobalDot11aRxSopThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.1.33
+#       name: cisco.bsnGlobalDot11aRxSopThreshold
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11aPhy:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11aPhy
+#   discovery_attribute: bsnGlobalDot11aMediumOccupancyLimit
+#   attributes:
+#     bsnGlobalDot11aMediumOccupancyLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.1
+#       name: cisco.bsnGlobalDot11aMediumOccupancyLimit
+#       syntax: Integer32
+#     bsnGlobalDot11aCFPPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.2
+#       name: cisco.bsnGlobalDot11aCFPPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11aCFPMaxDuration:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.3
+#       name: cisco.bsnGlobalDot11aCFPMaxDuration
+#       syntax: Integer32
+#     bsnGlobalDot11aCFPollable:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.5
+#       name: cisco.bsnGlobalDot11aCFPollable
+#       syntax: EnumInteger
+#     bsnGlobalDot11aCFPollRequest:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.6
+#       name: cisco.bsnGlobalDot11aCFPollRequest
+#       syntax: EnumInteger
+#     bsnGlobalDot11aDTIMPeriod:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.7
+#       name: cisco.bsnGlobalDot11aDTIMPeriod
+#       syntax: Integer32
+#     bsnGlobalDot11aMaximumTransmitPowerLevel:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.8
+#       name: cisco.bsnGlobalDot11aMaximumTransmitPowerLevel
+#       syntax: Integer32
+#     bsnGlobalDot11aFirstChannelNumber:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.9
+#       name: cisco.bsnGlobalDot11aFirstChannelNumber
+#       syntax: Integer32
+#     bsnGlobalDot11aNumberofChannels:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.10
+#       name: cisco.bsnGlobalDot11aNumberofChannels
+#       syntax: Integer32
+#     bsnGlobalDot11aRTSThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.11
+#       name: cisco.bsnGlobalDot11aRTSThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11aShortRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.12
+#       name: cisco.bsnGlobalDot11aShortRetryLimit
+#       syntax: Integer32
+#     bsnGlobalDot11aLongRetryLimit:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.13
+#       name: cisco.bsnGlobalDot11aLongRetryLimit
+#       syntax: Integer32
+#     bsnGlobalDot11aFragmentationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.14
+#       name: cisco.bsnGlobalDot11aFragmentationThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11aMaxTransmitMSDULifetime:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.15
+#       name: cisco.bsnGlobalDot11aMaxTransmitMSDULifetime
+#       syntax: Unsigned32
+#     bsnGlobalDot11aMaxReceiveLifetime:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.16
+#       name: cisco.bsnGlobalDot11aMaxReceiveLifetime
+#       syntax: Unsigned32
+#     bsnGlobalDot11aTIThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.17
+#       name: cisco.bsnGlobalDot11aTIThreshold
+#       syntax: Integer32
+#     bsnGlobalDot11aChannelAgilityEnabled:
+#       oid: .1.3.6.1.4.1.14179.2.3.3.2.18
+#       name: cisco.bsnGlobalDot11aChannelAgilityEnabled
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnGlobalDot11hConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnGlobalDot11hConfig
+#   discovery_attribute: bsnGlobalDot11hPowerConstraint
+#   attributes:
+#     bsnGlobalDot11hPowerConstraint:
+#       oid: .1.3.6.1.4.1.14179.2.3.4.1.1
+#       name: cisco.bsnGlobalDot11hPowerConstraint
+#       syntax: Integer32
+#     bsnGlobalDot11hChannelSwitchEnable:
+#       oid: .1.3.6.1.4.1.14179.2.3.4.1.2
+#       name: cisco.bsnGlobalDot11hChannelSwitchEnable
+#       syntax: EnumInteger
+#     bsnGlobalDot11hChannelSwitchMode:
+#       oid: .1.3.6.1.4.1.14179.2.3.4.1.3
+#       name: cisco.bsnGlobalDot11hChannelSwitchMode
+#       syntax: EnumInteger
+
+AIRESPACE-WIRELESS-MIB::bsnGlobalDot11SystemInfo:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnGlobalDot11SystemInfo
+  discovery_attribute: bsnGlobalDot11SystemMobileStations
+  attributes:
+    bsnGlobalDot11SystemMobileStations:
+      oid: .1.3.6.1.4.1.14179.2.3.5.1.1
+      name: cisco.bsnGlobalDot11SystemMobileStations
+      syntax: Integer32
+      metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11a:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11a
+#   discovery_attribute: bsnRrmDot11aSetFactoryDefault
+#   attributes:
+#     bsnRrmDot11aSetFactoryDefault:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.7
+#       name: cisco.bsnRrmDot11aSetFactoryDefault
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11aGroup:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11aGroup
+#   discovery_attribute: bsnRrmDot11aGlobalAutomaticGrouping
+#   attributes:
+#     bsnRrmDot11aGlobalAutomaticGrouping:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.1
+#       name: cisco.bsnRrmDot11aGlobalAutomaticGrouping
+#       syntax: EnumInteger
+#     bsnRrmDot11aGroupLeaderMacAddr:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.2
+#       name: cisco.bsnRrmDot11aGroupLeaderMacAddr
+#       syntax: MacAddressNoSuffix
+#     bsnRrmIsDot11aGroupLeader:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.3
+#       name: cisco.bsnRrmIsDot11aGroupLeader
+#       syntax: EnumInteger
+#     bsnRrmDot11aGroupLastUpdateTime:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.4
+#       name: cisco.bsnRrmDot11aGroupLastUpdateTime
+#       syntax: Unsigned32
+#     bsnRrmDot11aGlobalGroupInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.5
+#       name: cisco.bsnRrmDot11aGlobalGroupInterval
+#       syntax: TicksSec # Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnWrasDot11aGroupEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnWrasDot11aGroupEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.9.1.1
+#       name: cisco.bsnWrasDot11aPeerMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnWrasDot11aPeerIpAddress
+#   attributes:
+#     bsnWrasDot11aPeerIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.1.9.1.21
+#       name: cisco.bsnWrasDot11aPeerIpAddress
+#       syntax: IpAddressNoSuffix
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11aAPDefault:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11aAPDefault
+#   discovery_attribute: bsnRrmDot11aForeignInterferenceThreshold
+#   attributes:
+#     bsnRrmDot11aForeignInterferenceThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.1
+#       name: cisco.bsnRrmDot11aForeignInterferenceThreshold
+#       syntax: Integer32
+#     bsnRrmDot11aForeignNoiseThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.2
+#       name: cisco.bsnRrmDot11aForeignNoiseThreshold
+#       syntax: Integer32
+#     bsnRrmDot11aRFUtilizationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.3
+#       name: cisco.bsnRrmDot11aRFUtilizationThreshold
+#       syntax: Integer32
+#     bsnRrmDot11aThroughputThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.4
+#       name: cisco.bsnRrmDot11aThroughputThreshold
+#       syntax: Unsigned32
+#     bsnRrmDot11aMobilesThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.5
+#       name: cisco.bsnRrmDot11aMobilesThreshold
+#       syntax: Integer32
+#     bsnRrmDot11aCoverageThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.6
+#       name: cisco.bsnRrmDot11aCoverageThreshold
+#       syntax: Integer32
+#     bsnRrmDot11aMobileMinExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.7
+#       name: cisco.bsnRrmDot11aMobileMinExceptionLevel
+#       syntax: Integer32
+#     bsnRrmDot11aCoverageExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.8
+#       name: cisco.bsnRrmDot11aCoverageExceptionLevel
+#       syntax: Percent100 # Integer32
+#     bsnRrmDot11aSignalMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.9
+#       name: cisco.bsnRrmDot11aSignalMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11aNoiseMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.10
+#       name: cisco.bsnRrmDot11aNoiseMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11aLoadMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.11
+#       name: cisco.bsnRrmDot11aLoadMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11aCoverageMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.12
+#       name: cisco.bsnRrmDot11aCoverageMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11aChannelMonitorList:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.13
+#       name: cisco.bsnRrmDot11aChannelMonitorList
+#       syntax: EnumInteger
+#     bsnRrmDot11aSignalTimeoutFactor:
+#       oid: .1.3.6.1.4.1.14179.2.4.1.6.14
+#       name: cisco.bsnRrmDot11aSignalTimeoutFactor
+#       syntax: TicksSec # Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11b:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11b
+#   discovery_attribute: bsnRrmDot11bSetFactoryDefault
+#   attributes:
+#     bsnRrmDot11bSetFactoryDefault:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.7
+#       name: cisco.bsnRrmDot11bSetFactoryDefault
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11bGroup:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11bGroup
+#   discovery_attribute: bsnRrmDot11bGlobalAutomaticGrouping
+#   attributes:
+#     bsnRrmDot11bGlobalAutomaticGrouping:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.1
+#       name: cisco.bsnRrmDot11bGlobalAutomaticGrouping
+#       syntax: EnumInteger
+#     bsnRrmDot11bGroupLeaderMacAddr:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.2
+#       name: cisco.bsnRrmDot11bGroupLeaderMacAddr
+#       syntax: MacAddressNoSuffix
+#     bsnRrmIsDot11bGroupLeader:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.3
+#       name: cisco.bsnRrmIsDot11bGroupLeader
+#       syntax: EnumInteger
+#     bsnRrmDot11bGroupLastUpdateTime:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.4
+#       name: cisco.bsnRrmDot11bGroupLastUpdateTime
+#       syntax: Unsigned32
+#     bsnRrmDot11bGlobalGroupInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.5
+#       name: cisco.bsnRrmDot11bGlobalGroupInterval
+#       syntax: TicksSec # Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnWrasDot11bGroupEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnWrasDot11bGroupEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.9.1.1
+#       name: cisco.bsnWrasDot11bPeerMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnWrasDot11bPeerIpAddress
+#   attributes:
+#     bsnWrasDot11bPeerIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.1.9.1.21
+#       name: cisco.bsnWrasDot11bPeerIpAddress
+#       syntax: IpAddressNoSuffix
+
+# AIRESPACE-WIRELESS-MIB::bsnRrmDot11bAPDefault:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRrmDot11bAPDefault
+#   discovery_attribute: bsnRrmDot11bForeignInterferenceThreshold
+#   attributes:
+#     bsnRrmDot11bForeignInterferenceThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.1
+#       name: cisco.bsnRrmDot11bForeignInterferenceThreshold
+#       syntax: Integer32
+#     bsnRrmDot11bForeignNoiseThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.2
+#       name: cisco.bsnRrmDot11bForeignNoiseThreshold
+#       syntax: Integer32
+#     bsnRrmDot11bRFUtilizationThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.3
+#       name: cisco.bsnRrmDot11bRFUtilizationThreshold
+#       syntax: Integer32
+#     bsnRrmDot11bThroughputThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.4
+#       name: cisco.bsnRrmDot11bThroughputThreshold
+#       syntax: Unsigned32
+#     bsnRrmDot11bMobilesThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.5
+#       name: cisco.bsnRrmDot11bMobilesThreshold
+#       syntax: Integer32
+#     bsnRrmDot11bCoverageThreshold:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.6
+#       name: cisco.bsnRrmDot11bCoverageThreshold
+#       syntax: Integer32
+#     bsnRrmDot11bMobileMinExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.7
+#       name: cisco.bsnRrmDot11bMobileMinExceptionLevel
+#       syntax: Integer32
+#     bsnRrmDot11bCoverageExceptionLevel:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.8
+#       name: cisco.bsnRrmDot11bCoverageExceptionLevel
+#       syntax: Integer32
+#     bsnRrmDot11bSignalMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.9
+#       name: cisco.bsnRrmDot11bSignalMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11bNoiseMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.10
+#       name: cisco.bsnRrmDot11bNoiseMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11bLoadMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.11
+#       name: cisco.bsnRrmDot11bLoadMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11bCoverageMeasurementInterval:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.12
+#       name: cisco.bsnRrmDot11bCoverageMeasurementInterval
+#       syntax: TicksSec # Unsigned32
+#     bsnRrmDot11bChannelMonitorList:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.13
+#       name: cisco.bsnRrmDot11bChannelMonitorList
+#       syntax: EnumInteger
+#     bsnRrmDot11bSignalTimeoutFactor:
+#       oid: .1.3.6.1.4.1.14179.2.4.2.6.14
+#       name: cisco.bsnRrmDot11bSignalTimeoutFactor
+#       syntax: Unsigned32
+
+# AIRESPACE-WIRELESS-MIB::bsnAAA:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAAA
+#   discovery_attribute: bsnRadiusAuthKeyWrapEnable
+#   attributes:
+#     bsnRadiusAuthKeyWrapEnable:
+#       oid: .1.3.6.1.4.1.14179.2.5.12
+#       name: cisco.bsnRadiusAuthKeyWrapEnable
+#       syntax: TruthValue
+#     bsnRadiusAuthCacheCredentialsLocally:
+#       oid: .1.3.6.1.4.1.14179.2.5.14
+#       name: cisco.bsnRadiusAuthCacheCredentialsLocally
+#       syntax: EnumInteger
+#     bsnAAAMacDelimiter:
+#       oid: .1.3.6.1.4.1.14179.2.5.15
+#       name: cisco.bsnAAAMacDelimiter
+#       syntax: EnumInteger
+#     bsnAAARadiusCompatibilityMode:
+#       oid: .1.3.6.1.4.1.14179.2.5.16
+#       name: cisco.bsnAAARadiusCompatibilityMode
+#       syntax: EnumInteger
+#     bsnAAARadiusCallStationIdType:
+#       oid: .1.3.6.1.4.1.14179.2.5.17
+#       name: cisco.bsnAAARadiusCallStationIdType
+#       syntax: EnumInteger
+#     bsnExternalPolicyServerAclName:
+#       oid: .1.3.6.1.4.1.14179.2.5.18
+#       name: cisco.bsnExternalPolicyServerAclName
+#       syntax: DisplayString
+#     bsnAAALocalDatabaseSize:
+#       oid: .1.3.6.1.4.1.14179.2.5.20
+#       name: cisco.bsnAAALocalDatabaseSize
+#       syntax: Integer32
+#       metric: gauge
+#     bsnAAACurrentLocalDatabaseSize:
+#       oid: .1.3.6.1.4.1.14179.2.5.21
+#       name: cisco.bsnAAACurrentLocalDatabaseSize
+#       syntax: Integer32
+#       metric: gauge
+
+# AIRESPACE-WIRELESS-MIB::bsnRadiusAuthServerEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRadiusAuthServerEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.1
+#       name: cisco.bsnRadiusAuthServerIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnRadiusAuthServerAddress
+#   attributes:
+#     bsnRadiusAuthServerAddress:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.2
+#       name: cisco.bsnRadiusAuthServerAddress
+#       syntax: IpAddressNoSuffix
+#     bsnRadiusAuthClientServerPortNumber:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.3
+#       name: cisco.bsnRadiusAuthClientServerPortNumber
+#       syntax: Integer32
+#     bsnRadiusAuthServerKey:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.4
+#       name: cisco.bsnRadiusAuthServerKey
+#       syntax: OctetString
+#     bsnRadiusAuthServerStatus:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.5
+#       name: cisco.bsnRadiusAuthServerStatus
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerKeyFormat:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.6
+#       name: cisco.bsnRadiusAuthServerKeyFormat
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerRFC3576:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.7
+#       name: cisco.bsnRadiusAuthServerRFC3576
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerIPSec:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.8
+#       name: cisco.bsnRadiusAuthServerIPSec
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerIPSecAuth:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.9
+#       name: cisco.bsnRadiusAuthServerIPSecAuth
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerIPSecEncryption:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.10
+#       name: cisco.bsnRadiusAuthServerIPSecEncryption
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerIPSecIKEPhase1:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.11
+#       name: cisco.bsnRadiusAuthServerIPSecIKEPhase1
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerIPSecIKELifetime:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.12
+#       name: cisco.bsnRadiusAuthServerIPSecIKELifetime
+#       syntax: Integer32
+#     bsnRadiusAuthServerIPSecDHGroup:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.13
+#       name: cisco.bsnRadiusAuthServerIPSecDHGroup
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerNetworkUserConfig:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.14
+#       name: cisco.bsnRadiusAuthServerNetworkUserConfig
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerMgmtUserConfig:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.15
+#       name: cisco.bsnRadiusAuthServerMgmtUserConfig
+#       syntax: EnumInteger
+#     bsnRadiusAuthServerRetransmitTimeout:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.17
+#       name: cisco.bsnRadiusAuthServerRetransmitTimeout
+#       syntax: TicksSec # Integer32
+#     bsnRadiusAuthServerKeyWrapKEKkey:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.18
+#       name: cisco.bsnRadiusAuthServerKeyWrapKEKkey
+#       syntax: OctetString
+#     bsnRadiusAuthServerKeyWrapMACKkey:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.19
+#       name: cisco.bsnRadiusAuthServerKeyWrapMACKkey
+#       syntax: OctetString
+#     bsnRadiusAuthServerKeyWrapFormat:
+#       oid: .1.3.6.1.4.1.14179.2.5.1.1.20
+#       name: cisco.bsnRadiusAuthServerKeyWrapFormat
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnRadiusAccServerEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnRadiusAccServerEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.1
+#       name: cisco.bsnRadiusAccServerIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnRadiusAccServerAddress
+#   attributes:
+#     bsnRadiusAccServerAddress:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.2
+#       name: cisco.bsnRadiusAccServerAddress
+#       syntax: IpAddressNoSuffix
+#     bsnRadiusAccClientServerPortNumber:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.3
+#       name: cisco.bsnRadiusAccClientServerPortNumber
+#       syntax: IntegerAsID
+#     bsnRadiusAccServerKey:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.4
+#       name: cisco.bsnRadiusAccServerKey
+#       syntax: OctetString
+#     bsnRadiusAccServerStatus:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.5
+#       name: cisco.bsnRadiusAccServerStatus
+#       syntax: EnumInteger
+#     bsnRadiusAccServerKeyFormat:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.6
+#       name: cisco.bsnRadiusAccServerKeyFormat
+#       syntax: EnumInteger
+#     bsnRadiusAccServerIPSec:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.7
+#       name: cisco.bsnRadiusAccServerIPSec
+#       syntax: EnumInteger
+#     bsnRadiusAccServerIPSecAuth:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.8
+#       name: cisco.bsnRadiusAccServerIPSecAuth
+#       syntax: EnumInteger
+#     bsnRadiusAccServerIPSecEncryption:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.9
+#       name: cisco.bsnRadiusAccServerIPSecEncryption
+#       syntax: EnumInteger
+#     bsnRadiusAccServerIPSecIKEPhase1:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.10
+#       name: cisco.bsnRadiusAccServerIPSecIKEPhase1
+#       syntax: EnumInteger
+#     bsnRadiusAccServerIPSecIKELifetime:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.11
+#       name: cisco.bsnRadiusAccServerIPSecIKELifetime
+#       syntax: TicksSec # Integer32
+#     bsnRadiusAccServerIPSecDHGroup:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.12
+#       name: cisco.bsnRadiusAccServerIPSecDHGroup
+#       syntax: EnumInteger
+#     bsnRadiusAccServerNetworkUserConfig:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.13
+#       name: cisco.bsnRadiusAccServerNetworkUserConfig
+#       syntax: EnumInteger
+#     bsnRadiusAccServerRetransmitTimeout:
+#       oid: .1.3.6.1.4.1.14179.2.5.2.1.14
+#       name: cisco.bsnRadiusAccServerRetransmitTimeout
+#       syntax: TicksSec # Integer32
+
+AIRESPACE-WIRELESS-MIB::bsnRadiusAuthServerStatsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnRadiusAuthServerStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.5.1.1.1
+      name: cisco.bsnRadiusAuthServerIndex
+      syntax: IntegerAsID
+  discovery_attribute: bsnRadiusAuthClientRoundTripTime
+  attributes:
+    bsnRadiusAuthClientRoundTripTime:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.6
+      name: cisco.bsnRadiusAuthClientRoundTripTime
+      syntax: TimeTicks
+      metric: gauge
+    bsnRadiusAuthClientAccessRequests:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.7
+      name: cisco.bsnRadiusAuthClientAccessRequests
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientAccessRetransmissions:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.8
+      name: cisco.bsnRadiusAuthClientAccessRetransmissions
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientAccessAccepts:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.9
+      name: cisco.bsnRadiusAuthClientAccessAccepts
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientAccessRejects:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.10
+      name: cisco.bsnRadiusAuthClientAccessRejects
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientAccessChallenges:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.11
+      name: cisco.bsnRadiusAuthClientAccessChallenges
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientMalformedAccessResponses:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.12
+      name: cisco.bsnRadiusAuthClientMalformedAccessResponses
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientBadAuthenticators:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.13
+      name: cisco.bsnRadiusAuthClientBadAuthenticators
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientPendingRequests:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.14
+      name: cisco.bsnRadiusAuthClientPendingRequests
+      syntax: Gauge32
+      metric: gauge
+    bsnRadiusAuthClientTimeouts:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.15
+      name: cisco.bsnRadiusAuthClientTimeouts
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientUnknownTypes:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.16
+      name: cisco.bsnRadiusAuthClientUnknownTypes
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAuthClientPacketsDropped:
+      oid: .1.3.6.1.4.1.14179.2.5.3.1.36
+      name: cisco.bsnRadiusAuthClientPacketsDropped
+      syntax: Counter32
+      metric: counter
+
+AIRESPACE-WIRELESS-MIB::bsnRadiusAccServerStatsEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnRadiusAccServerStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.5.2.1.1
+      name: cisco.bsnRadiusAccServerIndex
+      syntax: IntegerAsID
+  discovery_attribute: bsnRadiusAccClientRoundTripTime
+  attributes:
+    bsnRadiusAccClientRoundTripTime:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.6
+      name: cisco.bsnRadiusAccClientRoundTripTime
+      syntax: TimeTicks
+      metric: gauge
+    bsnRadiusAccClientRequests:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.7
+      name: cisco.bsnRadiusAccClientRequests
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientRetransmissions:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.8
+      name: cisco.bsnRadiusAccClientRetransmissions
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientResponses:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.9
+      name: cisco.bsnRadiusAccClientResponses
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientMalformedResponses:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.10
+      name: cisco.bsnRadiusAccClientMalformedResponses
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientBadAuthenticators:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.11
+      name: cisco.bsnRadiusAccClientBadAuthenticators
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientPendingRequests:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.12
+      name: cisco.bsnRadiusAccClientPendingRequests
+      syntax: Gauge32
+      metric: gauge
+    bsnRadiusAccClientTimeouts:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.13
+      name: cisco.bsnRadiusAccClientTimeouts
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientUnknownTypes:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.14
+      name: cisco.bsnRadiusAccClientUnknownTypes
+      syntax: Counter32
+      metric: counter
+    bsnRadiusAccClientPacketsDropped:
+      oid: .1.3.6.1.4.1.14179.2.5.4.1.34
+      name: cisco.bsnRadiusAccClientPacketsDropped
+      syntax: Counter32
+      metric: counter
+
+# AIRESPACE-WIRELESS-MIB::bsnUsersEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnUsersEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.2
+#       name: cisco.bsnUserName
+#       syntax: OctetString
+#   discovery_attribute: bsnUserPassword
+#   attributes:
+#     bsnUserPassword:
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.3
+#       name: cisco.bsnUserPassword
+#       syntax: OctetString
+#     bsnUserEssIndex:
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.4
+#       name: cisco.bsnUserEssIndex
+#       syntax: IntegerAsID
+#     bsnUserAccessMode:
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.5
+#       name: cisco.bsnUserAccessMode
+#       syntax: EnumInteger
+#     bsnUserType:
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.6
+#       name: cisco.bsnUserType
+#       syntax: EnumInteger
+#     bsnUserInterfaceName:
+#       oid: .1.3.6.1.4.1.14179.2.5.5.1.7
+#       name: cisco.bsnUserInterfaceName
+#       syntax: DisplayString
+
+# AIRESPACE-WIRELESS-MIB::bsnBlackListClientEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnBlackListClientEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.6.1.1
+#       name: cisco.bsnBlackListClientMacAddress
+#       syntax: OctetString
+#   discovery_attribute: bsnBlackListClientDescription
+#   attributes:
+#     bsnBlackListClientDescription:
+#       oid: .1.3.6.1.4.1.14179.2.5.6.1.2
+#       name: cisco.bsnBlackListClientDescription
+#       syntax: OctetString
+
+# AIRESPACE-WIRELESS-MIB::bsnAclEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAclEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.7.1.1
+#       name: cisco.bsnAclName
+#       syntax: DisplayString
+#   discovery_attribute: bsnAclApplyMode
+#   attributes:
+#     bsnAclApplyMode:
+#       oid: .1.3.6.1.4.1.14179.2.5.7.1.2
+#       name: cisco.bsnAclApplyMode
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnAclRuleEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAclRuleEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.7.1.1
+#       name: cisco.bsnAclName
+#       syntax: DisplayString
+#     - type: Unsigned32
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.2
+#       name: cisco.bsnAclRuleIndex
+#       syntax: UnsignedAsID
+#   discovery_attribute: bsnAclRuleAction
+#   attributes:
+#     bsnAclRuleAction:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.3
+#       name: cisco.bsnAclRuleAction
+#       syntax: EnumInteger
+#     bsnAclRuleDirection:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.4
+#       name: cisco.bsnAclRuleDirection
+#       syntax: EnumInteger
+#     bsnAclRuleSourceIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.5
+#       name: cisco.bsnAclRuleSourceIpAddress
+#       syntax: IpAddressNoSuffix
+#     bsnAclRuleSourceIpNetmask:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.6
+#       name: cisco.bsnAclRuleSourceIpNetmask
+#       syntax: IpAddressNoSuffix
+#     bsnAclRuleDestinationIpAddress:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.7
+#       name: cisco.bsnAclRuleDestinationIpAddress
+#       syntax: IpAddressNoSuffix
+#     bsnAclRuleDestinationIpNetmask:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.8
+#       name: cisco.bsnAclRuleDestinationIpNetmask
+#       syntax: IpAddressNoSuffix
+#     bsnAclRuleProtocol:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.9
+#       name: cisco.bsnAclRuleProtocol
+#       syntax: IanaL4Proto # Unsigned32
+#     bsnAclRuleStartSourcePort:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.10
+#       name: cisco.bsnAclRuleStartSourcePort
+#       syntax: Unsigned32
+#     bsnAclRuleEndSourcePort:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.11
+#       name: cisco.bsnAclRuleEndSourcePort
+#       syntax: Unsigned32
+#     bsnAclRuleStartDestinationPort:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.12
+#       name: cisco.bsnAclRuleStartDestinationPort
+#       syntax: Unsigned32
+#     bsnAclRuleEndDestinationPort:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.13
+#       name: cisco.bsnAclRuleEndDestinationPort
+#       syntax: Unsigned32
+#     bsnAclRuleDscp:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.14
+#       name: cisco.bsnAclRuleDscp
+#       syntax: Unsigned32
+#     bsnAclNewRuleIndex:
+#       oid: .1.3.6.1.4.1.14179.2.5.8.1.15
+#       name: cisco.bsnAclNewRuleIndex
+#       syntax: UnsignedAsID
+
+# AIRESPACE-WIRELESS-MIB::bsnMacFilterEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMacFilterEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.9.1.1
+#       name: cisco.bsnMacFilterAddress
+#       syntax: OctetString
+#   discovery_attribute: bsnMacFilterWlanId
+#   attributes:
+#     bsnMacFilterWlanId:
+#       oid: .1.3.6.1.4.1.14179.2.5.9.1.2
+#       name: cisco.bsnMacFilterWlanId
+#       syntax: IntegerAsID
+#     bsnMacFilterInterfaceName:
+#       oid: .1.3.6.1.4.1.14179.2.5.9.1.3
+#       name: cisco.bsnMacFilterInterfaceName
+#       syntax: DisplayString
+#     bsnMacFilterDescription:
+#       oid: .1.3.6.1.4.1.14179.2.5.9.1.4
+#       name: cisco.bsnMacFilterDescription
+#       syntax: DisplayString
+
+# AIRESPACE-WIRELESS-MIB::bsnLocalNetUserEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnLocalNetUserEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.1
+#       name: cisco.bsnLocalNetUserName
+#       syntax: DisplayString
+#   discovery_attribute: bsnLocalNetUserWlanId
+#   attributes:
+#     bsnLocalNetUserWlanId:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.2
+#       name: cisco.bsnLocalNetUserWlanId
+#       syntax: IntegerAsID
+#     bsnLocalNetUserPassword:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.3
+#       name: cisco.bsnLocalNetUserPassword
+#       syntax: DisplayString
+#     bsnLocalNetUserDescription:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.4
+#       name: cisco.bsnLocalNetUserDescription
+#       syntax: DisplayString
+#     bsnLocalNetUserLifetime:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.5
+#       name: cisco.bsnLocalNetUserLifetime
+#       syntax: TimeInterval
+#     bsnLocalNetUserStartTime:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.6
+#       name: cisco.bsnLocalNetUserStartTime
+#       syntax: TimeTicks
+#     bsnLocalNetUserRemainingTime:
+#       oid: .1.3.6.1.4.1.14179.2.5.10.1.7
+#       name: cisco.bsnLocalNetUserRemainingTime
+#       syntax: TimeInterval
+
+# AIRESPACE-WIRELESS-MIB::bsnLocalManagementUserEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnLocalManagementUserEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.11.1.1
+#       name: cisco.bsnLocalManagementUserName
+#       syntax: DisplayString
+#   discovery_attribute: bsnLocalManagementUserPassword
+#   attributes:
+#     bsnLocalManagementUserPassword:
+#       oid: .1.3.6.1.4.1.14179.2.5.11.1.2
+#       name: cisco.bsnLocalManagementUserPassword
+#       syntax: DisplayString
+#     bsnLocalManagementUserAccessMode:
+#       oid: .1.3.6.1.4.1.14179.2.5.11.1.3
+#       name: cisco.bsnLocalManagementUserAccessMode
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnExternalPolicyServerEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnExternalPolicyServerEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.1
+#       name: cisco.bsnExternalPolicyServerIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: bsnExternalPolicyServerAddress
+#   attributes:
+#     bsnExternalPolicyServerAddress:
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.2
+#       name: cisco.bsnExternalPolicyServerAddress
+#       syntax: IpAddressNoSuffix
+#     bsnExternalPolicyServerPortNumber:
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.3
+#       name: cisco.bsnExternalPolicyServerPortNumber
+#       syntax: IntegerAsID
+#     bsnExternalPolicyServerKey:
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.4
+#       name: cisco.bsnExternalPolicyServerKey
+#       syntax: OctetString
+#     bsnExternalPolicyServerAdminStatus:
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.5
+#       name: cisco.bsnExternalPolicyServerAdminStatus
+#       syntax: EnumInteger
+#     bsnExternalPolicyServerConnectionStatus:
+#       oid: .1.3.6.1.4.1.14179.2.5.19.1.6
+#       name: cisco.bsnExternalPolicyServerConnectionStatus
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnAPAuthorizationEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPAuthorizationEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.5.22.1.1
+#       name: cisco.bsnAPAuthMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnAPAuthCertificateType
+#   attributes:
+#     bsnAPAuthCertificateType:
+#       oid: .1.3.6.1.4.1.14179.2.5.22.1.2
+#       name: cisco.bsnAPAuthCertificateType
+#       syntax: EnumInteger
+#     bsnAPAuthHashKey:
+#       oid: .1.3.6.1.4.1.14179.2.5.22.1.3
+#       name: cisco.bsnAPAuthHashKey
+#       syntax: OctetString
+
+# AIRESPACE-WIRELESS-MIB::bsnTrapControl:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnTrapControl
+#   discovery_attribute: bsnDot11StationTrapControlMask
+#   attributes:
+#     bsnDot11StationTrapControlMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.1
+#       name: cisco.bsnDot11StationTrapControlMask
+#       syntax: Unsigned32
+#     bsnAPTrapControlMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.2
+#       name: cisco.bsnAPTrapControlMask
+#       syntax: Unsigned32
+#     bsnAPProfileTrapControlMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.3
+#       name: cisco.bsnAPProfileTrapControlMask
+#       syntax: Unsigned32
+#     bsnAPParamUpdateTrapControlMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.4
+#       name: cisco.bsnAPParamUpdateTrapControlMask
+#       syntax: Unsigned32
+#     bsnIpsecTrapsMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.5
+#       name: cisco.bsnIpsecTrapsMask
+#       syntax: Unsigned32
+#     bsnRogueAPTrapEnable:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.6
+#       name: cisco.bsnRogueAPTrapEnable
+#       syntax: EnumInteger
+#     bsnRADIUSServerTrapEnable:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.7
+#       name: cisco.bsnRADIUSServerTrapEnable
+#       syntax: EnumInteger
+#     bsnAuthenticationFailureTrapEnable:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.8
+#       name: cisco.bsnAuthenticationFailureTrapEnable
+#       syntax: EnumInteger
+#     bsnConfigSaveTrapEnable:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.9
+#       name: cisco.bsnConfigSaveTrapEnable
+#       syntax: EnumInteger
+#     bsn80211SecurityTrapControlMask:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.10
+#       name: cisco.bsn80211SecurityTrapControlMask
+#       syntax: Unsigned32
+#     bsnWpsTrapControlEnable:
+#       oid: .1.3.6.1.4.1.14179.2.6.1.11
+#       name: cisco.bsnWpsTrapControlEnable
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnSyslog:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnSyslog
+#   discovery_attribute: bsnSyslogEnable
+#   attributes:
+#     bsnSyslogEnable:
+#       oid: .1.3.6.1.4.1.14179.2.7.1.1
+#       name: cisco.bsnSyslogEnable
+#       syntax: EnumInteger
+#     bsnSyslogRemoteAddress:
+#       oid: .1.3.6.1.4.1.14179.2.7.1.2
+#       name: cisco.bsnSyslogRemoteAddress
+#       syntax: DisplayString
+
+AIRESPACE-WIRELESS-MIB::bsnPingTestEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnPingTestEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.1
+      name: cisco.bsnPingTestId
+      syntax: IntegerAsID
+  discovery_attribute: bsnPingTestIPAddress
+  attributes:
+    bsnPingTestIPAddress:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.2
+      name: cisco.bsnPingTestIPAddress
+      syntax: IpAddressNoSuffix
+    bsnPingTestSendCount:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.3
+      name: cisco.bsnPingTestSendCount
+      syntax: BytesB
+      metric: gauge
+    bsnPingTestReceivedCount:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.4
+      name: cisco.bsnPingTestReceivedCount
+      syntax: BytesB
+      metric: gauge
+    bsnPingTestStatus:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.5
+      name: cisco.bsnPingTestStatus
+      syntax: EnumInteger
+    bsnPingTestMaxTimeInterval:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.6
+      name: cisco.bsnPingTestMaxTimeInterval
+      syntax: TicksMilliSec # Unsigned32
+      metric: gauge
+    bsnPingTestMinTimeInterval:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.7
+      name: cisco.bsnPingTestMinTimeInterval
+      syntax: TicksMilliSec # Unsigned32
+      metric: gauge
+    bsnPingTestAvgTimeInterval:
+      oid: .1.3.6.1.4.1.14179.2.7.2.1.1.8
+      name: cisco.bsnPingTestAvgTimeInterval
+      syntax: TicksMilliSec # Unsigned32
+      metric: gauge
+
+AIRESPACE-WIRELESS-MIB::bsnLinkTestEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnLinkTestEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.1
+      name: cisco.bsnLinkTestId
+      syntax: IntegerAsID
+  discovery_attribute: bsnLinkTestMacAddress
+  attributes:
+    bsnLinkTestMacAddress:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.2
+      name: cisco.bsnLinkTestMacAddress
+      syntax: MacAddressNoSuffix
+    bsnLinkTestSendPktCount:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.3
+      name: cisco.bsnLinkTestSendPktCount
+      syntax: Integer32
+      metric: gauge
+    bsnLinkTestSendPktLength:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.4
+      name: cisco.bsnLinkTestSendPktLength
+      syntax: BytesB # Integer32
+    bsnLinkTestReceivedPktCount:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.5
+      name: cisco.bsnLinkTestReceivedPktCount
+      syntax: Integer32
+      metric: gauge
+    bsnLinkTestClientRSSI:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.6
+      name: cisco.bsnLinkTestClientRSSI
+      syntax: Integer32
+      metric: gauge
+    bsnLinkTestLocalSNR:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.7
+      name: cisco.bsnLinkTestLocalSNR
+      syntax: SignalDBm # Integer32
+      metric: gauge
+    bsnLinkTestLocalRSSI:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.8
+      name: cisco.bsnLinkTestLocalRSSI
+      syntax: Integer32
+      metric: gauge
+    bsnLinkTestStatus:
+      oid: .1.3.6.1.4.1.14179.2.7.3.1.1.9
+      name: cisco.bsnLinkTestStatus
+      syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnMobilityConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMobilityConfig
+#   discovery_attribute: bsnMobilityProtocolPortNum
+#   attributes:
+#     bsnMobilityProtocolPortNum:
+#       oid: .1.3.6.1.4.1.14179.2.8.1.1
+#       name: cisco.bsnMobilityProtocolPortNum
+#       syntax: Integer32
+#     bsnMobilityDynamicDiscovery:
+#       oid: .1.3.6.1.4.1.14179.2.8.1.3
+#       name: cisco.bsnMobilityDynamicDiscovery
+#       syntax: EnumInteger
+#     bsnMobilityStatsReset:
+#       oid: .1.3.6.1.4.1.14179.2.8.1.4
+#       name: cisco.bsnMobilityStatsReset
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnMobilityGroupMembersEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnMobilityGroupMembersEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.8.1.10.1.1
+#       name: cisco.bsnMobilityGroupMemberMacAddress
+#       syntax: MacAddressNoSuffix
+#   discovery_attribute: bsnMobilityGroupMemberIPAddress
+#   attributes:
+#     bsnMobilityGroupMemberIPAddress:
+#       oid: .1.3.6.1.4.1.14179.2.8.1.10.1.2
+#       name: cisco.bsnMobilityGroupMemberIPAddress
+#       syntax: IpAddressNoSuffix
+#     bsnMobilityGroupMemberGroupName:
+#       oid: .1.3.6.1.4.1.14179.2.8.1.10.1.3
+#       name: cisco.bsnMobilityGroupMemberGroupName
+#       syntax: DisplayString
+
+AIRESPACE-WIRELESS-MIB::bsnMobilityStats:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnMobilityStats
+  discovery_attribute: bsnTotalHandoffRequests
+  attributes:
+    bsnTotalHandoffRequests:
+      oid: .1.3.6.1.4.1.14179.2.8.2.1
+      name: cisco.bsnTotalHandoffRequests
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffs:
+      oid: .1.3.6.1.4.1.14179.2.8.2.2
+      name: cisco.bsnTotalHandoffs
+      syntax: Counter32
+      metric: counter
+    bsnCurrentExportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.3
+      name: cisco.bsnCurrentExportedClients
+      syntax: Counter32
+      metric: counter
+    bsnTotalExportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.4
+      name: cisco.bsnTotalExportedClients
+      syntax: Counter32
+      metric: counter
+    bsnCurrentImportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.5
+      name: cisco.bsnCurrentImportedClients
+      syntax: Counter32
+      metric: counter
+    bsnTotalImportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.6
+      name: cisco.bsnTotalImportedClients
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.7
+      name: cisco.bsnTotalHandoffErrors
+      syntax: Counter32
+      metric: counter
+    bsnTotalCommunicationErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.8
+      name: cisco.bsnTotalCommunicationErrors
+      syntax: Counter32
+      metric: counter
+    bsnTotalReceiveErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.10
+      name: cisco.bsnTotalReceiveErrors
+      syntax: Counter32
+      metric: counter
+    bsnTotalTransmitErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.11
+      name: cisco.bsnTotalTransmitErrors
+      syntax: Counter32
+      metric: counter
+    bsnTotalResponsesRetransmitted:
+      oid: .1.3.6.1.4.1.14179.2.8.2.12
+      name: cisco.bsnTotalResponsesRetransmitted
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffEndRequestsReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.13
+      name: cisco.bsnTotalHandoffEndRequestsReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalStateTransitionsDisallowed:
+      oid: .1.3.6.1.4.1.14179.2.8.2.14
+      name: cisco.bsnTotalStateTransitionsDisallowed
+      syntax: Counter32
+      metric: counter
+    bsnTotalResourceErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.15
+      name: cisco.bsnTotalResourceErrors
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRequestsSent:
+      oid: .1.3.6.1.4.1.14179.2.8.2.16
+      name: cisco.bsnTotalHandoffRequestsSent
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRepliesReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.17
+      name: cisco.bsnTotalHandoffRepliesReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffAsLocalReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.18
+      name: cisco.bsnTotalHandoffAsLocalReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffAsForeignReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.19
+      name: cisco.bsnTotalHandoffAsForeignReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffDeniesReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.20
+      name: cisco.bsnTotalHandoffDeniesReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorRequestsSent:
+      oid: .1.3.6.1.4.1.14179.2.8.2.21
+      name: cisco.bsnTotalAnchorRequestsSent
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorDenyReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.22
+      name: cisco.bsnTotalAnchorDenyReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorGrantReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.23
+      name: cisco.bsnTotalAnchorGrantReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorTransferReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.24
+      name: cisco.bsnTotalAnchorTransferReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRequestsIgnored:
+      oid: .1.3.6.1.4.1.14179.2.8.2.25
+      name: cisco.bsnTotalHandoffRequestsIgnored
+      syntax: Counter32
+      metric: counter
+    bsnTotalPingPongHandoffRequestsDropped:
+      oid: .1.3.6.1.4.1.14179.2.8.2.26
+      name: cisco.bsnTotalPingPongHandoffRequestsDropped
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRequestsDropped:
+      oid: .1.3.6.1.4.1.14179.2.8.2.27
+      name: cisco.bsnTotalHandoffRequestsDropped
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRequestsDenied:
+      oid: .1.3.6.1.4.1.14179.2.8.2.28
+      name: cisco.bsnTotalHandoffRequestsDenied
+      syntax: Counter32
+      metric: counter
+    bsnTotalClientHandoffAsLocal:
+      oid: .1.3.6.1.4.1.14179.2.8.2.29
+      name: cisco.bsnTotalClientHandoffAsLocal
+      syntax: Counter32
+      metric: counter
+    bsnTotalClientHandoffAsForeign:
+      oid: .1.3.6.1.4.1.14179.2.8.2.30
+      name: cisco.bsnTotalClientHandoffAsForeign
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorRequestsReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.31
+      name: cisco.bsnTotalAnchorRequestsReceived
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorRequestsDenied:
+      oid: .1.3.6.1.4.1.14179.2.8.2.32
+      name: cisco.bsnTotalAnchorRequestsDenied
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorRequestsGranted:
+      oid: .1.3.6.1.4.1.14179.2.8.2.33
+      name: cisco.bsnTotalAnchorRequestsGranted
+      syntax: Counter32
+      metric: counter
+    bsnTotalAnchorTransferred:
+      oid: .1.3.6.1.4.1.14179.2.8.2.34
+      name: cisco.bsnTotalAnchorTransferred
+      syntax: Counter32
+      metric: counter
+    bsnTotalHandoffRequestsReceived:
+      oid: .1.3.6.1.4.1.14179.2.8.2.35
+      name: cisco.bsnTotalHandoffRequestsReceived
+      syntax: Counter32
+      metric: counter
+
+AIRESPACE-WIRELESS-MIB::bsnMobilityGroupDirectoryEntry:
+  mib: AIRESPACE-WIRELESS-MIB
+  object: bsnMobilityGroupDirectoryEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.2
+      name: cisco.bsnGroupDirectoryMemberMacAddress
+      syntax: MacAddressNoSuffix
+  discovery_attribute: bsnGroupDirectoryDicoveryType
+  attributes:
+    bsnGroupDirectoryMemberIPAddress:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.1
+      name: cisco.bsnGroupDirectoryMemberIPAddress
+      syntax: IpAddressNoSuffix
+    bsnGroupDirectoryDicoveryType:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.3
+      name: cisco.bsnGroupDirectoryDicoveryType
+      syntax: EnumInteger
+    bsnMemberCurrentAnchoredClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.4
+      name: cisco.bsnMemberCurrentAnchoredClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberTotalAnchoredClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.5
+      name: cisco.bsnMemberTotalAnchoredClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberCurrentExportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.6
+      name: cisco.bsnMemberCurrentExportedClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberTotalExportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.7
+      name: cisco.bsnMemberTotalExportedClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberCurrentImportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.8
+      name: cisco.bsnMemberCurrentImportedClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberTotalImportedClients:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.9
+      name: cisco.bsnMemberTotalImportedClients
+      syntax: Counter32
+      metric: counter
+    bsnMemberTotalHandoffErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.10
+      name: cisco.bsnMemberTotalHandoffErrors
+      syntax: Counter32
+      metric: counter
+    bsnMemberTotalCommunicationErrors:
+      oid: .1.3.6.1.4.1.14179.2.8.2.9.1.30
+      name: cisco.bsnMemberTotalCommunicationErrors
+      syntax: Counter32
+      metric: counter
+
+# AIRESPACE-WIRELESS-MIB::bsnIpsec:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnIpsec
+#   discovery_attribute: bsnWrasIpsecCACertificate
+#   attributes:
+#     bsnWrasIpsecCACertificate:
+#       oid: .1.3.6.1.4.1.14179.2.9.1
+#       name: cisco.bsnWrasIpsecCACertificate
+#       syntax: OctetString
+#     bsnWrasIpsecCACertificateUpdate:
+#       oid: .1.3.6.1.4.1.14179.2.9.2
+#       name: cisco.bsnWrasIpsecCACertificateUpdate
+#       syntax: OctetString
+
+# AIRESPACE-WIRELESS-MIB::bsnWrasIpsecCertEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnWrasIpsecCertEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.9.3.1.1
+#       name: cisco.bsnWrasIpsecCertName
+#       syntax: DisplayString
+#   discovery_attribute: bsnWrasIpsecCertificateUpdate
+#   attributes:
+#     bsnWrasIpsecCertificateUpdate:
+#       oid: .1.3.6.1.4.1.14179.2.9.3.1.2
+#       name: cisco.bsnWrasIpsecCertificateUpdate
+#       syntax: OctetString
+#     bsnWrasIpsecCertificate:
+#       oid: .1.3.6.1.4.1.14179.2.9.3.1.3
+#       name: cisco.bsnWrasIpsecCertificate
+#       syntax: OctetString
+#     bsnWrasIpsecCertPassword:
+#       oid: .1.3.6.1.4.1.14179.2.9.3.1.4
+#       name: cisco.bsnWrasIpsecCertPassword
+#       syntax: OctetString
+
+# AIRESPACE-WIRELESS-MIB::bsnAPGroupsVlanConfig:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPGroupsVlanConfig
+#   discovery_attribute: bsnAPGroupsVlanFeature
+#   attributes:
+#     bsnAPGroupsVlanFeature:
+#       oid: .1.3.6.1.4.1.14179.2.10.1
+#       name: cisco.bsnAPGroupsVlanFeature
+#       syntax: EnumInteger
+
+# AIRESPACE-WIRELESS-MIB::bsnAPGroupsVlanEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPGroupsVlanEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.10.2.1.1
+#       name: cisco.bsnAPGroupsVlanName
+#       syntax: DisplayString
+#   discovery_attribute: bsnAPGroupsVlanDescription
+#   attributes:
+#     bsnAPGroupsVlanDescription:
+#       oid: .1.3.6.1.4.1.14179.2.10.2.1.2
+#       name: cisco.bsnAPGroupsVlanDescription
+#       syntax: DisplayString
+
+# AIRESPACE-WIRELESS-MIB::bsnAPGroupsVlanMappingEntry:
+#   mib: AIRESPACE-WIRELESS-MIB
+#   object: bsnAPGroupsVlanMappingEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.10.2.1.1
+#       name: cisco.bsnAPGroupsVlanName
+#       syntax: DisplayString
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.14179.2.10.3.1.1
+#       name: cisco.bsnAPGroupsVlanMappingSsid
+#       syntax: DisplayString
+#   discovery_attribute: bsnAPGroupsVlanMappingInterfaceName
+#   attributes:
+#     bsnAPGroupsVlanMappingInterfaceName:
+#       oid: .1.3.6.1.4.1.14179.2.10.3.1.2
+#       name: cisco.bsnAPGroupsVlanMappingInterfaceName
+#       syntax: DisplayString
