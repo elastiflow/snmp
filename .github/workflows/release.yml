@@ -1,0 +1,86 @@
+name: Release
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+on:
+  release:
+    types: [published]
+
+env:
+  # RC: ${{ contains(github.ref_name, '-rc') }}
+  VERSION: ${{ github.ref_name }}
+
+jobs:
+  set_standard_vars:
+    name: Set standard vars
+    runs-on: ubuntu-latest
+    outputs:
+      sha_short: ${{ steps.set_standard_vars.outputs.sha_short }}
+      version: ${{ steps.set_standard_vars.outputs.version }}
+      valid_tag: ${{ steps.set_standard_vars.outputs.valid_tag }}
+      rc: ${{ steps.set_standard_vars.outputs.rc }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: set outputs with default values
+        id: set_standard_vars
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "version=${{ env.VERSION }}" >> $GITHUB_OUTPUT
+          # https://regex101.com/r/qiYDlA/1
+          echo $(grep -Pq '^v(?:[0-9]{1,3}\.?){3}(?:-rc(?:\.[0-9]{1,3})?)?$' <<< '${{ github.ref_name }}' && echo true || echo false) > /tmp/is_valid_tag
+          echo "valid_tag=$(cat /tmp/is_valid_tag)" >> $GITHUB_OUTPUT
+          # https://regex101.com/r/i19a33/1
+          echo $(grep -Pq '^v(?:[0-9]{1,3}\.?){3}(?:-rc(?:\.[0-9]{1,3})?)$' <<< '${{ github.ref_name }}' && echo true || echo false) > /tmp/is_rc
+          echo "rc=$(cat /tmp/is_rc)" >> $GITHUB_OUTPUT
+
+  release_packages:
+    name: "Release Linux packages"
+    if: ${{ fromJSON(needs.set_standard_vars.outputs.valid_tag) }}
+    needs: ["set_standard_vars"]
+    permissions:
+      id-token: write
+      contents: write
+    uses: elastiflow/gha-reusable/.github/workflows/reusable_goreleaser.yml@v0
+    with:
+      binary: "snmp-validator"
+      pkg_name: "netobserv-snmp-defs"
+      pkg_description: "Definitions for the ElastiFlow Unified SNMP Collector."
+      build_dockerfile: Dockerfile.gorel
+      publish_gh: true
+      publish_apt: ${{ !fromJSON(needs.set_standard_vars.outputs.rc) }}
+      publish_yum: ${{ !fromJSON(needs.set_standard_vars.outputs.rc) }}
+      gcp_ar_apt_repository: "elastiflow-apt"
+      gcp_ar_yum_repository: "elastiflow-yum"
+      gha_cache_enabled: true
+    secrets:
+      build_gpg_key: ${{ secrets.GPG_KEY }}
+      build_gpg_passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+  meta:
+    needs: ["set_standard_vars", "release_packages"]
+    if: ${{ fromJSON(needs.set_standard_vars.outputs.valid_tag) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate SBOM and submit results to Github Dependency Graph
+      if: ${{ !fromJSON(needs.set_standard_vars.outputs.rc) }}
+      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2
+      with:
+        scan-type: 'fs'
+        image-ref: '.'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+        format: 'github'
+        output: 'dependency-results.sbom.json'
+        github-pat: ${{ secrets.GITHUB_TOKEN }}
+    - name: Scan Licenses
+      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2
+      with:
+        image-ref: ''
+        scan-type: rootfs
+        scanners: license
+        exit-code: 1
+        scan-ref: '--license-full ./'
+        vuln-type: library
+        format: table
