@@ -1,0 +1,220 @@
+BAM-SNMP-MIB::common:
+  mib: BAM-SNMP-MIB
+  object: common
+  discovery_attribute: version
+  attributes:
+    version:
+      oid: .1.3.6.1.4.1.13315.100.210.1.1.1
+      name: bluecat.version
+      syntax: DisplayString
+    startTime:
+      oid: .1.3.6.1.4.1.13315.100.210.1.1.2
+      name: bluecat.startTime
+      syntax: DateAndTime
+
+BAM-SNMP-MIB::database:
+  mib: BAM-SNMP-MIB
+  object: database
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: maxPoolSize
+  attributes:
+    maxPoolSize:
+      oid: .1.3.6.1.4.1.13315.100.210.1.2.1
+      name: bluecat.database.maxPoolSize
+      syntax: Gauge32
+      metric: gauge
+    numConnections:
+      oid: .1.3.6.1.4.1.13315.100.210.1.2.2
+      name: bluecat.database.numConnections
+      syntax: Gauge32
+      metric: gauge
+
+BAM-SNMP-MIB::deployer:
+  mib: BAM-SNMP-MIB
+  object: deployer
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: serverCountInQueue
+  attributes:
+    serverCountInQueue:
+      oid: .1.3.6.1.4.1.13315.100.210.1.3.1
+      name: bluecat.deployer.serverCountInQueue
+      syntax: Gauge32
+      metric: gauge
+    executingServerCount:
+      oid: .1.3.6.1.4.1.13315.100.210.1.3.2
+      name: bluecat.deployer.executingServerCount
+      syntax: Gauge32
+      metric: gauge
+    numberOfTasks:
+      oid: .1.3.6.1.4.1.13315.100.210.1.3.3
+      name: bluecat.deployer.numberOfTasks
+      syntax: Gauge32
+      metric: gauge
+
+BAM-SNMP-MIB::eventNotification:
+  mib: BAM-SNMP-MIB
+  object: eventNotification
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: queueCount
+  attributes:
+    queueCount:
+      oid: .1.3.6.1.4.1.13315.100.210.1.4.1
+      name: bluecat.event.queueCount
+      syntax: Gauge32
+      metric: gauge
+
+BAM-SNMP-MIB::reconciliation:
+  mib: BAM-SNMP-MIB
+  object: reconciliation
+  discovery_attribute: poolSize
+  attributes:
+    poolSize:
+      oid: .1.3.6.1.4.1.13315.100.210.1.5.1
+      name: bluecat.reconciliation.poolSize
+      syntax: Gauge32
+      metric: gauge
+
+BAM-SNMP-MIB::scheduledDeployer:
+  mib: BAM-SNMP-MIB
+  object: scheduledDeployer
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: numOfTimers
+  attributes:
+    numOfTimers:
+      oid: .1.3.6.1.4.1.13315.100.210.1.6.1
+      name: bluecat.schedule.numOfTimers
+      syntax: Gauge32
+      metric: gauge
+    running:
+      oid: .1.3.6.1.4.1.13315.100.210.1.6.2
+      name: bluecat.schedule.running
+      syntax: TruthValue
+
+BAM-SNMP-MIB::scheduledTaskService:
+  mib: BAM-SNMP-MIB
+  object: scheduledTaskService
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: queueSize
+  attributes:
+    queueSize:
+      oid: .1.3.6.1.4.1.13315.100.210.1.7.1
+      name: bluecat.schedule.queueSize
+      syntax: Gauge32
+      metric: gauge
+
+BAM-SNMP-MIB::replication:
+  mib: BAM-SNMP-MIB
+  object: replication
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: replicationNodeStatus
+  attributes:
+    replicationNodeStatus:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.2
+      name: bluecat.replication.NodeStatus
+      syntax: EnumInteger
+    replicationAverageLatency:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.3
+      name: bluecat.replication.AverageLatency
+      syntax: TicksSec
+      metric: gauge
+
+BAM-SNMP-MIB::replicationStatusEntry:
+  mib: BAM-SNMP-MIB
+  object: replicationStatusEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.8.1.2
+      name: bluecat.replication.ipv4Address
+      syntax: IpAddressNoSuffix
+  discovery_attribute: currentLatency
+  attributes:
+    hostname:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.8.1.1
+      name: bluecat.replication.hostname
+      syntax: DisplayString
+    currentLatency:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.8.1.3
+      name: bluecat.replication.Latency
+      syntax: TicksSec
+      metric: gauge
+    replicationHealth:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.8.1.4
+      name: bluecat.replication.Health
+      syntax: EnumInteger
+    replicationRole:
+      oid: .1.3.6.1.4.1.13315.100.210.1.8.8.1.5
+      name: bluecat.replication.Role
+      syntax: DisplayString
+
+BAM-SNMP-MIB::notification:
+  mib: BAM-SNMP-MIB
+  object: notification
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: messagesReceived
+  attributes:
+    messagesReceived:
+      oid: .1.3.6.1.4.1.13315.100.210.1.9.1
+      name: bluecat.notification.messagesReceived
+      syntax: Counter32
+      metric: counter
+    messagesAccepted:
+      oid: .1.3.6.1.4.1.13315.100.210.1.9.2
+      name: bluecat.notification.messagesAccepted
+      syntax: Counter32
+      metric: counter
+    ackSent:
+      oid: .1.3.6.1.4.1.13315.100.210.1.9.3
+      name: bluecat.notification.ackSent
+      syntax: Counter32
+      metric: counter
+    messagesProcessed:
+      oid: .1.3.6.1.4.1.13315.100.210.1.9.4
+      name: bluecat.notification.messagesProcessed
+      syntax: Counter32
+      metric: counter
+
+BAM-SNMP-MIB::dbBackup:
+  mib: BAM-SNMP-MIB
+  object: dbBackup
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: lastSuccessfulBackupTime
+  attributes:
+    lastSuccessfulBackupTime:
+      oid: .1.3.6.1.4.1.13315.100.210.1.10.1
+      name: bluecat.dbBackup.lastSuccessfulBackupTime
+      syntax: DateAndTime
+    lastSuccessfulRemoteBackupTime:
+      oid: .1.3.6.1.4.1.13315.100.210.1.10.2
+      name: bluecat.dbBackup.lastSuccessfulRemoteBackupTime
+      syntax: DateAndTime
+
+BAM-SNMP-MIB::jvm:
+  mib: BAM-SNMP-MIB
+  object: jvm
+  augments: BAM-SNMP-MIB::common
+  discovery_attribute: freeMemory
+  attributes:
+    freeMemory:
+      oid: .1.3.6.1.4.1.13315.100.210.3.1
+      name: bluecat.jvm.freeMemory
+      syntax: BytesKB
+      metric: gauge
+    maxMemory:
+      oid: .1.3.6.1.4.1.13315.100.210.3.2
+      name: bluecat.jvm.maxMemory
+      syntax: BytesKB
+      metric: gauge
+    gcTime:
+      oid: .1.3.6.1.4.1.13315.100.210.3.3
+      name: bluecat.jvm.gcTime
+      syntax: TicksSec
+      metric: gauge
+    usageThresholdExceeded:
+      oid: .1.3.6.1.4.1.13315.100.210.3.4
+      name: bluecat.jvm.usageThresholdExceeded
+      syntax: TruthValue
+    activeThreadCount:
+      oid: .1.3.6.1.4.1.13315.100.210.3.5
+      name: bluecat.jvm.activeThreadCount
+      syntax: Gauge32
+      metric: gauge

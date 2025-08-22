@@ -1,0 +1,192 @@
+BCN-NTP-MIB::bcnNtpServiceStatus:
+  mib: BCN-NTP-MIB
+  object: bcnNtpServiceStatus
+  augments: BCN-NTP-MIB::bcnNtpSystem
+  discovery_attribute: bcnNtpSerOperState
+  attributes:
+    bcnNtpSerOperState:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.1.1
+      name: bluecat.bcnNtpSerOperState
+      syntax: EnumInteger
+
+BCN-NTP-MIB::bcnNtpSystem:
+  mib: BCN-NTP-MIB
+  object: bcnNtpSystem
+  discovery_attribute: bcnNtpSysLeap
+  attributes:
+    bcnNtpSysLeap:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.1
+      name: bluecat.bcnNtpSysLeap
+      syntax: EnumInteger
+    bcnNtpSysStratum:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.2
+      name: bluecat.bcnNtpSysStratum
+      syntax: Integer32
+      metric: gauge
+    bcnNtpSysPrecision:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.3
+      name: bluecat.bcnNtpSysPrecision
+      syntax: Integer32
+      metric: gauge
+    bcnNtpSysRootDelay:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.4
+      name: bluecat.bcnNtpSysRootDelay
+      syntax: DisplayString
+    bcnNtpSysRootDispersion:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.5
+      name: bluecat.bcnNtpSysRootDispersion
+      syntax: DisplayString
+    bcnNtpSysRefId:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.6
+      name: bluecat.bcnNtpSysRefId
+      syntax: OctetString # NTPRefId
+    bcnNtpSysRefTime:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.7
+      name: bluecat.bcnNtpSysRefTime
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpSysPoll:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.8
+      name: bluecat.bcnNtpSysPoll
+      syntax: Integer32
+      metric: gauge
+    bcnNtpSysPeer:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.9
+      name: bluecat.bcnNtpSysPeer
+      syntax: Unsigned32
+      metric: gauge
+    bcnNtpSysFreq:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.10
+      name: bluecat.bcnNtpSysFreq
+      syntax: DisplayString
+    bcnNtpSysClock:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.11
+      name: bluecat.bcnNtpSysClock
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpSysSystem:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.12
+      name: bluecat.bcnNtpSysSystem
+      syntax: DisplayString
+    bcnNtpSysProcessor:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.13
+      name: bluecat.bcnNtpSysProcessor
+      syntax: DisplayString
+    bcnNtpSysJitter:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.2.14
+      name: bluecat.bcnNtpSysJitter
+      syntax: DisplayString
+
+BCN-NTP-MIB::bcnNtpPeersVarEntry:
+  mib: BCN-NTP-MIB
+  object: bcnNtpPeersVarEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.1
+      name: bluecat.bcnNtpPeersAssocId
+      syntax: Unsigned32
+  discovery_attribute: bcnNtpPeersConfigured
+  attributes:
+    bcnNtpPeersConfigured:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.2
+      name: bluecat.bcnNtpPeersConfigured
+      syntax: TruthValue
+    bcnNtpPeersPeerAddressType:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.3
+      name: bluecat.bcnNtpPeersPeerAddressType
+      syntax: EnumInteger
+    bcnNtpPeersPeerAddress:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.4
+      name: bluecat.bcnNtpPeersPeerAddress
+      syntax: IpAddressNoSuffix
+    bcnNtpPeersPeerPort:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.5
+      name: bluecat.bcnNtpPeersPeerPort
+      syntax: Unsigned32
+    bcnNtpPeersHostAddressType:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.6
+      name: bluecat.bcnNtpPeersHostAddressType
+      syntax: EnumInteger
+    bcnNtpPeersHostAddress:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.7
+      name: bluecat.bcnNtpPeersHostAddress
+      syntax: IpAddressNoSuffix
+    bcnNtpPeersHostPort:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.8
+      name: bluecat.bcnNtpPeersHostPort
+      syntax: Unsigned32
+    bcnNtpPeersLeap:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.9
+      name: bluecat.bcnNtpPeersLeap
+      syntax: EnumInteger
+    bcnNtpPeersMode:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.10
+      name: bluecat.bcnNtpPeersMode
+      syntax: EnumInteger
+    bcnNtpPeersStratum:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.11
+      name: bluecat.bcnNtpPeersStratum
+      syntax: Integer32
+      metric: gauge
+    bcnNtpPeersPeerPoll:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.12
+      name: bluecat.bcnNtpPeersPeerPoll
+      syntax: Integer32
+      metric: gauge
+    bcnNtpPeersHostPoll:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.13
+      name: bluecat.bcnNtpPeersHostPoll
+      syntax: Integer32
+      metric: gauge
+    bcnNtpPeersPrecision:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.14
+      name: bluecat.bcnNtpPeersPrecision
+      syntax: Integer32
+      metric: gauge
+    bcnNtpPeersRootDelay:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.15
+      name: bluecat.bcnNtpPeersRootDelay
+      syntax: DisplayString
+    bcnNtpPeersRootDispersion:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.16
+      name: bluecat.bcnNtpPeersRootDispersion
+      syntax: DisplayString
+    bcnNtpPeersRefId:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.17
+      name: bluecat.bcnNtpPeersRefId
+      syntax: OctetString # NTPRefId
+    bcnNtpPeersRefTime:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.18
+      name: bluecat.bcnNtpPeersRefTime
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpPeersOrgTime:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.19
+      name: bluecat.bcnNtpPeersOrgTime
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpPeersReceiveTime:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.20
+      name: bluecat.bcnNtpPeersReceiveTime
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpPeersTransmitTime:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.21
+      name: bluecat.bcnNtpPeersTransmitTime
+      syntax: OctetString # NTPTimeStamp
+    bcnNtpPeersReach:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.22
+      name: bluecat.bcnNtpPeersReach
+      syntax: Unsigned32
+      metric: gauge
+    bcnNtpPeersOffset:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.23
+      name: bluecat.bcnNtpPeersOffset
+      syntax: DisplayString
+    bcnNtpPeersDelay:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.24
+      name: bluecat.bcnNtpPeersDelay
+      syntax: DisplayString
+    bcnNtpPeersDispersion:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.25
+      name: bluecat.bcnNtpPeersDispersion
+      syntax: DisplayString
+    bcnNtpPeersJitter:
+      oid: .1.3.6.1.4.1.13315.3.1.4.2.3.1.1.26
+      name: bluecat.bcnNtpPeersJitter
+      syntax: DisplayString
