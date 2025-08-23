@@ -1,0 +1,102 @@
+# DIGI-POWER-MANAGEMENT-MIB::digiPowerMgmt:
+#   mib: DIGI-POWER-MANAGEMENT-MIB
+#   object: digiPowerMgmt
+#   discovery_attribute: powerMgmtNumPorts
+#   attributes:
+#     powerMgmtNumPorts:
+#       oid: .1.3.6.1.4.1.332.10.13.14.11.1.1
+#       name: digi.powerMgmt.NumPorts
+#       syntax: Integer32
+#     powerMgmtCurrThreshExcTraps:
+#       oid: .1.3.6.1.4.1.332.10.13.14.11.1.2
+#       name: digi.powerMgmt.CurrThreshExcTraps
+#       syntax: EnumInteger
+#     powerMgmtTempThreshExcTraps:
+#       oid: .1.3.6.1.4.1.332.10.13.14.11.1.3
+#       name: digi.powerMgmt.TempThreshExcTraps
+#       syntax: EnumInteger
+
+DIGI-POWER-MANAGEMENT-MIB::powerMgmtPowerUnitEntry:
+  mib: DIGI-POWER-MANAGEMENT-MIB
+  object: powerMgmtPowerUnitEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.10.13.14.12.1.1
+      name: digi.powerUnit.Port
+      syntax: IntegerAsID
+  discovery_attribute: powerUnitStatus
+  attributes:
+    powerUnitStatus:
+      oid: .1.3.6.1.4.1.332.10.13.14.12.1.2
+      name: digi.powerUnit.Status
+      syntax: EnumInteger
+    powerUnitType:
+      oid: .1.3.6.1.4.1.332.10.13.14.12.1.3
+      name: digi.powerUnit.Type
+      syntax: OctetString
+    powerUnitNumOutlets:
+      oid: .1.3.6.1.4.1.332.10.13.14.12.1.4
+      name: digi.powerUnit.NumOutlets
+      syntax: Integer32
+    # powerUnitNumCurrSensors:
+    #   oid: .1.3.6.1.4.1.332.10.13.14.12.1.5
+    #   name: digi.powerUnit.NumCurrSensors
+    #   syntax: Integer32
+    # powerUnitNumTempSensors:
+    #   oid: .1.3.6.1.4.1.332.10.13.14.12.1.6
+    #   name: digi.powerUnit.NumTempSensors
+    #   syntax: Integer32
+
+DIGI-POWER-MANAGEMENT-MIB::powerMgmtCurrSensorsEntry:
+  mib: DIGI-POWER-MANAGEMENT-MIB
+  object: powerMgmtCurrSensorsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.10.13.14.13.1.1
+      name: digi.powerUnit.Port
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.10.13.14.13.1.2
+      name: digi.sensor.Curr.Index
+      syntax: IntegerAsID
+  discovery_attribute: sensorActualCurr
+  attributes:
+    sensorActualCurr:
+      oid: .1.3.6.1.4.1.332.10.13.14.13.1.3
+      name: digi.sensor.ActualCurr
+      syntax: CurrentDeciAmp
+      metric: gauge
+    sensorMaxCurr:
+      oid: .1.3.6.1.4.1.332.10.13.14.13.1.4
+      name: digi.sensor.MaxCurr
+      syntax: CurrentDeciAmp
+      metric: gauge
+    sensorThreshCurr:
+      oid: .1.3.6.1.4.1.332.10.13.14.13.1.5
+      name: digi.sensor.ThreshCurr
+      syntax: CurrentDeciAmp
+
+DIGI-POWER-MANAGEMENT-MIB::powerMgmtTempSensorsEntry:
+  mib: DIGI-POWER-MANAGEMENT-MIB
+  object: powerMgmtTempSensorsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.10.13.14.14.1.1
+      name: digi.powerUnit.Port
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.10.13.14.14.1.2
+      name: digi.sensor.TempIndex
+      syntax: IntegerAsID
+  discovery_attribute: sensorActualTemp
+  attributes:
+    sensorActualTemp:
+      oid: .1.3.6.1.4.1.332.10.13.14.14.1.3
+      name: digi.sensor.ActualTemp
+      syntax: TemperatureDeciC
+      metric: gauge
+    sensorThreshTemp:
+      oid: .1.3.6.1.4.1.332.10.13.14.14.1.4
+      name: digi.sensor.ThreshTemp
+      syntax: TemperatureDeciC
+      metric: gauge
