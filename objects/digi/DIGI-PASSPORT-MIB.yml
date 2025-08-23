@@ -1,0 +1,2850 @@
+DIGI-PASSPORT-MIB::general:
+  mib: DIGI-PASSPORT-MIB
+  object: general
+  discovery_attribute: generalModel
+  attributes:
+    generalModel:
+      oid: .1.3.6.1.4.1.332.11.8.20.11
+      name: digi.general.Model
+      syntax: DisplayString
+    generalFirmwareVersion:
+      oid: .1.3.6.1.4.1.332.11.8.20.12
+      name: digi.general.FirmwareVersion
+      syntax: DisplayString
+    generalBootcodeVersion:
+      oid: .1.3.6.1.4.1.332.11.8.20.13
+      name: digi.general.BootcodeVersion
+      syntax: DisplayString
+    generalHWRevision:
+      oid: .1.3.6.1.4.1.332.11.8.20.14
+      name: digi.general.HWRevision
+      syntax: DisplayString
+    generalFlashSize:
+      oid: .1.3.6.1.4.1.332.11.8.20.15
+      name: digi.general.FlashSize
+      syntax: BytesB
+    generalEtherAddress:
+      oid: .1.3.6.1.4.1.332.11.8.20.16
+      name: digi.general.EtherAddress
+      syntax: PhysAddress
+    generalIPAddress:
+      oid: .1.3.6.1.4.1.332.11.8.20.17
+      name: digi.general.IPAddress
+      syntax: IpAddressNoSuffix
+    generalDevicename:
+      oid: .1.3.6.1.4.1.332.11.8.20.18
+      name: digi.general.Devicename
+      syntax: DisplayString
+    generalLocating:
+      oid: .1.3.6.1.4.1.332.11.8.20.19
+      name: digi.general.Locating
+      syntax: EnumInteger
+    generalPowerStatus:
+      oid: .1.3.6.1.4.1.332.11.8.20.20
+      name: digi.general.PowerStatus
+      syntax: EnumInteger
+
+DIGI-PASSPORT-MIB::processor:
+  mib: DIGI-PASSPORT-MIB
+  object: processor
+  augments: DIGI-PASSPORT-MIB::general
+  discovery_attribute: processorUtilization
+  attributes:
+    processorUtilization:
+      oid: .1.3.6.1.4.1.332.11.8.21.11
+      name: digi.processorUtilization
+      syntax: Percent100
+      metric: gauge
+
+DIGI-PASSPORT-MIB::memory:
+  mib: DIGI-PASSPORT-MIB
+  object: memory
+  augments: DIGI-PASSPORT-MIB::general
+  discovery_attribute: memoryTotalMemory
+  attributes:
+    memoryTotalMemory:
+      oid: .1.3.6.1.4.1.332.11.8.22.11
+      name: digi.memoryTotalMemory
+      syntax: BytesB
+      metric: gauge
+    memoryAvailable:
+      oid: .1.3.6.1.4.1.332.11.8.22.12
+      name: digi.memoryAvailable
+      syntax: BytesB
+      metric: gauge
+
+# DIGI-PASSPORT-MIB::time:
+#   mib: DIGI-PASSPORT-MIB
+#   object: time
+#   discovery_attribute: timeSystemCurrent
+#   attributes:
+#     timeSystemCurrent:
+#       oid: .1.3.6.1.4.1.332.11.8.23.11
+#       name: digi.time.System.Current
+#       syntax: DisplayString
+#     timeNTPEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.23.12
+#       name: digi.time.NTP.Enable
+#       syntax: EnumInteger
+#     timeNTPAutoConfig:
+#       oid: .1.3.6.1.4.1.332.11.8.23.13
+#       name: digi.time.NTP.AutoConfig
+#       syntax: EnumInteger
+#     timeNTPServer:
+#       oid: .1.3.6.1.4.1.332.11.8.23.14
+#       name: digi.time.NTP.Server
+#       syntax: DisplayString
+#     timeNTPInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.23.15
+#       name: digi.time.NTP.Interval
+#       syntax: Integer32
+#     timeNTPDHCPOptEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.23.16
+#       name: digi.time.NTP.DHCPOptEnable
+#       syntax: EnumInteger
+
+DIGI-PASSPORT-MIB::portEntry: # portManageEntry
+  mib: DIGI-PASSPORT-MIB
+  object: portEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.11.8.25.11.1.11
+      name: digi.port.Index # portManageIndex
+      syntax: IntegerAsID
+  discovery_attribute: portsEnable
+  attributes:
+    portsEnable:
+      oid: .1.3.6.1.4.1.332.11.8.25.11.1.12
+      name: digi.port.Enable
+      syntax: EnumInteger
+    portsRealPortEnable:
+      oid: .1.3.6.1.4.1.332.11.8.25.11.1.13
+      name: digi.port.RealPortEnable
+      syntax: EnumInteger
+    portsGroupName:
+      oid: .1.3.6.1.4.1.332.11.8.25.11.1.18
+      name: digi.port.GroupName
+      syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::detectionEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: detectionEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.11
+#       name: digi.detect.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: detectMethod
+#   attributes:
+#     detectMethod:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.21
+#       name: digi.detect.Method
+#       syntax: EnumInteger
+#     detectInitDelay:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.22
+#       name: digi.detect.InitDelay
+#       syntax: Integer32
+#     detectInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.23
+#       name: digi.detect.Interval
+#       syntax: Integer32
+#     detectTime:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.24
+#       name: digi.detect.Time
+#       syntax: DisplayString
+#     detectProbeStr:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.25
+#       name: digi.detect.ProbeStr
+#       syntax: DisplayString
+#     detectedOS:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.26
+#       name: digi.detect.detectedOS
+#       syntax: DisplayString
+#     useDetectedTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.27
+#       name: digi.detect.useDetectedTitle
+#       syntax: EnumInteger
+#     titleNamingRule:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.28
+#       name: digi.detect.titleNamingRule
+#       syntax: DisplayString
+#     useDetectedTypeOfCS:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.29
+#       name: digi.detect.useDetectedTypeOfCS
+#       syntax: EnumInteger
+#     useDetectedFreeKVM:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.30
+#       name: digi.detect.useDetectedFreeKVM
+#       syntax: EnumInteger
+#     useDetectedSerialParams:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.31
+#       name: digi.detect.useDetectedSerialParams
+#       syntax: EnumInteger
+#     detectDeviceVia:
+#       oid: .1.3.6.1.4.1.332.11.8.25.13.1.32
+#       name: digi.detect.detectDeviceVia
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::portTitleEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: portTitleEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.14.1.11
+#       name: digi.portTitle.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: portTitle
+#   attributes:
+#     portTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.14.1.14
+#       name: digi.portTitle.name
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::hostmodeEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: hostmodeEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.11
+#       name: digi.hostmode.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: hostMode
+#   attributes:
+#     hostMode:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.12
+#       name: digi.hostmode.Mode
+#       syntax: EnumInteger
+#     hostTypeCS:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.13
+#       name: digi.hostmode.TypeCS
+#       syntax: EnumInteger
+#     hostEnableRackableCard:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.14
+#       name: digi.hostmode.EnableRackableCard
+#       syntax: EnumInteger
+#     hostEnableAssignedIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.15
+#       name: digi.hostmode.EnableAssignedIP
+#       syntax: EnumInteger
+#     hostAssignedIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.16
+#       name: digi.hostmode.AssignedIP
+#       syntax: DisplayString
+#     hostLocalPort:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.17
+#       name: digi.hostmode.LocalPort
+#       syntax: Integer32
+#     hostProtocol:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.18
+#       name: digi.hostmode.Protocol
+#       syntax: EnumInteger
+#     hostInactivity:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.19
+#       name: digi.hostmode.Inactivity
+#       syntax: TicksSec
+#     hostEnableEscapeChar:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.20
+#       name: digi.hostmode.EnableEscapeChar
+#       syntax: EnumInteger
+#     hostEscapeChar:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.21
+#       name: digi.hostmode.EscapeChar
+#       syntax: DisplayString
+#     hostBreakSeq:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.22
+#       name: digi.hostmode.BreakSeq
+#       syntax: DisplayString
+#     hostUseComment:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.23
+#       name: digi.hostmode.UseComment
+#       syntax: EnumInteger
+#     hostQuickConnect:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.24
+#       name: digi.hostmode.QuickConnect
+#       syntax: EnumInteger
+#     hostAppletEncode:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.25
+#       name: digi.hostmode.AppletEncode
+#       syntax: EnumInteger
+#     hostTSOption:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.26
+#       name: digi.hostmode.TSOption
+#       syntax: EnumInteger
+#     hostDestIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.27
+#       name: digi.hostmode.DestIP
+#       syntax: DisplayString
+#     hostDestPort:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.28
+#       name: digi.hostmode.DestPort
+#       syntax: Integer32
+#     hostTSShellProgramPath:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.29
+#       name: digi.hostmode.TSShellProgramPath
+#       syntax: DisplayString
+#     hostModemInitStr:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.30
+#       name: digi.hostmode.ModemInitStr
+#       syntax: DisplayString
+#     hostEnableCallback:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.31
+#       name: digi.hostmode.EnableCallback
+#       syntax: EnumInteger
+#     hostCallbackNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.32
+#       name: digi.hostmode.CallbackNumber
+#       syntax: DisplayString
+#     hostEnableModemTest:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.33
+#       name: digi.hostmode.EnableModemTest
+#       syntax: EnumInteger
+#     hostModemTestNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.34
+#       name: digi.hostmode.ModemTestNumber
+#       syntax: DisplayString
+#     hostModemTestInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.35
+#       name: digi.hostmode.ModemTestInterval
+#       syntax: TicksMin
+#     hostServiceProcessor:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.36
+#       name: digi.hostmode.ServiceProcessor
+#       syntax: EnumInteger
+#     hostEnableCallbackLogin:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.37
+#       name: digi.hostmode.EnableCallbackLogin
+#       syntax: EnumInteger
+#     hostEnableCallbackNumberChange:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.38
+#       name: digi.hostmode.EnableCallbackNumberChange
+#       syntax: EnumInteger
+#     hostEnableAppletColumns:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.39
+#       name: digi.hostmode.EnableAppletColumns
+#       syntax: Integer32
+#     hostEnableAppletRows:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.40
+#       name: digi.hostmode.EnableAppletRows
+#       syntax: Integer32
+#     hostEnableDisPortInfo:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.41
+#       name: digi.hostmode.EnableDisPortInfo
+#       syntax: EnumInteger
+#     hostEnableEscapeOption:
+#       oid: .1.3.6.1.4.1.332.11.8.25.15.1.42
+#       name: digi.hostmode.EnableEscapeOption
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::paramEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: paramEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.11
+#       name: digi.param.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: paramType
+#   attributes:
+#     paramType:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.12
+#       name: digi.param.Type
+#       syntax: EnumInteger
+#     paramBaud:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.13
+#       name: digi.param.Baud
+#       syntax: EnumInteger
+#     paramDatabits:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.14
+#       name: digi.param.Databits
+#       syntax: EnumInteger
+#     paramParity:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.15
+#       name: digi.param.Parity
+#       syntax: EnumInteger
+#     paramStopbits:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.16
+#       name: digi.param.Stopbits
+#       syntax: EnumInteger
+#     paramFlowctrl:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.17
+#       name: digi.param.Flowctrl
+#       syntax: EnumInteger
+#     paramDTROpt:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.18
+#       name: digi.param.DTROpt
+#       syntax: EnumInteger
+#     paramEnableDelimiter:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.19
+#       name: digi.param.EnableDelimiter
+#       syntax: EnumInteger
+#     paramDelimiter:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.20
+#       name: digi.param.Delimiter
+#       syntax: DisplayString
+#     paramDeilmiterOption:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.21
+#       name: digi.param.DeilmiterOption
+#       syntax: EnumInteger
+#     paramInterCharTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.22
+#       name: digi.param.InterCharTimeout
+#       syntax: Integer32
+#     paramRemoteDestIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.23
+#       name: digi.param.RemoteDestIP
+#       syntax: DisplayString
+#     paramRemoteDestPort:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.24
+#       name: digi.param.RemoteDestPort
+#       syntax: Integer32
+#     paramRemoteProtocol:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.25
+#       name: digi.param.RemoteProtocol
+#       syntax: EnumInteger
+#     paramRemoteContinuousConnect:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.26
+#       name: digi.param.RemoteContinuousConnect
+#       syntax: EnumInteger
+#     paramRemoteEstablishInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.27
+#       name: digi.param.RemoteEstablishInterval
+#       syntax: Integer32
+#     paramRemoteOEMType:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.28
+#       name: digi.param.RemoteOEMType
+#       syntax: EnumInteger
+#     paramRemoteUsername:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.29
+#       name: digi.param.RemoteUsername
+#       syntax: DisplayString
+#     paramRemotePassword:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.30
+#       name: digi.param.RemotePassword
+#       syntax: DisplayString
+#     paramRemoteSupportProtocol:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.31
+#       name: digi.param.RemoteSupportProtocol
+#       syntax: EnumInteger
+#     paramRemoteAutomaticLogin:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.32
+#       name: digi.param.RemoteAutomaticLogin
+#       syntax: EnumInteger
+#     paramRemoteUseCustomScript:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.33
+#       name: digi.param.RemoteUseCustomScript
+#       syntax: EnumInteger
+#     paramFlushBuf:
+#       oid: .1.3.6.1.4.1.332.11.8.25.16.1.34
+#       name: digi.param.FlushBuf
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::loggingEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: loggingEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.11
+#       name: digi.logging.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: loggingEnablePortLogging
+#   attributes:
+#     loggingEnablePortLogging:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.12
+#       name: digi.logging.EnablePortLogging
+#       syntax: EnumInteger
+#     loggingOption:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.13
+#       name: digi.logging.Option
+#       syntax: EnumInteger
+#     loggingStoLoc:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.14
+#       name: digi.logging.StoLoc
+#       syntax: EnumInteger
+#     loggingSyslog:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.15
+#       name: digi.logging.Syslog
+#       syntax: EnumInteger
+#     loggingBufferSize:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.16
+#       name: digi.logging.BufferSize
+#       syntax: Integer32
+#     loggingFileByTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.17
+#       name: digi.logging.FileByTitle
+#       syntax: EnumInteger
+#     loggingFilename:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.18
+#       name: digi.logging.Filename
+#       syntax: DisplayString
+#     loggingTimeStamp:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.19
+#       name: digi.logging.TimeStamp
+#       syntax: EnumInteger
+#     loggingShowOnConn:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.20
+#       name: digi.logging.ShowOnConn
+#       syntax: EnumInteger
+#     loggingStringM:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.21
+#       name: digi.logging.StringM
+#       syntax: EnumInteger
+#     loggingBackupOnMount:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.22
+#       name: digi.logging.BackupOnMount
+#       syntax: EnumInteger
+#     loggingFacility:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.23
+#       name: digi.logging.Facility
+#       syntax: EnumInteger
+#     loggingCharLength:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.24
+#       name: digi.logging.CharLength
+#       syntax: Integer32
+#     backupfileNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.25.17.1.25
+#       name: digi.logging.backupfileNumber
+#       syntax: Integer32
+#       metric: gauge
+
+# DIGI-PASSPORT-MIB::keywordsEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: keywordsEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.11
+#       name: digi.keyword.PortIndex
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.12
+#       name: digi.keyword.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: keywordString
+#   attributes:
+#     keywordString:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.13
+#       name: digi.keyword.String
+#       syntax: DisplayString
+#     keywordMailEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.14
+#       name: digi.keyword.MailEnable
+#       syntax: EnumInteger
+#     keywordMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.15
+#       name: digi.keyword.MailTitle
+#       syntax: DisplayString
+#     keywordMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.16
+#       name: digi.keyword.Mailto
+#       syntax: DisplayString
+#     keywordTrapEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.17
+#       name: digi.keyword.TrapEnable
+#       syntax: EnumInteger
+#     keywordTrapMsgTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.18
+#       name: digi.keyword.TrapMsgTitle
+#       syntax: DisplayString
+#     keywordTrapToGlobal:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.19
+#       name: digi.keyword.TrapToGlobal
+#       syntax: EnumInteger
+#     keyword1stTrapDest:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.20
+#       name: digi.keyword.1stTrapDest
+#       syntax: IpAddressNoSuffix
+#     keyword1stTrapDestComm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.21
+#       name: digi.keyword.1stTrapDestComm
+#       syntax: DisplayString
+#     keyword1stTrapDestVer:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.22
+#       name: digi.keyword.1stTrapDestVer
+#       syntax: EnumInteger
+#     keyword1stTrapUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.23
+#       name: digi.keyword.1stTrapUserName
+#       syntax: DisplayString
+#     keyword1stTrapSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.24
+#       name: digi.keyword.1stTrapSecurityLevel
+#       syntax: EnumInteger
+#     keyword1stTrapAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.25
+#       name: digi.keyword.1stTrapAuthProto
+#       syntax: EnumInteger
+#     keyword1stTrapAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.26
+#       name: digi.keyword.1stTrapAuthPasswd
+#       syntax: DisplayString
+#     keyword1stTrapPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.27
+#       name: digi.keyword.1stTrapPrivProto
+#       syntax: EnumInteger
+#     keyword1stTrapPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.28
+#       name: digi.keyword.1stTrapPrivPasswd
+#       syntax: DisplayString
+#     keyword1stTrapEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.29
+#       name: digi.keyword.1stTrapEngineID
+#       syntax: DisplayString
+#     keyword2ndTrapDest:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.30
+#       name: digi.keyword.2ndTrapDest
+#       syntax: IpAddressNoSuffix
+#     keyword2ndTrapDestComm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.31
+#       name: digi.keyword.2ndTrapDestComm
+#       syntax: DisplayString
+#     keyword2ndTrapDestVer:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.32
+#       name: digi.keyword.2ndTrapDestVer
+#       syntax: EnumInteger
+#     keyword2ndTrapUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.33
+#       name: digi.keyword.2ndTrapUserName
+#       syntax: DisplayString
+#     keyword2ndTrapSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.34
+#       name: digi.keyword.2ndTrapSecurityLevel
+#       syntax: EnumInteger
+#     keyword2ndTrapAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.35
+#       name: digi.keyword.2ndTrapAuthProto
+#       syntax: EnumInteger
+#     keyword2ndTrapAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.36
+#       name: digi.keyword.2ndTrapAuthPasswd
+#       syntax: DisplayString
+#     keyword2ndTrapPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.37
+#       name: digi.keyword.2ndTrapPrivProto
+#       syntax: EnumInteger
+#     keyword2ndTrapPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.38
+#       name: digi.keyword.2ndTrapPrivPasswd
+#       syntax: DisplayString
+#     keyword2ndTrapEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.39
+#       name: digi.keyword.2ndTrapEngineID
+#       syntax: DisplayString
+#     keywordCaseSensitive:
+#       oid: .1.3.6.1.4.1.332.11.8.25.18.1.40
+#       name: digi.keyword.CaseSensitive
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::authEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: authEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.11
+#       name: digi.auth.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: authMethod
+#   attributes:
+#     authMethod:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.12
+#       name: digi.auth.Method
+#       syntax: EnumInteger
+#     authPrimaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.13
+#       name: digi.auth.PrimaryIPAddress
+#       syntax: DisplayString
+#     authSecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.14
+#       name: digi.auth.SecondaryIPAddress
+#       syntax: DisplayString
+#     authPrimaryAcctIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.15
+#       name: digi.auth.PrimaryAcctIPAddress
+#       syntax: DisplayString
+#     authSecondaryAcctIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.16
+#       name: digi.auth.SecondaryAcctIPAddress
+#       syntax: DisplayString
+#     authSecret:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.17
+#       name: digi.auth.Secret
+#       syntax: DisplayString
+#     authTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.18
+#       name: digi.auth.Timeout
+#       syntax: Integer32
+#     authRetries:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.19
+#       name: digi.auth.Retries
+#       syntax: Integer32
+#       metric: gauge
+#     authLDAPSearchBase:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.20
+#       name: digi.auth.LDAPSearchBase
+#       syntax: DisplayString
+#     authLDAPActiveDirectoryDomain:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.21
+#       name: digi.auth.LDAPActiveDirectoryDomain
+#       syntax: DisplayString
+#     authKRBPrimaryRealm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.22
+#       name: digi.auth.KRBPrimaryRealm
+#       syntax: DisplayString
+#     authKRBSecondaryRealm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.23
+#       name: digi.auth.KRBSecondaryRealm
+#       syntax: DisplayString
+#     authAuthorService:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.24
+#       name: digi.auth.AuthorService
+#       syntax: DisplayString
+#     authLdapSecure:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.25
+#       name: digi.auth.LdapSecure
+#       syntax: EnumInteger
+#     authPPPUser:
+#       oid: .1.3.6.1.4.1.332.11.8.25.19.1.26
+#       name: digi.auth.PPPUser
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::usracctlEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: usracctlEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.11
+#       name: digi.usracctl.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: usracctlEveryonePortPerm
+#   attributes:
+#     usracctlEveryonePortPerm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.12
+#       name: digi.usracctl.EveryonePortPerm
+#       syntax: EnumInteger
+#     usracctlPortPermittedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.13
+#       name: digi.usracctl.PortPermittedUsers
+#       syntax: DisplayString
+#     usracctlPortRestrictedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.14
+#       name: digi.usracctl.PortRestrictedUsers
+#       syntax: DisplayString
+#     usracctlPortPermittedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.15
+#       name: digi.usracctl.PortPermittedLists
+#       syntax: DisplayString
+#     usracctlPortRestrictedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.16
+#       name: digi.usracctl.PortRestrictedLists
+#       syntax: DisplayString
+#     usracctlEveryoneMonitorPerm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.17
+#       name: digi.usracctl.EveryoneMonitorPerm
+#       syntax: EnumInteger
+#     usracctlMonitorPermittedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.18
+#       name: digi.usracctl.MonitorPermittedUsers
+#       syntax: DisplayString
+#     usracctlMonitorRestrictedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.19
+#       name: digi.usracctl.MonitorRestrictedUsers
+#       syntax: DisplayString
+#     usracctlMonitorPermittedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.20
+#       name: digi.usracctl.MonitorPermittedLists
+#       syntax: DisplayString
+#     usracctlMonitorRestrictedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.21
+#       name: digi.usracctl.MonitorRestrictedLists
+#       syntax: DisplayString
+#     usracctlEveryonePowerPerm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.22
+#       name: digi.usracctl.EveryonePowerPerm
+#       syntax: EnumInteger
+#     usracctlPowerPermittedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.23
+#       name: digi.usracctl.PowerPermittedUsers
+#       syntax: DisplayString
+#     usracctlPowerRestrictedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.24
+#       name: digi.usracctl.PowerRestrictedUsers
+#       syntax: DisplayString
+#     usracctlPowerPermittedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.25
+#       name: digi.usracctl.PowerPermittedLists
+#       syntax: DisplayString
+#     usracctlPowerRestrictedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.26
+#       name: digi.usracctl.PowerRestrictedLists
+#       syntax: DisplayString
+#     usracctlEnableMultipleSession:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.27
+#       name: digi.usracctl.EnableMultipleSession
+#       syntax: EnumInteger
+#     usracctlSessionDisplayMode:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.28
+#       name: digi.usracctl.SessionDisplayMode
+#       syntax: EnumInteger
+#     usracctlSniffDisplayDirectionArrow:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.29
+#       name: digi.usracctl.SniffDisplayDirectionArrow
+#       syntax: EnumInteger
+#     usracctlEveryoneLogPerm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.30
+#       name: digi.usracctl.EveryoneLogPerm
+#       syntax: EnumInteger
+#     usracctlLogPermittedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.31
+#       name: digi.usracctl.LogPermittedUsers
+#       syntax: DisplayString
+#     usracctlLogRestrictedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.32
+#       name: digi.usracctl.LogRestrictedUsers
+#       syntax: DisplayString
+#     usracctlLogPermittedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.33
+#       name: digi.usracctl.LogPermittedLists
+#       syntax: DisplayString
+#     usracctlLogRestrictedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.34
+#       name: digi.usracctl.LogRestrictedLists
+#       syntax: DisplayString
+#     usracctlEveryoneBreakPerm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.35
+#       name: digi.usracctl.EveryoneBreakPerm
+#       syntax: EnumInteger
+#     usracctlBreakPermittedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.36
+#       name: digi.usracctl.BreakPermittedUsers
+#       syntax: DisplayString
+#     usracctlBreakRestrictedUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.37
+#       name: digi.usracctl.BreakRestrictedUsers
+#       syntax: DisplayString
+#     usracctlBreakPermittedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.38
+#       name: digi.usracctl.BreakPermittedLists
+#       syntax: DisplayString
+#     usracctlBreakRestrictedLists:
+#       oid: .1.3.6.1.4.1.332.11.8.25.20.1.39
+#       name: digi.usracctl.BreakRestrictedLists
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::alertEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: alertEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.11
+#       name: digi.alert.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: alertLoginMail
+#   attributes:
+#     alertLoginMail:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.12
+#       name: digi.alert.LoginMail
+#       syntax: EnumInteger
+#     alertLoginMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.13
+#       name: digi.alert.LoginMailTitle
+#       syntax: DisplayString
+#     alertLoginMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.14
+#       name: digi.alert.LoginMailto
+#       syntax: DisplayString
+#     alertDevConnMail:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.15
+#       name: digi.alert.DevConnMail
+#       syntax: EnumInteger
+#     alertDevConnMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.16
+#       name: digi.alert.DevConnMailTitle
+#       syntax: DisplayString
+#     alertDevConnMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.17
+#       name: digi.alert.DevConnMailto
+#       syntax: DisplayString
+#     alertDetectionMail:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.18
+#       name: digi.alert.DetectionMail
+#       syntax: EnumInteger
+#     alertDetectionMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.19
+#       name: digi.alert.DetectionMailTitle
+#       syntax: DisplayString
+#     alertDetectionMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.20
+#       name: digi.alert.DetectionMailto
+#       syntax: DisplayString
+#     alertModemTestMail:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.21
+#       name: digi.alert.ModemTestMail
+#       syntax: EnumInteger
+#     alertModemTestMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.22
+#       name: digi.alert.ModemTestMailTitle
+#       syntax: DisplayString
+#     alertModemTestMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.23
+#       name: digi.alert.ModemTestMailto
+#       syntax: DisplayString
+#     alertIPMIMail:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.24
+#       name: digi.alert.IPMIMail
+#       syntax: EnumInteger
+#     alertIPMIMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.25
+#       name: digi.alert.IPMIMailTitle
+#       syntax: DisplayString
+#     alertIPMIMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.26
+#       name: digi.alert.IPMIMailto
+#       syntax: DisplayString
+#     alertLoginTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.27
+#       name: digi.alert.LoginTrap
+#       syntax: EnumInteger
+#     alertDevConnTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.28
+#       name: digi.alert.DevConnTrap
+#       syntax: EnumInteger
+#     alertDetectionTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.29
+#       name: digi.alert.DetectionTrap
+#       syntax: EnumInteger
+#     alertModemTestTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.30
+#       name: digi.alert.ModemTestTrap
+#       syntax: EnumInteger
+#     alertIPMITrap:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.31
+#       name: digi.alert.IPMITrap
+#       syntax: EnumInteger
+#     alertToGlobalSNMP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.32
+#       name: digi.alert.ToGlobalSNMP
+#       syntax: EnumInteger
+#     alert1stTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.33
+#       name: digi.alert.1stTrapRcvIP
+#       syntax: DisplayString
+#     alert1stTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.34
+#       name: digi.alert.1stTrapRcvComm
+#       syntax: DisplayString
+#     alert1stTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.35
+#       name: digi.alert.1stTrapRcvVer
+#       syntax: EnumInteger
+#     alert1stTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.36
+#       name: digi.alert.1stTrapRcvUserName
+#       syntax: DisplayString
+#     alert1stTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.37
+#       name: digi.alert.1stTrapRcvSecurityLevel
+#       syntax: EnumInteger
+#     alert1stTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.38
+#       name: digi.alert.1stTrapRcvAuthProto
+#       syntax: EnumInteger
+#     alert1stTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.39
+#       name: digi.alert.1stTrapRcvAuthPasswd
+#       syntax: DisplayString
+#     alert1stTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.40
+#       name: digi.alert.1stTrapRcvPrivProto
+#       syntax: EnumInteger
+#     alert1stTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.41
+#       name: digi.alert.1stTrapRcvPrivPasswd
+#       syntax: DisplayString
+#     alert1stTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.42
+#       name: digi.alert.1stTrapRcvEngineID
+#       syntax: DisplayString
+#     alert2ndTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.43
+#       name: digi.alert.2ndTrapRcvIP
+#       syntax: DisplayString
+#     alert2ndTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.44
+#       name: digi.alert.2ndTrapRcvComm
+#       syntax: DisplayString
+#     alert2ndTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.45
+#       name: digi.alert.2ndTrapRcvVer
+#       syntax: EnumInteger
+#     alert2ndTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.46
+#       name: digi.alert.2ndTrapRcvUserName
+#       syntax: DisplayString
+#     alert2ndTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.47
+#       name: digi.alert.2ndTrapRcvSecurityLevel
+#       syntax: EnumInteger
+#     alert2ndTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.48
+#       name: digi.alert.2ndTrapRcvAuthProto
+#       syntax: EnumInteger
+#     alert2ndTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.49
+#       name: digi.alert.2ndTrapRcvAuthPasswd
+#       syntax: DisplayString
+#     alert2ndTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.50
+#       name: digi.alert.2ndTrapRcvPrivProto
+#       syntax: EnumInteger
+#     alert2ndTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.51
+#       name: digi.alert.2ndTrapRcvPrivPasswd
+#       syntax: DisplayString
+#     alert2ndTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.25.21.1.52
+#       name: digi.alert.2ndTrapRcvEngineID
+#       syntax: DisplayString
+
+DIGI-PASSPORT-MIB::powerEntry:
+  mib: DIGI-PASSPORT-MIB
+  object: powerEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.11.8.25.22.1.11
+      name: digi.power.Index
+      syntax: IntegerAsID
+  discovery_attribute: powerStatus
+  attributes:
+    powerStatus:
+      oid: .1.3.6.1.4.1.332.11.8.25.22.1.12
+      name: digi.power.Status
+      syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::ipmiConfigEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: ipmiConfigEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.23.1.11
+#       name: digi.ipmi.Config.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: ipmiConfigUserName
+#   attributes:
+#     ipmiConfigUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.25.23.1.12
+#       name: digi.ipmi.Config.UserName
+#       syntax: DisplayString
+#     ipmiConfigPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.25.23.1.13
+#       name: digi.ipmi.Config.Password
+#       syntax: DisplayString
+#     ipmiConfigOEMType:
+#       oid: .1.3.6.1.4.1.332.11.8.25.23.1.14
+#       name: digi.ipmi.Config.OEMType
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::ipmiSensorEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: ipmiSensorEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.24.1.11
+#       name: digi.ipmi.Port.Index
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.24.1.12
+#       name: digi.ipmi.Sensor.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: ipmiSensorType
+#   attributes:
+#     ipmiSensorType:
+#       oid: .1.3.6.1.4.1.332.11.8.25.24.1.13
+#       name: digi.ipmi.Sensor.Type
+#       syntax: DisplayString
+#     ipmiSensorEmailAlert:
+#       oid: .1.3.6.1.4.1.332.11.8.25.24.1.14
+#       name: digi.ipmi.Sensor.EmailAlert
+#       syntax: EnumInteger
+#     ipmiSensorSNMPAlert:
+#       oid: .1.3.6.1.4.1.332.11.8.25.24.1.15
+#       name: digi.ipmi.Sensor.SNMPAlert
+#       syntax: EnumInteger
+
+DIGI-PASSPORT-MIB::portsStatEntry:
+  mib: DIGI-PASSPORT-MIB
+  object: portsStatEntry
+  augments: DIGI-PASSPORT-MIB::portEntry
+  discovery_attribute: portsStatBaudRate
+  attributes:
+    portsStatBaudRate:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.12
+      name: digi.port.StatBaudRate
+      syntax: BandwidthBits
+      metric: gauge
+    portsStatTx:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.13
+      name: digi.port.StatTx
+      syntax: Integer32
+      metric: gauge
+    portsStatRx:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.14
+      name: digi.port.StatRx
+      syntax: Integer32
+      metric: gauge
+    portsStatRTS:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.15
+      name: digi.port.StatRTS
+      syntax: EnumInteger
+    portsStatCTS:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.16
+      name: digi.port.StatCTS
+      syntax: EnumInteger
+    portsStatDTR:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.17
+      name: digi.port.StatDTR
+      syntax: EnumInteger
+    portsStatDSR:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.18
+      name: digi.port.StatDSR
+      syntax: EnumInteger
+    portsStatCD:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.19
+      name: digi.port.StatCD
+      syntax: EnumInteger
+    portsStatOper:
+      oid: .1.3.6.1.4.1.332.11.8.25.25.1.20
+      name: digi.port.StatOper
+      syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::instantPortsParamEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: instantPortsParamEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.25.26.1.11
+#       name: digi.instantPorts.Param.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: instantPortsParamString
+#   attributes:
+#     instantPortsParamString:
+#       oid: .1.3.6.1.4.1.332.11.8.25.26.1.12
+#       name: digi.instantPorts.Param.String
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::pccard:
+#   mib: DIGI-PASSPORT-MIB
+#   object: pccard
+#   discovery_attribute: pccardType
+#   attributes:
+#     pccardType:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.11
+#       name: digi.pccard.Type
+#       syntax: EnumInteger
+#     pccardIpmode:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.12
+#       name: digi.pccard.Ipmode
+#       syntax: EnumInteger
+#     pccardIpAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.13
+#       name: digi.pccard.IpAddress
+#       syntax: IpAddressNoSuffix
+#     pccardSubnet:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.14
+#       name: digi.pccard.Subnet
+#       syntax: IpAddressNoSuffix
+#     pccardGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.15
+#       name: digi.pccard.Gateway
+#       syntax: IpAddressNoSuffix
+#     pccardSSID:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.16
+#       name: digi.pccard.SSID
+#       syntax: DisplayString
+#     pccardWEPEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.17
+#       name: digi.pccard.WEPEnable
+#       syntax: EnumInteger
+#     pccardWEPMode:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.18
+#       name: digi.pccard.WEPMode
+#       syntax: EnumInteger
+#     pccardWEPLength:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.19
+#       name: digi.pccard.WEPLength
+#       syntax: EnumInteger
+#     pccardWEPKeyStr:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.20
+#       name: digi.pccard.WEPKeyStr
+#       syntax: DisplayString
+#     pccardModemInitStr:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.21
+#       name: digi.pccard.Modem.InitStr
+#       syntax: DisplayString
+#     pccardModemCallback:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.22
+#       name: digi.pccard.Modem.Callback
+#       syntax: EnumInteger
+#     pccardModemCallbackNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.23
+#       name: digi.pccard.Modem.CallbackNumber
+#       syntax: DisplayString
+#     pccardModemTestEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.24
+#       name: digi.pccard.Modem.TestEnable
+#       syntax: EnumInteger
+#     pccardModemTestNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.25
+#       name: digi.pccard.Modem.TestNumber
+#       syntax: DisplayString
+#     pccardModemTestInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.26
+#       name: digi.pccard.Modem.TestInterval
+#       syntax: Integer32
+#     pccardModemTestMail:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.27
+#       name: digi.pccard.Modem.TestMail
+#       syntax: EnumInteger
+#     pccardModemTestMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.28
+#       name: digi.pccard.Modem.TestMailTitle
+#       syntax: DisplayString
+#     pccardModemTestMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.29
+#       name: digi.pccard.Modem.TestMailto
+#       syntax: DisplayString
+#     pccardModemTestTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.30
+#       name: digi.pccard.Modem.TestTrap
+#       syntax: EnumInteger
+#     pccardTrapToGlobalSNMP:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.31
+#       name: digi.pccard.TrapToGlobalSNMP
+#       syntax: EnumInteger
+#     pccardEnableCallbackLogin:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.33
+#       name: digi.pccard.EnableCallbackLogin
+#       syntax: EnumInteger
+#     pccardEnableCallbackNumberChange:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.34
+#       name: digi.pccard.EnableCallbackNumberChange
+#       syntax: EnumInteger
+#     pccardIPv6Mode:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.35
+#       name: digi.pccard.IPv6.Mode
+#       syntax: EnumInteger
+#     pccardIPv6Address:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.36
+#       name: digi.pccard.IPv6.Address
+#       syntax: DisplayString
+#     pccardIPv6Gateway:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.37
+#       name: digi.pccard.IPv6.Gateway
+#       syntax: DisplayString
+#     pccardIPv6SecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.38
+#       name: digi.pccard.IPv6.SecondaryIPAddress
+#       syntax: DisplayString
+#     pccardIPv6Enable6to4tunneling:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.39
+#       name: digi.pccard.IPv6.Enable6to4tunneling
+#       syntax: EnumInteger
+#     pccardIPv6To4Relay:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.40
+#       name: digi.pccard.IPv6.To4Relay
+#       syntax: DisplayString
+#     pccardIPv6OverwriteLocalIPV4:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.41
+#       name: digi.pccard.IPv6.OverwriteLocalIPV4
+#       syntax: DisplayString
+#     pccardAuthMethod:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.42
+#       name: digi.pccard.AuthMethod
+#       syntax: EnumInteger
+#     pccardPPPUser:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.43
+#       name: digi.pccard.PPPUser
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::pccardTrapRcvEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: pccardTrapRcvEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.11
+#       name: digi.pccard.TrapRcv.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: pccardTrapRcvIP
+#   attributes:
+#     pccardTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.12
+#       name: digi.pccard.TrapRcv.IP
+#       syntax: DisplayString
+#     pccardTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.13
+#       name: digi.pccard.TrapRcv.Comm
+#       syntax: DisplayString
+#     pccardTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.14
+#       name: digi.pccard.TrapRcv.Ver
+#       syntax: DisplayString
+#     pccardTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.15
+#       name: digi.pccard.TrapRcv.UserName
+#       syntax: DisplayString
+#     pccardTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.16
+#       name: digi.pccard.TrapRcv.SecurityLevel
+#       syntax: EnumInteger
+#     pccardTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.17
+#       name: digi.pccard.TrapRcv.AuthProto
+#       syntax: EnumInteger
+#     pccardTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.18
+#       name: digi.pccard.TrapRcv.AuthPasswd
+#       syntax: DisplayString
+#     pccardTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.19
+#       name: digi.pccard.TrapRcv.PrivProto
+#       syntax: EnumInteger
+#     pccardTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.20
+#       name: digi.pccard.TrapRcv.PrivPasswd
+#       syntax: DisplayString
+#     pccardTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.26.11.32.1.21
+#       name: digi.pccard.TrapRcv.EngineID
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::modem:
+#   mib: DIGI-PASSPORT-MIB
+#   object: modem
+#   discovery_attribute: modemEnablePPP
+#   attributes:
+#     modemEnablePPP:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.11
+#       name: digi.modem.EnablePPP
+#       syntax: EnumInteger
+#     modemInitString:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.12
+#       name: digi.modem.InitString
+#       syntax: DisplayString
+#     modemEnableCallback:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.13
+#       name: digi.modem.EnableCallback
+#       syntax: EnumInteger
+#     modemCallbackNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.14
+#       name: digi.modem.CallbackNumber
+#       syntax: DisplayString
+#     modemEnableModemTest:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.15
+#       name: digi.modem.EnableModemTest
+#       syntax: EnumInteger
+#     modemTestNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.16
+#       name: digi.modem.Test.Number
+#       syntax: DisplayString
+#     modemTestInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.17
+#       name: digi.modem.Test.Interval
+#       syntax: Integer32
+#     modemTestMail:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.18
+#       name: digi.modem.Test.Mail
+#       syntax: EnumInteger
+#     modemTestMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.19
+#       name: digi.modem.Test.MailTitle
+#       syntax: DisplayString
+#     modemTestMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.20
+#       name: digi.modem.Test.Mailto
+#       syntax: DisplayString
+#     modemTestTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.21
+#       name: digi.modem.Test.Trap
+#       syntax: EnumInteger
+#     modemTrapToGlobalSNMP:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.22
+#       name: digi.modem.TrapToGlobalSNMP
+#       syntax: EnumInteger
+#     modemEnableCallbackLogin:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.24
+#       name: digi.modem.EnableCallbackLogin
+#       syntax: EnumInteger
+#     modemEnableCallbackNumberChange:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.25
+#       name: digi.modem.EnableCallbackNumberChange
+#       syntax: EnumInteger
+#     modemSecondaryCallbackNumber:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.26
+#       name: digi.modem.SecondaryCallbackNumber
+#       syntax: DisplayString
+#     modemAuthMethod:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.27
+#       name: digi.modem.AuthMethod
+#       syntax: EnumInteger
+#     modemPPPUser:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.28
+#       name: digi.modem.PPPUser
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::modemTrapRcvEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: modemTrapRcvEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.11
+#       name: digi.modem.TrapRcv.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: modemTrapRcvIP
+#   attributes:
+#     modemTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.12
+#       name: digi.modem.TrapRcv.IP
+#       syntax: DisplayString
+#     modemTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.13
+#       name: digi.modem.TrapRcv.Comm
+#       syntax: DisplayString
+#     modemTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.14
+#       name: digi.modem.TrapRcv.Ver
+#       syntax: DisplayString
+#     modemTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.15
+#       name: digi.modem.TrapRcv.UserName
+#       syntax: DisplayString
+#     modemTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.16
+#       name: digi.modem.TrapRcv.SecurityLevel
+#       syntax: EnumInteger
+#     modemTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.17
+#       name: digi.modem.TrapRcv.AuthProto
+#       syntax: EnumInteger
+#     modemTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.18
+#       name: digi.modem.TrapRcv.AuthPasswd
+#       syntax: DisplayString
+#     modemTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.19
+#       name: digi.modem.TrapRcv.PrivProto
+#       syntax: EnumInteger
+#     modemTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.20
+#       name: digi.modem.TrapRcv.PrivPasswd
+#       syntax: DisplayString
+#     modemTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.26.12.23.1.21
+#       name: digi.modem.TrapRcv.EngineID
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::usbEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: usbEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.11
+#       name: digi.usb.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: usbType
+#   attributes:
+#     usbType:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.12
+#       name: digi.usb.Type
+#       syntax: EnumInteger
+#     usbModel:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.13
+#       name: digi.usb.Model
+#       syntax: DisplayString
+#     usbSize:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.14
+#       name: digi.usb.Size
+#       syntax: Integer32
+#     usbFileSystem:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.15
+#       name: digi.usb.FileSystem
+#       syntax: Integer32
+#     usbTotalSize:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.16
+#       name: digi.usb.TotalSize
+#       syntax: Integer32
+#     usbIpmode:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.17
+#       name: digi.usb.Ipmode
+#       syntax: EnumInteger
+#     usbIpAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.18
+#       name: digi.usb.IpAddress
+#       syntax: IpAddressNoSuffix
+#     usbSubnet:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.19
+#       name: digi.usb.Subnet
+#       syntax: IpAddressNoSuffix
+#     usbGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.20
+#       name: digi.usb.Gateway
+#       syntax: IpAddressNoSuffix
+#     usbSSID:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.21
+#       name: digi.usb.SSID
+#       syntax: DisplayString
+#     usbWEPEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.22
+#       name: digi.usb.WEP.Enable
+#       syntax: EnumInteger
+#     usbWEPMode:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.23
+#       name: digi.usb.WEP.Mode
+#       syntax: EnumInteger
+#     usbWEPLength:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.24
+#       name: digi.usb.WEP.Length
+#       syntax: EnumInteger
+#     usbWEPKeyStr:
+#       oid: .1.3.6.1.4.1.332.11.8.26.13.11.1.25
+#       name: digi.usb.WEP.KeyStr
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::netip:
+#   mib: DIGI-PASSPORT-MIB
+#   object: netip
+#   discovery_attribute: netipUseOldIPOnDHCPFailure
+#   attributes:
+#     netipUseOldIPOnDHCPFailure:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.13
+#       name: digi.netip.UseOldIPOnDHCPFailure
+#       syntax: EnumInteger
+#     netipUseManualDNS:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.14
+#       name: digi.netip.UseManualDNS
+#       syntax: EnumInteger
+#     netipPrimaryNameServer:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.15
+#       name: digi.netip.PrimaryNameServer
+#       syntax: DisplayString
+#     netipSecondaryNameServer:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.16
+#       name: digi.netip.SecondaryNameServer
+#       syntax: DisplayString
+#     sourceBasedRouting:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.17
+#       name: digi.netip.sourceBasedRouting
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::firstIPv4Config:
+#   mib: DIGI-PASSPORT-MIB
+#   object: firstIPv4Config
+#   discovery_attribute: firstIPv4Mode
+#   attributes:
+#     firstIPv4Mode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.11
+#       name: digi.firstIPv4.Mode
+#       syntax: EnumInteger
+#     firstIPv4PrimaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.12
+#       name: digi.firstIPv4.PrimaryIPAddress
+#       syntax: IpAddressNoSuffix
+#     firstIPv4PrimarySubMask:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.13
+#       name: digi.firstIPv4.PrimarySubMask
+#       syntax: IpAddressNoSuffix
+#     firstIPv4PrimaryGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.14
+#       name: digi.firstIPv4.PrimaryGateway
+#       syntax: IpAddressNoSuffix
+#     firstIPv4EnableSecondaryIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.15
+#       name: digi.firstIPv4.EnableSecondaryIP
+#       syntax: EnumInteger
+#     firstIPv4SecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.16
+#       name: digi.firstIPv4.SecondaryIPAddress
+#       syntax: IpAddressNoSuffix
+#     firstIPv4SecondarySubMask:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.17
+#       name: digi.firstIPv4.SecondarySubMask
+#       syntax: IpAddressNoSuffix
+#     firstIPv4SecondaryGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.11.18
+#       name: digi.firstIPv4.SecondaryGateway
+#       syntax: IpAddressNoSuffix
+
+# DIGI-PASSPORT-MIB::firstIPv6Config:
+#   mib: DIGI-PASSPORT-MIB
+#   object: firstIPv6Config
+#   discovery_attribute: firstIPv6Mode
+#   attributes:
+#     firstIPv6Mode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.11
+#       name: digi.firstIPv6.Mode
+#       syntax: EnumInteger
+#     firstIPv6Address:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.12
+#       name: digi.firstIPv6.Address
+#       syntax: DisplayString
+#     firstIPv6Gateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.13
+#       name: digi.firstIPv6.Gateway
+#       syntax: DisplayString
+#     firstIPv6SecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.14
+#       name: digi.firstIPv6.SecondaryIPAddress
+#       syntax: DisplayString
+#     firstIPv6Enable6to4tunneling:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.15
+#       name: digi.firstIPv6.Enable6to4tunneling
+#       syntax: EnumInteger
+#     firstIPv6To4Relay:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.16
+#       name: digi.firstIPv6.To4Relay
+#       syntax: DisplayString
+#     firstIPv6OverwriteLocalIPV4:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.11.12.17
+#       name: digi.firstIPv6.OverwriteLocalIPV4
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::secondIPv4Config:
+#   mib: DIGI-PASSPORT-MIB
+#   object: secondIPv4Config
+#   discovery_attribute: secondIPv4Mode
+#   attributes:
+#     secondIPv4Mode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.11
+#       name: digi.secondIPv4.Mode
+#       syntax: EnumInteger
+#     secondIPv4PrimaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.12
+#       name: digi.secondIPv4.PrimaryIPAddress
+#       syntax: IpAddressNoSuffix
+#     secondIPv4PrimarySubMask:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.13
+#       name: digi.secondIPv4.PrimarySubMask
+#       syntax: IpAddressNoSuffix
+#     secondIPv4PrimaryGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.14
+#       name: digi.secondIPv4.PrimaryGateway
+#       syntax: IpAddressNoSuffix
+#     secondIPv4EnableSecondaryIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.15
+#       name: digi.secondIPv4.EnableSecondaryIP
+#       syntax: EnumInteger
+#     secondIPv4SecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.16
+#       name: digi.secondIPv4.SecondaryIPAddress
+#       syntax: IpAddressNoSuffix
+#     secondIPv4SecondarySubMask:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.17
+#       name: digi.secondIPv4.SecondarySubMask
+#       syntax: IpAddressNoSuffix
+#     secondIPv4SecondaryGateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.11.18
+#       name: digi.secondIPv4.SecondaryGateway
+#       syntax: IpAddressNoSuffix
+
+# DIGI-PASSPORT-MIB::secondIPv6Config:
+#   mib: DIGI-PASSPORT-MIB
+#   object: secondIPv6Config
+#   discovery_attribute: secondIPv6Mode
+#   attributes:
+#     secondIPv6Mode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.11
+#       name: digi.secondIPv6.Mode
+#       syntax: EnumInteger
+#     secondIPv6Address:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.12
+#       name: digi.secondIPv6.Address
+#       syntax: DisplayString
+#     secondIPv6Gateway:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.13
+#       name: digi.secondIPv6.Gateway
+#       syntax: DisplayString
+#     secondIPv6SecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.14
+#       name: digi.secondIPv6.SecondaryIPAddress
+#       syntax: DisplayString
+#     secondIPv6Enable6to4tunneling:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.15
+#       name: digi.secondIPv6.Enable6to4tunneling
+#       syntax: EnumInteger
+#     secondIPv6To4Relay:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.16
+#       name: digi.secondIPv6.To4Relay
+#       syntax: DisplayString
+#     secondIPv6OverwriteLocalIPV4:
+#       oid: .1.3.6.1.4.1.332.11.8.27.11.12.12.17
+#       name: digi.secondIPv6.OverwriteLocalIPV4
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::snmpOther:
+#   mib: DIGI-PASSPORT-MIB
+#   object: snmpOther
+#   discovery_attribute: snmpPowerOnTraps
+#   attributes:
+#     snmpPowerOnTraps:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.11
+#       name: digi.snmp.PowerOnTraps
+#       syntax: EnumInteger
+#     snmpPowerOnEmails:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.12
+#       name: digi.snmp.PowerOnEmails
+#       syntax: EnumInteger
+#     snmpAuthenTraps:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.13
+#       name: digi.snmp.AuthenTraps
+#       syntax: EnumInteger
+#     snmpAuthenEmails:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.14
+#       name: digi.snmp.AuthenEmails
+#       syntax: EnumInteger
+#     snmpLinkUpTraps:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.15
+#       name: digi.snmp.LinkUpTraps
+#       syntax: EnumInteger
+#     snmpLinkUpEmails:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.16
+#       name: digi.snmp.LinkUpEmails
+#       syntax: EnumInteger
+#     snmpLinkDownTraps:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.17
+#       name: digi.snmp.LinkDownTraps
+#       syntax: EnumInteger
+#     snmpLinkDownEmails:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.18
+#       name: digi.snmp.LinkDownEmails
+#       syntax: EnumInteger
+#     snmpLoginTraps:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.19
+#       name: digi.snmp.LoginTraps
+#       syntax: EnumInteger
+#     snmpLoginEmails:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.20
+#       name: digi.snmp.LoginEmails
+#       syntax: EnumInteger
+#     snmpMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.21
+#       name: digi.snmp.Mailto
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::snmpTrapRcvEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: snmpTrapRcvEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.11
+#       name: digi.snmp.TrapRcv.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: snmpTrapRcvIP
+#   attributes:
+#     snmpTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.12
+#       name: digi.snmp.TrapRcv.IP
+#       syntax: DisplayString
+#     snmpTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.13
+#       name: digi.snmp.TrapRcv.Comm
+#       syntax: DisplayString
+#     snmpTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.14
+#       name: digi.snmp.TrapRcv.Ver
+#       syntax: EnumInteger
+#     snmpTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.15
+#       name: digi.snmp.TrapRcv.UserName
+#       syntax: DisplayString
+#     snmpTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.16
+#       name: digi.snmp.TrapRcv.SecurityLevel
+#       syntax: EnumInteger
+#     snmpTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.17
+#       name: digi.snmp.TrapRcv.AuthProto
+#       syntax: EnumInteger
+#     snmpTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.18
+#       name: digi.snmp.TrapRcv.AuthPasswd
+#       syntax: DisplayString
+#     snmpTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.19
+#       name: digi.snmp.TrapRcv.PrivProto
+#       syntax: EnumInteger
+#     snmpTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.20
+#       name: digi.snmp.TrapRcv.PrivPasswd
+#       syntax: DisplayString
+#     snmpTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.27.12.22.1.21
+#       name: digi.snmp.TrapRcv.EngineID
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::dyndns:
+#   mib: DIGI-PASSPORT-MIB
+#   object: dyndns
+#   discovery_attribute: dyndnsEnable
+#   attributes:
+#     dyndnsEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.11
+#       name: digi.dyndns.Enable
+#       syntax: EnumInteger
+#     dyndnsDomain:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.12
+#       name: digi.dyndns.Domain
+#       syntax: DisplayString
+#     dyndnsUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.13
+#       name: digi.dyndns.User
+#       syntax: DisplayString
+#     dyndnsPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.14
+#       name: digi.dyndns.Password
+#       syntax: DisplayString
+#     dyndnsEnableCustomProgram:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.15
+#       name: digi.dyndns.EnableCustomProgram
+#       syntax: EnumInteger
+#     dyndnsCustomProgramPath:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.16
+#       name: digi.dyndns.CustomProgramPath
+#       syntax: DisplayString
+#     dyndnsEnableKeyOpt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.17
+#       name: digi.dyndns.EnableKeyOpt
+#       syntax: EnumInteger
+#     dyndnsUpdateKey:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.18
+#       name: digi.dyndns.UpdateKey
+#       syntax: DisplayString
+#     dyndnsIPv4Addr:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.19
+#       name: digi.dyndns.IPv4Addr
+#       syntax: DisplayString
+#     dyndnsIPv6Addr:
+#       oid: .1.3.6.1.4.1.332.11.8.27.13.20
+#       name: digi.dyndns.IPv6Addr
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::smtp:
+#   mib: DIGI-PASSPORT-MIB
+#   object: smtp
+#   discovery_attribute: smtpPrimaryEnable
+#   attributes:
+#     smtpPrimaryEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.11
+#       name: digi.smtp.PrimaryEnable
+#       syntax: EnumInteger
+#     smtpPrimaryAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.12
+#       name: digi.smtp.PrimaryAddress
+#       syntax: DisplayString
+#     smtpPrimaryMode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.13
+#       name: digi.smtp.PrimaryMode
+#       syntax: EnumInteger
+#     smtpPrimaryUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.14
+#       name: digi.smtp.PrimaryUser
+#       syntax: DisplayString
+#     smtpPrimaryPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.15
+#       name: digi.smtp.PrimaryPassword
+#       syntax: DisplayString
+#     smtpSecondaryEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.16
+#       name: digi.smtp.SecondaryEnable
+#       syntax: EnumInteger
+#     smtpSecondaryAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.17
+#       name: digi.smtp.SecondaryAddress
+#       syntax: DisplayString
+#     smtpSecondaryMode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.18
+#       name: digi.smtp.SecondaryMode
+#       syntax: EnumInteger
+#     smtpSecondaryUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.19
+#       name: digi.smtp.SecondaryUser
+#       syntax: DisplayString
+#     smtpSecondaryPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.20
+#       name: digi.smtp.SecondaryPassword
+#       syntax: DisplayString
+#     smtpFromAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.14.21
+#       name: digi.smtp.FromAddress
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::ipfilterEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: ipfilterEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.11
+#       name: digi.ipfilter.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: ipfilterIface
+#   attributes:
+#     ipfilterIface:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.12
+#       name: digi.ipfilter.Iface
+#       syntax: DisplayString
+#     ipfilterOpt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.13
+#       name: digi.ipfilter.Opt
+#       syntax: EnumInteger
+#     ipfilterIPMask:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.14
+#       name: digi.ipfilter.IPMask
+#       syntax: DisplayString
+#     ipfilterPort:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.15
+#       name: digi.ipfilter.Port
+#       syntax: DisplayString
+#     ipfilterRule:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.16
+#       name: digi.ipfilter.Rule
+#       syntax: DisplayString
+#     ipfilterProtocol:
+#       oid: .1.3.6.1.4.1.332.11.8.27.15.14.1.17
+#       name: digi.ipfilter.Protocol
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::nfs:
+#   mib: DIGI-PASSPORT-MIB
+#   object: nfs
+#   discovery_attribute: nfsPrimaryEnable
+#   attributes:
+#     nfsPrimaryEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.11
+#       name: digi.nfs.PrimaryEnable
+#       syntax: EnumInteger
+#     nfsPrimaryAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.12
+#       name: digi.nfs.PrimaryAddress
+#       syntax: DisplayString
+#     nfsPrimaryExported:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.13
+#       name: digi.nfs.PrimaryExported
+#       syntax: DisplayString
+#     nfsPrimaryTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.14
+#       name: digi.nfs.PrimaryTimeout
+#       syntax: Integer32
+#     nfsPrimaryRetryInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.15
+#       name: digi.nfs.PrimaryRetryInterval
+#       syntax: Integer32
+#     nfsPrimaryEnableEncrypt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.16
+#       name: digi.nfs.PrimaryEnableEncrypt
+#       syntax: EnumInteger
+#     nfsPrimaryUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.17
+#       name: digi.nfs.PrimaryUser
+#       syntax: DisplayString
+#     nfsPrimaryPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.18
+#       name: digi.nfs.PrimaryPassword
+#       syntax: DisplayString
+#     nfsSecondaryEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.19
+#       name: digi.nfs.SecondaryEnable
+#       syntax: EnumInteger
+#     nfsSecondaryAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.20
+#       name: digi.nfs.SecondaryAddress
+#       syntax: DisplayString
+#     nfsSecondaryExported:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.21
+#       name: digi.nfs.SecondaryExported
+#       syntax: DisplayString
+#     nfsSecondaryTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.22
+#       name: digi.nfs.SecondaryTimeout
+#       syntax: Integer32
+#     nfsSecondaryRetryInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.23
+#       name: digi.nfs.SecondaryRetryInterval
+#       syntax: Integer32
+#     nfsSecondaryEnableEncrypt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.24
+#       name: digi.nfs.SecondaryEnableEncrypt
+#       syntax: EnumInteger
+#     nfsSecondaryUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.25
+#       name: digi.nfs.SecondaryUser
+#       syntax: DisplayString
+#     nfsSecondaryPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.26
+#       name: digi.nfs.SecondaryPassword
+#       syntax: DisplayString
+#     nfsMailEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.27
+#       name: digi.nfs.MailEnable
+#       syntax: EnumInteger
+#     nfsMailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.28
+#       name: digi.nfs.MailTitle
+#       syntax: DisplayString
+#     nfsMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.29
+#       name: digi.nfs.Mailto
+#       syntax: DisplayString
+#     nfsTrapEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.30
+#       name: digi.nfs.TrapEnable
+#       syntax: EnumInteger
+#     nfsTrapToGlobal:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.31
+#       name: digi.nfs.TrapToGlobal
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::nfsTrapRcvEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: nfsTrapRcvEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.11
+#       name: digi.nfs.TrapRcv.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: nfsTrapRcvIP
+#   attributes:
+#     nfsTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.12
+#       name: digi.nfs.TrapRcv.IP
+#       syntax: DisplayString
+#     nfsTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.13
+#       name: digi.nfs.TrapRcv.Comm
+#       syntax: DisplayString
+#     nfsTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.14
+#       name: digi.nfs.TrapRcv.Ver
+#       syntax: EnumInteger
+#     nfsTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.15
+#       name: digi.nfs.TrapRcv.UserName
+#       syntax: DisplayString
+#     nfsTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.16
+#       name: digi.nfs.TrapRcv.SecurityLevel
+#       syntax: EnumInteger
+#     nfsTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.17
+#       name: digi.nfs.TrapRcv.AuthProto
+#       syntax: EnumInteger
+#     nfsTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.18
+#       name: digi.nfs.TrapRcv.AuthPasswd
+#       syntax: DisplayString
+#     nfsTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.19
+#       name: digi.nfs.TrapRcv.PrivProto
+#       syntax: EnumInteger
+#     nfsTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.20
+#       name: digi.nfs.TrapRcv.PrivPasswd
+#       syntax: DisplayString
+#     nfsTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.27.17.32.1.21
+#       name: digi.nfs.TrapRcv.EngineID
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::web:
+#   mib: DIGI-PASSPORT-MIB
+#   object: web
+#   discovery_attribute: webRefreshRate
+#   attributes:
+#     webRefreshRate:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.11
+#       name: digi.web.RefreshRate
+#       syntax: TicksSec
+#     webLoginTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.12
+#       name: digi.web.LoginTimeout
+#       syntax: TicksSec
+#     webAuthMethod:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.13
+#       name: digi.web.Auth.Method
+#       syntax: EnumInteger
+#     webAuthPrimaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.14
+#       name: digi.web.Auth.PrimaryIPAddress
+#       syntax: DisplayString
+#     webAuthSecondaryIPAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.15
+#       name: digi.web.Auth.SecondaryIPAddress
+#       syntax: DisplayString
+#     webAuthSecret:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.16
+#       name: digi.web.Auth.Secret
+#       syntax: DisplayString
+#     webAuthTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.17
+#       name: digi.web.Auth.Timeout
+#       syntax: Integer32
+#     webAuthRetries:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.18
+#       name: digi.web.Auth.Retries
+#       syntax: Integer32
+#     webAuthLDAPSearchBase:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.19
+#       name: digi.web.Auth.LDAPSearchBase
+#       syntax: DisplayString
+#     webAuthLDAPActiveDirectoryDomain:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.20
+#       name: digi.web.Auth.LDAPActiveDirectoryDomain
+#       syntax: DisplayString
+#     webAuthKRBPrimaryRealm:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.21
+#       name: digi.web.Auth.KRBPrimaryRealm
+#       syntax: DisplayString
+#     webAuthKRBSecondaryRealm:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.22
+#       name: digi.web.Auth.KRBSecondaryRealm
+#       syntax: DisplayString
+#     webRootAccessEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.23
+#       name: digi.web.RootAccessEnable
+#       syntax: EnumInteger
+#     webSerialPortsCountsOnConnectionPage:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.24
+#       name: digi.web.SerialPortsCountsOnConnectionPage
+#       syntax: Integer32
+#       metric: gauge
+#     webAppletOption:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.25
+#       name: digi.web.AppletOption
+#       syntax: EnumInteger
+#     webHttpPort:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.26
+#       name: digi.web.HttpPort
+#       syntax: Integer32
+#     webHttpsPort:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.27
+#       name: digi.web.HttpsPort
+#       syntax: Integer32
+#     webBlockingTime:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.28
+#       name: digi.web.BlockingTime
+#       syntax: Integer32
+#     webAuthAuthorService:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.29
+#       name: digi.web.Auth.AuthorService
+#       syntax: DisplayString
+#     webAuthLdapSecure:
+#       oid: .1.3.6.1.4.1.332.11.8.27.18.30
+#       name: digi.web.Auth.LdapSecure
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::ethernet:
+#   mib: DIGI-PASSPORT-MIB
+#   object: ethernet
+#   discovery_attribute: ethernetMode
+#   attributes:
+#     ethernetMode:
+#       oid: .1.3.6.1.4.1.332.11.8.27.19.11
+#       name: digi.ethernet.Mode
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::tcpOther:
+#   mib: DIGI-PASSPORT-MIB
+#   object: tcpOther
+#   discovery_attribute: tcpOtherKeepAliveIdle
+#   attributes:
+#     tcpOtherKeepAliveIdle:
+#       oid: .1.3.6.1.4.1.332.11.8.27.20.11
+#       name: digi.tcp.KeepAliveIdle
+#       syntax: Integer32
+#     tcpOtherKeepAliveProbe:
+#       oid: .1.3.6.1.4.1.332.11.8.27.20.12
+#       name: digi.tcp.KeepAliveProbe
+#       syntax: Integer32
+#       metric: counter
+#     tcpOtherKeepAliveInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.27.20.13
+#       name: digi.tcp.KeepAliveInterval
+#       syntax: Integer32
+#     tcpOtherReverseDNSLookup:
+#       oid: .1.3.6.1.4.1.332.11.8.27.20.14
+#       name: digi.tcp.ReverseDNSLookup
+#       syntax: EnumInteger
+#     tcpOtherIPv4Forward:
+#       oid: .1.3.6.1.4.1.332.11.8.27.20.15
+#       name: digi.tcp.IPv4Forward
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::ppp:
+#   mib: DIGI-PASSPORT-MIB
+#   object: ppp
+#   discovery_attribute: pppEnableDynamicPool
+#   attributes:
+#     pppEnableDynamicPool:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.11
+#       name: digi.ppp.EnableDynamicPool
+#       syntax: EnumInteger
+#     pppIpAddr:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.12
+#       name: digi.ppp.IpAddr
+#       syntax: DisplayString
+#     pppNumOfAddr:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.13
+#       name: digi.ppp.NumOfAddr
+#       syntax: Integer32
+#       metric: gauge
+#     pppProccessArpRequest:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.15
+#       name: digi.ppp.ProccessArpRequest
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::pppIncommingEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: pppIncommingEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.11
+#       name: digi.ppp.Incoming.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: pppUsername
+#   attributes:
+#     pppUsername:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.12
+#       name: digi.ppp.Incoming.Username
+#       syntax: DisplayString
+#     pppPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.13
+#       name: digi.ppp.Incoming.Password
+#       syntax: DisplayString
+#     pppAuthentication:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.14
+#       name: digi.ppp.Incoming.Authentication
+#       syntax: EnumInteger
+#     pppPeerOpt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.15
+#       name: digi.ppp.Incoming.PeerOpt
+#       syntax: EnumInteger
+#     pppRemoteIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.16
+#       name: digi.ppp.Incoming.RemoteIP
+#       syntax: DisplayString
+#     pppAllowClientAccess:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.17
+#       name: digi.ppp.Incoming.AllowClientAccess
+#       syntax: EnumInteger
+#     pppLocalPeerOpt:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.18
+#       name: digi.ppp.Incoming.LocalPeerOpt
+#       syntax: EnumInteger
+#     pppLocalIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.19
+#       name: digi.ppp.Incoming.LocalIP
+#       syntax: DisplayString
+#     pppEnableIdleTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.20
+#       name: digi.ppp.Incoming.EnableIdleTimeout
+#       syntax: EnumInteger
+#     pppTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.21.14.1.21
+#       name: digi.ppp.Incoming.Timeout
+#       syntax: Integer32
+
+# DIGI-PASSPORT-MIB::samba:
+#   mib: DIGI-PASSPORT-MIB
+#   object: samba
+#   discovery_attribute: sambaEnableService
+#   attributes:
+#     sambaEnableService:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.11
+#       name: digi.samba.EnableService
+#       syntax: EnumInteger
+#     sambaServerName:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.12
+#       name: digi.samba.ServerName
+#       syntax: DisplayString
+#     sambaMountPath:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.13
+#       name: digi.samba.MountPath
+#       syntax: DisplayString
+#     sambaTimeout:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.14
+#       name: digi.samba.Timeout
+#       syntax: TicksSec
+#     sambaInterval:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.15
+#       name: digi.samba.Interval
+#       syntax: TicksSec
+#     sambaServerUser:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.16
+#       name: digi.samba.ServerUser
+#       syntax: DisplayString
+#     sambaServerPassword:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.17
+#       name: digi.samba.ServerPassword
+#       syntax: DisplayString
+#     sambaEnableEmailAlert:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.18
+#       name: digi.samba.EnableEmailAlert
+#       syntax: EnumInteger
+#     sambaEmailTitle:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.19
+#       name: digi.samba.EmailTitle
+#       syntax: DisplayString
+#     sambaEmailTo:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.20
+#       name: digi.samba.EmailTo
+#       syntax: DisplayString
+#     sambaEnableTrap:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.21
+#       name: digi.samba.EnableTrap
+#       syntax: EnumInteger
+#     sambaTrapToGlobal:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.22
+#       name: digi.samba.TrapToGlobal
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::sambaTrapRcvEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: sambaTrapRcvEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.11
+#       name: digi.samba.TrapRcv.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: sambaTrapRcvIP
+#   attributes:
+#     sambaTrapRcvIP:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.12
+#       name: digi.samba.TrapRcv.IP
+#       syntax: DisplayString
+#     sambaTrapRcvComm:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.13
+#       name: digi.samba.TrapRcv.Comm
+#       syntax: DisplayString
+#     sambaTrapRcvVer:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.14
+#       name: digi.samba.TrapRcv.Ver
+#       syntax: EnumInteger
+#     sambaTrapRcvUserName:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.15
+#       name: digi.samba.TrapRcv.UserName
+#       syntax: DisplayString
+#     sambaTrapRcvSecurityLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.16
+#       name: digi.samba.TrapRcv.SecurityLevel
+#       syntax: EnumInteger
+#     sambaTrapRcvAuthProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.17
+#       name: digi.samba.TrapRcv.AuthProto
+#       syntax: EnumInteger
+#     sambaTrapRcvAuthPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.18
+#       name: digi.samba.TrapRcv.AuthPasswd
+#       syntax: DisplayString
+#     sambaTrapRcvPrivProto:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.19
+#       name: digi.samba.TrapRcv.PrivProto
+#       syntax: EnumInteger
+#     sambaTrapRcvPrivPasswd:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.20
+#       name: digi.samba.TrapRcv.PrivPasswd
+#       syntax: DisplayString
+#     sambaTrapRcvEngineID:
+#       oid: .1.3.6.1.4.1.332.11.8.27.23.23.1.21
+#       name: digi.samba.TrapRcv.EngineID
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::systemLogging:
+#   mib: DIGI-PASSPORT-MIB
+#   object: systemLogging
+#   discovery_attribute: systemLoggingStoLoc
+#   attributes:
+#     systemLoggingStoLoc:
+#       oid: .1.3.6.1.4.1.332.11.8.28.12
+#       name: digi.systemLogging.StoLoc
+#       syntax: EnumInteger
+#     systemLoggingBufferSize:
+#       oid: .1.3.6.1.4.1.332.11.8.28.14
+#       name: digi.systemLogging.BufferSize
+#       syntax: Integer32
+#     systemLoggingFilename:
+#       oid: .1.3.6.1.4.1.332.11.8.28.15
+#       name: digi.systemLogging.Filename
+#       syntax: DisplayString
+#     systemLoggingBackupOnMount:
+#       oid: .1.3.6.1.4.1.332.11.8.28.16
+#       name: digi.systemLogging.BackupOnMount
+#       syntax: EnumInteger
+#     systemLoggingMailEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.28.17
+#       name: digi.systemLogging.MailEnable
+#       syntax: EnumInteger
+#     systemLoggingMailMessageNum:
+#       oid: .1.3.6.1.4.1.332.11.8.28.18
+#       name: digi.systemLogging.MailMessageNum
+#       syntax: Integer32
+#     systemLoggingMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.28.19
+#       name: digi.systemLogging.Mailto
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::accesslistEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: accesslistEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.29.1.11
+#       name: digi.accesslist.Index
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.29.1.12
+#       name: digi.accesslist.User.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: accesslistName
+#   attributes:
+#     accesslistName:
+#       oid: .1.3.6.1.4.1.332.11.8.29.1.13
+#       name: digi.accesslist.Name
+#       syntax: DisplayString
+#     accesslistUsers:
+#       oid: .1.3.6.1.4.1.332.11.8.29.1.14
+#       name: digi.accesslist.Users
+#       syntax: DisplayString
+
+DIGI-PASSPORT-MIB::whoEntry:
+  mib: DIGI-PASSPORT-MIB
+  object: whoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.11.8.30.1.11
+      name: digi.who.Index
+      syntax: IntegerAsID
+  discovery_attribute: whoUser
+  attributes:
+    whoUser:
+      oid: .1.3.6.1.4.1.332.11.8.30.1.12
+      name: digi.who.User
+      syntax: DisplayString
+    whoTTY:
+      oid: .1.3.6.1.4.1.332.11.8.30.1.13
+      name: digi.who.TTY
+      syntax: DisplayString
+    whoFrom:
+      oid: .1.3.6.1.4.1.332.11.8.30.1.14
+      name: digi.who.From
+      syntax: DisplayString
+    whoSessions:
+      oid: .1.3.6.1.4.1.332.11.8.30.1.16
+      name: digi.who.Sessions
+      syntax: Integer32
+      metric: gauge
+
+# DIGI-PASSPORT-MIB::securityProfile:
+#   mib: DIGI-PASSPORT-MIB
+#   object: securityProfile
+#   discovery_attribute: securityProfLevel
+#   attributes:
+#     securityProfLevel:
+#       oid: .1.3.6.1.4.1.332.11.8.31.10
+#       name: digi.securityProf.Level
+#       syntax: EnumInteger
+#     securityProfSnmpEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.11
+#       name: digi.securityProf.SnmpEnable
+#       syntax: EnumInteger
+#     securityProfDiscoverEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.12
+#       name: digi.securityProf.DiscoverEnable
+#       syntax: EnumInteger
+#     securityProfTelnetEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.13
+#       name: digi.securityProf.TelnetEnable
+#       syntax: EnumInteger
+#     securityProfSshEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.14
+#       name: digi.securityProf.SshEnable
+#       syntax: EnumInteger
+#     securityProfSSHV1Enable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.15
+#       name: digi.securityProf.SSHV1Enable
+#       syntax: EnumInteger
+#     securityProfHttpEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.16
+#       name: digi.securityProf.HttpEnable
+#       syntax: EnumInteger
+#     securityProfHttpsEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.17
+#       name: digi.securityProf.HttpsEnable
+#       syntax: EnumInteger
+#     securityProfAllPortsEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.18
+#       name: digi.securityProf.AllPortsEnable
+#       syntax: EnumInteger
+#     securityProfSetAllPortsTo:
+#       oid: .1.3.6.1.4.1.332.11.8.31.19
+#       name: digi.securityProf.SetAllPortsTo
+#       syntax: EnumInteger
+#     securityProfStealthEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.20
+#       name: digi.securityProf.StealthEnable
+#       syntax: EnumInteger
+#     securityProfMinPasswordLength:
+#       oid: .1.3.6.1.4.1.332.11.8.31.21
+#       name: digi.securityProf.MinPasswordLength
+#       syntax: Integer32
+#     securityProfMaxPasswordAge:
+#       oid: .1.3.6.1.4.1.332.11.8.31.22
+#       name: digi.securityProf.MaxPasswordAge
+#       syntax: Integer32
+#     securityProfPasswordComplexity:
+#       oid: .1.3.6.1.4.1.332.11.8.31.23
+#       name: digi.securityProf.PasswordComplexity
+#       syntax: EnumInteger
+#     securityProfMaxPasswordHistory:
+#       oid: .1.3.6.1.4.1.332.11.8.31.24
+#       name: digi.securityProf.MaxPasswordHistory
+#       syntax: EnumInteger
+#     securityProfSnmpv1N2cEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.25
+#       name: digi.securityProf.Snmpv1N2cEnable
+#       syntax: EnumInteger
+#     securityProfSSLv2Enable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.26
+#       name: digi.securityProf.SSLv2Enable
+#       syntax: EnumInteger
+#     securityProfSSLv3Enable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.27
+#       name: digi.securityProf.SSLv3Enable
+#       syntax: EnumInteger
+#     securityProfTLSv1Enable:
+#       oid: .1.3.6.1.4.1.332.11.8.31.28
+#       name: digi.securityProf.TLSv1Enable
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::autoBackup:
+#   mib: DIGI-PASSPORT-MIB
+#   object: autoBackup
+#   discovery_attribute: autoBackupOption
+#   attributes:
+#     autoBackupOption:
+#       oid: .1.3.6.1.4.1.332.11.8.32.11
+#       name: digi.autoBackup.Option
+#       syntax: EnumInteger
+#     autoBackupLocation:
+#       oid: .1.3.6.1.4.1.332.11.8.32.12
+#       name: digi.autoBackup.Location
+#       syntax: EnumInteger
+#     autoBackupEncrypt:
+#       oid: .1.3.6.1.4.1.332.11.8.32.13
+#       name: digi.autoBackup.Encrypt
+#       syntax: EnumInteger
+#     autoBackupFilename:
+#       oid: .1.3.6.1.4.1.332.11.8.32.14
+#       name: digi.autoBackup.Filename
+#       syntax: DisplayString
+#     autoBackupPeriod:
+#       oid: .1.3.6.1.4.1.332.11.8.32.15
+#       name: digi.autoBackup.Period
+#       syntax: Integer32
+#     autoBackupMailto:
+#       oid: .1.3.6.1.4.1.332.11.8.32.16
+#       name: digi.autoBackup.Mailto
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::syslogNGEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: syslogNGEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.33.1.11
+#       name: digi.syslogNG.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: syslogNGFilter
+#   attributes:
+#     syslogNGFilter:
+#       oid: .1.3.6.1.4.1.332.11.8.33.1.12
+#       name: digi.syslogNG.Filter
+#       syntax: DisplayString
+#     syslogNGDestination:
+#       oid: .1.3.6.1.4.1.332.11.8.33.1.13
+#       name: digi.syslogNG.Destination
+#       syntax: EnumInteger
+#     syslogNGLocation:
+#       oid: .1.3.6.1.4.1.332.11.8.33.1.14
+#       name: digi.syslogNG.Location
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::powerUnitStatusEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: powerUnitStatusEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.11
+#       name: digi.powerUnit.Status.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: powerUnitStatusModel
+#   attributes:
+#     powerUnitStatusModel:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.12
+#       name: digi.powerUnit.Status.Model
+#       syntax: DisplayString
+#     powerUnitStatusAlarm:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.13
+#       name: digi.powerUnit.Status.Alarm
+#       syntax: DisplayString
+#     powerUnitStatusTemperature:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.14
+#       name: digi.powerUnit.Status.Temperature
+#       syntax: DisplayString
+#     powerUnitStatusCircuitBreaker:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.15
+#       name: digi.powerUnit.Status.CircuitBreaker
+#       syntax: DisplayString
+#     powerUnitStatusRMSVoltage:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.16
+#       name: digi.powerUnit.Status.RMSVoltage
+#       syntax: DisplayString
+#     powerUnitStatusRMSCurrent:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.17
+#       name: digi.powerUnit.Status.RMSCurrent
+#       syntax: DisplayString
+#     powerUnitStatusRMSMax:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.18
+#       name: digi.powerUnit.Status.RMSMax
+#       syntax: DisplayString
+#     powerUnitStatusTemperature1:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.19
+#       name: digi.powerUnit.Status.Temperature1
+#       syntax: DisplayString
+#     powerUnitStatusHumidity1:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.20
+#       name: digi.powerUnit.Status.Humidity1
+#       syntax: DisplayString
+#     powerUnitStatusTemperature2:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.21
+#       name: digi.powerUnit.Status.Temperature2
+#       syntax: DisplayString
+#     powerUnitStatusHumidity2:
+#       oid: .1.3.6.1.4.1.332.11.8.34.1.1.22
+#       name: digi.powerUnit.Status.Humidity2
+#       syntax: DisplayString
+
+DIGI-PASSPORT-MIB::powerUnitOutletEntry:
+  mib: DIGI-PASSPORT-MIB
+  object: powerUnitOutletEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.332.11.8.34.2.1.12
+      name: digi.powerUnit.Outlet.Index
+      syntax: IntegerAsID
+  discovery_attribute: powerUnitOutletStatus
+  attributes:
+    powerUnitIndex:
+      oid: .1.3.6.1.4.1.332.11.8.34.2.1.11
+      name: digi.powerUnit.Index
+      syntax: IntegerAsID
+    powerUnitOutletStatus:
+      oid: .1.3.6.1.4.1.332.11.8.34.2.1.13
+      name: digi.powerUnit.Outlet.Status
+      syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::powerUnitCurrentEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: powerUnitCurrentEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.11
+#       name: digi.powerUnit.Current.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: powerUnitCurrentPort
+#   attributes:
+#     powerUnitCurrentPort:
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.12
+#       name: digi.powerUnit.Current.Port
+#       syntax: IntegerAsID
+#     powerUnitCurrentModel:
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.13
+#       name: digi.powerUnit.Current.Model
+#       syntax: DisplayString
+#     powerUnitCurrentInfeeds:
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.14
+#       name: digi.powerUnit.Current.Infeeds
+#       syntax: DisplayString
+#     powerUnitCurrentRMSCurrent:
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.15
+#       name: digi.powerUnit.Current.RMSCurrent
+#       syntax: DisplayString
+#     powerUnitCurrentRMSMax:
+#       oid: .1.3.6.1.4.1.332.11.8.34.3.1.16
+#       name: digi.powerUnit.Current.RMSMax
+#       syntax: DisplayString
+
+# DIGI-PASSPORT-MIB::portGroupEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: portGroupEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.35.1.11
+#       name: digi.portGroup.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: portGroupGroupName
+#   attributes:
+#     portGroupGroupName:
+#       oid: .1.3.6.1.4.1.332.11.8.35.1.12
+#       name: digi.portGroup.Name
+#       syntax: DisplayString
+#     portGroupLoginOnEachPort:
+#       oid: .1.3.6.1.4.1.332.11.8.35.1.13
+#       name: digi.portGroup.LoginOnEachPort
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::portAutomaticDetectionEntry:
+#   mib: DIGI-PASSPORT-MIB
+#   object: portAutomaticDetectionEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.11
+#       name: digi.port.AutomaticDetection.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: portAutomaticDetectionBaud
+#   attributes:
+#     portAutomaticDetectionBaud:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.12
+#       name: digi.port.AutomaticDetection.Baud
+#       syntax: EnumInteger
+#     portAutomaticDetectionDatabits:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.13
+#       name: digi.port.AutomaticDetection.Databits
+#       syntax: EnumInteger
+#     portAutomaticDetectionParity:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.14
+#       name: digi.port.AutomaticDetection.Parity
+#       syntax: EnumInteger
+#     portAutomaticDetectionStopbits:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.15
+#       name: digi.port.AutomaticDetection.Stopbits
+#       syntax: EnumInteger
+#     portAutomaticDetectionProbeStr:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.16
+#       name: digi.port.AutomaticDetection.ProbeStr
+#       syntax: DisplayString
+#     portAutomaticDetectionWaitTime:
+#       oid: .1.3.6.1.4.1.332.11.8.36.1.17
+#       name: digi.port.AutomaticDetection.WaitTime
+#       syntax: TicksSec
+
+# DIGI-PASSPORT-MIB::export:
+#   mib: DIGI-PASSPORT-MIB
+#   object: export
+#   discovery_attribute: exportLocation
+#   attributes:
+#     exportLocation:
+#       oid: .1.3.6.1.4.1.332.11.8.37.11.11
+#       name: digi.export.Location
+#       syntax: EnumInteger
+#     exportEncrypted:
+#       oid: .1.3.6.1.4.1.332.11.8.37.11.12
+#       name: digi.export.Encrypted
+#       syntax: EnumInteger
+#     exportFilename:
+#       oid: .1.3.6.1.4.1.332.11.8.37.11.13
+#       name: digi.export.Filename
+#       syntax: DisplayString
+#     exportExecute:
+#       oid: .1.3.6.1.4.1.332.11.8.37.11.14
+#       name: digi.export.Execute
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::import:
+#   mib: DIGI-PASSPORT-MIB
+#   object: import
+#   discovery_attribute: importLocation
+#   attributes:
+#     importLocation:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.11
+#       name: digi.import.Location
+#       syntax: EnumInteger
+#     importSelectAll:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.12
+#       name: digi.import.SelectAll
+#       syntax: EnumInteger
+#     importNetworkConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.13
+#       name: digi.import.NetworkConf
+#       syntax: EnumInteger
+#     importIncludeIpConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.14
+#       name: digi.import.IncludeIpConf
+#       syntax: EnumInteger
+#     importSerialPortConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.15
+#       name: digi.import.SerialPortConf
+#       syntax: EnumInteger
+#     importClusterConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.16
+#       name: digi.import.ClusterConf
+#       syntax: EnumInteger
+#     importCustomMenuConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.17
+#       name: digi.import.CustomMenuConf
+#       syntax: EnumInteger
+#     importSystemUserConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.18
+#       name: digi.import.SystemUserConf
+#       syntax: EnumInteger
+#     importPowerControlConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.19
+#       name: digi.import.PowerControlConf
+#       syntax: EnumInteger
+#     importPccardConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.20
+#       name: digi.import.PccardConf
+#       syntax: EnumInteger
+#     importUsbConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.21
+#       name: digi.import.UsbConf
+#       syntax: EnumInteger
+#     importSystemConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.22
+#       name: digi.import.SystemConf
+#       syntax: EnumInteger
+#     importPerlConf:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.23
+#       name: digi.import.PerlConf
+#       syntax: EnumInteger
+#     importEncrypted:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.24
+#       name: digi.import.Encrypted
+#       syntax: EnumInteger
+#     importFilename:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.25
+#       name: digi.import.Filename
+#       syntax: DisplayString
+#     importExecute:
+#       oid: .1.3.6.1.4.1.332.11.8.37.12.26
+#       name: digi.import.Execute
+#       syntax: EnumInteger
+
+# DIGI-PASSPORT-MIB::autoFirmUp:
+#   mib: DIGI-PASSPORT-MIB
+#   object: autoFirmUp
+#   discovery_attribute: autoFirmUpEnable
+#   attributes:
+#     autoFirmUpEnable:
+#       oid: .1.3.6.1.4.1.332.11.8.38.11
+#       name: digi.autoFirmUp.Enable
+#       syntax: EnumInteger
+#     autoFirmUpProtocol:
+#       oid: .1.3.6.1.4.1.332.11.8.38.12
+#       name: digi.autoFirmUp.Protocol
+#       syntax: EnumInteger
+#     autoFirmUpUseDHCP:
+#       oid: .1.3.6.1.4.1.332.11.8.38.13
+#       name: digi.autoFirmUp.UseDHCP
+#       syntax: EnumInteger
+#     autoFirmUpIpAddress:
+#       oid: .1.3.6.1.4.1.332.11.8.38.14
+#       name: digi.autoFirmUp.IpAddress
+#       syntax: IpAddressNoSuffix
+#     autoFirmUpHashFile:
+#       oid: .1.3.6.1.4.1.332.11.8.38.15
+#       name: digi.autoFirmUp.HashFile
+#       syntax: DisplayString
