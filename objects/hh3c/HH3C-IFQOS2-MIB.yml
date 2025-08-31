@@ -1,0 +1,1604 @@
+HH3C-IFQOS2-MIB::hh3cIfQoS:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSQSModeEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: hh3cIfQoSQSMode
+  attributes:
+    hh3cIfQoSQSMode:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.1.1.1
+      name: hh3c.If.Qos.QSMode
+      syntax: EnumInteger
+    # Additional Attributes as Tags
+    ifDescr:
+      oid: .1.3.6.1.2.1.2.2.1.2
+      tag: true
+      name: netif.descr
+      syntax: DisplayString
+    ifType:
+      oid: .1.3.6.1.2.1.2.2.1.3
+      tag: true
+      name: netif.type
+      syntax: IANAifType
+    ifName:
+      oid: .1.3.6.1.2.1.31.1.1.1.1
+      tag: true
+      name: netif.name
+      syntax: DisplayString
+    ifAlias:
+      oid: .1.3.6.1.2.1.31.1.1.1.18
+      tag: true
+      name: netif.alias
+      syntax: DisplayString
+
+HH3C-IFQOS2-MIB::hh3cIfQoSQSWeightEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSQSWeightEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSHardwareQueueRunInfoEntry
+  discovery_attribute: hh3cIfQoSQueueGroupType
+  attributes:
+    hh3cIfQoSQueueGroupType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.2
+      name: hh3c.If.Qos.QueueGroupType
+      syntax: EnumInteger
+    hh3cIfQoSQSType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.3
+      name: hh3c.If.Qos.QSType
+      syntax: EnumInteger
+    hh3cIfQoSQSValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.4
+      name: hh3c.If.Qos.QSValue
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSQSMaxDelay:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.5
+      name: hh3c.If.Qos.QSMaxDelay
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSQSMinBandwidth:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.6
+      name: hh3c.If.Qos.QSMinBandwidth
+      syntax: BandwidthKBits
+      metric: gauge
+    hh3cIfQoSQSMinBandwidthPercent:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.7
+      name: hh3c.If.Qos.QSMinBandwidthPercent
+      syntax: Percent100
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSHardwareQueueRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSHardwareQueueRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.1.2.1.1
+      name: hh3c.If.Qos.QueueID
+      syntax: IntegerAsID
+  discovery_attribute: hh3cIfQoSDropPackets
+  attributes:
+    hh3cIfQoSPassPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.1
+      name: hh3c.If.Qos.PassPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSDropPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.2
+      name: hh3c.If.Qos.DropPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSPassBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.3
+      name: hh3c.If.Qos.PassBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSPassPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.4
+      name: hh3c.If.Qos.PassPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSPassBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.5
+      name: hh3c.If.Qos.PassBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSDropBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.6
+      name: hh3c.If.Qos.DropBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSQueueLengthInPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.7
+      name: hh3c.If.Qos.QueueLengthInPkts
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSQueueLengthInBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.8
+      name: hh3c.If.Qos.QueueLengthInBytes
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSCurQueuePkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.9
+      name: hh3c.If.Qos.CurQueuePkts
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSCurQueueBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.10
+      name: hh3c.If.Qos.CurQueueBytes
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSCurQueuePPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.11
+      name: hh3c.If.Qos.CurQueuePPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSCurQueueBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.12
+      name: hh3c.If.Qos.CurQueueBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSTailDropPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.13
+      name: hh3c.If.Qos.TailDropPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTailDropBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.14
+      name: hh3c.If.Qos.TailDropBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSTailDropPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.15
+      name: hh3c.If.Qos.TailDropPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSTailDropBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.16
+      name: hh3c.If.Qos.TailDropBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSWredDropPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.17
+      name: hh3c.If.Qos.WredDropPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredDropBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.18
+      name: hh3c.If.Qos.WredDropBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSWredDropPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.19
+      name: hh3c.If.Qos.WredDropPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSWredDropBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.1.1.20
+      name: hh3c.If.Qos.WredDropBPS
+      syntax: BytesB
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSHQueueTcpRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSHQueueTcpRunInfoEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSHardwareQueueRunInfoEntry
+  discovery_attribute: hh3cIfQoSWredDropLPreNTcpBytes
+  attributes:
+    hh3cIfQoSWredDropLPreNTcpPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.1
+      name: hh3c.If.Qos.WredDropLPreNTcpPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredDropLPreNTcpBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.2
+      name: hh3c.If.Qos.WredDropLPreNTcpBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSWredDropLPreNTcpPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.3
+      name: hh3c.If.Qos.WredDropLPreNTcpPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSWredDropLPreNTcpBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.4
+      name: hh3c.If.Qos.WredDropLPreNTcpBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSWredDropLPreTcpPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.5
+      name: hh3c.If.Qos.WredDropLPreTcpPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredDropLPreTcpBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.6
+      name: hh3c.If.Qos.WredDropLPreTcpBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSWredDropLPreTcpPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.7
+      name: hh3c.If.Qos.WredDropLPreTcpPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSWredDropLPreTcpBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.8
+      name: hh3c.If.Qos.WredDropLPreTcpBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSWredDropHPreNTcpPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.9
+      name: hh3c.If.Qos.WredDropHPreNTcpPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredDropHPreNTcpBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.10
+      name: hh3c.If.Qos.WredDropHPreNTcpBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSWredDropHPreNTcpPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.11
+      name: hh3c.If.Qos.WredDropHPreNTcpPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSWredDropHPreNTcpBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.12
+      name: hh3c.If.Qos.WredDropHPreNTcpBPS
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSWredDropHPreTcpPkts:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.13
+      name: hh3c.If.Qos.WredDropHPreTcpPkts
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredDropHPreTcpBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.14
+      name: hh3c.If.Qos.WredDropHPreTcpBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSWredDropHPreTcpPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.15
+      name: hh3c.If.Qos.WredDropHPreTcpPPS
+      syntax: Unsigned32
+      metric: gauge
+    hh3cIfQoSWredDropHPreTcpBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.1.2.2.1.16
+      name: hh3c.If.Qos.WredDropHPreTcpBPS
+      syntax: BytesB
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSFIFOConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSFIFOConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSFIFORunInfoEntry
+  discovery_attribute: hh3cIfQoSFIFOMaxQueueLen
+  attributes:
+    hh3cIfQoSFIFOMaxQueueLen:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.1.1.1.1
+      name: hh3c.If.Qos.FIFO.MaxQueueLen
+      syntax: Integer32
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSFIFORunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSFIFORunInfoEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSFIFODiscardPackets
+  attributes:
+    hh3cIfQoSFIFOSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.1.2.1.1
+      name: hh3c.If.Qos.FIFO.Size
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSFIFODiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.1.2.1.2
+      name: hh3c.If.Qos.FIFO.DiscardPackets
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPQDefaultEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPQDefaultEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.1.1.1
+#       name: hh3c.If.Qos.PQ.ListNumber
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSPQDefaultQueueType
+#   attributes:
+#     hh3cIfQoSPQDefaultQueueType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.1.1.2
+#       name: hh3c.If.Qos.PQ.DefaultQueueType
+#       syntax: EnumInteger
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPQQueueLengthEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPQQueueLengthEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.1.1.1
+#       name: hh3c.If.Qos.PQ.ListNumber
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.2.1.1
+#       name: hh3c.If.Qos.PQ.QueueLengthType
+#       syntax: EnumInteger
+#   discovery_attribute: hh3cIfQoSPQQueueLengthValue
+#   attributes:
+#     hh3cIfQoSPQQueueLengthValue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.2.1.2
+#       name: hh3c.If.Qos.PQ.QueueLengthValue
+#       syntax: Integer32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPQClassRuleEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPQClassRuleEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.1.1.1
+#       name: hh3c.If.Qos.PQ.ListNumber
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.3.1.1
+#       name: hh3c.If.Qos.PQ.ClassRule.Type
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.3.1.2
+#       name: hh3c.If.Qos.PQ.ClassRule.Value
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSPQClassRuleQueueType
+#   attributes:
+#     hh3cIfQoSPQClassRuleQueueType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.3.1.3
+#       name: hh3c.If.Qos.PQ.ClassRule.QueueType
+#       syntax: EnumInteger
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPQApplyEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPQApplyEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSPQApplyRowStatus
+#   attributes:
+#     hh3cIfQoSPQApplyListNumber:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.2.1.4.1.1
+#       name: hh3c.If.Qos.PQ.ApplyListNumber
+#       syntax: IntegerAsID
+
+HH3C-IFQOS2-MIB::hh3cIfQoSPQRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSPQRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.2.2.1.1.1
+      name: hh3c.If.Qos.PQ.Type
+      syntax: EnumInteger
+  discovery_attribute: hh3cIfQoSPQSize
+  attributes:
+    hh3cIfQoSPQSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.2.2.1.1.2
+      name: hh3c.If.Qos.PQ.Size
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSPQLength:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.2.2.1.1.3
+      name: hh3c.If.Qos.PQ.Length
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSPQDiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.2.2.1.1.4
+      name: hh3c.If.Qos.PQ.DiscardPackets
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSCQDefaultEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSCQDefaultEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.1.1.1
+#       name: hh3c.If.Qos.CQ.ListNumber
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSCQDefaultQueueID
+#   attributes:
+#     hh3cIfQoSCQDefaultQueueID:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.1.1.2
+#       name: hh3c.If.Qos.CQ.DefaultQueueID
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSCQQueueLengthEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSCQQueueLengthEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.1.1.1
+#       name: hh3c.If.Qos.CQ.ListNumber
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.2.1.1
+#       name: hh3c.If.Qos.CQ.QueueID
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSCQQueueLength
+#   attributes:
+#     hh3cIfQoSCQQueueLength:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.2.1.2
+#       name: hh3c.If.Qos.CQ.QueueLength
+#       syntax: Integer32
+#       metric: gauge
+#     hh3cIfQoSCQQueueServing:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.2.1.3
+#       name: hh3c.If.Qos.CQ.QueueServing
+#       syntax: BytesB
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSCQClassRuleEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSCQClassRuleEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.1.1.1
+#       name: hh3c.If.Qos.CQ.ListNumber
+#       syntax: Integer32
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.3.1.1
+#       name: hh3c.If.Qos.CQ.ClassRule.Type
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.3.1.2
+#       name: hh3c.If.Qos.CQ.ClassRule.Value
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSCQClassRuleQueueID
+#   attributes:
+#     hh3cIfQoSCQClassRuleQueueID:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.3.1.3
+#       name: hh3c.If.Qos.CQ.ClassRule.QueueID
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSCQApplyEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSCQApplyEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSCQApplyRowStatus
+#   attributes:
+#     hh3cIfQoSCQApplyListNumber:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.4.1.1
+#       name: hh3c.If.Qos.CQ.ApplyListNumber
+#       syntax: Integer32
+#       metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSCQRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSCQRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.3.1.2.1.1
+      name: hh3c.If.Qos.CQ.QueueID
+      syntax: IntegerAsID
+  discovery_attribute: hh3cIfQoSCQRunInfoLength
+  attributes:
+    hh3cIfQoSCQRunInfoSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.3.2.1.1.1
+      name: hh3c.If.Qos.CQ.Size
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSCQRunInfoLength:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.3.2.1.1.2
+      name: hh3c.If.Qos.CQ.Length
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSCQRunInfoDiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.3.2.1.1.3
+      name: hh3c.If.Qos.CQ.DiscardPackets
+      syntax: Counter64
+      metric: counter
+
+HH3C-IFQOS2-MIB::hh3cIfQoSWFQEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSWFQEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSWFQRunInfoEntry
+  discovery_attribute: hh3cIfQoSWFQQueueNumber
+  attributes:
+    hh3cIfQoSWFQQueueLength:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.1.1.1.1
+      name: hh3c.If.Qos.WFQ.QueueLength
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSWFQQueueNumber:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.1.1.1.2
+      name: hh3c.If.Qos.WFQ.QueueNumber
+      syntax: EnumInteger
+    hh3cIfQoSWFQType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.1.1.1.4
+      name: hh3c.If.Qos.WFQ.Type
+      syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSWFQRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSWFQRunInfoEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSWFQLength
+  attributes:
+    hh3cIfQoSWFQSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.1
+      name: hh3c.If.Qos.WFQ.Size
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSWFQLength:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.2
+      name: hh3c.If.Qos.WFQ.Length
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSWFQDiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.3
+      name: hh3c.If.Qos.WFQ.DiscardPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWFQHashedActiveQueues:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.4
+      name: hh3c.If.Qos.WFQ.Hashed.ActiveQueues
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSWFQHashedMaxActiveQueues:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.5
+      name: hh3c.If.Qos.WFQ.Hashed.MaxActiveQueues
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQosWFQhashedTotalQueues:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.4.2.1.1.6
+      name: hh3c.If.Qos.WFQ.Hashed.TotalQueues
+      syntax: Integer32
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSBandwidthEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSBandwidthEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSReservedBandwidthPct
+  attributes:
+    hh3cIfQoSMaxBandwidth:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.5.1.1.1
+      name: hh3c.If.Qos.MaxBandwidth
+      syntax: BandwidthKBits
+      metric: gauge
+    hh3cIfQoSReservedBandwidthPct:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.5.1.1.2
+      name: hh3c.If.Qos.ReservedBandwidthPct
+      syntax: Percent100
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSQmtokenEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSQmtokenEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSQmtokenRosStatus
+  attributes:
+    hh3cIfQoSQmtokenNumber:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.6.1.1.1
+      name: hh3c.If.Qos.Qmtoken.Number
+      syntax: Integer32
+      metric: gauge
+
+HH3C-IFQOS2-MIB::hh3cIfQoSRTPQConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSRTPQConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSRTPQEndPort
+  attributes:
+    hh3cIfQoSRTPQStartPort:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.1.1.1.1
+      name: hh3c.If.Qos.RTPQ.StartPort
+      syntax: Integer32
+    hh3cIfQoSRTPQEndPort:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.1.1.1.2
+      name: hh3c.If.Qos.RTPQ.EndPort
+      syntax: Integer32
+    hh3cIfQoSRTPQReservedBandwidth:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.1.1.1.3
+      name: hh3c.If.Qos.RTPQ.ReservedBandwidth
+      syntax: BandwidthKBits
+    hh3cIfQoSRTPQCbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.1.1.1.4
+      name: hh3c.If.Qos.RTPQ.Cbs
+      syntax: BytesB
+
+HH3C-IFQOS2-MIB::hh3cIfQoSRTPQRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSRTPQRunInfoEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+  discovery_attribute: hh3cIfQoSRTPQPacketSize
+  attributes:
+    hh3cIfQoSRTPQPacketNumber:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.2.1.1.1
+      name: hh3c.If.Qos.RTPQ.PacketNumber
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSRTPQPacketSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.2.1.1.2
+      name: hh3c.If.Qos.RTPQ.PacketSize
+      syntax: BytesB
+      metric: gauge
+    hh3cIfQoSRTPQOutputPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.2.1.1.3
+      name: hh3c.If.Qos.RTPQ.OutputPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSRTPQDiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.2.7.2.1.1.4
+      name: hh3c.If.Qos.RTPQ.DiscardPackets
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSCarlEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSCarlEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.8.1.1.1.1
+#       name: hh3c.If.Qos.Carl.ListNum
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSCarlParaType
+#   attributes:
+#     hh3cIfQoSCarlParaType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.8.1.1.1.2
+#       name: hh3c.If.Qos.Carl.ParaType
+#       syntax: EnumInteger
+#     hh3cIfQoSCarlParaValue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.2.8.1.1.1.3
+#       name: hh3c.If.Qos.Carl.ParaValue
+#       syntax: OctetString
+
+HH3C-IFQOS2-MIB::hh3cIfQoSLRConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSLRConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSLRRunInfoEntry
+  discovery_attribute: hh3cIfQoSLRCir
+  attributes:
+    hh3cIfQoSLRCir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.2
+      name: hh3c.If.Qos.LR.Cir
+      syntax: Unsigned32
+    hh3cIfQoSLRCbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.3
+      name: hh3c.If.Qos.LR.Cbs
+      syntax: Unsigned32
+    hh3cIfQoSLREbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.4
+      name: hh3c.If.Qos.LR.Ebs
+      syntax: Unsigned32
+    hh3cIfQoSLRPir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.6
+      name: hh3c.If.Qos.LR.Pir
+      syntax: Unsigned32
+    hh3cIfQoSLRUnit:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.7
+      name: hh3c.If.Qos.LR.Unit
+      syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSLRRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSLRRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.1.1.1
+      name: hh3c.If.Qos.LR.Direction
+      syntax: EnumInteger
+  discovery_attribute: hh3cIfQoSLRRunInfoPassedBytes
+  attributes:
+    hh3cIfQoSLRRunInfoPassedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.2.1.1
+      name: hh3c.If.Qos.LR.PassedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSLRRunInfoPassedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.2.1.2
+      name: hh3c.If.Qos.LR.PassedBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSLRRunInfoDelayedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.2.1.3
+      name: hh3c.If.Qos.LR.DelayedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSLRRunInfoDelayedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.2.1.4
+      name: hh3c.If.Qos.LR.DelayedBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSLRRunInfoActiveShaping:
+      oid: .1.3.6.1.4.1.25506.2.65.1.3.2.1.5
+      name: hh3c.If.Qos.LR.ActiveShaping
+      syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSAggregativeCarConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSAggregativeCarConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSAggregativeCarRunInfoEntry
+  discovery_attribute: hh3cIfQoSAggregativeCarName
+  attributes:
+    hh3cIfQoSAggregativeCarName:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.2
+      name: hh3c.If.Qos.AggregativeCar.Name
+      syntax: OctetString
+    hh3cIfQoSAggregativeCarCir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.3
+      name: hh3c.If.Qos.AggregativeCar.Cir
+      syntax: BandwidthKBits
+    hh3cIfQoSAggregativeCarCbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.4
+      name: hh3c.If.Qos.AggregativeCar.Cbs
+      syntax: BytesB
+    hh3cIfQoSAggregativeCarEbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.5
+      name: hh3c.If.Qos.AggregativeCar.Ebs
+      syntax: BytesB
+    hh3cIfQoSAggregativeCarPir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.6
+      name: hh3c.If.Qos.AggregativeCar.Pir
+      syntax: BandwidthKBits
+    hh3cIfQoSAggregativeCarGreenActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.7
+      name: hh3c.If.Qos.AggregativeCar.GreenActionType
+      syntax: EnumInteger
+    hh3cIfQoSAggregativeCarGreenActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.8
+      name: hh3c.If.Qos.AggregativeCar.GreenActionValue
+      syntax: Integer32
+    hh3cIfQoSAggregativeCarYellowActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.9
+      name: hh3c.If.Qos.AggregativeCar.YellowActionType
+      syntax: EnumInteger
+    hh3cIfQoSAggregativeCarYellowActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.10
+      name: hh3c.If.Qos.AggregativeCar.YellowActionValue
+      syntax: Integer32
+    hh3cIfQoSAggregativeCarRedActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.11
+      name: hh3c.If.Qos.AggregativeCar.RedActionType
+      syntax: EnumInteger
+    hh3cIfQoSAggregativeCarRedActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.12
+      name: hh3c.If.Qos.AggregativeCar.RedActionValue
+      syntax: Integer32
+    hh3cIfQoSAggregativeCarType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.13
+      name: hh3c.If.Qos.AggregativeCar.Type
+      syntax: EnumInteger
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSAggregativeCarApplyEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSAggregativeCarApplyEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.4.1.3.1.1
+#       name: hh3c.If.Qos.AggregativeCar.ApplyDirection
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.4.1.3.1.2
+#       name: hh3c.If.Qos.AggregativeCar.ApplyRuleType
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.4.1.3.1.3
+#       name: hh3c.If.Qos.AggregativeCar.ApplyRuleValue
+#       syntax: Integer32
+#   discovery_attribute: hh3cIfQoSAggregativeCarApplyCarIndex
+#   attributes:
+#     hh3cIfQoSAggregativeCarApplyCarIndex:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.4.1.3.1.4
+#       name: hh3c.If.Qos.AggregativeCar.ApplyCarIndex
+#       syntax: IntegerAsID
+
+HH3C-IFQOS2-MIB::hh3cIfQoSAggregativeCarRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSAggregativeCarRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.2.1.1
+      name: hh3c.If.Qos.AggregativeCar.Index
+      syntax: IntegerAsID
+  discovery_attribute: hh3cIfQoSAggregativeCarGreenBytes
+  attributes:
+    hh3cIfQoSAggregativeCarGreenPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.1
+      name: hh3c.If.Qos.AggregativeCar.GreenPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSAggregativeCarGreenBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.2
+      name: hh3c.If.Qos.AggregativeCar.GreenBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSAggregativeCarYellowPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.3
+      name: hh3c.If.Qos.AggregativeCar.YellowPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSAggregativeCarYellowBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.4
+      name: hh3c.If.Qos.AggregativeCar.YellowBytes
+      syntax: BytesB
+      metric: counter
+    hh3cIfQoSAggregativeCarRedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.5
+      name: hh3c.If.Qos.AggregativeCar.RedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSAggregativeCarRedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.1.4.1.6
+      name: hh3c.If.Qos.AggregativeCar.RedBytes
+      syntax: BytesB
+      metric: counter
+
+HH3C-IFQOS2-MIB::hh3cIfQoSTricolorCarConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSTricolorCarConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSTricolorCarRunInfoEntry
+  discovery_attribute: hh3cIfQoSTricolorCarCir
+  attributes:
+    hh3cIfQoSTricolorCarCir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.4
+      name: hh3c.If.Qos.TricolorCar.Cir
+      syntax: Unsigned32
+    hh3cIfQoSTricolorCarCbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.5
+      name: hh3c.If.Qos.TricolorCar.Cbs
+      syntax: Unsigned32
+    hh3cIfQoSTricolorCarEbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.6
+      name: hh3c.If.Qos.TricolorCar.Ebs
+      syntax: Unsigned32
+    hh3cIfQoSTricolorCarPir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.7
+      name: hh3c.If.Qos.TricolorCar.Pir
+      syntax: Unsigned32
+    hh3cIfQoSTricolorCarGreenActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.8
+      name: hh3c.If.Qos.TricolorCar.GreenActionType
+      syntax: EnumInteger
+    hh3cIfQoSTricolorCarGreenActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.9
+      name: hh3c.If.Qos.TricolorCar.GreenActionValue
+      syntax: Integer32
+    hh3cIfQoSTricolorCarYellowActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.10
+      name: hh3c.If.Qos.TricolorCar.YellowActionType
+      syntax: EnumInteger
+    hh3cIfQoSTricolorCarYellowActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.11
+      name: hh3c.If.Qos.TricolorCar.YellowActionValue
+      syntax: Integer32
+    hh3cIfQoSTricolorCarRedActionType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.12
+      name: hh3c.If.Qos.TricolorCar.RedActionType
+      syntax: EnumInteger
+    hh3cIfQoSTricolorCarRedActionValue:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.13
+      name: hh3c.If.Qos.TricolorCar.RedActionValue
+      syntax: Integer32
+    hh3cIfQoSTricolorCarUnitType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.15
+      name: hh3c.If.Qos.TricolorCar.UnitType
+      syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSTricolorCarRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSTricolorCarRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.1
+      name: hh3c.If.Qos.TricolorCar.Direction
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.2
+      name: hh3c.If.Qos.TricolorCar.Type
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.1.1.3
+      name: hh3c.If.Qos.TricolorCar.Value
+      syntax: Integer32
+  discovery_attribute: hh3cIfQoSTricolorCarGreenBytes
+  attributes:
+    hh3cIfQoSTricolorCarGreenPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.1
+      name: hh3c.If.Qos.TricolorCar.GreenPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTricolorCarGreenBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.2
+      name: hh3c.If.Qos.TricolorCar.GreenBytes
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTricolorCarYellowPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.3
+      name: hh3c.If.Qos.TricolorCar.YellowPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTricolorCarYellowBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.4
+      name: hh3c.If.Qos.TricolorCar.YellowBytes
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTricolorCarRedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.5
+      name: hh3c.If.Qos.TricolorCar.RedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSTricolorCarRedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.4.2.2.1.6
+      name: hh3c.If.Qos.TricolorCar.RedBytes
+      syntax: Counter64
+      metric: counter
+
+HH3C-IFQOS2-MIB::hh3cIfQoSGTSConfigEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSGTSConfigEntry
+  augments: HH3C-IFQOS2-MIB::hh3cIfQoSGTSRunInfoEntry
+  discovery_attribute: hh3cIfQoSGTSCir
+  attributes:
+    hh3cIfQoSGTSCir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.3
+      name: hh3c.If.Qos.GTS.Cir
+      syntax: Unsigned32
+    hh3cIfQoSGTSCbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.4
+      name: hh3c.If.Qos.GTS.Cbs
+      syntax: Unsigned32
+    hh3cIfQoSGTSEbs:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.5
+      name: hh3c.If.Qos.GTS.Ebs
+      syntax: Unsigned32
+    hh3cIfQoSGTSQueueLength:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.6
+      name: hh3c.If.Qos.GTS.QueueLength
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSGTSPir:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.8
+      name: hh3c.If.Qos.GTS.Pir
+      syntax: Unsigned32
+    hh3cIfQoSGTSUnitType:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.9
+      name: hh3c.If.Qos.GTS.UnitType
+      syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSGTSRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSGTSRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.1
+      name: hh3c.If.Qos.GTS.ClassRuleType
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.1.1.2
+      name: hh3c.If.Qos.GTS.ClassRuleValue
+      syntax: Integer32
+  discovery_attribute: hh3cIfQoSGTSPassedPackets
+  attributes:
+    hh3cIfQoSGTSQueueSize:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.1
+      name: hh3c.If.Qos.GTS.QueueSize
+      syntax: Integer32
+      metric: gauge
+    hh3cIfQoSGTSPassedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.2
+      name: hh3c.If.Qos.GTS.PassedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSGTSPassedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.3
+      name: hh3c.If.Qos.GTS.PassedBytes
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSGTSDiscardPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.4
+      name: hh3c.If.Qos.GTS.DiscardPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSGTSDiscardBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.5
+      name: hh3c.If.Qos.GTS.DiscardBytes
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSGTSDelayedPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.6
+      name: hh3c.If.Qos.GTS.DelayedPackets
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSGTSDelayedBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.5.2.1.7
+      name: hh3c.If.Qos.GTS.DelayedBytes
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSWredGroupEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSWredGroupEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.1
+#       name: hh3c.If.Qos.WredGroup.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSWredGroupName
+#   attributes:
+#     hh3cIfQoSWredGroupName:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.2
+#       name: hh3c.If.Qos.WredGroup.Name
+#       syntax: OctetString
+#     hh3cIfQoSWredGroupType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.3
+#       name: hh3c.If.Qos.WredGroup.Type
+#       syntax: EnumInteger
+#     hh3cIfQoSWredGroupWeightingConstant:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.4
+#       name: hh3c.If.Qos.WredGroup.WeightingConstant
+#       syntax: Integer32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSWredGroupContentEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSWredGroupContentEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.1
+#       name: hh3c.If.Qos.WredGroup.Index
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.1
+#       name: hh3c.If.Qos.WredGroup.ContentIndex
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.2
+#       name: hh3c.If.Qos.WredGroup.ContentSubIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSWredLowLimit
+#   attributes:
+#     hh3cIfQoSWredLowLimit:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.3
+#       name: hh3c.If.Qos.Wred.LowLimit
+#       syntax: Integer32
+#       metric: gauge
+#     hh3cIfQoSWredHighLimit:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.4
+#       name: hh3c.If.Qos.Wred.HighLimit
+#       syntax: Integer32
+#       metric: gauge
+#     hh3cIfQoSWredDiscardProb:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.5
+#       name: hh3c.If.Qos.Wred.DiscardProb
+#       syntax: Integer32
+#       metric: gauge
+#     hh3cIfQoSWredGroupExponent:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.6
+#       name: hh3c.If.Qos.WredGroup.Exponent
+#       syntax: Integer32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSWredGroupApplyIfEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSWredGroupApplyIfEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSWredGroupApplyName
+#   attributes:
+#     hh3cIfQoSWredGroupApplyIndex:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.4.1.1
+#       name: hh3c.If.Qos.WredGroup.ApplyIndex
+#       syntax: IntegerAsID
+#     hh3cIfQoSWredGroupApplyName:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.1.4.1.2
+#       name: hh3c.If.Qos.WredGroup.ApplyName
+#       syntax: OctetString
+
+HH3C-IFQOS2-MIB::hh3cIfQoSWredApplyIfRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSWredApplyIfRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.1.2.1.1
+      name: hh3c.If.Qos.WredGroup.Index
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.1
+      name: hh3c.If.Qos.WredGroup.ContentIndex
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.1.3.1.2
+      name: hh3c.If.Qos.WredGroup.ContentSubIndex
+      syntax: IntegerAsID
+  discovery_attribute: hh3cIfQoSWredPreTailDropNum
+  attributes:
+    hh3cIfQoSWredPreRandomDropNum:
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.1.5.1.1
+      name: hh3c.If.Qos.Wred.PreRandomDropNum
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWredPreTailDropNum:
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.1.5.1.2
+      name: hh3c.If.Qos.Wred.PreTailDropNum
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPortWredWeightConstantEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPortWredWeightConstantEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSPortWredWeightConstant
+#   attributes:
+#     hh3cIfQoSPortWredEnable:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.1.1.1
+#       name: hh3c.If.Qos.Port.Wred.Enable
+#       syntax: TruthValue
+#     hh3cIfQoSPortWredWeightConstant:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.1.1.2
+#       name: hh3c.If.Qos.Port.Wred.WeightConstant
+#       syntax: Integer32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPortWredPreConfigEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPortWredPreConfigEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.2.1.1
+#       name: hh3c.If.Qos.Port.Wred.PreID
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSPortWredPreLowLimit
+#   attributes:
+#     hh3cIfQoSPortWredPreLowLimit:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.2.1.2
+#       name: hh3c.If.Qos.Port.Wred.PreLowLimit
+#       syntax: Integer32
+#     hh3cIfQoSPortWredPreHighLimit:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.2.1.3
+#       name: hh3c.If.Qos.Port.Wred.PreHighLimit
+#       syntax: Integer32
+#     hh3cIfQoSPortWredPreDiscardProbability:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.6.2.2.1.4
+#       name: hh3c.If.Qos.Port.Wred.PreDiscardProbability
+#       syntax: Integer32
+
+HH3C-IFQOS2-MIB::hh3cIfQoSPortWredRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSPortWredRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.2.2.1.1
+      name: hh3c.If.Qos.Port.Wred.PreID
+      syntax: IntegerAsID
+  discovery_attribute: hh3cIfQoSWREDRandomDropNum
+  attributes:
+    hh3cIfQoSWREDTailDropNum:
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.2.3.1.1
+      name: hh3c.If.Qos.WRED.TailDropNum
+      syntax: Counter64
+      metric: counter
+    hh3cIfQoSWREDRandomDropNum:
+      oid: .1.3.6.1.4.1.25506.2.65.1.6.2.3.1.2
+      name: hh3c.If.Qos.WRED.RandomDropNum
+      syntax: Counter64
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPortPriorityEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPortPriorityEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSPortPriorityValue
+#   attributes:
+#     hh3cIfQoSPortPriorityValue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.7.1.1.1.1
+#       name: hh3c.If.Qos.Port.Priority.Value
+#       syntax: Integer32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPortPirorityTrustEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPortPirorityTrustEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#   discovery_attribute: hh3cIfQoSPortPriorityTrustOvercastType
+#   attributes:
+#     hh3cIfQoSPortPriorityTrustTrustType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.7.1.2.1.1
+#       name: hh3c.If.Qos.Port.Priority.TrustTrustType
+#       syntax: EnumInteger
+#     hh3cIfQoSPortPriorityTrustOvercastType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.7.1.2.1.2
+#       name: hh3c.If.Qos.Port.Priority.TrustOvercastType
+#       syntax: EnumInteger
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPriMapGroupEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPriMapGroupEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.2.1.1
+#       name: hh3c.If.Qos.PriMapGroup.Index
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSPriMapGroupType
+#   attributes:
+#     hh3cIfQoSPriMapGroupType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.2.1.2
+#       name: hh3c.If.Qos.PriMapGroup.Type
+#       syntax: EnumInteger
+#     hh3cIfQoSPriMapGroupName:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.2.1.3
+#       name: hh3c.If.Qos.PriMapGroup.Name
+#       syntax: OctetString
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPriMapContentEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPriMapContentEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.2.1.1
+#       name: hh3c.If.Qos.PriMapGroup.Index
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.3.1.1
+#       name: hh3c.If.Qos.PriMapGroup.ImportValue
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSPriMapGroupExportValue
+#   attributes:
+#     hh3cIfQoSPriMapGroupExportValue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.3.1.2
+#       name: hh3c.If.Qos.PriMapGroup.ExportValue
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPrePriMapEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPrePriMapEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.4.1.1
+#       name: hh3c.If.Qos.PrePriMapTable.Type
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.4.1.2
+#       name: hh3c.If.Qos.PrePriMapTable.Color
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.4.1.3
+#       name: hh3c.If.Qos.PrePriMapTable.Direction
+#       syntax: EnumInteger
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.4.1.4
+#       name: hh3c.If.Qos.PrePriMapTable.ImportValue
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cIfQoSPrePriMapTableExportValue
+#   attributes:
+#     hh3cIfQoSPrePriMapTableExportValue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.9.1.4.1.5
+#       name: hh3c.If.Qos.PrePriMapTable.ExportValue
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cIfQoSPortBindingEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cIfQoSPortBindingEntry
+#   augments: HH3C-IFQOS2-MIB::hh3cIfQoS
+#   discovery_attribute: hh3cIfQoSBindingRowStatus
+#   attributes:
+#     hh3cIfQoSBindingIf:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.10.1.1.1.1
+#       name: hh3c.If.Qos.BindingIf
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cQoSIfTraStaConfigInfoEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSIfTraStaConfigInfoEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.2.1.2.2.1.1
+#       name: netif # ifIndex
+#       syntax: InterfaceIndex
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.11.1.1.1.1
+#       name: hh3c.If.QoS.TraSta.Direction
+#       syntax: EnumInteger
+#   discovery_attribute: hh3cQoSIfTraStaConfigQueue
+#   attributes:
+#     hh3cQoSIfTraStaConfigQueue:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.11.1.1.1.2
+#       name: hh3c.If.QoS.TraSta.Queue
+#       syntax: OctetString
+#     hh3cQoSIfTraStaConfigDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.11.1.1.1.3
+#       name: hh3c.If.QoS.TraSta.Dot1p
+#       syntax: OctetString
+#     hh3cQoSIfTraStaConfigDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.11.1.1.1.4
+#       name: hh3c.If.QoS.TraSta.Dscp
+#       syntax: OctetString
+#     hh3cQoSIfTraStaConfigVlan:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.11.1.1.1.5
+#       name: hh3c.If.QoS.TraSta.Vlan
+#       syntax: OctetString
+
+HH3C-IFQOS2-MIB::hh3cQoSIfTraStaRunInfoEntry:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cQoSIfTraStaRunInfoEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.1
+      name: hh3c.If.QoS.TraSta.ObjectType
+      syntax: EnumInteger
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.2
+      name: hh3c.If.QoS.TraSta.ObjectValue
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.3
+      name: hh3c.If.QoS.TraSta.Direction
+      syntax: EnumInteger
+  discovery_attribute: hh3cQoSIfTraStaRunPassPackets
+  attributes:
+    hh3cQoSIfTraStaRunPassPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.4
+      name: hh3c.If.QoS.TraSta.PassPackets
+      syntax: Counter64
+      metric: counter
+    hh3cQoSIfTraStaRunDropPackets:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.5
+      name: hh3c.If.QoS.TraSta.DropPackets
+      syntax: Counter64
+      metric: counter
+    hh3cQoSIfTraStaRunPassBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.6
+      name: hh3c.If.QoS.TraSta.PassBytes
+      syntax: BytesB
+      metric: counter
+    hh3cQoSIfTraStaRunDropBytes:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.7
+      name: hh3c.If.QoS.TraSta.DropBytes
+      syntax: BytesB
+      metric: counter
+    hh3cQoSIfTraStaRunPassPPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.8
+      name: hh3c.If.QoS.TraSta.PassPPS
+      syntax: Counter64
+      metric: counter
+    hh3cQoSIfTraStaRunPassBPS:
+      oid: .1.3.6.1.4.1.25506.2.65.1.11.2.1.1.9
+      name: hh3c.If.QoS.TraSta.PassBPS
+      syntax: BytesB
+      metric: counter
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkTcpPortPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkTcpPortPriEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.1.1.1
+#       name: hh3c.QoS.Remark.TcpPort.Start
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cQoSRemarkTcpPortEnd
+#   attributes:
+#     hh3cQoSRemarkTcpPortEnd:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.1.1.2
+#       name: hh3c.QoS.Remark.TcpPort.End
+#       syntax: IntegerAsID
+#     hh3cQoSRemarkTcpPortType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.1.1.3
+#       name: hh3c.QoS.Remark.TcpPort.Type
+#       syntax: EnumInteger
+#     hh3cQoSRemarkTcpPortDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.1.1.4
+#       name: hh3c.QoS.Remark.TcpPort.Dot1p
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkTcpPortDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.1.1.5
+#       name: hh3c.QoS.Remark.TcpPort.Dscp
+#       syntax: Unsigned32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkUdpPortPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkUdpPortPriEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.2.1.1
+#       name: hh3c.QoS.Remark.UdpPort.Start
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cQoSRemarkUdpPortEnd
+#   attributes:
+#     hh3cQoSRemarkUdpPortEnd:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.2.1.2
+#       name: hh3c.QoS.Remark.UdpPort.End
+#       syntax: IntegerAsID
+#     hh3cQoSRemarkUdpPortType:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.2.1.3
+#       name: hh3c.QoS.Remark.UdpPort.Type
+#       syntax: EnumInteger
+#     hh3cQoSRemarkUdpPortDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.2.1.4
+#       name: hh3c.QoS.Remark.UdpPort.Dot1p
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkUdpPortDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.2.1.5
+#       name: hh3c.QoS.Remark.UdpPort.Dscp
+#       syntax: Unsigned32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkIPv4AddrPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkIPv4AddrPriEntry
+#   index:
+#     - type: OctetString # IpAddress
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.3.1.1
+#       name: hh3c.QoS.Remark.IPv4Addr.Value
+#       syntax: IpAddressNoSuffix
+#   discovery_attribute: hh3cQoSRemarkIPv4AddrMask
+#   attributes:
+#     hh3cQoSRemarkIPv4AddrMask:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.3.1.2
+#       name: hh3c.QoS.Remark.IPv4Addr.Mask
+#       syntax: IpAddressNoSuffix
+#     hh3cQoSRemarkIPv4AddrMaskLength:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.3.1.3
+#       name: hh3c.QoS.Remark.IPv4Addr.MaskLength
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkIPv4AddrDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.3.1.4
+#       name: hh3c.QoS.Remark.IPv4Addr.Dot1p
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkIPv4AddrDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.3.1.5
+#       name: hh3c.QoS.Remark.IPv4Addr.Dscp
+#       syntax: Unsigned32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkIPv6AddrPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkIPv6AddrPriEntry
+#   index:
+#     - type: OctetStringIPv6
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.4.1.1
+#       name: hh3c.QoS.Remark.IPv6Addr.Value
+#       syntax: IpAddressNoSuffix # InetAddressIPv6
+#   discovery_attribute: hh3cQoSRemarkIPv6AddrPrefixLength
+#   attributes:
+#     hh3cQoSRemarkIPv6AddrPrefixLength:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.4.1.2
+#       name: hh3c.QoS.Remark.IPv6Addr.PrefixLength
+#       syntax: Unsigned32 # InetAddressPrefixLength
+#     hh3cQoSRemarkIPv6AddrDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.4.1.3
+#       name: hh3c.QoS.Remark.IPv6Addr.Dot1p
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkIPv6AddrDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.4.1.4
+#       name: hh3c.QoS.Remark.IPv6Addr.Dscp
+#       syntax: Unsigned32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkProtocolPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkProtocolPriEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.5.1.1
+#       name: hh3c.QoS.Remark.Protocol.Value
+#       syntax: EnumInteger
+#   discovery_attribute: hh3cQoSRemarkProtocolDot1p
+#   attributes:
+#     hh3cQoSRemarkProtocolDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.5.1.2
+#       name: hh3c.QoS.Remark.Protocol.Dot1p
+#       syntax: IntegerAsID
+
+# HH3C-IFQOS2-MIB::hh3cQoSRemarkVlanPriEntry:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSRemarkVlanPriEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.6.1.1
+#       name: hh3c.QoS.Remark.Vlan.Start
+#       syntax: IntegerAsID
+#   discovery_attribute: hh3cQoSRemarkVlanEnd
+#   attributes:
+#     hh3cQoSRemarkVlanEnd:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.6.1.2
+#       name: hh3c.QoS.Remark.Vlan.End
+#       syntax: Integer32
+#       metric: gauge
+#     hh3cQoSRemarkVlanDot1p:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.6.1.3
+#       name: hh3c.QoS.Remark.Vlan.Dot1p
+#       syntax: Unsigned32
+#       metric: gauge
+#     hh3cQoSRemarkVlanDscp:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.6.1.4
+#       name: hh3c.QoS.Remark.Vlan.Dscp
+#       syntax: Unsigned32
+#       metric: gauge
+
+# HH3C-IFQOS2-MIB::hh3cQoSTypeOfServiceObjects:
+#   mib: HH3C-IFQOS2-MIB
+#   object: hh3cQoSTypeOfServiceObjects
+#   augments: HH3C-IFQOS2-MIB::hh3cIfQoSProcessingStatusObjects
+#   discovery_attribute: hh3cQoSTypeOfServiceMode
+#   attributes:
+#     hh3cQoSTypeOfServiceMode:
+#       oid: .1.3.6.1.4.1.25506.2.65.1.12.7.1
+#       name: hh3c.QoS.TypeOfServiceMode
+#       syntax: EnumInteger
+
+HH3C-IFQOS2-MIB::hh3cIfQoSProcessingStatusObjects:
+  mib: HH3C-IFQOS2-MIB
+  object: hh3cIfQoSProcessingStatusObjects
+  discovery_attribute: hh3cIfQoSProcessingStatus
+  attributes:
+    hh3cIfQoSProcessingStatus:
+      oid: .1.3.6.1.4.1.25506.2.65.1.13.1
+      name: hh3c.If.Qos.ProcessingStatus
+      syntax: EnumInteger
