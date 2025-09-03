@@ -39,3 +39,7 @@ func isYamlFile(filePath string) bool {
 	yamlExtension := regexp.MustCompile(`\.ya?ml$`)
 	return yamlExtension.MatchString(filePath)
 }
+
+func isValidOID(oid string) bool {
+	return regexp.MustCompile(`^\.?[0-9]+(\.[0-9]+)*$`).MatchString(oid)
+}
