@@ -41,6 +41,10 @@ func TestIntegerEnum_Validate(t *testing.T) {
 			},
 			expected: fmt.Errorf("integer enum value for 2 cannot be empty (null values must be stringified)"),
 		},
+		{
+			name:     "nil value",
+			expected: fmt.Errorf("integer enum cannot be empty"),
+		},
 	}
 
 	for _, tt := range tests {
@@ -88,6 +92,10 @@ func TestBitMapEnum_Validate(t *testing.T) {
 				2: "Execute",
 			},
 			expected: fmt.Errorf("integer enum value for 1 cannot be empty (null values must be stringified)"),
+		},
+		{
+			name:     "nil value",
+			expected: fmt.Errorf("bit map enum cannot be empty"),
 		},
 	}
 
