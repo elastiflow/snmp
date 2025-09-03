@@ -86,14 +86,32 @@ func ReadSNMPEnums(enumsDir string) (
 		return nil, nil, nil, fmt.Errorf("failed to read and validate integer enums: %w", err)
 	}
 
+	for oid := range integerEnums {
+		if !isValidOID(oid) {
+			return nil, nil, nil, fmt.Errorf("invalid oid %s in integer enums", oid)
+		}
+	}
+
 	bitMapEnums, err := Read[def.BitMapEnum](fmt.Sprintf("%s/bitmap", enumsDir))
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to read and validate bit map enums: %w", err)
 	}
 
+	for oid := range bitMapEnums {
+		if !isValidOID(oid) {
+			return nil, nil, nil, fmt.Errorf("invalid oid %s in bit map enums", oid)
+		}
+	}
+
 	oidEnums, err := Read[def.OidEnum](fmt.Sprintf("%s/oid", enumsDir))
 	if err != nil {
 		return nil, nil, nil, fmt.Errorf("failed to read and validate oid enums: %w", err)
+	}
+
+	for oid := range oidEnums {
+		if !isValidOID(oid) {
+			return nil, nil, nil, fmt.Errorf("invalid oid %s in oid enums", oid)
+		}
 	}
 
 	return integerEnums, bitMapEnums, oidEnums, nil

@@ -185,37 +185,52 @@ func TestReadSNMPEnums(t *testing.T) {
 			name:    "valid enums",
 			enumDir: "testdata/enums",
 			wantIntegerEnums: map[string]def.IntegerEnum{
-				"test_integer_enum": {
+				".1.2.3.4": {
 					1: "one",
 					2: "two",
 					3: "three",
 				},
 			},
 			wantBitMapEnums: map[string]def.BitMapEnum{
-				"test_bitmap_enum": {
+				".1.2.3.4": {
 					1: "one",
 					2: "two",
 					3: "three",
 				},
 			},
 			wantOidEnums: map[string]def.OidEnum{
-				"test_oid_enum": ".1.3.6.1.2.1",
+				".1.2.3.4": ".1.3.6.1.2.1",
 			},
 		},
 		{
 			name:    "missing integer enums",
 			enumDir: "testdata/enums_missing_integer_enums",
-			wantErr: "failed to read and validate integer enums: failed to read file testdata/enums_missing_integer_enums/test_integer_enum.yml",
+			wantErr: "failed to read and validate integer enums: failed to walk directory: error while walking directory",
 		},
 		{
 			name:    "missing bit map enums",
 			enumDir: "testdata/enums_missing_bitmap_enums",
-			wantErr: "failed to read and validate bit map enums: failed to read file testdata/enums_missing_bitmap_enums/test_bitmap_enum.yml",
+			wantErr: "failed to read and validate bit map enums: failed to walk directory: error while walking directory",
 		},
 		{
 			name:    "missing oid enums",
 			enumDir: "testdata/enums_missing_oid_enums",
-			wantErr: "failed to read and validate oid enums: failed to read file testdata/enums_missing_oid_enums/test_oid_enum.yml",
+			wantErr: "failed to read and validate oid enums: failed to walk directory: error while walking directory",
+		},
+		{
+			name:    "invalid integer oid",
+			enumDir: "testdata/enums_invalid_integer_oid",
+			wantErr: "invalid oid invalid_oid in integer enums",
+		},
+		{
+			name:    "invalid bit map oid",
+			enumDir: "testdata/enums_invalid_bitmap_oid",
+			wantErr: "invalid oid invalid_oid in bit map enums",
+		},
+		{
+			name:    "invalid oid",
+			enumDir: "testdata/enums_invalid_oid_oid",
+			wantErr: "invalid oid invalid_oid in oid enums",
 		},
 	}
 
@@ -224,6 +239,7 @@ func TestReadSNMPEnums(t *testing.T) {
 			integerEnums, bitMapEnums, oidEnums, err := ReadSNMPEnums(tt.enumDir)
 			if tt.wantErr != "" {
 				assert.Error(t, err)
+				assert.ErrorContains(t, err, tt.wantErr)
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.wantIntegerEnums, integerEnums)

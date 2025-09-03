@@ -9,6 +9,10 @@ func (i IntegerEnum) Type() string {
 }
 
 func (i IntegerEnum) Validate() error {
+	if i == nil {
+		return fmt.Errorf("integer enum cannot be empty")
+	}
+
 	for integer, value := range i {
 		if value == "" {
 			return fmt.Errorf("integer enum value for %d cannot be empty (null values must be stringified)", integer)
@@ -24,6 +28,10 @@ func (b BitMapEnum) Type() string {
 }
 
 func (b BitMapEnum) Validate() error {
+	if b == nil {
+		return fmt.Errorf("bit map enum cannot be empty")
+	}
+
 	for integer, value := range b {
 		if value == "" {
 			return fmt.Errorf("integer enum value for %d cannot be empty (null values must be stringified)", integer)
