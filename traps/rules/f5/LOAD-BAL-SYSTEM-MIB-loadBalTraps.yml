@@ -4,6 +4,11 @@
     root.out.origin.agent.name = "LOAD-BAL-SYSTEM-MIB"
 - switch:
     - check: this.trap.SpecificTrap == 1
+      # loadBalTrapMisc
+      #
+      # Uncategorized trap.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_misc_variables
           mapping: |-
@@ -19,7 +24,16 @@
             root.out.event.category.name = "Miscellaneous Message"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 2
+      # loadBalTrapServiceDown
+      #
+      # Service Came Down.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
+      # ipAddressString (DisplayString) - Text string which will contain either an IP address or a hostname which
+      #   identifies a specific device.
+      # memberPort (INTEGER) - The node port for this member.
       processors:
         - label: load_bal_trap_service_down_variables
           mapping: |-
@@ -34,10 +48,19 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Service Status"
+            root.out.event.category.name = "Service State"
             root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 3
+      # loadBalTrapServiceUP
+      #
+      # Service Came Up.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
+      # ipAddressString (DisplayString) - Text string which will contain either an IP address or a hostname which
+      #   identifies a specific device.
+      # memberPort (INTEGER) - The node port for this member.
       processors:
         - label: load_bal_trap_service_up_variables
           mapping: |-
@@ -52,10 +75,16 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Service Status"
+            root.out.event.category.name = "Service State"
             root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 4
+      # loadBalTrapReset
+      #
+      # System Reset.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_reset_variables
           mapping: |-
@@ -68,10 +97,16 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "System Status"
+            root.out.event.category.name = "System State"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 5
+      # loadBalTrapDenial
+      #
+      # REQUEST DENIAL
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_denial_variables
           mapping: |-
@@ -84,10 +119,16 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Request Status"
+            root.out.event.category.name = "Request State"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_display_string().string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 6
+      # loadBalTrapLogin
+      #
+      # Root Login.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_login_variables
           mapping: |-
@@ -103,7 +144,13 @@
             root.out.event.category.name = "Root Login"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 7
+      # loadBalTrapRemoveUnit
+      #
+      # Removing unit. Potential failover of this BIG-IP.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_remove_unit_variables
           mapping: |-
@@ -116,10 +163,16 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Unit Status"
+            root.out.event.category.name = "Unit State"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - check: this.trap.SpecificTrap == 8
+      # loadBalTrapAddUnit
+      #
+      # Adding unit. This BIG-IP has taken responsibility for a new unit id.
+      #
+      # loadBalTrapMessage (DisplayString) - Text string which describes the loadBalTrap.
       processors:
         - label: load_bal_trap_add_unit_variables
           mapping: |-
@@ -132,9 +185,10 @@
             #!blobl
             root = this
 
-            root.out.event.category.name = "Unit Status"
+            root.out.event.category.name = "Unit State"
             root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
             root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+
     - processors:
         - label: default
           mapping: |
