@@ -1,0 +1,586 @@
+AVAYA-IPSEC-MIB::avipsGlobals:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsGlobals
+  discovery_attribute: avipsGlobalsInvalidSpiRecovery
+  attributes:
+    avipsGlobalsInvalidSpiRecovery:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.1.1
+      name: avipsGlobalsInvalidSpiRecovery
+      syntax: TruthValue
+    avipsNatTEnabled:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.1.2
+      name: avipsNatTEnabled
+      syntax: TruthValue
+    avipsNatTKeepaliveInterval:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.1.3
+      name: avipsNatTKeepaliveInterval
+      syntax: TicksSec
+    avipsCryptoEngineAccelEnabled:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.1.4
+      name: avipsCryptoEngineAccelEnabled
+      syntax: TruthValue
+
+AVAYA-IPSEC-MIB::avipsIsakmpPeerEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsIsakmpPeerEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.1
+      name: avipsIsakmpPeerIdType
+      syntax: EnumInteger
+    - type: OctetString
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.2
+      name: avipsIsakmpPeerId
+      syntax: OctetString
+  discovery_attribute: avipsIsakmpPeerDescription
+  attributes:
+    avipsIsakmpPeerDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.3
+      name: avipsIsakmpPeerDescription
+      syntax: DisplayString
+    avipsIsakmpPeerIsaPlcyId1:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.4
+      name: avipsIsakmpPeerIsaPlcyId1
+      syntax: Integer32
+      metric: gauge
+    avipsIsakmpPeerInitiateMode:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.5
+      name: avipsIsakmpPeerInitiateMode
+      syntax: EnumInteger
+    avipsIsakmpPeerSelfIdType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.6
+      name: avipsIsakmpPeerSelfIdType
+      syntax: EnumInteger
+    avipsIsakmpPeerSelfId:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.7
+      name: avipsIsakmpPeerSelfId
+      syntax: OctetString
+    avipsIsakmpPeerKeepaliveMetric:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.8
+      name: avipsIsakmpPeerKeepaliveMetric
+      syntax: EnumInteger
+    avipsIsakmpPeerKeepaliveInterval:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.9
+      name: avipsIsakmpPeerKeepaliveInterval
+      syntax: TicksSec
+    avipsIsakmpPeerKeepaliveRetryInterval:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.10
+      name: avipsIsakmpPeerKeepaliveRetryInterval
+      syntax: TicksSec
+    avipsIsakmpPeerKeepaliveTrackId:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.11
+      name: avipsIsakmpPeerKeepaliveTrackId
+      syntax: IntegerAsID
+    avipsIsakmpPeerContChannel:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.12
+      name: avipsIsakmpPeerContChannel
+      syntax: TruthValue
+    avipsIsakmpPeerGroupFailbacktoPrimaryInterval:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.14
+      name: avipsIsakmpPeerGroupFailbacktoPrimaryInterval
+      syntax: TicksSec
+
+AVAYA-IPSEC-MIB::avipsPeerGroupPeersEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsPeerGroupPeersEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.1
+      name: avipsPeerGroupPeersPGrpName
+      syntax: DisplayString
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.2
+      name: avipsPeerGroupPeersPeerIndex
+      syntax: IntegerAsID
+  discovery_attribute: avipsPeerGroupPeersPIdType
+  attributes:
+    avipsPeerGroupPeersPIdType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.3
+      name: avipsPeerGroupPeersPIdType
+      syntax: EnumInteger
+    avipsPeerGroupPeersPIdValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.4
+      name: avipsPeerGroupPeersPIdValue
+      syntax: OctetString # IsakmpIdentityValue
+
+AVAYA-IPSEC-MIB::avipsIsakmpPlcyEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsIsakmpPlcyEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.1
+      name: avipsIsakmpPlcyId
+      syntax: IntegerAsID
+  discovery_attribute: avipsIsakmpPlcyDescription
+  attributes:
+    avipsIsakmpPlcyDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.2
+      name: avipsIsakmpPlcyDescription
+      syntax: DisplayString
+    avipsIsakmpPlcyDhGroup:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.3
+      name: avipsIsakmpPlcyDhGroup
+      syntax: EnumInteger
+    avipsIsakmpPlcyEncrAlgo:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.4
+      name: avipsIsakmpPlcyEncrAlgo
+      syntax: EnumInteger
+    avipsIsakmpPlcyHashAlgo:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.5
+      name: avipsIsakmpPlcyHashAlgo
+      syntax: EnumInteger
+    avipsIsakmpPlcyLifetime:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.6
+      name: avipsIsakmpPlcyLifetime
+      syntax: TicksSec
+    avipsIsakmpPlcyAuth:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.7
+      name: avipsIsakmpPlcyAuth
+      syntax: EnumInteger
+
+AVAYA-IPSEC-MIB::avipsCryptoMapEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsCryptoMapEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.1
+      name: avipsCryptoMapId
+      syntax: IntegerAsID
+  discovery_attribute: avipsCryptoMapDescription
+  attributes:
+    avipsCryptoMapDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.2
+      name: avipsCryptoMapDescription
+      syntax: DisplayString
+    avipsCryptoMapPeerIdType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.3
+      name: avipsCryptoMapPeerIdType
+      syntax: EnumInteger
+    avipsCryptoMapPeerIdValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.4
+      name: avipsCryptoMapPeerIdValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsCryptoMapTranSetName1:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.5
+      name: avipsCryptoMapTranSetName1
+      syntax: DisplayString
+    avipsCryptoMapIsReady:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.6
+      name: avipsCryptoMapIsReady
+      syntax: TruthValue
+    avipsCryptoMapTunnelDscp:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.7
+      name: avipsCryptoMapTunnelDscp
+      syntax: Integer32
+      metric: gauge
+    avipsCryptoMapContChannel:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.8
+      name: avipsCryptoMapContChannel
+      syntax: TruthValue
+
+AVAYA-IPSEC-MIB::avipsTranSetEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsTranSetEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.1
+      name: avipsTranSetName
+      syntax: DisplayString
+  discovery_attribute: avipsTranSetEspEncrTran
+  attributes:
+    avipsTranSetEspEncrTran:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.2
+      name: avipsTranSetEspEncrTran
+      syntax: EnumInteger
+    avipsTranSetEspHashTran:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.3
+      name: avipsTranSetEspHashTran
+      syntax: EnumInteger
+    avipsTranSetLifetime:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.4
+      name: avipsTranSetLifetime
+      syntax: TicksSec
+    avipsTranSetLifesize:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.5
+      name: avipsTranSetLifesize
+      syntax: Integer32
+      metric: gauge
+    avipsTranSetPfsGroup:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.6
+      name: avipsTranSetPfsGroup
+      syntax: EnumInteger
+    avipsTranSetEncapMode:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.7
+      name: avipsTranSetEncapMode
+      syntax: EnumInteger
+    avipsTranSetEspCompTran:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.8
+      name: avipsTranSetEspCompTran
+      syntax: EnumInteger
+
+AVAYA-IPSEC-MIB::avipsMonitoringTablesGlobals:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsMonitoringTablesGlobals
+  discovery_attribute: avipsMonitorRstCntrs
+  attributes:
+    avipsMonitorRstCntrs:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.1.1
+      name: avipsMonitorRstCntrs
+      syntax: EnumInteger
+    avipsMonitorRstCntrsLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.1.2
+      name: avipsMonitorRstCntrsLastChange
+      syntax: TimeStamp
+
+AVAYA-IPSEC-MIB::avipsPeerEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsPeerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.1
+      name: avipsPeerLocalId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.2
+      name: avipsPeerRemoteId
+      syntax: UnsignedAsID
+  discovery_attribute: avipsPeerLocalType
+  attributes:
+    avipsPeerLocalType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.3
+      name: avipsPeerLocalType
+      syntax: EnumInteger
+    avipsPeerLocalValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.4
+      name: avipsPeerLocalValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerRemoteType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.5
+      name: avipsPeerRemoteType
+      syntax: EnumInteger
+    avipsPeerRemoteValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.6
+      name: avipsPeerRemoteValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerRemoteDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.7
+      name: avipsPeerRemoteDescription
+      syntax: DisplayString
+    avipsPeerLocalAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.8
+      name: avipsPeerLocalAddress
+      syntax: IpAddressNoSuffix
+    avipsPeerRemoteAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.9
+      name: avipsPeerRemoteAddress
+      syntax: IpAddressNoSuffix
+    avipsPeerRemotePeerGrpActiveIndex:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.10
+      name: avipsPeerRemotePeerGrpActiveIndex
+      syntax: IntegerAsID
+    avipsPeerRemotePeerGrpActiveIdType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.11
+      name: avipsPeerRemotePeerGrpActiveIdType
+      syntax: EnumInteger
+    avipsPeerRemotePeerGrpActiveIdValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.12
+      name: avipsPeerRemotePeerGrpActiveIdValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerIsakmpState:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.13
+      name: avipsPeerIsakmpState
+      syntax: EnumInteger
+    avipsPeerIsakmpStateLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.14
+      name: avipsPeerIsakmpStateLastChange
+      syntax: TimeStamp
+    avipsPeerTunnelsClosed:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.15
+      name: avipsPeerTunnelsClosed
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsInProgress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.16
+      name: avipsPeerTunnelsInProgress
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsEstablished:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.17
+      name: avipsPeerTunnelsEstablished
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsFailed:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.18
+      name: avipsPeerTunnelsFailed
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerInOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.19
+      name: avipsPeerInOctets
+      syntax: Counter32
+      metric: counter
+    avipsPeerInOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.20
+      name: avipsPeerInOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDecompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.21
+      name: avipsPeerInDecompOctets
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDecompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.22
+      name: avipsPeerInDecompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDecompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.23
+      name: avipsPeerInDecompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerInPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.24
+      name: avipsPeerInPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDropPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.25
+      name: avipsPeerInDropPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.26
+      name: avipsPeerOutOctets
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.27
+      name: avipsPeerOutOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutUncompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.28
+      name: avipsPeerOutUncompOctets
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutUncompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.29
+      name: avipsPeerOutUncompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutCompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.30
+      name: avipsPeerOutCompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerOutPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.31
+      name: avipsPeerOutPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutDropPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.32
+      name: avipsPeerOutDropPkts
+      syntax: Counter32
+      metric: counter
+
+AVAYA-IPSEC-MIB::avipsTunnelEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsTunnelEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.3
+      name: avipsTunnelIndex
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.4
+      name: avipsTunnelSubIndex
+      syntax: IntegerAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.1
+      name: avipsTunnelPeerLocalId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.2
+      name: avipsTunnelPeerRemoteId
+      syntax: UnsignedAsID
+  discovery_attribute: avipsTunnelIndex
+  attributes:
+    avipsTunnelPeerLocalType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.5
+      name: avipsTunnelPeerLocalType
+      syntax: EnumInteger
+    avipsTunnelPeerLocalValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.6
+      name: avipsTunnelPeerLocalValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsTunnelPeerRemoteType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.7
+      name: avipsTunnelPeerRemoteType
+      syntax: EnumInteger
+    avipsTunnelPeerRemoteValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.8
+      name: avipsTunnelPeerRemoteValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsTunnelDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.9
+      name: avipsTunnelDescription
+      syntax: DisplayString
+    avipsTunnelLocalAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.10
+      name: avipsTunnelLocalAddress
+      syntax: IpAddressNoSuffix
+    avipsTunnelRemoteAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.11
+      name: avipsTunnelRemoteAddress
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyLocalSubnet:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.12
+      name: avipsTunnelProxyLocalSubnet
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyLocalMask:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.13
+      name: avipsTunnelProxyLocalMask
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyRemoteSubnet:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.14
+      name: avipsTunnelProxyRemoteSubnet
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyRemoteMask:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.15
+      name: avipsTunnelProxyRemoteMask
+      syntax: IpAddressNoSuffix
+    avipsTunnelState:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.16
+      name: avipsTunnelState
+      syntax: EnumInteger
+    avipsTunnelStateLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.17
+      name: avipsTunnelStateLastChange
+      syntax: TimeStamp
+    avipsTunnelLastCntrsReset:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.18
+      name: avipsTunnelLastCntrsReset
+      syntax: TimeStamp
+    avipsTunnelInOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.19
+      name: avipsTunnelInOctets
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.20
+      name: avipsTunnelInOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDecompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.21
+      name: avipsTunnelInDecompOctets
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDecompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.22
+      name: avipsTunnelInDecompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDecompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.23
+      name: avipsTunnelInDecompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsTunnelInPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.24
+      name: avipsTunnelInPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropTotalPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.25
+      name: avipsTunnelInDropTotalPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropAntiReplayPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.26
+      name: avipsTunnelInDropAntiReplayPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropHmacFailPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.27
+      name: avipsTunnelInDropHmacFailPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropBadTrailerPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.28
+      name: avipsTunnelInDropBadTrailerPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropInvalidIdPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.29
+      name: avipsTunnelInDropInvalidIdPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropUnprotectPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.30
+      name: avipsTunnelInDropUnprotectPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropInvalidLenPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.31
+      name: avipsTunnelInDropInvalidLenPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropSaExpiredPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.32
+      name: avipsTunnelInDropSaExpiredPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.33
+      name: avipsTunnelOutOctets
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.34
+      name: avipsTunnelOutOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutUncompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.35
+      name: avipsTunnelOutUncompOctets
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutUncompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.36
+      name: avipsTunnelOutUncompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutCompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.37
+      name: avipsTunnelOutCompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsTunnelOutPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.38
+      name: avipsTunnelOutPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropTotalPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.39
+      name: avipsTunnelOutDropTotalPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropNoSaPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.40
+      name: avipsTunnelOutDropNoSaPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropSeqRolPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.41
+      name: avipsTunnelOutDropSeqRolPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropSaExpiredPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.42
+      name: avipsTunnelOutDropSaExpiredPkts
+      syntax: Counter32
+      metric: counter
+
