@@ -4,53 +4,51 @@ UTILIZATION-MANAGEMENT-MIB::genCpuUtilizationEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.1
-      name: genCpuIndex
+      name: avaya.genCpuIndex
       syntax: IntegerAsID
   discovery_attribute: genCpuUtilizationEnableMonitoring
   attributes:
     genCpuUtilizationEnableMonitoring:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.2
-      name: genCpuUtilizationEnableMonitoring
+      name: avaya.genCpuUtilizationEnableMonitoring
       syntax: EnumInteger
     genCpuUtilizationEnableEventGeneration:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.3
-      name: genCpuUtilizationEnableEventGeneration
+      name: avaya.genCpuUtilizationEnableEventGeneration
       syntax: EnumInteger
-    genCpuUtilizationHighThreshold:
-      oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.4
-      name: genCpuUtilizationHighThreshold
-      syntax: Integer32
-      metric: gauge
+    # genCpuUtilizationHighThreshold:
+    #   oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.4
+    #   name: avaya.genCpuUtilizationHighThreshold
+    #   syntax: Percent100
     genCpuAverageUtilization:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.5
-      name: genCpuAverageUtilization
-      syntax: Integer32
+      name: avaya.genCpuAverageUtilization
+      syntax: Percent100
       metric: gauge
     genCpuCurrentUtilization:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.6
-      name: genCpuCurrentUtilization
-      syntax: Integer32
+      name: avaya.genCpuCurrentUtilization
+      syntax: Percent100
       metric: gauge
 
-UTILIZATION-MANAGEMENT-MIB::genCpuUtilizationHistoryEntry:
-  mib: UTILIZATION-MANAGEMENT-MIB
-  object: genCpuUtilizationHistoryEntry
-  index:
-    - type: Integer32
-      oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.1
-      name: genCpuIndex
-      syntax: IntegerAsID
-    - type: Integer32
-      oid: .1.3.6.1.4.1.6889.2.1.11.1.1.2.1.1
-      name: genCpuUtilizationHistorySampleIndex
-      syntax: IntegerAsID
-  discovery_attribute: genCpuHistoryUtilization
-  attributes:
-    genCpuHistoryUtilization:
-      oid: .1.3.6.1.4.1.6889.2.1.11.1.1.2.1.2
-      name: genCpuHistoryUtilization
-      syntax: Integer32
-      metric: gauge
+# UTILIZATION-MANAGEMENT-MIB::genCpuUtilizationHistoryEntry:
+#   mib: UTILIZATION-MANAGEMENT-MIB
+#   object: genCpuUtilizationHistoryEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.1.1.1
+#       name: avaya.genCpuIndex
+#       syntax: IntegerAsID
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.2.1.1
+#       name: avaya.genCpuUtilizationHistorySampleIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: genCpuHistoryUtilization
+#   attributes:
+#     genCpuHistoryUtilization:
+#       oid: .1.3.6.1.4.1.6889.2.1.11.1.1.2.1.2
+#       name: avaya.genCpuHistoryUtilization
+#       syntax: Percent100
 
 UTILIZATION-MANAGEMENT-MIB::genMemUtilization:
   mib: UTILIZATION-MANAGEMENT-MIB
@@ -59,44 +57,46 @@ UTILIZATION-MANAGEMENT-MIB::genMemUtilization:
   attributes:
     genMemUtilizationTotalRAM:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.1
-      name: genMemUtilizationTotalRAM
+      name: avaya.genMemUtilizationTotalRAM
       syntax: BytesMB
     genMemUtilizationOperationalImage:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.2
-      name: genMemUtilizationOperationalImage
+      name: avaya.genMemUtilizationOperationalImage
       syntax: BytesMB
     genMemUtilizationAllocationFailures:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.4
-      name: genMemUtilizationAllocationFailures
+      name: avaya.genMemUtilizationAllocationFailures
       syntax: BytesMB
 
 UTILIZATION-MANAGEMENT-MIB::genMemUtilizationDynAllocMem:
   mib: UTILIZATION-MANAGEMENT-MIB
   object: genMemUtilizationDynAllocMem
+  augments: UTILIZATION-MANAGEMENT-MIB::genMemUtilization
   discovery_attribute: genMemUtilizationDynAllocMemUsed
   attributes:
     genMemUtilizationDynAllocMemUsed:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.3.1
-      name: genMemUtilizationDynAllocMemUsed
+      name: avaya.genMemUtilizationDynAllocMemUsed
       syntax: BytesMB
     genMemUtilizationDynAllocMemMaxUsed:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.3.2
-      name: genMemUtilizationDynAllocMemMaxUsed
+      name: avaya.genMemUtilizationDynAllocMemMaxUsed
       syntax: BytesMB
     genMemUtilizationDynAllocMemAvailable:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.3.3
-      name: genMemUtilizationDynAllocMemAvailable
+      name: avaya.genMemUtilizationDynAllocMemAvailable
       syntax: BytesMB
 
-UTILIZATION-MANAGEMENT-MIB::genMemUtilizationSysRAMTrap:
-  mib: UTILIZATION-MANAGEMENT-MIB
-  object: genMemUtilizationSysRAMTrap
-  discovery_attribute: genMemUtilizationSysRAMNotificationHighWaterMark
-  attributes:
-    genMemUtilizationSysRAMNotificationHighWaterMark:
-      oid: .1.3.6.1.4.1.6889.2.1.11.1.2.5.1
-      name: genMemUtilizationSysRAMNotificationHighWaterMark
-      syntax: BytesMB
+# UTILIZATION-MANAGEMENT-MIB::genMemUtilizationSysRAMTrap:
+#   mib: UTILIZATION-MANAGEMENT-MIB
+#   object: genMemUtilizationSysRAMTrap
+#   augments: UTILIZATION-MANAGEMENT-MIB::genMemUtilization
+#   discovery_attribute: genMemUtilizationSysRAMNotificationHighWaterMark
+#   attributes:
+#     genMemUtilizationSysRAMNotificationHighWaterMark:
+#       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.5.1
+#       name: avaya.genMemUtilizationSysRAMNotificationHighWaterMark
+#       syntax: BytesMB
 
 UTILIZATION-MANAGEMENT-MIB::genMemUtilizationEntry:
   mib: UTILIZATION-MANAGEMENT-MIB
@@ -104,17 +104,16 @@ UTILIZATION-MANAGEMENT-MIB::genMemUtilizationEntry:
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.6.1.1
-      name: genMemUtilizationID
-      syntax: Integer32
+      name: avaya.genMemUtilizationID
+      syntax: IntegerAsID
   discovery_attribute: genMemUtilizationPhyRam
   attributes:
     genMemUtilizationPhyRam:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.6.1.2
-      name: genMemUtilizationPhyRam
+      name: avaya.genMemUtilizationPhyRam
       syntax: BytesMB
     genMemUtilizationPercentUsed:
       oid: .1.3.6.1.4.1.6889.2.1.11.1.2.6.1.3
-      name: genMemUtilizationPercentUsed
-      syntax: Integer32
+      name: avaya.genMemUtilizationPercentUsed
+      syntax: Percent100
       metric: gauge
-
