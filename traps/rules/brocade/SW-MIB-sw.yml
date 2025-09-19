@@ -1,0 +1,1893 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "SW-MIB"
+- switch:
+    - check: this.trap.SpecificTrap == 1
+      # swFault
+      #
+      # Obsoleted this trap as firmware doesn't support this trap. A swFault(1) is generated whenever the diagnostics
+      # detects a fault with the switch.
+      #
+      # Revision: 4.0
+      # swDiagResult (INTEGER) - The result of the power-on startup (POST) diagnostics.
+      #
+      # Revision: 101221
+      # swDiagResult (INTEGER) - The result of the power-on startup (POST) diagnostics.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      #
+      # Revision: 141209
+      # swDiagResult (INTEGER) - The result of the power-on startup (POST) diagnostics.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swFault"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swFault"
+            root.out.event.category.name = "Brocade fiber channel switch state"
+
+            meta swDiagResult = this.trap.VarBinds.index(0).Value
+
+            root.out.brocade.swDiagResult = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.20")
+            }
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+                      this.trap.VarBinds.index(1).Value.snmp_display_string()
+                    }
+
+                    root.out.object.label = if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 5
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+                      this.trap.VarBinds.index(1).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+                      this.trap.VarBinds.index(3).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+                      this.trap.VarBinds.index(4).Value
+                    }
+
+                    root.out.object.label = if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+            # DEFAULT - Revision: 4.0
+            # - processors:
+            #     - mapping: |-
+            #         #!blobl
+            #         root = this
+
+        - switch:
+            - check: metadata("swDiagResult") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-sw-ok"
+                    root.out.event.message = "switch diagnostic result: OK"
+                    root.out.event.severity.code = 6
+                    root.out.event.severity.level = "Informational"
+
+            - check: metadata("swDiagResult") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-sw-faulty"
+                    root.out.event.message = "switch diagnostic result: faulty"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - check: metadata("swDiagResult") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-sw-embedded-port-fault"
+                    root.out.event.message = "switch diagnostic result: embedded port fault"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "switch diagnostic result: unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 2
+      # swSensorScn
+      #
+      # A swSensorScn(2) is generated whenever an environment sensor changes its operational state. For instance, a fan
+      # stop working. The VarBind in the Trap Data Unit shall contain the corresponding instance of the sensor status,
+      # sensor index, sensor type, sensor value (reading) and sensor information.Note that the sensor information
+      # contains the type of sensor and its number in textual format.
+      #
+      # Revision: 4.0
+      # swSensorStatus (INTEGER) - The current status of the sensor.
+      # swSensorIndex (Integer32) - This object identifies the sensor.
+      # swSensorType (INTEGER) - This object identifies the sensor type.
+      # swSensorValue (Integer32) - The current value (reading) of the sensor. The value, -2147483648, represents an
+      #   unknown quantity. It also means that the sensor does not have the capability to measure the actual value. In
+      #   V2.0, the temperature sensor value will be in Celsius; the fan value will be in RPM (revolution per minute);
+      #   and the power supply sensor reading will be unknown.
+      # swSensorInfo (DisplayString) - Additional displayable information on the sensor. In V2.x, it contains the sensor
+      #   type and number in textual format. For example, 'Temp 3', 'Fan 6'.
+      #
+      # Revision: 101221
+      # swSensorStatus (INTEGER) - The current status of the sensor.
+      # swSensorIndex (Integer32) - This object identifies the sensor.
+      # swSensorType (INTEGER) - This object identifies the sensor type.
+      # swSensorValue (Integer32) - The current value (reading) of the sensor. The value, -2147483648, represents an
+      #   unknown quantity. It also means that the sensor does not have the capability to measure the actual value. In
+      #   V2.0, the temperature sensor value will be in Celsius; the fan value will be in RPM (revolution per minute);
+      #   and the power supply sensor reading will be unknown.
+      # swSensorInfo (DisplayString) - Additional displayable information on the sensor. In V2.x, it contains the sensor
+      #   type and number in textual format. For example, 'Temp 3', 'Fan 6'.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      #
+      # Revision: 141209
+      # swSensorStatus (INTEGER) - The current status of the sensor.
+      # swSensorIndex (Integer32) - This object identifies the sensor.
+      # swSensorType (INTEGER) - This object identifies the sensor type.
+      # swSensorValue (Integer32) - The current value (reading) of the sensor. The value, -2147483648, represents an
+      #   unknown quantity. It also means that the sensor does not have the capability to measure the actual value. In
+      #   V2.0, the temperature sensor value will be in Celsius; the fan value will be in RPM (revolution per minute);
+      #   and the power supply sensor reading will be unknown.
+      # swSensorInfo (DisplayString) - Additional displayable information on the sensor. In V2.x, it contains the sensor
+      #   type and number in textual format. For example, 'Temp 3', 'Fan 6'.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swSensorScn"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swSensorScn"
+            root.out.event.category.name = "Brocade environment sensor state"
+
+            root.out.object.name = "SW-MIB::swSensorEntity"
+
+            meta swSensorStatus = this.trap.VarBinds.index(0).Value
+            meta swSensorType = this.trap.VarBinds.index(2).Value
+
+            root.out.brocade.swSensorStatus = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.22.1.3")
+            }
+            root.out.brocade.swSensorIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.string()
+            }
+            root.out.brocade.swSensorType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.22.1.2")
+            }
+            root.out.brocade.swSensorValue = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value
+            }
+            root.out.brocade.swSensorInfo = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+              this.trap.VarBinds.index(4).Value.snmp_display_string()
+            }
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 6
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swSensorIndex") {
+                      root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swSensorIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swSensorInfo") && root.out.exists("brocade.swSsn") {
+                      "sensor: " + root.out.brocade.swSensorInfo + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSensorInfo") {
+                      "sensor: " + root.out.brocade.swSensorInfo
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 9
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+                      this.trap.VarBinds.index(7).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swSensorIndex") {
+                      root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swSensorIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swSensorInfo") && root.out.exists("brocade.swSsn") {
+                      "sensor: " + root.out.brocade.swSensorInfo + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSensorInfo") {
+                      "sensor: " + root.out.brocade.swSensorInfo
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+            # DEFAULT - Revision: 4.0
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.index = if root.out.exists("brocade.swSensorIndex") {
+                      root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swSensorIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swSensorIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swSensorInfo") {
+                      "sensor: " + root.out.brocade.swSensorInfo
+                    }
+
+        - switch:
+            - check: metadata("swSensorType") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-temperature"
+                    root.out.event.message = "temperature sensor"
+
+            - check: metadata("swSensorType") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-fan"
+                    root.out.event.message = "fan sensor"
+
+            - check: metadata("swSensorType") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-power_supply"
+                    root.out.event.message = "power supply sensor"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "unknown sensor"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("brocade.swSensorValue") {
+              root.out.event.message + " value " + root.out.brocade.swSensorValue.string()
+            }
+
+        - switch:
+            - check: metadata("swSensorStatus") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-faulty"
+                    root.out.event.message = root.out.event.message + " faulty"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - check: metadata("swSensorStatus") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-below-min"
+                    root.out.event.message = root.out.event.message + " below-min"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+
+            - check: metadata("swSensorStatus") == 4
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-nominal"
+                    root.out.event.message = root.out.event.message + " nominal"
+                    root.out.event.severity.code = 6
+                    root.out.event.severity.level = "Informational"
+
+            - check: metadata("swSensorStatus") == 5
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-above-max"
+                    root.out.event.message = root.out.event.message + " above-max"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+
+            - check: metadata("swSensorStatus") == 6
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-absent"
+                    root.out.event.message = root.out.event.message + " absent"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = root.out.event.message + " unknown state"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 3
+      # swFCPortScn
+      #
+      # This trap is sent whenever an FC port operational status or its type changed. The events that trigger this trap
+      # are port goes to online/offline, port type changed to E-port/F-port/FL-port. swFCPortName and swSsn are optional
+      # varbind in the trap PDU
+      # 
+      # Revision: 4.0
+      # swFCPortOpStatus (INTEGER) - This object identifies the operational status of the port. The online(1) state
+      #   indicates that user frames can be passed. The unknown(0) state indicates that likely the port module is
+      #   physically absent.
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      #
+      # Revision: Unknown 1
+      # swFCPortOpStatus (INTEGER) - This object identifies the operational status of the port. The online(1) state
+      #   indicates that user frames can be passed. The unknown(0) state indicates that likely the port module is
+      #   physically absent.
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      # swFCPortName (DisplayString) - A string indicates the name of the addressed port. The names should be persistent
+      #   across switch reboots. Port names do not have to be unique within a switch or within a fabric.
+      #
+      # Revision: Unknown 2 - IBM SilkWorm 3016
+      # swFCPortOpStatus (INTEGER) - This object identifies the operational status of the port. The online(1) state
+      #   indicates that user frames can be passed. The unknown(0) state indicates that likely the port module is
+      #   physically absent.
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      #
+      # Revision: 101221
+      # swFCPortOpStatus (INTEGER) - This object identifies the operational status of the port. The online(1) state
+      #   indicates that user frames can be passed. The unknown(0) state indicates that likely the port module is
+      #   physically absent.
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      # swFCPortName (DisplayString) - A string indicates the name of the addressed port. The names should be persistent
+      #   across switch reboots. Port names do not have to be unique within a switch or within a fabric.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swFCPortFlag (BITS) - A bitmap of port status flags which includes the information of port type. Currently this
+      #   will indicate if the port is virtual or physical.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      # swVfId (Integer32) - The Virtual fabric id.
+      #
+      # Revision: 141209
+      # swFCPortOpStatus (INTEGER) - This object identifies the operational status of the port. The online(1) state
+      #   indicates that user frames can be passed. The unknown(0) state indicates that likely the port module is
+      #   physically absent.
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      # swFCPortName (DisplayString) - A string indicates the name of the addressed port. The names should be persistent
+      #   across switch reboots. Port names do not have to be unique within a switch or within a fabric.
+      # swFCPortWwn (OCTET STRING) - The World_wide_Name of the Fibre Channel port. The contents of an instance are in
+      #   the IEEE extended format as specified in FC-PH; the 12-bit port identifier represents the port number within
+      #   the switch.
+      # swFCPortPrevType (INTEGER) - This represents port type of a port before it goes online/offline.
+      # swFCPortBrcdType (INTEGER) - The Brocade port type.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swFCPortFlag (BITS) - A bitmap of port status flags which includes the information of port type. Currently this
+      #   will indicate if the port is virtual or physical.
+      # swFCPortDisableReason (INTEGER) - It indicates the state change reason when port goes from online to offline
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swFCPortScn"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swFCPortScn"
+            root.out.event.category.name = "Brocade fiber channel port operational state"
+
+            root.out.object.name = "SW-MIB::swFCPortEntry"
+
+            meta swFCPortOpStatus = this.trap.VarBinds.index(0).Value
+
+            root.out.brocade.swFCPortOpStatus = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.6.2.1.4")
+            }
+            root.out.brocade.swFCPortIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.string()
+            }
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 10
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swFCPortName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swFCPortWwn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+                      this.trap.VarBinds.index(3).Value.snmp_mac_address()
+                    }
+                    root.out.brocade.swFCPortPrevType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+                      this.trap.VarBinds.index(4).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.35")
+                    }
+                    root.out.brocade.swFCPortBrcdType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.6.2.1.39")
+                    }
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swFCPortFlag = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+                      this.trap.VarBinds.index(7).Value
+                    }
+                    root.out.brocade.swFCPortDisableReason = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.6.2.1.40")
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 9 {
+                      this.trap.VarBinds.index(9).Value.string()
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+                      root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swFCPortName") {
+                      "port: " + root.out.brocade.swFCPortName
+                    } else if root.out.exists("brocade.swFCPortIndex") {
+                      "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+                      root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swSsn") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 9
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swFCPortName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+                      this.trap.VarBinds.index(3).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swFCPortFlag = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+                      this.trap.VarBinds.index(4).Value
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+                      this.trap.VarBinds.index(7).Value
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value.string()
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+                      root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swFCPortName") {
+                      "port: " + root.out.brocade.swFCPortName
+                    } else if root.out.exists("brocade.swFCPortIndex") {
+                      "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+                      root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swSsn") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: Unknown 2
+            - check: this.trap.VarBinds.length() == 6
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+                      this.trap.VarBinds.index(3).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+                      this.trap.VarBinds.index(4).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+                      root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swFCPortName") {
+                      "port: " + root.out.brocade.swFCPortName
+                    } else if root.out.exists("brocade.swFCPortIndex") {
+                      "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+                    }
+
+            # Revision: Unknown 1
+            - check: this.trap.VarBinds.length() == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swFCPortName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+
+                    root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+                      root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swFCPortName") {
+                      "port: " + root.out.brocade.swFCPortName
+                    } else if root.out.exists("brocade.swFCPortIndex") {
+                      "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+                    }
+
+            # DEFAULT - Revision: 4.0
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+                      root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+                      this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+                    }
+                    root.out.object.label = if root.out.exists("brocade.swFCPortIndex") {
+                      "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+                    }
+
+        - switch:
+            - check: metadata("swFCPortOpStatus") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-online"
+                    root.out.event.message = "fiber channel port online"
+                    root.out.event.severity.code = 6
+                    root.out.event.severity.level = "Informational"
+
+            - check: metadata("swFCPortOpStatus") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-offline"
+                    root.out.event.message = "fiber channel port offline"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+
+            - check: metadata("swFCPortOpStatus") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-testing"
+                    root.out.event.message = "fiber channel port testing"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+
+            - check: metadata("swFCPortOpStatus") == 4
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-faulty"
+                    root.out.event.message = "fiber channel port faulty"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "fiber channel port operational state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 4
+      # swEventTrap
+      #
+      # This trap is generated when an event whose level at or below swEventTrapLevel occurs.
+      #
+      # Revision: 4.0
+      # swEventIndex (Integer32) - This object identifies the event entry.
+      # swEventTimeInfo (DisplayString) - This object identifies the date and time when this event occurred, in textual
+      #   format.
+      # swEventLevel (INTEGER) - This object identifies the severity level of this event entry.
+      # swEventRepeatCount (Integer32) - This object identifies how many times this particular event has occurred.
+      # swEventDescr (DisplayString) - This object identifies the textual description of the event.
+      #
+      # Revision: 101221
+      # swEventIndex (Integer32) - This object identifies the event entry.
+      # swEventTimeInfo (DisplayString) - This object identifies the date and time when this event occurred, in textual
+      #   format.
+      # swEventLevel (INTEGER) - This object identifies the severity level of this event entry.
+      # swEventRepeatCount (Integer32) - This object identifies how many times this particular event has occurred.
+      # swEventDescr (DisplayString) - This object identifies the textual description of the event.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      # swVfId (Integer32) - The Virtual fabric id.
+      #
+      # Revision: 141209
+      # swEventIndex (Integer32) - This object identifies the event entry.
+      # swEventTimeInfo (DisplayString) - This object identifies the date and time when this event occurred, in textual
+      #   format.
+      # swEventLevel (INTEGER) - This object identifies the severity level of this event entry.
+      # swEventRepeatCount (Integer32) - This object identifies how many times this particular event has occurred.
+      # swEventDescr (DisplayString) - This object identifies the textual description of the event.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swEventTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swEventTrap"
+            root.out.event.category.name = "Brocade event"
+            root.out.event.message = "Brocade event"
+
+            root.out.object.name = "SW-MIB::swEventEntry"
+
+            meta swEventLevel = this.trap.VarBinds.index(2).Value
+
+            root.out.brocade.swEventIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.string()
+            }
+            root.out.brocade.swEventTimeInfo = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.snmp_display_string()
+            }
+            root.out.brocade.swEventLevel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.8.5.1.3")
+            }
+            root.out.brocade.swEventRepeatCount = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value
+            }
+            root.out.brocade.swEventDescr = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+              this.trap.VarBinds.index(4).Value.snmp_display_string()
+            }
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 7
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swVfId") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 10
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+                      this.trap.VarBinds.index(7).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 9 {
+                      this.trap.VarBinds.index(9).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swVfId") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 4.0
+            # - check: this.trap.VarBinds.length() == 5
+            #   processors:
+            #     - mapping: |-
+            #         #!blobl
+            #         root = this
+
+            # Revision: Unknown
+            - check: this.trap.VarBinds.length() == 9
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+                      this.trap.VarBinds.index(6).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+                      this.trap.VarBinds.index(7).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value
+                    }
+
+                    root.out.object.label = if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+        - switch:
+            - check: metadata("swEventLevel") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-critical"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+
+            - check: metadata("swEventLevel") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-error"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - check: metadata("swEventLevel") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-warning"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - check: metadata("swEventLevel") == 4
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-informational"
+                    root.out.event.severity.code = 6
+                    root.out.event.severity.level = "Informational"
+
+            - check: metadata("swEventLevel") == 5
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-debug"
+                    root.out.event.severity.code = 7
+                    root.out.event.severity.level = "Debug"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("brocade.swEventRepeatCount") && root.out.brocade.swEventRepeatCount > 1 {
+              root.out.event.message + ", repeats " + root.out.brocade.swEventRepeatCount.string() + " times"
+            }
+            root.out.event.message = if root.out.exists("brocade.swEventDescr") {
+              root.out.event.message + ": " + root.out.brocade.swEventDescr
+            }
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 5
+      # swFabricWatchTrap
+      #
+      # trap to be sent by Fabric Watch to notify of an event.
+      #
+      # Revision: 4.0
+      # swFwClassAreaIndex (INTEGER) - This object identifies the class type.
+      # swFwThresholdIndex (Integer32) - This object identifies the element index of an threshold.
+      # swFwName (DisplayString) - This object is a name of the threshold.
+      # swFwLabel (DisplayString) - This object is a label of the threshold.
+      # swFwLastEventVal (Integer32) - This object is a last event value of the threshold.
+      # swFwLastEventTime (DisplayString) - This object is a last event time of the threshold.
+      # swFwLastEvent (INTEGER) - This object is a last event type of the threshold.
+      # swFwLastState (INTEGER) - This object is a last event state of the threshold.
+      #
+      # Revision: Unknown
+      # swFwClassAreaIndex (INTEGER) - This object identifies the class type.
+      # swFwThresholdIndex (Integer32) - This object identifies the element index of an threshold.
+      # swFwName (DisplayString) - This object is a name of the threshold.
+      # swFwLabel (DisplayString) - This object is a label of the threshold.
+      # swFwLastEventVal (Integer32) - This object is a last event value of the threshold.
+      # swFwLastEventTime (DisplayString) - This object is a last event time of the threshold.
+      # swFwLastEvent (INTEGER) - This object is a last event type of the threshold.
+      # swFwLastState (INTEGER) - This object is a last event state of the threshold.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      #
+      # Revision: 101221
+      # swFwClassAreaIndex (INTEGER) - This object identifies the class type.
+      # swFwThresholdIndex (Integer32) - This object identifies the element index of an threshold.
+      # swFwName (DisplayString) - This object is a name of the threshold.
+      # swFwLabel (DisplayString) - This object is a label of the threshold.
+      # swFwLastEventVal (Integer32) - This object is a last event value of the threshold.
+      # swFwLastEventTime (DisplayString) - This object is a last event time of the threshold.
+      # swFwLastEvent (INTEGER) - This object is a last event type of the threshold.
+      # swFwLastState (INTEGER) - This object is a last event state of the threshold.
+      # swFwLastSeverityLevel (INTEGER) - This object is a last event severity level of the threshold.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      # swVfId (Integer32) - The Virtual fabric id.
+      #
+      # Revision: 141209
+      # swFwClassAreaIndex (INTEGER) - This object identifies the class type.
+      # swFwThresholdIndex (Integer32) - This object identifies the element index of an threshold.
+      # swFwName (DisplayString) - This object is a name of the threshold.
+      # swFwLabel (DisplayString) - This object is a label of the threshold.
+      # swFwLastEventVal (Integer32) - This object is a last event value of the threshold.
+      # swFwLastEventTime (DisplayString) - This object is a last event time of the threshold.
+      # swFwLastEvent (INTEGER) - This object is a last event type of the threshold.
+      # swFwLastState (INTEGER) - This object is a last event state of the threshold.
+      # swFwLastSeverityLevel (INTEGER) - This object is a last event severity level of the threshold.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swFabricWatchTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swFabricWatchTrap"
+            root.out.event.category.name = "Brocade Fabric Watch threshold"
+
+            meta swFwClassAreaIndex = this.trap.VarBinds.index(0).Value
+            meta swFwLastEvent = this.trap.VarBinds.index(6).Value
+            meta swFwLastState = this.trap.VarBinds.index(7).Value
+
+            root.out.brocade.swFwClassAreaIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.10.2.1.1")
+            }
+            root.out.brocade.swFwThresholdIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.string()
+            }
+            root.out.brocade.swFwName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.snmp_display_string()
+            }
+            root.out.brocade.swFwLabel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value.snmp_display_string()
+            }
+            root.out.brocade.swFwLastEventVal = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+              this.trap.VarBinds.index(4).Value
+            }
+            root.out.brocade.swFwLastEventTime = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+              this.trap.VarBinds.index(5).Value.snmp_display_string()
+            }
+            root.out.brocade.swFwLastEvent = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+              this.trap.VarBinds.index(6).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.10.3.1.6")
+            }
+            root.out.brocade.swFwLastState = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+              this.trap.VarBinds.index(7).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.10.3.1.9")
+            }
+
+            root.out.event.id = if root.out.exists("brocade.swFwClassAreaIndex") {
+              root.out.event.id + "-" + root.out.brocade.swFwClassAreaIndex
+            }
+            root.out.event.id = if root.out.exists("brocade.swFwName") {
+              root.out.event.id + "-" + root.out.brocade.swFwName
+            }
+            root.out.event.id = if root.out.exists("brocade.swFwLastEvent") {
+              root.out.event.id + "-" + root.out.brocade.swFwLastEvent
+            }
+            root.out.event.id = if root.out.exists("brocade.swFwLastState") {
+              root.out.event.id + "-" + root.out.brocade.swFwLastState
+            }
+
+            root.out.object.name = "SW-MIB::swFwThresholdEntry"
+            root.out.object.index = if root.out.exists("brocade.swFwThresholdIndex") {
+              root.out.brocade.swFwThresholdIndex
+            }
+            root.out.object.entity = if root.out.exists("brocade.swFwThresholdIndex") {
+              this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFwThresholdIndex
+            }
+            root.out.object.label = if root.out.exists("brocade.swFwClassAreaIndex") {
+              "class/area: " + root.out.brocade.swFwClassAreaIndex
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swFwName") {
+              root.out.object.label + ", threshold: " + root.out.brocade.swFwName
+            } else if root.out.exists("brocade.swFwName") {
+              "threshold: " + root.out.brocade.swFwName
+            }
+
+            root.out.event.message = "Fabric Watch:"
+            root.out.event.message = if root.out.exists("brocade.swFwLabel") {
+              root.out.event.message + " " + root.out.brocade.swFwLabel
+            } else if root.out.exists("brocade.swFwName") {
+              root.out.event.message + " " + root.out.brocade.swFwName
+            }
+            root.out.event.message = if root.out.exists("brocade.swFwLastEvent") {
+              root.out.event.message + " " + root.out.brocade.swFwLastEvent
+            }
+            root.out.event.message = if root.out.exists("brocade.swFwLastEventVal") {
+              root.out.event.message + ", last value " + root.out.brocade.swFwLastEventVal.string()
+            }
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 11
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swFwLastSeverityLevel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.10.3.1.12")
+                    }
+                    meta swFwLastSeverityLevel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value
+                    }
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 9 {
+                      this.trap.VarBinds.index(9).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 10 {
+                      this.trap.VarBinds.index(10).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+                      root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swVfId") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 14
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swFwLastSeverityLevel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.10.3.1.12")
+                    }
+                    meta swFwLastSeverityLevel = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value
+                    }
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 9 {
+                      this.trap.VarBinds.index(9).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 10 {
+                      this.trap.VarBinds.index(10).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 11 {
+                      this.trap.VarBinds.index(11).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 12 {
+                      this.trap.VarBinds.index(12).Value
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 13 {
+                      this.trap.VarBinds.index(13).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+                      root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swSsn") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 4.0
+            # - check: this.trap.VarBinds.length() == 8
+            #   processors:
+            #     - mapping: |-
+            #         #!blobl
+            #         root = this
+
+            # Revision: Unknown
+            - check: this.trap.VarBinds.length() == 9
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 8 {
+                      this.trap.VarBinds.index(8).Value.snmp_display_string()
+                    }
+
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+                      root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+                    } else if root.out.exists("brocade.swSsn") {
+                      "SSN: " + root.out.brocade.swSsn
+                    }
+
+        - switch:
+            - check: metadata("swFwLastSeverityLevel") != null
+              processors:
+                - switch:
+                    - check: metadata("swFwLastSeverityLevel") == 1
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 2
+                            root.out.event.severity.level = "Critical"
+
+                    - check: metadata("swFwLastSeverityLevel") == 2
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 3
+                            root.out.event.severity.level = "Error"
+
+                    - check: metadata("swFwLastSeverityLevel") == 3
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 4
+                            root.out.event.severity.level = "Warning"
+
+                    - check: metadata("swFwLastSeverityLevel") == 4
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 6
+                            root.out.event.severity.level = "Informational"
+
+                    - check: metadata("swFwLastSeverityLevel") == 5
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 7
+                            root.out.event.severity.level = "Debug"
+
+                    - processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 5
+                            root.out.event.severity.level = "Notice"
+
+            - processors:
+                - switch:
+                    - check: metadata("swFwLastState") == 1
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 5
+                            root.out.event.severity.level = "Notice"
+
+                    - check: metadata("swFwLastState") == 2
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 6
+                            root.out.event.severity.level = "Informational"
+
+                    - check: metadata("swFwLastState") == 3
+                      processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.severity.code = 3
+                            root.out.event.severity.level = "Error"
+
+                    - processors:
+                        - mapping: |-
+                            #!blobl
+                            root = this
+
+                            root.out.event.id = root.out.event.id + "-unknown"
+                            root.out.event.severity.code = 5
+                            root.out.event.severity.level = "Notice"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 6
+      # swTrackChangesTrap
+      #
+      # trap to be sent for tracking login/logout/config changes.
+      #
+      # Revision: 4.0
+      # swTrackChangesInfo (DisplayString) - Track changes string.
+      #
+      # Revision: 101221
+      # swTrackChangesInfo (DisplayString) - Track changes string.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swGroupName (DisplayString) - This object identifies the name of the group.
+      # swGroupType (DisplayString) - This object identifies the type of the group.
+      # swGroupMemPos (Integer32) - This object identifies position of the member switch in the group. This is based on
+      #   the order that the switches were added in the group.
+      # swVfId (Integer32) - The Virtual fabric id.
+      #
+      # Revision: 141209
+      # swTrackChangesInfo (DisplayString) - Track changes string.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swTrackChangesTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swTrackChangesTrap"
+            root.out.event.category.name = "Brocade change tracker"
+
+            root.out.brocade.swTrackChangesInfo = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.snmp_display_string()
+            }
+            root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.snmp_display_string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swSsn") {
+              "SSN: " + root.out.brocade.swSsn
+            }
+
+            root.out.event.message = if root.out.exists("brocade.swTrackChangesInfo") && root.out.brocade.swTrackChangesInfo != ""  && root.out.brocade.swTrackChangesInfo != " " {
+              "Brocade " + root.out.brocade.swTrackChangesInfo
+            } else {
+              "Brocade change detected"
+            }
+
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+        - switch:
+            # Revision: 141209
+            - check: this.trap.VarBinds.length() == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swVfId") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+            # Revision: 101221
+            - check: this.trap.VarBinds.length() == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.brocade.swGroupName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+                      this.trap.VarBinds.index(2).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+                      this.trap.VarBinds.index(3).Value.snmp_display_string()
+                    }
+                    root.out.brocade.swGroupMemPos = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+                      this.trap.VarBinds.index(4).Value
+                    }
+                    root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+                      this.trap.VarBinds.index(5).Value.string()
+                    }
+
+                    root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+                      root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+                    } else if root.out.exists("brocade.swVfId") {
+                      "virtual fabric: " + root.out.brocade.swVfId
+                    }
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 7
+      # swIPv6ChangeTrap
+      #
+      # This trap is generated when an ipv6 address status change event occurs.
+      #
+      # Revision: 141209
+      # swIPv6Address (DisplayString) - IPV6 address.
+      # swIPv6Status (INTEGER) - The current status of ipv6 address.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swIPv6Address = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.snmp_display_string()
+            }
+            root.out.brocade.swIPv6Status = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.30")
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swIPv6Address") {
+              "IPv6 address: " + root.out.brocade.swIPv6Address
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swIPv6ChangeTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swIPv6ChangeTrap"
+            root.out.event.id = if root.out.exists("brocade.swIPv6Status") {
+              root.out.event.id + "-" + root.out.brocade.swIPv6Status
+            }
+            root.out.event.category.name = "Brocade IPv6 address state"
+            root.out.event.message = if root.out.exists("brocade.swIPv6Status") {
+              "IPv6 address " + root.out.brocade.swIPv6Status
+            } else {
+              "IPv6 address change"
+            }
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 8
+      # swPmgrEventTrap
+      #
+      # This trap is generated when any partition manager change happens.
+      #
+      # Revision: 141209
+      # swPmgrEventType (INTEGER) - Indicates Partition manager event type.
+      # swPmgrEventTime (DisplayString) - This object identifies the date and time when this pmgr event occurred, in
+      #   textual format.
+      # swPmgrEventDescr (DisplayString) - This object identifies the textual description of the pmgr event.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swPmgrEventType = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.2.12")
+            }
+            root.out.brocade.swPmgrEventTime = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.snmp_display_string()
+            }
+            root.out.brocade.swPmgrEventDescr = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.snmp_display_string()
+            }
+            root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value.snmp_display_string()
+            }
+            root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+              this.trap.VarBinds.index(4).Value.string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swSsn") {
+              "SSN: " + root.out.brocade.swSsn
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+              root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+            } else if root.out.exists("brocade.swVfId") {
+              "virtual fabric: " + root.out.brocade.swVfId
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swPmgrEventTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swPmgrEventTrap"
+            root.out.event.id = if root.out.exists("brocade.swPmgrEventType") {
+              root.out.event.id + "-" + root.out.brocade.swPmgrEventType
+            }
+            root.out.event.category.name = "Brocade partition manager state"
+            root.out.event.message = if root.out.exists("brocade.swPmgrEventType") {
+              "partition manager " + root.out.brocade.swPmgrEventType
+            } else {
+              "partition manager state change"
+            }
+            root.out.event.message = if root.out.exists("brocade.swPmgrEventDescr") {
+              root.out.event.message + ": " + root.out.brocade.swPmgrEventDescr
+            }
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 9
+      # swFabricReconfigTrap
+      #
+      # trap to be sent for tracking fabric reconfiguration
+      #
+      # Revision: 141209
+      # swDomainID (Integer32) - The current Fibre Channel domain ID of the switch. To set a new value, the switch
+      #   (swAdmStatus) must be in offline or testing state.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swDomainID = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swDomainID") {
+              "domain: " + root.out.brocade.swDomainID
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swFabricReconfigTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swFabricReconfigTrap"
+            root.out.event.category.name = "Broacde fabric reconfiguration"
+            root.out.event.message = "fabric reconfigured"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 10
+      # swFabricSegmentTrap
+      #
+      # trap to be sent for tracking segmentation
+      #
+      # Revision: 141209
+      # swFCPortIndex (Integer32) - This object identifies the switch port index. Note that the value of a port index is
+      #   1 higher than the port number labeled on the front panel. E.g. port index 1 correspond to port number 0.
+      # swFCPortName (DisplayString) - A string indicates the name of the addressed port. The names should be persistent
+      #   across switch reboots. Port names do not have to be unique within a switch or within a fabric.
+      # swSsn (DisplayString) - The soft serial number of the switch.
+      # swFCPortFlag (BITS) - A bitmap of port status flags which includes the information of port type. Currently this
+      #   will indicate if the port is virtual or physical.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swFCPortIndex = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.string()
+            }
+            root.out.brocade.swFCPortName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.snmp_display_string()
+            }
+            root.out.brocade.swSsn = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.snmp_display_string()
+            }
+            root.out.brocade.swFCPortFlag = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value
+            }
+            root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+              this.trap.VarBinds.index(4).Value.string()
+            }
+
+            root.out.object.name = "SW-MIB::swFCPortEntry"
+            root.out.object.index = if root.out.exists("brocade.swFCPortIndex") {
+              root.out.brocade.swFCPortIndex
+            }
+            root.out.object.entity = if root.out.exists("brocade.swFCPortIndex") {
+              this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.brocade.swFCPortIndex
+            }
+            root.out.object.label = if root.out.exists("brocade.swFCPortName") {
+              "port: " + root.out.brocade.swFCPortName
+            } else if root.out.exists("brocade.swFCPortIndex") {
+              "port: swFCPortEntry." + root.out.brocade.swFCPortIndex
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swSsn") {
+              root.out.object.label + ", SSN: " + root.out.brocade.swSsn
+            } else if root.out.exists("brocade.swSsn") {
+              "SSN: " + root.out.brocade.swSsn
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+              root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+            } else if root.out.exists("brocade.swSsn") {
+              "virtual fabric: " + root.out.brocade.swVfId
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swFabricSegmentTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swFabricSegmentTrap"
+            root.out.event.category.name = "Brocade fabric segmentation state"
+            root.out.event.message = "fabric segmentation"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 11
+      # swExtTrap
+      #
+      # THIS IS INTERNAL TRAP
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+            root.out = deleted()
+
+    - check: this.trap.SpecificTrap == 12
+      # swStateChangeTrap
+      #
+      # This trap is sent whenever switch state changes to online/offline
+      #
+      # Revision: 141209
+      # swOperStatus (INTEGER) - The current operational status of the switch.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            meta swOperStatus = this.trap.VarBinds.index(0).Value
+
+            root.out.brocade.swOperStatus = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.7")
+            }
+            root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swVfId") {
+              "virtual fabric: " + root.out.brocade.swVfId
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swStateChangeTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swStateChangeTrap"
+            root.out.event.category.name = "Brocade switch state"
+
+        - switch:
+            - check: metadata("swOperStatus") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-online"
+                    root.out.event.message = "switch online"
+                    root.out.event.severity.code = 6
+                    root.out.event.severity.level = "Informational"
+
+            - check: metadata("swOperStatus") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-offline"
+                    root.out.event.message = "switch offline"
+                    root.out.event.severity.code = 2
+                    root.out.event.severity.level = "Critical"
+
+            - check: metadata("swOperStatus") == 3
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-testing"
+                    root.out.event.message = "switch testing"
+                    root.out.event.severity.code = 5
+                    root.out.event.severity.level = "Notice"
+
+            - check: metadata("swOperStatus") == 4
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-faulty"
+                    root.out.event.message = "switch faulty"
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "switch state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 13
+      # swPortMoveTrap
+      #
+      # This trap is sent when ports are moved from one switch to another
+      #
+      # Revision: 141209
+      # swPortList (OCTET STRING) - This string represents the list of ports and its WWN when ports moved from one
+      #   switch to another.
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swPortList = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.snmp_octet_string()
+            }
+            root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swPortList") {
+              "port list: " + root.out.brocade.swPortList
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swVfId") {
+              root.out.object.label + ", virtual fabric: " + root.out.brocade.swVfId
+            } else if root.out.exists("brocade.swSsn") {
+              "virtual fabric: " + root.out.brocade.swVfId
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swPortMoveTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swPortMoveTrap"
+            root.out.event.category.name = "Brocade switch port movement"
+            root.out.event.message = "switch port moved"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notice"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 14
+      # swBrcdGenericTrap
+      #
+      # This Trap is strictly for brocade's internal usage.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+            root.out = deleted()
+
+    - check: this.trap.SpecificTrap == 15
+      # swDeviceStatusTrap
+      #
+      # This trap is sent whenever there is a device login or logout
+      #
+      # Revision: 141209
+      # swFCPortSpecifier (DisplayString) - This string indicates the physical port number of the addressed port. The
+      #   format of the string is: /port, where 'slot' being present only for bladed systems.
+      # swDeviceStatus (INTEGER) - This represents the attached device status. The status will change whenever port/node
+      #   goes to online/offline
+      # swEndDevicePortID (OCTET STRING) - The object identifies the Fibre Channel port address ID of the entry.
+      # swNsNodeName (OCTET STRING) - The object identifies the Fibre Channel World_wide Name of the associated node as
+      #   defined in FC-GS-2.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            meta swDeviceStatus = this.trap.VarBinds.index(1).Value
+
+            root.out.brocade.swFCPortSpecifier = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.snmp_display_string()
+            }
+            root.out.brocade.swDeviceStatus = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+              this.trap.VarBinds.index(1).Value.enum_enrich(".1.3.6.1.4.1.1588.2.1.1.1.1.36")
+            }
+            root.out.brocade.swEndDevicePortID = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+              this.trap.VarBinds.index(2).Value.snmp_mac_address()
+            }
+            root.out.brocade.swNsNodeName = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+              this.trap.VarBinds.index(3).Value.snmp_mac_address()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swFCPortSpecifier") {
+              "port: " + root.out.brocade.swFCPortSpecifier
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swEndDevicePortID") {
+              root.out.object.label + ", end device port: " + root.out.brocade.swEndDevicePortID
+            } else if root.out.exists("brocade.swSsn") {
+              "end device port: " + root.out.brocade.swEndDevicePortID
+            }
+            root.out.object.label = if root.out.exists("object.label") && root.out.exists("brocade.swNsNodeName") {
+              root.out.object.label + ", name server: " + root.out.brocade.swNsNodeName
+            } else if root.out.exists("brocade.swSsn") {
+              "name server: " + root.out.brocade.swNsNodeName
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swDeviceStatusTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swDeviceStatusTrap"
+            root.out.event.category.name = "Brocade device login/logout"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notify"
+
+        - switch:
+            - check: metadata("swDeviceStatus") == 1
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-login"
+                    root.out.event.message = "device login"
+
+            - check: metadata("swDeviceStatus") == 2
+              processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-logout"
+                    root.out.event.message = "device logout"
+
+            - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "device login/logout unknown"
+
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - check: this.trap.SpecificTrap == 16
+      # swZoneConfigChangeTrap
+      #
+      # This trap is sent whenever there is change in local zone database.
+      #
+      # Revision: 141209
+      # swVfId (Integer32) - The Virtual fabric id.
+      processors:
+        - mapping: |-
+            #!blobl
+            root = this
+
+            root.out.brocade.swVfId = if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+              this.trap.VarBinds.index(0).Value.string()
+            }
+
+            root.out.object.label = if root.out.exists("brocade.swVfId") {
+              "virtual fabric: " + root.out.brocade.swVfId
+            }
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-swZoneConfigChangeTrap"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-swZoneConfigChangeTrap"
+            root.out.event.category.name = "Brocade local zone database state"
+            root.out.event.message = "local zone database changed"
+            root.out.event.severity.code = 5
+            root.out.event.severity.level = "Notify"
+
+            root.out.event.message = if root.out.exists("object.label") {
+              root.out.event.message + "  [ " + root.out.object.label + " ]"
+            }
+
+    - processors:
+        - label: default
+          mapping: |
+            #!blobl
+            root = this
+
+            root.out.event.class.name = "SNMPTRAP-SW-MIB-sw-unknown"
+            root.out.event.id = "SNMPTRAP-SW-MIB-sw-unknown-" + this.trap.SpecificTrap.string()
+            root.out.event.category.name = "Brocade unknown specific trap"
+            root.out.event.message = "Brocade unknown specific trap " + this.trap.SpecificTrap.string() + " from SW-MIB::sw"
+            root.out.event.severity.code = 4
+            root.out.event.severity.level = "Warning"

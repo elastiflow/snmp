@@ -1,0 +1,549 @@
+HP-ICF-IP-ROUTING::hpicfIcmpRdisc:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIcmpRdisc
+  discovery_attribute: hpicfRdiscAdminStatus
+  attributes:
+    hpicfRdiscAdminStatus:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.1
+      name: hpicfRdiscAdminStatus
+      syntax: EnumInteger
+
+HP-ICF-IP-ROUTING::hpicfRdiscIfCfgEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfRdiscIfCfgEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: hpicfRdiscIfAdvertAddress
+  attributes:
+    hpicfRdiscIfAdminStatus:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.1
+      name: hpicfRdiscIfAdminStatus
+      syntax: EnumInteger
+    hpicfRdiscIfAdvertAddress:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.2
+      name: hpicfRdiscIfAdvertAddress
+      syntax: EnumInteger
+    hpicfRdiscIfMaxAdvertInterval:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.3
+      name: hpicfRdiscIfMaxAdvertInterval
+      syntax: TicksSec
+    hpicfRdiscIfMinAdvertInterval:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.4
+      name: hpicfRdiscIfMinAdvertInterval
+      syntax: TicksSec
+    hpicfRdiscIfAdvertLifetime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.5
+      name: hpicfRdiscIfAdvertLifetime
+      syntax: TicksSec
+    hpicfRdiscIfPreference:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.1.2.1.6
+      name: hpicfRdiscIfPreference
+      syntax: Integer32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfIcmpBoxLimits:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIcmpBoxLimits
+  discovery_attribute: hpicfIcmpReplyLimitEnable
+  attributes:
+    hpicfIcmpReplyLimitEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.1
+      name: hpicfIcmpReplyLimitEnable
+      syntax: EnumInteger
+    hpicfIcmpReplyLimit:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.2
+      name: hpicfIcmpReplyLimit
+      syntax: Integer32
+      metric: gauge
+    hpicfIcmpRedirectEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.3
+      name: hpicfIcmpRedirectEnable
+      syntax: EnumInteger
+    hpicfIcmpDestUnreachEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.4
+      name: hpicfIcmpDestUnreachEnable
+      syntax: EnumInteger
+    hpicfIcmpAddrMaskReplyEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.5
+      name: hpicfIcmpAddrMaskReplyEnable
+      syntax: EnumInteger
+    hpicfIcmpEchoBroadcastReplyEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.2.1.6
+      name: hpicfIcmpEchoBroadcastReplyEnable
+      syntax: EnumInteger
+
+HP-ICF-IP-ROUTING::hpicfGlobalIpConfig:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfGlobalIpConfig
+  discovery_attribute: hpicfDBroadcastFwdEnable
+  attributes:
+    hpicfDBroadcastFwdEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.3.1
+      name: hpicfDBroadcastFwdEnable
+      syntax: EnumInteger
+    hpicfSourceRouteEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.3.2
+      name: hpicfSourceRouteEnable
+      syntax: EnumInteger
+    hpicfIpMaximumPaths:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.3.3
+      name: hpicfIpMaximumPaths
+      syntax: Integer32
+      metric: gauge
+    hpicfDBroadcastFwdAcl:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.3.4
+      name: hpicfDBroadcastFwdAcl
+      syntax: DisplayString
+
+HP-ICF-IP-ROUTING::hpicfIpStaticRouteEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpStaticRouteEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.1
+      name: hpicfIpStaticRoutePrefixType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.2
+      name: hpicfIpStaticRoutePrefix
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.3
+      name: hpicfIpStaticRoutePrefixLength
+      syntax: Unsigned32 # InetAddressPrefixLength
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.4
+      name: hpicfIpStaticRouteFwdAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.5
+      name: hpicfIpStaticRouteFwdAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.6
+      name: hpicfIpStaticRouteFwdIfIndex
+      syntax: InterfaceIndexOrZero
+  discovery_attribute: hpicfIpStaticRouteType
+  attributes:
+    hpicfIpStaticRouteType:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.7
+      name: hpicfIpStaticRouteType
+      syntax: EnumInteger
+    hpicfIpStaticRouteDistance:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.8
+      name: hpicfIpStaticRouteDistance
+      syntax: Integer32
+      metric: gauge
+    hpicfIpStaticRouteTag:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.9
+      name: hpicfIpStaticRouteTag
+      syntax: Unsigned32
+      metric: gauge
+    hpicfIpStaticRouteMetric:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.11
+      name: hpicfIpStaticRouteMetric
+      syntax: Integer32
+    hpicfIpStaticRouteName:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.12
+      name: hpicfIpStaticRouteName
+      syntax: DisplayString
+    hpicfIpStaticRouteLogging:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.13
+      name: hpicfIpStaticRouteLogging
+      syntax: EnumInteger
+    hpicfIpStaticRouteBfdEnable:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.14
+      name: hpicfIpStaticRouteBfdEnable
+      syntax: TruthValue
+
+HP-ICF-IP-ROUTING::hpicfIpStaticNeighborEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpStaticNeighborEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.2.1.1
+      name: hpicfIpStaticNeighborIfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.2.1.2
+      name: hpicfIpStaticNeighborNetAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.2.1.3
+      name: hpicfIpStaticNeighborNetAddress
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: hpicfIpStaticNeighborPhysAddress
+  attributes:
+    hpicfIpStaticNeighborPhysAddress:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.2.1.4
+      name: hpicfIpStaticNeighborPhysAddress
+      syntax: PhysAddress
+
+HP-ICF-IP-ROUTING::hpicfIpStaticRouteBfdEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpStaticRouteBfdEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.1
+      name: hpicfIpStaticRoutePrefixType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.2
+      name: hpicfIpStaticRoutePrefix
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.3
+      name: hpicfIpStaticRoutePrefixLength
+      syntax: Unsigned32 # InetAddressPrefixLength
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.4
+      name: hpicfIpStaticRouteFwdAddrType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.5
+      name: hpicfIpStaticRouteFwdAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.1.1.6
+      name: hpicfIpStaticRouteFwdIfIndex
+      syntax: InterfaceIndexOrZero
+  discovery_attribute: hpicfIpStaticRouteBfdSrcAddr
+  attributes:
+    hpicfIpStaticRouteBfdSrcAddrType:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.3.1.1
+      name: hpicfIpStaticRouteBfdSrcAddrType
+      syntax: EnumInteger
+    hpicfIpStaticRouteBfdSrcAddr:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.3.1.2
+      name: hpicfIpStaticRouteBfdSrcAddr
+      syntax: IpAddressNoSuffix # InetAddress
+    hpicfIpStaticRouteBfdDstAddrType:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.3.1.3
+      name: hpicfIpStaticRouteBfdDstAddrType
+      syntax: EnumInteger
+    hpicfIpStaticRouteBfdDstAddr:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.4.3.1.4
+      name: hpicfIpStaticRouteBfdDstAddr
+      syntax: IpAddressNoSuffix # InetAddress
+
+HP-ICF-IP-ROUTING::hpicfIpCidrRouteEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpCidrRouteEntry
+  index:
+    - type: OctetString # IpAddress
+      oid: .1.3.6.1.2.1.4.24.4.1.1
+      name: ipCidrRouteDest
+      syntax: IpAddressNoSuffix
+    - type: OctetString # IpAddress
+      oid: .1.3.6.1.2.1.4.24.4.1.2
+      name: ipCidrRouteMask
+      syntax: IpAddressNoSuffix
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.24.4.1.3
+      name: ipCidrRouteTos
+      syntax: Integer32
+    - type: OctetString # IpAddress
+      oid: .1.3.6.1.2.1.4.24.4.1.4
+      name: ipCidrRouteNextHop
+      syntax: IpAddressNoSuffix
+  discovery_attribute: hpicfIpCidrRouteDistance
+  attributes:
+    hpicfIpCidrRouteDistance:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.1.1.1
+      name: hpicfIpCidrRouteDistance
+      syntax: Integer32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfInetCidrRouteEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfInetCidrRouteEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.24.7.1.1
+      name: inetCidrRouteDestType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.2.1.4.24.7.1.2
+      name: inetCidrRouteDest
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.2.1.4.24.7.1.3
+      name: inetCidrRoutePfxLen
+      syntax: Unsigned32 # InetAddressPrefixLength
+    - type: ObjectIdentifier
+      oid: .1.3.6.1.2.1.4.24.7.1.4
+      name: inetCidrRoutePolicy
+      syntax: ObjectIdentifier
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.24.7.1.5
+      name: inetCidrRouteNextHopType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.2.1.4.24.7.1.6
+      name: inetCidrRouteNextHop
+      syntax: IpAddressNoSuffix # InetAddress
+  discovery_attribute: hpicfInetCidrRouteInfo
+  attributes:
+    hpicfInetCidrRouteDistance:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.2.1.1
+      name: hpicfInetCidrRouteDistance
+      syntax: Integer32
+      metric: gauge
+    hpicfInetCidrRouteInfo:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.2.1.2
+      name: hpicfInetCidrRouteInfo
+      syntax: ObjectIdentifier
+    hpicfInetCidrRouteState:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.2.1.3
+      name: hpicfInetCidrRouteState
+      syntax: EnumBitmap
+
+HP-ICF-IP-ROUTING::hpicfInetCidrRouteStatsEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfInetCidrRouteStatsEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.24.7.1.1
+      name: inetCidrRouteDestType
+      syntax: EnumInteger
+  discovery_attribute: hpicfInetCidrNumRouteRoutes
+  attributes:
+    hpicfInetCidrNumRouteDestinations:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.3.1.1
+      name: hpicfInetCidrNumRouteDestinations
+      syntax: Counter32
+      metric: counter
+    hpicfInetCidrNumRouteRoutes:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.5.3.1.2
+      name: hpicfInetCidrNumRouteRoutes
+      syntax: Counter32
+      metric: counter
+
+HP-ICF-IP-ROUTING::hpicfArpInfo:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfArpInfo
+  discovery_attribute: hpicfArpAgingTime
+  attributes:
+    hpicfArpAgingTime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.6.1
+      name: hpicfArpAgingTime
+      syntax: Integer32
+      metric: gauge
+    hpicfArpMcastReplies:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.6.2
+      name: hpicfArpMcastReplies
+      syntax: EnumInteger
+
+HP-ICF-IP-ROUTING::hpicfIpDefaultRouterPrefixEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpDefaultRouterPrefixEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.1
+      name: hpicfIpDefaultRouterAddressType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.2
+      name: hpicfIpDefaultRouterAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.3
+      name: hpicfIpDefaultRouterIfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.4
+      name: hpicfIpDefaultRouterPrefixType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.5
+      name: hpicfIpDefaultRouterPrefix
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.6
+      name: hpicfIpDefaultRouterPrefixLength
+      syntax: Unsigned32 # InetAddressPrefixLength
+  discovery_attribute: hpicfIpDefaultRouterPrefixOnLink
+  attributes:
+    hpicfIpDefaultRouterPrefixOnLink:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.7
+      name: hpicfIpDefaultRouterPrefixOnLink
+      syntax: TruthValue
+    hpicfIpDefaultRouterPrefixAutonomous:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.8
+      name: hpicfIpDefaultRouterPrefixAutonomous
+      syntax: TruthValue
+    hpicfIpDefaultRouterPrefixValidLifeTime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.9
+      name: hpicfIpDefaultRouterPrefixValidLifeTime
+      syntax: Unsigned32
+      metric: gauge
+    hpicfIpDefaultRouterPrefixPrefdLifeTime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.7.1.1.10
+      name: hpicfIpDefaultRouterPrefixPrefdLifeTime
+      syntax: Unsigned32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfIpDefaultRouterEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpDefaultRouterEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.37.1.1
+      name: ipDefaultRouterAddressType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.2.1.4.37.1.2
+      name: ipDefaultRouterAddress
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.37.1.3
+      name: ipDefaultRouterIfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: hpicfIpDefaultRouterHopLimit
+  attributes:
+    hpicfIpDefaultRouterMTU:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.8.1.1.1
+      name: hpicfIpDefaultRouterMTU
+      syntax: Integer32
+      metric: gauge
+    hpicfIpDefaultRouterHopLimit:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.8.1.1.2
+      name: hpicfIpDefaultRouterHopLimit
+      syntax: Integer32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfIpv6ND:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpv6ND
+  discovery_attribute: hpicfIpv6NDRAAdminStatus
+  attributes:
+    hpicfIpv6NDRAAdminStatus:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.1
+      name: hpicfIpv6NDRAAdminStatus
+      syntax: TruthValue
+    hpicfIpv6NDRADNSAdminStatus:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.4
+      name: hpicfIpv6NDRADNSAdminStatus
+      syntax: TruthValue
+
+HP-ICF-IP-ROUTING::hpicfIpv6RtrAdvPrefixEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpv6RtrAdvPrefixEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.1
+      name: hpicfIpv6RtrAdvPrefixIfIndex
+      syntax: InterfaceIndex
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.2
+      name: hpicfIpv6RtrAdvPrefixType
+      syntax: skip
+    - type: OctetString
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.3
+      name: hpicfIpv6RtrAdvPrefixPrefix
+      syntax: IpAddressNoSuffix # InetAddress
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.4
+      name: hpicfIpv6RtrAdvPrefixLength
+      syntax: Unsigned32 # InetAddressPrefixLength
+  discovery_attribute: hpicfIpv6RtrAdvPrefixOnLinkFlag
+  attributes:
+    hpicfIpv6RtrAdvPrefixOnLinkFlag:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.5
+      name: hpicfIpv6RtrAdvPrefixOnLinkFlag
+      syntax: TruthValue
+    hpicfIpv6RtrAdvPrefixAutonomousFlag:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.6
+      name: hpicfIpv6RtrAdvPrefixAutonomousFlag
+      syntax: TruthValue
+    hpicfIpv6RtrAdvPrefixLifetimeType:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.7
+      name: hpicfIpv6RtrAdvPrefixLifetimeType
+      syntax: EnumInteger
+    hpicfIpv6RtrAdvPrefixPreferredLifetime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.8
+      name: hpicfIpv6RtrAdvPrefixPreferredLifetime
+      syntax: TicksSec
+    hpicfIpv6RtrAdvPrefixValidLifetime:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.9
+      name: hpicfIpv6RtrAdvPrefixValidLifetime
+      syntax: TicksSec
+    hpicfIpv6RtrAdvPrefixAdvertiseFlag:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.2.1.11
+      name: hpicfIpv6RtrAdvPrefixAdvertiseFlag
+      syntax: TruthValue
+
+HP-ICF-IP-ROUTING::hpicfIpv6RtrAdvEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpv6RtrAdvEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.4.39.1.1
+      name: ipv6RouterAdvertIfIndex
+      syntax: InterfaceIndex
+  discovery_attribute: hpicfIpv6RouterAdvertSendDNSAdverts
+  attributes:
+    hpicfIpv6RtrAdvCurHopLimitMode:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.3.1.1
+      name: hpicfIpv6RtrAdvCurHopLimitMode
+      syntax: EnumInteger
+    hpicfIpv6RouterAdvertSendDNSAdverts:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.3.1.2
+      name: hpicfIpv6RouterAdvertSendDNSAdverts
+      syntax: TruthValue
+    hpicfIpv6RouterAdvertRtrPreference:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.9.3.1.3
+      name: hpicfIpv6RouterAdvertRtrPreference
+      syntax: EnumInteger
+
+HP-ICF-IP-ROUTING::hpicfIpRouteEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpRouteEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.10.1.1.1
+      name: hpicfIpRouteProto
+      syntax: EnumInteger
+  discovery_attribute: hpicfIpRouteCnt
+  attributes:
+    hpicfIpRouteCnt:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.10.1.1.2
+      name: hpicfIpRouteCnt
+      syntax: Unsigned32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfIpv6RouteEntry:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpv6RouteEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.11.1.1.1
+      name: hpicfIpv6RouteProto
+      syntax: EnumInteger
+  discovery_attribute: hpicfIpv6RouteCnt
+  attributes:
+    hpicfIpv6RouteCnt:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.1.11.1.1.2
+      name: hpicfIpv6RouteCnt
+      syntax: Unsigned32
+      metric: gauge
+
+HP-ICF-IP-ROUTING::hpicfIpRouteBaseScalars:
+  mib: HP-ICF-IP-ROUTING
+  object: hpicfIpRouteBaseScalars
+  discovery_attribute: hpicfIpRouteCount
+  attributes:
+    hpicfIpRouteCount:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.3.1
+      name: hpicfIpRouteCount
+      syntax: Unsigned32
+      metric: gauge
+    hpicfIpRouteNextHopCount:
+      oid: .1.3.6.1.4.1.11.2.14.11.5.1.15.3.2
+      name: hpicfIpRouteNextHopCount
+      syntax: Unsigned32
+      metric: gauge
+

@@ -1,0 +1,582 @@
+# AVAYA-IPSEC-MIB::avipsGlobals:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsGlobals
+#   discovery_attribute: avipsGlobalsInvalidSpiRecovery
+#   attributes:
+#     avipsGlobalsInvalidSpiRecovery:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.1.1
+#       name: avaya.avipsGlobalsInvalidSpiRecovery
+#       syntax: TruthValue
+#     avipsNatTEnabled:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.1.2
+#       name: avaya.avipsNatTEnabled
+#       syntax: TruthValue
+#     avipsNatTKeepaliveInterval:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.1.3
+#       name: avaya.avipsNatTKeepaliveInterval
+#       syntax: TicksSec
+#     avipsCryptoEngineAccelEnabled:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.1.4
+#       name: avaya.avipsCryptoEngineAccelEnabled
+#       syntax: TruthValue
+
+# AVAYA-IPSEC-MIB::avipsIsakmpPeerEntry:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsIsakmpPeerEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.1
+#       name: avaya.avipsIsakmpPeerIdType
+#       syntax: EnumInteger
+#     - type: ImplicitOctetString
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.2
+#       name: avaya.avipsIsakmpPeerId
+#       syntax: DisplayString
+#   discovery_attribute: avipsIsakmpPeerDescription
+#   attributes:
+#     avipsIsakmpPeerDescription:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.3
+#       name: avaya.avipsIsakmpPeerDescription
+#       syntax: DisplayString
+#     avipsIsakmpPeerIsaPlcyId1:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.4
+#       name: avaya.avipsIsakmpPeerIsaPlcyId1
+#       syntax: IntegerAsID
+#     avipsIsakmpPeerInitiateMode:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.5
+#       name: avaya.avipsIsakmpPeerInitiateMode
+#       syntax: EnumInteger
+#     avipsIsakmpPeerSelfIdType:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.6
+#       name: avaya.avipsIsakmpPeerSelfIdType
+#       syntax: EnumInteger
+#     avipsIsakmpPeerSelfId:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.7
+#       name: avaya.avipsIsakmpPeerSelfId
+#       syntax: OctetString
+#     avipsIsakmpPeerKeepaliveMetric:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.8
+#       name: avaya.avipsIsakmpPeerKeepaliveMetric
+#       syntax: EnumInteger
+#     avipsIsakmpPeerKeepaliveInterval:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.9
+#       name: avaya.avipsIsakmpPeerKeepaliveInterval
+#       syntax: TicksSec
+#     avipsIsakmpPeerKeepaliveRetryInterval:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.10
+#       name: avaya.avipsIsakmpPeerKeepaliveRetryInterval
+#       syntax: TicksSec
+#     avipsIsakmpPeerKeepaliveTrackId:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.11
+#       name: avaya.avipsIsakmpPeerKeepaliveTrackId
+#       syntax: IntegerAsID
+#     avipsIsakmpPeerContChannel:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.12
+#       name: avaya.avipsIsakmpPeerContChannel
+#       syntax: TruthValue
+#     avipsIsakmpPeerGroupFailbacktoPrimaryInterval:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.1.1.14
+#       name: avaya.avipsIsakmpPeerGroupFailbacktoPrimaryInterval
+#       syntax: TicksSec
+
+# AVAYA-IPSEC-MIB::avipsPeerGroupPeersEntry:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsPeerGroupPeersEntry
+#   index:
+#     - type: OctetString
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.1
+#       name: avaya.avipsPeerGroupPeersPGrpName
+#       syntax: DisplayString
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.2
+#       name: avaya.avipsPeerGroupPeersPeerIndex
+#       syntax: IntegerAsID
+#   discovery_attribute: avipsPeerGroupPeersPIdType
+#   attributes:
+#     avipsPeerGroupPeersPIdType:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.3
+#       name: avaya.avipsPeerGroupPeersPIdType
+#       syntax: EnumInteger
+#     avipsPeerGroupPeersPIdValue:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.2.1.4
+#       name: avaya.avipsPeerGroupPeersPIdValue
+#       syntax: OctetString # IsakmpIdentityValue
+
+# AVAYA-IPSEC-MIB::avipsIsakmpPlcyEntry:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsIsakmpPlcyEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.1
+#       name: avaya.avipsIsakmpPlcyId
+#       syntax: IntegerAsID
+#   discovery_attribute: avipsIsakmpPlcyDescription
+#   attributes:
+#     avipsIsakmpPlcyDescription:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.2
+#       name: avaya.avipsIsakmpPlcyDescription
+#       syntax: DisplayString
+#     avipsIsakmpPlcyDhGroup:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.3
+#       name: avaya.avipsIsakmpPlcyDhGroup
+#       syntax: EnumInteger
+#     avipsIsakmpPlcyEncrAlgo:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.4
+#       name: avaya.avipsIsakmpPlcyEncrAlgo
+#       syntax: EnumInteger
+#     avipsIsakmpPlcyHashAlgo:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.5
+#       name: avaya.avipsIsakmpPlcyHashAlgo
+#       syntax: EnumInteger
+#     avipsIsakmpPlcyLifetime:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.6
+#       name: avaya.avipsIsakmpPlcyLifetime
+#       syntax: TicksSec
+#     avipsIsakmpPlcyAuth:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.2.3.1.7
+#       name: avaya.avipsIsakmpPlcyAuth
+#       syntax: EnumInteger
+
+# AVAYA-IPSEC-MIB::avipsCryptoMapEntry:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsCryptoMapEntry
+#   index:
+#     - type: Integer32
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.1
+#       name: avaya.avipsCryptoMapId
+#       syntax: IntegerAsID
+#   discovery_attribute: avipsCryptoMapDescription
+#   attributes:
+#     avipsCryptoMapDescription:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.2
+#       name: avaya.avipsCryptoMapDescription
+#       syntax: DisplayString
+#     avipsCryptoMapPeerIdType:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.3
+#       name: avaya.avipsCryptoMapPeerIdType
+#       syntax: EnumInteger
+#     avipsCryptoMapPeerIdValue:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.4
+#       name: avaya.avipsCryptoMapPeerIdValue
+#       syntax: OctetString # IsakmpIdentityValue
+#     avipsCryptoMapTranSetName1:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.5
+#       name: avaya.avipsCryptoMapTranSetName1
+#       syntax: DisplayString
+#     avipsCryptoMapIsReady:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.6
+#       name: avaya.avipsCryptoMapIsReady
+#       syntax: TruthValue
+#     avipsCryptoMapTunnelDscp:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.7
+#       name: avaya.avipsCryptoMapTunnelDscp
+#       syntax: Integer32
+#     avipsCryptoMapContChannel:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.1.1.8
+#       name: avaya.avipsCryptoMapContChannel
+#       syntax: TruthValue
+
+# AVAYA-IPSEC-MIB::avipsTranSetEntry:
+#   mib: AVAYA-IPSEC-MIB
+#   object: avipsTranSetEntry
+#   index:
+#     - type: ImplicitOctetString
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.1
+#       name: avaya.avipsTranSetName
+#       syntax: DisplayString
+#   discovery_attribute: avipsTranSetEspEncrTran
+#   attributes:
+#     avipsTranSetEspEncrTran:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.2
+#       name: avaya.avipsTranSetEspEncrTran
+#       syntax: EnumInteger
+#     avipsTranSetEspHashTran:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.3
+#       name: avaya.avipsTranSetEspHashTran
+#       syntax: EnumInteger
+#     avipsTranSetLifetime:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.4
+#       name: avaya.avipsTranSetLifetime
+#       syntax: TicksSec
+#     avipsTranSetLifesize:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.5
+#       name: avaya.avipsTranSetLifesize
+#       syntax: BytesKB
+#     avipsTranSetPfsGroup:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.6
+#       name: avaya.avipsTranSetPfsGroup
+#       syntax: EnumInteger
+#     avipsTranSetEncapMode:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.7
+#       name: avaya.avipsTranSetEncapMode
+#       syntax: EnumInteger
+#     avipsTranSetEspCompTran:
+#       oid: .1.3.6.1.4.1.6889.2.6.1.1.3.2.1.8
+#       name: avaya.avipsTranSetEspCompTran
+#       syntax: EnumInteger
+
+AVAYA-IPSEC-MIB::avipsMonitoringTablesGlobals:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsMonitoringTablesGlobals
+  discovery_attribute: avipsMonitorRstCntrs
+  attributes:
+    avipsMonitorRstCntrs:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.1.1
+      name: avaya.avipsMonitorRstCntrs
+      syntax: EnumInteger
+    avipsMonitorRstCntrsLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.1.2
+      name: avaya.avipsMonitorRstCntrsLastChange
+      syntax: TimeStamp
+
+AVAYA-IPSEC-MIB::avipsPeerEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsPeerEntry
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.1
+      name: avaya.avipsPeerLocalId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.2
+      name: avaya.avipsPeerRemoteId
+      syntax: UnsignedAsID
+  discovery_attribute: avipsPeerLocalType
+  attributes:
+    avipsPeerLocalType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.3
+      name: avaya.avipsPeerLocalType
+      syntax: EnumInteger
+    avipsPeerLocalValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.4
+      name: avaya.avipsPeerLocalValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerRemoteType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.5
+      name: avaya.avipsPeerRemoteType
+      syntax: EnumInteger
+    avipsPeerRemoteValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.6
+      name: avaya.avipsPeerRemoteValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerRemoteDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.7
+      name: avaya.avipsPeerRemoteDescription
+      syntax: DisplayString
+    avipsPeerLocalAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.8
+      name: avaya.avipsPeerLocalAddress
+      syntax: IpAddressNoSuffix
+    avipsPeerRemoteAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.9
+      name: avaya.avipsPeerRemoteAddress
+      syntax: IpAddressNoSuffix
+    avipsPeerRemotePeerGrpActiveIndex:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.10
+      name: avaya.avipsPeerRemotePeerGrpActiveIndex
+      syntax: IntegerAsID
+    avipsPeerRemotePeerGrpActiveIdType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.11
+      name: avaya.avipsPeerRemotePeerGrpActiveIdType
+      syntax: EnumInteger
+    avipsPeerRemotePeerGrpActiveIdValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.12
+      name: avaya.avipsPeerRemotePeerGrpActiveIdValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsPeerIsakmpState:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.13
+      name: avaya.avipsPeerIsakmpState
+      syntax: EnumInteger
+    avipsPeerIsakmpStateLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.14
+      name: avaya.avipsPeerIsakmpStateLastChange
+      syntax: TimeStamp
+    avipsPeerTunnelsClosed:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.15
+      name: avaya.avipsPeerTunnelsClosed
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsInProgress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.16
+      name: avaya.avipsPeerTunnelsInProgress
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsEstablished:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.17
+      name: avaya.avipsPeerTunnelsEstablished
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerTunnelsFailed:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.18
+      name: avaya.avipsPeerTunnelsFailed
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerInOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.19
+      name: avaya.avipsPeerInOctets
+      syntax: BytesB
+      metric: counter
+    avipsPeerInOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.20
+      name: avaya.avipsPeerInOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDecompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.21
+      name: avaya.avipsPeerInDecompOctets
+      syntax: BytesB
+      metric: counter
+    avipsPeerInDecompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.22
+      name: avaya.avipsPeerInDecompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDecompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.23
+      name: avaya.avipsPeerInDecompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerInPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.24
+      name: avaya.avipsPeerInPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerInDropPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.25
+      name: avaya.avipsPeerInDropPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.26
+      name: avaya.avipsPeerOutOctets
+      syntax: BytesB
+      metric: counter
+    avipsPeerOutOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.27
+      name: avaya.avipsPeerOutOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutUncompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.28
+      name: avaya.avipsPeerOutUncompOctets
+      syntax: BytesB
+      metric: counter
+    avipsPeerOutUncompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.29
+      name: avaya.avipsPeerOutUncompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutCompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.30
+      name: avaya.avipsPeerOutCompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsPeerOutPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.31
+      name: avaya.avipsPeerOutPkts
+      syntax: Counter32
+      metric: counter
+    avipsPeerOutDropPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.2.1.32
+      name: avaya.avipsPeerOutDropPkts
+      syntax: Counter32
+      metric: counter
+
+AVAYA-IPSEC-MIB::avipsTunnelEntry:
+  mib: AVAYA-IPSEC-MIB
+  object: avipsTunnelEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.3
+      name: avaya.avipsTunnelIndex
+      syntax: IntegerAsID
+    - type: Integer32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.4
+      name: avaya.avipsTunnelSubIndex
+      syntax: IntegerAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.1
+      name: avaya.avipsTunnelPeerLocalId
+      syntax: UnsignedAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.2
+      name: avaya.avipsTunnelPeerRemoteId
+      syntax: UnsignedAsID
+  discovery_attribute: avipsTunnelIndex
+  attributes:
+    avipsTunnelPeerLocalType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.5
+      name: avaya.avipsTunnelPeerLocalType
+      syntax: EnumInteger
+    avipsTunnelPeerLocalValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.6
+      name: avaya.avipsTunnelPeerLocalValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsTunnelPeerRemoteType:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.7
+      name: avaya.avipsTunnelPeerRemoteType
+      syntax: EnumInteger
+    avipsTunnelPeerRemoteValue:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.8
+      name: avaya.avipsTunnelPeerRemoteValue
+      syntax: OctetString # IsakmpIdentityValue
+    avipsTunnelDescription:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.9
+      name: avaya.avipsTunnelDescription
+      syntax: DisplayString
+    avipsTunnelLocalAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.10
+      name: avaya.avipsTunnelLocalAddress
+      syntax: IpAddressNoSuffix
+    avipsTunnelRemoteAddress:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.11
+      name: avaya.avipsTunnelRemoteAddress
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyLocalSubnet:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.12
+      name: avaya.avipsTunnelProxyLocalSubnet
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyLocalMask:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.13
+      name: avaya.avipsTunnelProxyLocalMask
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyRemoteSubnet:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.14
+      name: avaya.avipsTunnelProxyRemoteSubnet
+      syntax: IpAddressNoSuffix
+    avipsTunnelProxyRemoteMask:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.15
+      name: avaya.avipsTunnelProxyRemoteMask
+      syntax: IpAddressNoSuffix
+    avipsTunnelState:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.16
+      name: avaya.avipsTunnelState
+      syntax: EnumInteger
+    avipsTunnelStateLastChange:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.17
+      name: avaya.avipsTunnelStateLastChange
+      syntax: TimeStamp
+    avipsTunnelLastCntrsReset:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.18
+      name: avaya.avipsTunnelLastCntrsReset
+      syntax: TimeStamp
+    avipsTunnelInOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.19
+      name: avaya.avipsTunnelInOctets
+      syntax: BytesB
+      metric: counter
+    avipsTunnelInOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.20
+      name: avaya.avipsTunnelInOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDecompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.21
+      name: avaya.avipsTunnelInDecompOctets
+      syntax: BytesB
+      metric: counter
+    avipsTunnelInDecompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.22
+      name: avaya.avipsTunnelInDecompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDecompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.23
+      name: avaya.avipsTunnelInDecompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsTunnelInPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.24
+      name: avaya.avipsTunnelInPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropTotalPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.25
+      name: avaya.avipsTunnelInDropTotalPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropAntiReplayPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.26
+      name: avaya.avipsTunnelInDropAntiReplayPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropHmacFailPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.27
+      name: avaya.avipsTunnelInDropHmacFailPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropBadTrailerPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.28
+      name: avaya.avipsTunnelInDropBadTrailerPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropInvalidIdPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.29
+      name: avaya.avipsTunnelInDropInvalidIdPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropUnprotectPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.30
+      name: avaya.avipsTunnelInDropUnprotectPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropInvalidLenPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.31
+      name: avaya.avipsTunnelInDropInvalidLenPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelInDropSaExpiredPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.32
+      name: avaya.avipsTunnelInDropSaExpiredPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.33
+      name: avaya.avipsTunnelOutOctets
+      syntax: BytesB
+      metric: counter
+    avipsTunnelOutOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.34
+      name: avaya.avipsTunnelOutOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutUncompOctets:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.35
+      name: avaya.avipsTunnelOutUncompOctets
+      syntax: BytesB
+      metric: counter
+    avipsTunnelOutUncompOctetsWraps:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.36
+      name: avaya.avipsTunnelOutUncompOctetsWraps
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutCompRatio:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.37
+      name: avaya.avipsTunnelOutCompRatio
+      syntax: Gauge32
+      metric: gauge
+    avipsTunnelOutPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.38
+      name: avaya.avipsTunnelOutPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropTotalPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.39
+      name: avaya.avipsTunnelOutDropTotalPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropNoSaPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.40
+      name: avaya.avipsTunnelOutDropNoSaPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropSeqRolPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.41
+      name: avaya.avipsTunnelOutDropSeqRolPkts
+      syntax: Counter32
+      metric: counter
+    avipsTunnelOutDropSaExpiredPkts:
+      oid: .1.3.6.1.4.1.6889.2.6.1.1.4.1.3.1.42
+      name: avaya.avipsTunnelOutDropSaExpiredPkts
+      syntax: Counter32
+      metric: counter
