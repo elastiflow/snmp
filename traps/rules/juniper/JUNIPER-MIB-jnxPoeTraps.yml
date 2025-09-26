@@ -4,23 +4,21 @@
     root.out.origin.agent.name = "Juniper JUNIPER-MIB"
 - switch:
   - check: this.trap.SpecificTrap == 1
-    # jnxHmcFatal
+    # jnxPsePoePdDeviceMgrFault
     #
-    # detected that the specified HMC on a specific FPC has been in the failure condition
+    # detected PD device manager fault
     #
     # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
     # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
     # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
     # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
     # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
-    # jnxOperatingState (INTEGER) - The operating state of this subject.
     processors:
       - mapping: |-
           #!blobl
           root = this
 
           meta varbinds_ok = false
-          meta jnxOperatingState = 0
           if this.trap.VarBinds.length() > 4 {
             if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
             if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
@@ -29,10 +27,6 @@
             if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
               meta varbinds_ok = true
           }}}}}}
-          if this.trap.VarBinds.length() > 5 {
-            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.6") {
-              meta jnxOperatingState = this.trap.VarBinds.index(5).Value
-          }}
 
       - switch:
         - check: metadata("varbinds_ok")
@@ -46,99 +40,18 @@
                 root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
                 root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
                 root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
-                if metadata("jnxOperatingState") != 0 {
-                  root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
-                }
 
                 root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
                 root.out.object.index =  this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
                 root.out.object.label = "subject: " + root.out.juniper.jnxContentsDescr
 
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps-jnxHmcFatal"
-                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps-jnxHmcFatal"
-                root.out.event.category.name = "FPC HMC state"
-                root.out.event.message = "FPC HMC failure"
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdDeviceMgrFault"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdDeviceMgrFault"
+                root.out.event.category.name = "PD device manager state"
+                root.out.event.message = "PD device manager fault"
                 root.out.event.severity.code = 3
                 root.out.event.severity.level = "Error"
-
-            - switch:
-              - check: metadata("jnxOperatingState") == 1
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-unknown"
-                      root.out.event.message = root.out.event.message + ": unknown"
-                      root.out.event.severity.code = 3
-                      root.out.event.severity.level = "Error"
-
-              - check: metadata("jnxOperatingState") == 2
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-running"
-                      root.out.event.message = root.out.event.message + ": running"
-                      root.out.event.severity.code = 6
-                      root.out.event.severity.level = "Informational"
-
-              - check: metadata("jnxOperatingState") == 3
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-ready"
-                      root.out.event.message = root.out.event.message + ": ready"
-                      root.out.event.severity.code = 6
-                      root.out.event.severity.level = "Informational"
-
-              - check: metadata("jnxOperatingState") == 4
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-reset"
-                      root.out.event.message = root.out.event.message + ": reset"
-                      root.out.event.severity.code = 5
-                      root.out.event.severity.level = "Notice"
-
-              - check: metadata("jnxOperatingState") == 5
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-runningAtFullSpeed"
-                      root.out.event.message = root.out.event.message + ": full-speed"
-                      root.out.event.severity.code = 6
-                      root.out.event.severity.level = "Informational"
-
-              - check: metadata("jnxOperatingState") == 6
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-down"
-                      root.out.event.message = root.out.event.message + ": down"
-                      root.out.event.severity.code = 3
-                      root.out.event.severity.level = "Error"
-
-              - check: metadata("jnxOperatingState") == 7
-                processors:
-                  - mapping: |-
-                      #!blobl
-                      root = this
-
-                      root.out.event.id = root.out.event.id + "-standby"
-                      root.out.event.message = root.out.event.message + ": standby"
-                      root.out.event.severity.code = 5
-                      root.out.event.severity.level = "Notice"
 
             - mapping: |-
                 #!blobl
@@ -185,12 +98,114 @@
                 root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
               }}}}}}}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps-"
-              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps--unknown"
-              root.out.event.category.name = "FPC HMC state"
-              root.out.event.message = "FPC HMC failure - UNEXPECTED VARBINDS for jnxHmcFatal trap!"
-              root.out.event.severity.code = 5
-              root.out.event.severity.level = "Notice"
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdDeviceMgrFault"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdDeviceMgrFault-unknown"
+              root.out.event.category.name = "PD device manager state"
+              root.out.event.message = "PD device manager fault - UNEXPECTED VARBINDS for jnxPsePoePdDeviceMgrFault trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 2
+    # jnxPsePoePdVoltInjFault
+    #
+    # detected PD voltage injection fault
+    #
+    # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
+    # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index =  this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "subject: " + root.out.juniper.jnxContentsDescr
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdVoltInjFault"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdVoltInjFault"
+                root.out.event.category.name = "PD voltage injection state"
+                root.out.event.message = "PD voltage injection fault"
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdVoltInjFault"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-jnxPsePoePdVoltInjFault-unknown"
+              root.out.event.category.name = "PD voltage injection state"
+              root.out.event.message = "PD voltage injection fault - UNEXPECTED VARBINDS for jnxPsePoePdVoltInjFault trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
 
   - processors:
     - label: default
@@ -230,9 +245,9 @@
           root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
         }}}}}}}}}}
 
-        root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps-unknown"
-        root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxAsicExtMemTraps-" + this.trap.SpecificTrap.string()
+        root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-unknown"
+        root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxPoeTraps-" + this.trap.SpecificTrap.string()
         root.out.event.category.name = "unknown specific trap"
-        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-MIB-jnxAsicExtMemTraps"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-MIB-jnxPoeTraps"
         root.out.event.severity.code = 4
         root.out.event.severity.level = "Warning"
