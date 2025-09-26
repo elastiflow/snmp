@@ -1,190 +1,827 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "JUNIPER-MIB"
+    root.out.origin.agent.name = "Juniper JUNIPER-MIB"
 - switch:
-    - check: this.trap.SpecificTrap == 1
-      processors:
-        - label: jnx_power_supply_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+  - check: this.trap.SpecificTrap == 1
+    # jnxPowerSupplyOK
+    #
+    # detected that the specified power supply in the chassis has recovered from the failure (bad DC output) condition
+    #
+    # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
+    # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
+    # jnxOperatingState (INTEGER) - The operating state of this subject.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
-        - label: jnx_power_supply_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
+              meta varbinds = "basic"
+              if this.trap.VarBinds.length() > 5 {
+                if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.6") {
+                  meta varbinds = "full"
+          }}}}}}}}
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 2
-      processors:
-        - label: jnx_fan_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
-        - label: jnx_fan_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+                root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 3
-      processors:
-        - label: jnx_temperature_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "content: " + root.out.juniper.jnxContentsDescr
 
-            root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxOperatingTemp = this.trap.VarBinds.index(5).Value
-        - label: jnx_temperature_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyOK"
+                root.out.event.category.name = "power supply state"
+                root.out.event.message = "power supply recovered"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 4
-      processors:
-        - label: jnx_fru_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+                if metadata("varbinds") == "full" {
+                  root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxOperatingState
+                }
 
-            root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
-            root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
-        - label: jnx_fru_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 5
-      processors:
-        - label: jnx_ext_src_lock_acquired_variables
-          mapping: |-
-            #!blobl
-            root = this
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
 
-            root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
-            root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
-        - label: jnx_ext_src_lock_acquired_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 6
-      processors:
-        - label: jnx_hard_disk_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
 
-            root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
-            root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
-        - label: jnx_hard_disk_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyOK-unknown"
+              root.out.event.category.name = "power supply state"
+              root.out.event.message = "power supply recovered - UNEXPECTED VARBINDS for jnxPowerSupplyOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 7
-      processors:
-        - label: jnx_power_supply_input_ok_variables
-          mapping: |-
-            #!blobl
-            root = this
+  - check: this.trap.SpecificTrap == 2
+    # jnxFanOK
+    #
+    # the specified cooling fan or impeller in the chassis has recovered from the failure (not spinning) condition
+    #
+    # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
+    # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
+    # jnxOperatingState (INTEGER) - The operating state of this subject.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
-            root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
-            root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
-            root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
-            root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
-            root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
-        - label: jnx_power_supply_input_ok_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
+              meta varbinds = "basic"
+              if this.trap.VarBinds.length() > 5 {
+                if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.6") {
+                  meta varbinds = "full"
+          }}}}}}}}
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - processors:
-        - label: default
-          mapping: |
-            #!blobl
-            root = this
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.event.category.name = "Unknown Trap"
+                root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "content: " + root.out.juniper.jnxContentsDescr
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFanOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFanOK"
+                root.out.event.category.name = "fan state"
+                root.out.event.message = "fan recovered"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+                if metadata("varbinds") == "full" {
+                  root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxOperatingState
+                }
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFanOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFanOK-unknown"
+              root.out.event.category.name = "fan state"
+              root.out.event.message = "fan recovered - UNEXPECTED VARBINDS for jnxFanOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 3
+    # jnxTemperatureOK
+    #
+    # detected that the specified hardware component in the chassis has recovered from over temperature condition
+    #
+    # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
+    # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
+    # jnxOperatingTemp (Integer32) - The temperature in Celsius (degrees C). Zero if unavailable or inapplicable.
+    # jnxOperatingTemperature (Integer32) - The temperature in Celsius (degrees C). Zero if unavailable or inapplicable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
+              meta varbinds = "basic"
+              if this.trap.VarBinds.length() > 5 {
+                if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.7") {
+                  meta varbinds = "option"
+                  if this.trap.VarBinds.length() > 6 {
+                    if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.30") {
+                      meta varbinds = "full"
+          }}}}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "content: " + root.out.juniper.jnxContentsDescr
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxTemperatureOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxTemperatureOK"
+                root.out.event.category.name = "temperature threshold"
+                root.out.event.message = "temperature normal"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+                if metadata("varbinds") == "full" {
+                  root.out.juniper.jnxOperatingTemperature = this.trap.VarBinds.index(6).Value
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxOperatingTemperature.string() + "C"
+                } else if metadata("varbinds") == "option" {
+                  root.out.juniper.jnxOperatingTemp = this.trap.VarBinds.index(5).Value
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxOperatingTemp.string() + "C"
+                }
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxTemperatureOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxTemperatureOK-unknown"
+              root.out.event.category.name = "temperature threshold"
+              root.out.event.message = "temperature normal - UNEXPECTED VARBINDS for jnxTemperatureOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 4
+    # jnxFruOK
+    #
+    # recovered from previous operational errors and it is in ok state in the chassis
+    #
+    # jnxFruContentsIndex (Integer32) - The associated jnxContentsContainerIndex in the jnxContentsTable.
+    # jnxFruL1Index (Integer32) - The level one index. Zero if unavailable or inapplicable.
+    # jnxFruL2Index (Integer32) - The level two index. Zero if unavailable or inapplicable.
+    # jnxFruL3Index (Integer32) - The level three index. Zero if unavailable or inapplicable.
+    # jnxFruName (DisplayString) - The name or detailed description of this subject.
+    # jnxFruType (INTEGER) - The FRU type for this subject.
+    # jnxFruSlot (Integer32) - The slot number of this subject. This is equivalent to jnxFruL1Index in meaning. Zero if
+    #   unavailable or inapplicable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.5") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.6") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.7") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
+                root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
+                root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.15.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "FRU: " + root.out.juniper.jnxFruName + ", slot: " + root.out.juniper.jnxFruSlot.string()
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFruOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFruOK"
+                root.out.event.category.name = "FRU state"
+                root.out.event.message = root.out.juniper.jnxFruType + " recovered"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFruOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxFruOK-unknown"
+              root.out.event.category.name = "FRU state"
+              root.out.event.message = "FRU recovered - UNEXPECTED VARBINDS for jnxFruOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 5
+    # jnxExtSrcLockAcquired
+    #
+    # a lock for an external clock source has been acquired
+    #
+    # jnxFruContentsIndex (Integer32) - The associated jnxContentsContainerIndex in the jnxContentsTable.
+    # jnxFruL1Index (Integer32) - The level one index. Zero if unavailable or inapplicable.
+    # jnxFruL2Index (Integer32) - The level two index. Zero if unavailable or inapplicable.
+    # jnxFruL3Index (Integer32) - The level three index. Zero if unavailable or inapplicable.
+    # jnxFruName (DisplayString) - The name or detailed description of this subject.
+    # jnxFruType (INTEGER) - The FRU type for this subject.
+    # jnxFruSlot (Integer32) - The slot number of this subject. This is equivalent to jnxFruL1Index in meaning. Zero if
+    #   unavailable or inapplicable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.5") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.6") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.7") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
+                root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
+                root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.15.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "FRU: " + root.out.juniper.jnxFruName + ", slot: " + root.out.juniper.jnxFruSlot.string()
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxExtSrcLockAcquired"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxExtSrcLockAcquired"
+                root.out.event.category.name = "external clock source state"
+                root.out.event.message = root.out.juniper.jnxFruType + " external clock source acquired"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxExtSrcLockAcquired"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxExtSrcLockAcquired-unknown"
+              root.out.event.category.name = "external clock source state"
+              root.out.event.message = "external clock source acquired - UNEXPECTED VARBINDS for jnxExtSrcLockAcquired trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 6
+    # jnxHardDiskOK
+    #
+    # the Disk in the specified Routing Engine has recovered from the failure condition
+    #
+    # jnxFruContentsIndex (Integer32) - The associated jnxContentsContainerIndex in the jnxContentsTable.
+    # jnxFruL1Index (Integer32) - The level one index. Zero if unavailable or inapplicable.
+    # jnxFruL2Index (Integer32) - The level two index. Zero if unavailable or inapplicable.
+    # jnxFruL3Index (Integer32) - The level three index. Zero if unavailable or inapplicable.
+    # jnxFruName (DisplayString) - The name or detailed description of this subject.
+    # jnxFruType (INTEGER) - The FRU type for this subject.
+    # jnxFruSlot (Integer32) - The slot number of this subject. This is equivalent to jnxFruL1Index in meaning. Zero if
+    #   unavailable or inapplicable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.5") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.6") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.15.1.7") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxFruContentsIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxFruL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxFruL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxFruL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxFruName = this.trap.VarBinds.index(4).Value.snmp_display_string()
+                root.out.juniper.jnxFruType = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.15.1.6")
+                root.out.juniper.jnxFruSlot = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.15.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "FRU: " + root.out.juniper.jnxFruName + ", slot: " + root.out.juniper.jnxFruSlot.string()
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxHardDiskOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxHardDiskOK"
+                root.out.event.category.name = "hard disk state"
+                root.out.event.message = root.out.juniper.jnxFruType + " hard disk recovered"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxHardDiskOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxHardDiskOK-unknown"
+              root.out.event.category.name = "hard disk state"
+              root.out.event.message = "hard disk recovered - UNEXPECTED VARBINDS for jnxHardDiskOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 7
+    # jnxPowerSupplyInputOK
+    #
+    # the specified power supply's input feed in the chassis has recovered from the failure condition
+    #
+    # jnxContentsContainerIndex (Integer32) - The associated jnxContainersIndex in the jnxContainersTable.
+    # jnxContentsL1Index (Integer32) - The level one index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL2Index (Integer32) - The level two index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsL3Index (Integer32) - The level three index of the container. Zero if unavailable or inapplicable.
+    # jnxContentsDescr (DisplayString) - The name or detailed description of this subject.
+    # jnxOperatingState (INTEGER) - The operating state of this subject.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.8.1.6") {
+              meta varbinds = "basic"
+              if this.trap.VarBinds.length() > 5 {
+                if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.1.13.1.6") {
+                  meta varbinds = "full"
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxContentsContainerIndex = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxContentsL1Index = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxContentsL2Index = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxContentsL3Index = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxContentsDescr = this.trap.VarBinds.index(4).Value.snmp_display_string()
+
+                root.out.object.name = "JUNIPER-MIB::jnxFilledEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.1.8.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "content: " + root.out.juniper.jnxContentsDescr
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyInputOK"
+                root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyInputOK"
+                root.out.event.category.name = "power supply input state"
+                root.out.event.message = "power supply input feed recovered"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+                if metadata("varbinds") == "full" {
+                  root.out.juniper.jnxOperatingState = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.1.13.1.6")
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxOperatingState
+                }
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyInputOK"
+              root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-jnxPowerSupplyInputOK-unknown"
+              root.out.event.category.name = "power supply input state"
+              root.out.event.message = "power supply input feed recovered - UNEXPECTED VARBINDS for jnxPowerSupplyInputOK trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+        if this.trap.VarBinds.length() > 1 {
+          root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+        if this.trap.VarBinds.length() > 2 {
+          root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+        if this.trap.VarBinds.length() > 3 {
+          root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+        if this.trap.VarBinds.length() > 4 {
+          root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+        if this.trap.VarBinds.length() > 5 {
+          root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+        if this.trap.VarBinds.length() > 6 {
+          root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+        if this.trap.VarBinds.length() > 7 {
+          root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+        if this.trap.VarBinds.length() > 8 {
+          root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+        if this.trap.VarBinds.length() > 9 {
+          root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+        }}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-unknown"
+        root.out.event.id = "SNMPTRAP-JUNIPER-MIB-jnxChassisOKTraps-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-MIB-jnxChassisOKTraps"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"

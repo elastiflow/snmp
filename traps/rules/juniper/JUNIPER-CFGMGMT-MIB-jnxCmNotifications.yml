@@ -1,0 +1,259 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Juniper JUNIPER-CFGMGMT-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # jnxCmCfgChange
+    #
+    # Notification of a configuration management event as recorded in jnxCmCfgChgEventTable.
+    #
+    # jnxCmCfgChgEventTime (TimeTicks) - The value of sysUpTime when the event occurred.
+    # jnxCmCfgChgEventDate (DateAndTime) - The system date and time when the event occurred.
+    # jnxCmCfgChgEventSource (INTEGER) - The source of the configuration event.
+    # jnxCmCfgChgEventUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
+    #   applicable.
+    # jnxCmCfgChgEventLog (DisplayString) - The log of the configuration event. The length is zero if not available.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.3") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.4") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.5") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.6") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxCmCfgChgEventTime = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxCmCfgChgEventDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
+                root.out.juniper.jnxCmCfgChgEventSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.1.7.1.4").string()
+                root.out.juniper.jnxCmCfgChgEventUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
+                root.out.juniper.jnxCmCfgChgEventLog = this.trap.VarBinds.index(4).Value.snmp_display_string()
+
+                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmCfgChgEventEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.18.1.7.1.4")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "user: " + root.out.juniper.jnxCmCfgChgEventUser
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
+                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
+                root.out.event.category.name = "configuration change"
+                root.out.event.message = "configuration changed via " + root.out.juniper.jnxCmCfgChgEventSource
+                if root.out.juniper.jnxCmCfgChgEventLog != "" {
+                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxCmCfgChgEventLog
+                }
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
+              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange-unknown"
+              root.out.event.category.name = "configuration change"
+              root.out.event.message = "configuration change - UNEXPECTED VARBINDS for jnxCmCfgChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # jnxCmRescueChange
+    #
+    # Notification of the latest rescue configuration change.
+    #
+    # jnxCmRescueChgTime (TimeTicks) - The value of sysUpTime when the rescue configuration was last changed. If the
+    #   management subsystem was reset after the last configuration change, this object will return 0.
+    # jnxCmRescueChgDate (DateAndTime) - The date and time when the rescue configuration was last changed.
+    # jnxCmRescueChgSource (INTEGER) - The source of the rescue configuration event.
+    # jnxCmRescueChgUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
+    #   applicable.
+    # jnxCmRescueChgState (INTEGER) - The current state of the rescue configuration.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.5") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxCmRescueChgTime = this.trap.VarBinds.index(0).Value
+                root.out.juniper.jnxCmRescueChgDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
+                root.out.juniper.jnxCmRescueChgSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.3")
+                root.out.juniper.jnxCmRescueChgUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
+                root.out.juniper.jnxCmRescueChgState = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.5")
+
+                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmRescueChg"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "user: " + root.out.juniper.jnxCmRescueChgUser
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
+                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
+                root.out.event.category.name = "rescue configuration change"
+                root.out.event.message = "rescue configuration changed via " + root.out.juniper.jnxCmRescueChgSource
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+              if this.trap.VarBinds.length() > 1 {
+                root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              if this.trap.VarBinds.length() > 2 {
+                root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              if this.trap.VarBinds.length() > 3 {
+                root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              if this.trap.VarBinds.length() > 4 {
+                root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              if this.trap.VarBinds.length() > 5 {
+                root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              if this.trap.VarBinds.length() > 6 {
+                root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              if this.trap.VarBinds.length() > 7 {
+                root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              if this.trap.VarBinds.length() > 8 {
+                root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+              if this.trap.VarBinds.length() > 9 {
+                root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
+              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange-unknown"
+              root.out.event.category.name = "rescue configuration change"
+              root.out.event.message = "rescue configuration change - UNEXPECTED VARBINDS for jnxCmRescueChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.varbind.value_0 = this.trap.VarBinds.index(0).Value
+        if this.trap.VarBinds.length() > 1 {
+          root.out.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+        if this.trap.VarBinds.length() > 2 {
+          root.out.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+        if this.trap.VarBinds.length() > 3 {
+          root.out.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+        if this.trap.VarBinds.length() > 4 {
+          root.out.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+        if this.trap.VarBinds.length() > 5 {
+          root.out.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+        if this.trap.VarBinds.length() > 6 {
+          root.out.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+        if this.trap.VarBinds.length() > 7 {
+          root.out.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+        if this.trap.VarBinds.length() > 8 {
+          root.out.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+        if this.trap.VarBinds.length() > 9 {
+          root.out.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+        }}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-unknown"
+        root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-CFGMGMT-MIB::jnxCmNotifications"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
