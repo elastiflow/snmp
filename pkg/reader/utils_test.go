@@ -19,6 +19,11 @@ func TestIsValidOID(t *testing.T) {
 		},
 		{
 			name: "invalid oid",
+			oid:  "1.3.6.1.2.1.1.1.0_rawTest2",
+			want: true,
+		},
+		{
+			name: "invalid oid",
 			oid:  "1.3.6.1.2.1.1.1.0.0.",
 			want: false,
 		},
