@@ -40,7 +40,7 @@ func isYamlFile(filePath string) bool {
 	return yamlExtension.MatchString(filePath)
 }
 
-var oidRegex = regexp.MustCompile(`^\.?[0-9]+(\.[0-9]+)*$`)
+var oidRegex = regexp.MustCompile(`^\.?[0-9]+(\.[0-9]+)*(_[a-zA-Z0-9]+)?$`)
 
 func isValidOID(oid string) bool {
 	return oidRegex.MatchString(oid)
