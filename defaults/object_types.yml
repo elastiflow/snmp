@@ -1,0 +1,23 @@
+# Object Types Configuration
+# This file defines the valid object types for SNMP objects and their default polling intervals
+
+# Default object types (ElastiFlow defined)
+object_types:
+  - name: configuration
+    description: "Static objects that describe how the device is configured; these objects are not expected to change often and thus can be polled at a lesser frequency"
+    default_poll_interval: 86400  # 24 hours
+
+  - name: telemetry
+    description: "Dynamic objects that provide real-time telemetry data; these objects change frequently and should be polled more often"
+    default_poll_interval: 60    # 1 minute
+
+  - name: status
+    description: "Objects that indicate device or interface status; these objects change moderately and should be polled at medium frequency"
+    default_poll_interval: 300    # 5 minutes
+
+  - name: performance
+    description: "Objects that provide performance metrics; these objects change frequently and should be polled often"
+    default_poll_interval: 120    # 2 minutes
+
+# Default polling interval for objects without a type or not covered by device-specific intervals
+default_poll_interval: 60  # 1 minute
