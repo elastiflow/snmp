@@ -40,7 +40,7 @@ func main() {
 		log.Printf("Validated %d oid enums", len(enums.Oids))
 	}
 
-	sysObjectIDMapping, sysErr := reader.Read[def.DeviceGroupName]("autodiscover/sysoids")
+	sysObjectIDMapping, sysErr := reader.ReadDirectory[def.DeviceGroupName]("autodiscover/sysoids")
 	if sysErr != nil {
 		log.Println(sysErr)
 	} else {

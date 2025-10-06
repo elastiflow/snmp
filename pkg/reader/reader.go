@@ -45,32 +45,32 @@ func ReadDefinitions(
 	d := &def.Definitions{}
 	var err error
 
-	d.Devices, err = Read[def.Device](devicesDir)
+	d.Devices, err = ReadDirectory[def.Device](devicesDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate devices: %w", err)
 	}
 
-	d.DeviceGroups, err = Read[def.DeviceGroup](deviceGroupsDir)
+	d.DeviceGroups, err = ReadDirectory[def.DeviceGroup](deviceGroupsDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate device groups: %w", err)
 	}
 
-	d.ObjectGroups, err = Read[def.ObjectGroup](objectGroupsDir)
+	d.ObjectGroups, err = ReadDirectory[def.ObjectGroup](objectGroupsDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate object groups: %w", err)
 	}
 
-	d.Objects, err = Read[def.Object](objectsDir)
+	d.Objects, err = ReadDirectory[def.Object](objectsDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate objects: %w", err)
 	}
 
-	objectTypes, err := read[def.ObjectType](fmt.Sprintf("%s/%s", defaultsDir, defaultObjectTypesFileName))
+	objectTypes, err := ReadFile[def.ObjectType](fmt.Sprintf("%s/%s", defaultsDir, defaultObjectTypesFileName))
 	if err == nil && len(objectTypes) > 0 {
 		d.ObjectTypes = objectTypes
 	}
 
-	defaultDevices, err := read[def.Device](fmt.Sprintf("%s/%s", defaultsDir, defaultDeviceFileName))
+	defaultDevices, err := ReadFile[def.Device](fmt.Sprintf("%s/%s", defaultsDir, defaultDeviceFileName))
 	if err == nil && len(defaultDevices) > 0 {
 		for _, defaultDevice := range defaultDevices {
 			d.DefaultDevice = &defaultDevice
@@ -86,7 +86,7 @@ func ReadDefinitions(
 }
 
 func ReadEnums(enumsDir string) (*def.Enums, error) {
-	integerEnums, err := Read[def.IntegerEnum](fmt.Sprintf("%s/integer", enumsDir))
+	integerEnums, err := ReadDirectory[def.IntegerEnum](fmt.Sprintf("%s/integer", enumsDir))
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate integer enums: %w", err)
 	}
@@ -97,7 +97,7 @@ func ReadEnums(enumsDir string) (*def.Enums, error) {
 		}
 	}
 
-	bitMapEnums, err := Read[def.BitMapEnum](fmt.Sprintf("%s/bitmap", enumsDir))
+	bitMapEnums, err := ReadDirectory[def.BitMapEnum](fmt.Sprintf("%s/bitmap", enumsDir))
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate bit map enums: %w", err)
 	}
@@ -108,7 +108,7 @@ func ReadEnums(enumsDir string) (*def.Enums, error) {
 		}
 	}
 
-	oidEnums, err := Read[def.OidEnum](fmt.Sprintf("%s/oid", enumsDir))
+	oidEnums, err := ReadDirectory[def.OidEnum](fmt.Sprintf("%s/oid", enumsDir))
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate oid enums: %w", err)
 	}
@@ -131,7 +131,7 @@ type Validator interface {
 	Kind() string
 }
 
-func Read[T Validator](dirPath string) (map[string]T, error) {
+func ReadDirectory[T Validator](dirPath string) (map[string]T, error) {
 	filePaths, walkDirErr := walkDirectory(dirPath)
 	if walkDirErr != nil {
 		return nil, fmt.Errorf("failed to walk directory: %w", walkDirErr)
@@ -140,7 +140,7 @@ func Read[T Validator](dirPath string) (map[string]T, error) {
 	definitions := make(map[string]T)
 
 	for _, filePath := range filePaths {
-		definitionsInFile, readErr := read[T](filePath)
+		definitionsInFile, readErr := ReadFile[T](filePath)
 		if readErr != nil {
 			return nil, fmt.Errorf("failed to read definitions: %w", readErr)
 		}
@@ -164,7 +164,7 @@ func Read[T Validator](dirPath string) (map[string]T, error) {
 	return definitions, nil
 }
 
-func read[T Validator](filePath string) (map[string]T, error) {
+func ReadFile[T Validator](filePath string) (map[string]T, error) {
 	fileBytes, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file %s: %w", filePath, err)

@@ -281,8 +281,7 @@ func TestReadEnums(t *testing.T) {
 	}
 }
 
-// TestRead tests the Read function
-func TestRead(t *testing.T) {
+func TestReadDirectory(t *testing.T) {
 	tests := []struct {
 		name    string
 		dirPath string
@@ -336,7 +335,7 @@ func TestRead(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			devices, err := Read[def.Object](tt.dirPath)
+			devices, err := ReadDirectory[def.Object](tt.dirPath)
 
 			if tt.wantErr != "" {
 				assert.Error(t, err)
