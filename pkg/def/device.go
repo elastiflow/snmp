@@ -1,8 +1,12 @@
 package def
 
 import (
+	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 func ValidateDevices(
@@ -78,6 +82,27 @@ func (d Device) Validate() error {
 
 func (d Device) Kind() string {
 	return "device"
+}
+
+// Id returns the devices unique id
+func (d Device) Id() string {
+	return d.IP + ":" + strconv.FormatUint(uint64(d.Port), 10)
+}
+
+// Unmarshal data into the struct
+func (d Device) Unmarshal(data []byte, dataType string) error {
+	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
+		return yaml.Unmarshal(data, d)
+	}
+	return json.Unmarshal(data, &d)
+}
+
+// Marshal marshals the struct to YAML or JSON
+func (d Device) Marshal(dataType string) ([]byte, error) {
+	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
+		return yaml.Marshal(d)
+	}
+	return json.Marshal(d)
 }
 
 type V3Credential struct {
