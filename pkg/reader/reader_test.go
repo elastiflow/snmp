@@ -7,8 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestReadSNMPTrapEnterprises tests the ReadSNMPTrapEnterprises function
-func TestReadSNMPTrapEnterprises(t *testing.T) {
+func TestReadTrapEnterprises(t *testing.T) {
 	tests := []struct {
 		name           string
 		enterpriseFile string
@@ -39,7 +38,7 @@ func TestReadSNMPTrapEnterprises(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			enterprises, err := ReadSNMPTrapEnterprises("testdata/traps/rules", tt.enterpriseFile)
+			enterprises, err := ReadTrapEnterprises("testdata/traps/rules", tt.enterpriseFile)
 
 			if tt.wantErr != "" {
 				assert.Error(t, err)
@@ -52,109 +51,161 @@ func TestReadSNMPTrapEnterprises(t *testing.T) {
 	}
 }
 
-// TestReadSNMPDefinitions tests the ReadSNMPDefinitions function
-func TestReadSNMPDefinitions(t *testing.T) {
+func TestReadDefinitions(t *testing.T) {
 	tests := []struct {
-		name             string
-		devicesDir       string
-		deviceGroupsDir  string
-		objectGroupsDir  string
-		objectsDir       string
-		wantErr          string
-		wantDevices      map[string]def.Device
-		wantDeviceGroups map[string]def.DeviceGroup
-		wantObjectGroups map[string]def.ObjectGroup
-		wantObjects      map[string]def.Object
+		name            string
+		devicesDir      string
+		deviceGroupsDir string
+		objectGroupsDir string
+		objectsDir      string
+		defaultsDir     string
+		wantErr         string
+		wantDefinitions *def.Definitions
 	}{
 		{
 			name:            "valid definitions",
-			devicesDir:      "testdata/devices",
-			deviceGroupsDir: "testdata/device_groups",
-			objectGroupsDir: "testdata/object_groups",
-			objectsDir:      "testdata/objects",
-			wantDevices: map[string]def.Device{
-				"test_device": {
-					IP:      "192.168.1.1",
-					Port:    161,
-					Version: "2c",
-					Timeout: 5,
-					Retries: 3,
+			devicesDir:      "testdata/valid/devices",
+			deviceGroupsDir: "testdata/valid/device_groups",
+			objectGroupsDir: "testdata/valid/object_groups",
+			objectsDir:      "testdata/valid/objects",
+			defaultsDir:     "testdata/valid/defaults",
+			wantDefinitions: &def.Definitions{
+				Devices: map[string]def.Device{
+					"test_device": {
+						IP:            "192.168.1.1",
+						Port:          161,
+						Version:       "2c",
+						Timeout:       5,
+						Retries:       3,
+						PollIntervals: map[string]uint64{"configuration": 60},
+					},
+				},
+				DeviceGroups: map[string]def.DeviceGroup{
+					"test_device_group": {
+						ObjectGroups: []string{"test_object_group"},
+					},
+				},
+				ObjectGroups: map[string]def.ObjectGroup{
+					"test_object_group": {
+						Objects: []string{"test_object"},
+					},
+				},
+				Objects: map[string]def.Object{
+					"test_object": {
+						Mib:                "TEST-MIB",
+						ObjectName:         "sysDescr",
+						DiscoveryAttribute: "sysDescr",
+						Attributes: def.ObjectAttributes{
+							"sysDescr": {
+								Oid:    ".1.3.6.1.2.1.1.1.0",
+								Name:   "System Description",
+								Syntax: "DisplayString",
+							},
+						},
+					},
+				},
+				ObjectTypes: map[string]def.ObjectType{
+					"configuration": {PollInterval: 86400},
+					"telemetry":     {PollInterval: 60},
+				},
+				DefaultDevice: &def.Device{
+					Port:         161,
+					Timeout:      3000,
+					Retries:      2,
+					Version:      "2c",
+					Communities:  []string{"public"},
+					PollInterval: 60,
 				},
 			},
-			wantDeviceGroups: map[string]def.DeviceGroup{
-				"test_device_group": {
-					ObjectGroups: []string{"test_object_group"},
+		},
+		{
+			name:            "valid definitions without defaults",
+			devicesDir:      "testdata/valid/devices_without_object_type",
+			deviceGroupsDir: "testdata/valid/device_groups",
+			objectGroupsDir: "testdata/valid/object_groups",
+			objectsDir:      "testdata/valid/objects",
+			defaultsDir:     "testdata/invalid/defaults",
+			wantDefinitions: &def.Definitions{
+				Devices: map[string]def.Device{
+					"test_device": {
+						IP:      "192.168.1.1",
+						Port:    161,
+						Version: "2c",
+						Timeout: 5,
+						Retries: 3,
+					},
 				},
-			},
-			wantObjectGroups: map[string]def.ObjectGroup{
-				"test_object_group": {
-					Objects: []string{"test_object"},
+				DeviceGroups: map[string]def.DeviceGroup{
+					"test_device_group": {
+						ObjectGroups: []string{"test_object_group"},
+					},
 				},
-			},
-			wantObjects: map[string]def.Object{
-				"test_object": {
-					Mib:                "TEST-MIB",
-					ObjectName:         "sysDescr",
-					DiscoveryAttribute: "sysDescr",
-					Attributes: def.ObjectAttributes{
-						"sysDescr": {
-							Oid:    ".1.3.6.1.2.1.1.1.0",
-							Name:   "System Description",
-							Syntax: "DisplayString",
+				ObjectGroups: map[string]def.ObjectGroup{
+					"test_object_group": {
+						Objects: []string{"test_object"},
+					},
+				},
+				Objects: map[string]def.Object{
+					"test_object": {
+						Mib:                "TEST-MIB",
+						ObjectName:         "sysDescr",
+						DiscoveryAttribute: "sysDescr",
+						Attributes: def.ObjectAttributes{
+							"sysDescr": {
+								Oid:    ".1.3.6.1.2.1.1.1.0",
+								Name:   "System Description",
+								Syntax: "DisplayString",
+							},
 						},
 					},
 				},
 			},
 		},
 		{
-			name:            "devices directory does not exist",
-			devicesDir:      "testdata/nonexistent",
-			deviceGroupsDir: "testdata/device_groups",
-			objectGroupsDir: "testdata/object_groups",
-			objectsDir:      "testdata/objects",
-			wantErr:         "failed to read and validate devices: failed to walk directory",
+			name:       "devices directory does not exist",
+			devicesDir: "testdata/nonexistent",
+			wantErr:    "failed to read and validate devices: failed to walk directory",
 		},
 		{
 			name:            "device groups directory does not exist",
-			devicesDir:      "testdata/devices",
+			devicesDir:      "testdata/valid/devices",
 			deviceGroupsDir: "testdata/nonexistent",
-			objectGroupsDir: "testdata/object_groups",
-			objectsDir:      "testdata/objects",
 			wantErr:         "failed to read and validate device groups: failed to walk directory",
 		},
 		{
 			name:            "object groups directory does not exist",
-			devicesDir:      "testdata/devices",
-			deviceGroupsDir: "testdata/device_groups",
+			devicesDir:      "testdata/valid/devices",
+			deviceGroupsDir: "testdata/valid/device_groups",
 			objectGroupsDir: "testdata/nonexistent",
-			objectsDir:      "testdata/objects",
 			wantErr:         "failed to read and validate object groups: failed to walk directory",
 		},
 		{
 			name:            "objects directory does not exist",
-			devicesDir:      "testdata/devices",
-			deviceGroupsDir: "testdata/device_groups",
-			objectGroupsDir: "testdata/object_groups",
+			devicesDir:      "testdata/valid/devices",
+			deviceGroupsDir: "testdata/valid/device_groups",
+			objectGroupsDir: "testdata/valid/object_groups",
 			objectsDir:      "testdata/nonexistent",
 			wantErr:         "failed to read and validate objects: failed to walk directory",
 		},
 		{
 			name:            "invalid definitions",
-			devicesDir:      "testdata/devices_duplicate_ips",
-			deviceGroupsDir: "testdata/device_groups",
-			objectGroupsDir: "testdata/object_groups",
-			objectsDir:      "testdata/objects",
+			devicesDir:      "testdata/invalid/devices",
+			deviceGroupsDir: "testdata/valid/device_groups",
+			objectGroupsDir: "testdata/valid/object_groups",
+			objectsDir:      "testdata/valid/objects",
+			defaultsDir:     "testdata/valid/defaults",
 			wantErr:         "failed to validate definitions",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			devices, deviceGroups, objectGroups, objects, err := ReadSNMPDefinitions(
+			got, err := ReadDefinitions(
 				tt.devicesDir,
 				tt.deviceGroupsDir,
 				tt.objectGroupsDir,
 				tt.objectsDir,
+				tt.defaultsDir,
 			)
 
 			if tt.wantErr != "" {
@@ -162,230 +213,69 @@ func TestReadSNMPDefinitions(t *testing.T) {
 				assert.ErrorContains(t, err, tt.wantErr)
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.wantDevices, devices)
-				assert.Equal(t, tt.wantDeviceGroups, deviceGroups)
-				assert.Equal(t, tt.wantObjectGroups, objectGroups)
-				assert.Equal(t, tt.wantObjects, objects)
+				assert.Equal(t, tt.wantDefinitions, got)
 			}
 		})
 	}
 }
 
-// TestReadSNMPEnums tests the ReadSNMPEnums function
-func TestReadSNMPEnums(t *testing.T) {
+func TestReadEnums(t *testing.T) {
 	tests := []struct {
-		name             string
-		enumDir          string
-		wantIntegerEnums map[string]def.IntegerEnum
-		wantBitMapEnums  map[string]def.BitMapEnum
-		wantOidEnums     map[string]def.OidEnum
-		wantErr          string
+		name    string
+		enumDir string
+		want    *def.Enums
+		wantErr string
 	}{
 		{
 			name:    "valid enums",
-			enumDir: "testdata/enums",
-			wantIntegerEnums: map[string]def.IntegerEnum{
-				".1.2.3.4": {
-					1: "one",
-					2: "two",
-					3: "three",
-				},
-			},
-			wantBitMapEnums: map[string]def.BitMapEnum{
-				".1.2.3.4": {
-					1: "one",
-					2: "two",
-					3: "three",
-				},
-			},
-			wantOidEnums: map[string]def.OidEnum{
-				".1.2.3.4": ".1.3.6.1.2.1",
+			enumDir: "testdata/valid/enums",
+			want: &def.Enums{
+				Integers: map[string]def.IntegerEnum{".1.2.3.4": {1: "one", 2: "two", 3: "three"}},
+				BitMaps:  map[string]def.BitMapEnum{".1.2.3.4": {1: "one", 2: "two", 3: "three"}},
+				Oids:     map[string]def.OidEnum{".1.2.3.4": ".1.3.6.1.2.1"},
 			},
 		},
 		{
 			name:    "missing integer enums",
-			enumDir: "testdata/enums_missing_integer_enums",
+			enumDir: "testdata/invalid/enums_missing_integer_enums",
 			wantErr: "failed to read and validate integer enums: failed to walk directory: error while walking directory",
 		},
 		{
 			name:    "missing bit map enums",
-			enumDir: "testdata/enums_missing_bitmap_enums",
+			enumDir: "testdata/invalid/enums_missing_bitmap_enums",
 			wantErr: "failed to read and validate bit map enums: failed to walk directory: error while walking directory",
 		},
 		{
 			name:    "missing oid enums",
-			enumDir: "testdata/enums_missing_oid_enums",
+			enumDir: "testdata/invalid/enums_missing_oid_enums",
 			wantErr: "failed to read and validate oid enums: failed to walk directory: error while walking directory",
 		},
 		{
 			name:    "invalid integer oid",
-			enumDir: "testdata/enums_invalid_integer_oid",
+			enumDir: "testdata/invalid/enums_invalid_integer_oid",
 			wantErr: "invalid oid invalid_oid in integer enums",
 		},
 		{
 			name:    "invalid bit map oid",
-			enumDir: "testdata/enums_invalid_bitmap_oid",
+			enumDir: "testdata/invalid/enums_invalid_bitmap_oid",
 			wantErr: "invalid oid invalid_oid in bit map enums",
 		},
 		{
 			name:    "invalid oid",
-			enumDir: "testdata/enums_invalid_oid_oid",
+			enumDir: "testdata/invalid/enums_invalid_oid_oid",
 			wantErr: "invalid oid invalid_oid in oid enums",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			integerEnums, bitMapEnums, oidEnums, err := ReadSNMPEnums(tt.enumDir)
+			got, err := ReadEnums(tt.enumDir)
 			if tt.wantErr != "" {
 				assert.Error(t, err)
 				assert.ErrorContains(t, err, tt.wantErr)
 			} else {
 				assert.NoError(t, err)
-				assert.Equal(t, tt.wantIntegerEnums, integerEnums)
-				assert.Equal(t, tt.wantBitMapEnums, bitMapEnums)
-				assert.Equal(t, tt.wantOidEnums, oidEnums)
-			}
-		})
-	}
-}
-
-// TestValidateSNMPDefinitions tests the validateSNMPDefinitions function
-func TestValidateSNMPDefinitions(t *testing.T) {
-	tests := []struct {
-		name         string
-		devices      map[string]def.Device
-		deviceGroups map[string]def.DeviceGroup
-		objectGroups map[string]def.ObjectGroup
-		objects      map[string]def.Object
-		wantErr      string
-	}{
-		{
-			name: "valid definitions",
-			devices: map[string]def.Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-				"device2": {
-					IP: "192.168.1.2",
-				},
-			},
-			deviceGroups: map[string]def.DeviceGroup{
-				"device_group1": {
-					ObjectGroups: []string{"object_group1"},
-				},
-			},
-			objectGroups: map[string]def.ObjectGroup{
-				"object_group1": {
-					Objects: []string{"object1"},
-				},
-			},
-			objects: map[string]def.Object{
-				"object1": {},
-			},
-		},
-		{
-			name: "duplicate IP address",
-			devices: map[string]def.Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-				"device2": {
-					IP: "192.168.1.1", // Same IP as device1
-				},
-			},
-			deviceGroups: map[string]def.DeviceGroup{
-				"device_group1": {
-					ObjectGroups: []string{"object_group1"},
-				},
-			},
-			objectGroups: map[string]def.ObjectGroup{
-				"object_group1": {
-					Objects: []string{"object1"},
-				},
-			},
-			objects: map[string]def.Object{
-				"object1": {},
-			},
-			wantErr: "failed to validate devices: found 2 invalid device definitions:\ndevice device1 has the same IP address (192.168.1.1) as device device2",
-		},
-		{
-			name: "undefined object group",
-			devices: map[string]def.Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-			},
-			deviceGroups: map[string]def.DeviceGroup{
-				"device_group1": {
-					ObjectGroups: []string{"undefined_object_group"}, // This object group doesn't exist
-				},
-			},
-			objectGroups: map[string]def.ObjectGroup{
-				"object_group1": {
-					Objects: []string{"object1"},
-				},
-			},
-			objects: map[string]def.Object{
-				"object1": {},
-			},
-			wantErr: "device group device_group1 references an undefined object group: undefined_object_group",
-		},
-		{
-			name: "undefined object",
-			devices: map[string]def.Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-			},
-			deviceGroups: map[string]def.DeviceGroup{
-				"device_group1": {
-					ObjectGroups: []string{"object_group1"},
-				},
-			},
-			objectGroups: map[string]def.ObjectGroup{
-				"object_group1": {
-					Objects: []string{"undefined_object"}, // This object doesn't exist
-				},
-			},
-			objects: map[string]def.Object{
-				"object1": {},
-			},
-			wantErr: "object group object_group1 references an undefined object: undefined_object",
-		},
-		{
-			name: "multiple validation failures",
-			devices: map[string]def.Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-			},
-			deviceGroups: map[string]def.DeviceGroup{
-				"device_group1": {
-					ObjectGroups: []string{"undefined_object_group"}, // This object group doesn't exist
-				},
-			},
-			objectGroups: map[string]def.ObjectGroup{
-				"object_group1": {
-					Objects: []string{"undefined_object"}, // This object doesn't exist
-				},
-			},
-			objects: map[string]def.Object{
-				"object1": {},
-			},
-			wantErr: "found 2 invalid definitions:",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			err := validateSNMPDefinitions(tt.devices, tt.deviceGroups, tt.objectGroups, tt.objects)
-
-			if tt.wantErr != "" {
-				assert.Error(t, err)
-				assert.ErrorContains(t, err, tt.wantErr)
-			} else {
-				assert.NoError(t, err)
+				assert.Equal(t, tt.want, got)
 			}
 		})
 	}
@@ -401,7 +291,7 @@ func TestRead(t *testing.T) {
 	}{
 		{
 			name:    "valid objects",
-			dirPath: "testdata/objects",
+			dirPath: "testdata/valid/objects",
 			want: map[string]def.Object{
 				"test_object": {
 					Mib:                "TEST-MIB",
@@ -424,22 +314,22 @@ func TestRead(t *testing.T) {
 		},
 		{
 			name:    "failed to read file",
-			dirPath: "testdata/objects_unreadable",
+			dirPath: "testdata/invalid/objects_unreadable",
 			wantErr: "failed to read definitions",
 		},
 		{
 			name:    "duplicate object keys",
-			dirPath: "testdata/objects_duplicate_keys",
+			dirPath: "testdata/invalid/objects_duplicate_keys",
 			wantErr: "failed to unmarshal file",
 		},
 		{
 			name:    "duplicate objects",
-			dirPath: "testdata/objects_duplicate",
+			dirPath: "testdata/invalid/objects_duplicate",
 			wantErr: "found duplicate object with id test_object",
 		},
 		{
 			name:    "invalid object definition",
-			dirPath: "testdata/objects_invalid",
+			dirPath: "testdata/invalid/objects_invalid",
 			wantErr: "failed to validate object with id test_object_invalid: jsonschema: '/attributes/sysDescr/syntax' does not validate",
 		},
 	}

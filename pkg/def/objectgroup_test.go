@@ -37,5 +37,5 @@ func TestObjectGroup_Validate(t *testing.T) {
 
 func TestObjectGroup_Type(t *testing.T) {
 	objectGroup := ObjectGroup{}
-	assert.Equal(t, "object_group", objectGroup.Type())
+	assert.Equal(t, "object_group", objectGroup.Kind())
 }

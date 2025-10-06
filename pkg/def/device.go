@@ -5,52 +5,78 @@ import (
 	"strings"
 )
 
-func ValidateDevices(d map[string]Device) error {
+func ValidateDevices(
+	devices map[string]Device,
+	deviceGroups map[string]DeviceGroup,
+	objectTypes map[string]ObjectType,
+) error {
 	invalidDefinitions := make([]string, 0)
+	deviceIPs := make(map[string]string)
 
-	// Ensure every device has a unique IP address.
-	for deviceName, device := range d {
-		for otherDeviceName, otherDevice := range d {
-			if deviceName != otherDeviceName && device.IP == otherDevice.IP {
-				errorMsg := fmt.Sprintf("device %s has the same IP address (%s) as device %s", deviceName, device.IP, otherDeviceName)
-				invalidDefinitions = append(invalidDefinitions, errorMsg)
+	for deviceName, device := range devices {
+		// Ensure the device has valid device groups
+		for _, dg := range device.DeviceGroups {
+			if _, ok := deviceGroups[dg]; !ok {
+				invalidDefinitions = append(invalidDefinitions,
+					fmt.Sprintf("device %s references an undefined device group: %s", deviceName, dg),
+				)
+			}
+		}
+
+		// Ensure the device has a unique IP address.
+		if existingDeviceName, ok := deviceIPs[device.IP]; ok {
+			invalidDefinitions = append(invalidDefinitions,
+				fmt.Sprintf("device %s has the same IP address (%s) as device %s", deviceName, device.IP, existingDeviceName),
+			)
+		} else {
+			deviceIPs[device.IP] = deviceName
+		}
+
+		// Ensure the device has valid object types
+		if device.PollIntervals != nil {
+			for objectType := range device.PollIntervals {
+				if _, ok := objectTypes[objectType]; !ok {
+					invalidDefinitions = append(invalidDefinitions,
+						fmt.Sprintf("device %s references an undefined object type: %s", deviceName, objectType),
+					)
+				}
 			}
 		}
 	}
 
 	if len(invalidDefinitions) > 0 {
-		return fmt.Errorf("found %d invalid device definitions:\n%s",
+		return fmt.Errorf("found %d device definition errors:\n%s",
 			len(invalidDefinitions),
 			strings.Join(invalidDefinitions, "\n"),
 		)
-
 	}
 
 	return nil
 }
 
 type Device struct {
-	IP                 string         `yaml:"ip,omitempty" json:"ip,omitempty"`
-	Port               uint16         `yaml:"port,omitempty" json:"port,omitempty"`
-	Timeout            uint64         `yaml:"timeout,omitempty" json:"timeout,omitempty"`
-	Retries            int            `yaml:"retries,omitempty" json:"retries,omitempty"`
-	ExponentialTimeout bool           `yaml:"exponential_timeout,omitempty" json:"exponential_timeout,omitempty"`
-	Version            string         `yaml:"version,omitempty" json:"version,omitempty"`
-	Communities        []string       `yaml:"communities,omitempty" json:"communities,omitempty"`
-	DeviceGroups       []string       `yaml:"device_groups,omitempty" json:"device_groups,omitempty"`
-	PollInterval       uint64         `yaml:"poll_interval,omitempty" json:"poll_interval,omitempty"`
-	MaxOIDs            uint64         `yaml:"max_oids,omitempty" json:"max_oids,omitempty"`
-	V3Credentials      []V3Credential `yaml:"v3_credentials,omitempty" json:"v3_credentials,omitempty"`
-	MaxRepetitions     uint32         `yaml:"max_repetitions,omitempty" json:"max_repetitions,omitempty"`
-	MaxConcurrentPolls uint32         `yaml:"max_concurrent_polls,omitempty" json:"max_concurrent_polls,omitempty"`
-	CiscoQosEnabled    bool           `yaml:"cisco_qos_enabled,omitempty" json:"cisco_qos_enabled,omitempty"`
+	IP                 string            `yaml:"ip,omitempty" json:"ip,omitempty"`
+	Port               uint16            `yaml:"port,omitempty" json:"port,omitempty"`
+	Timeout            uint64            `yaml:"timeout,omitempty" json:"timeout,omitempty"`
+	Retries            int               `yaml:"retries,omitempty" json:"retries,omitempty"`
+	ExponentialTimeout bool              `yaml:"exponential_timeout,omitempty" json:"exponential_timeout,omitempty"`
+	Version            string            `yaml:"version,omitempty" json:"version,omitempty"`
+	Communities        []string          `yaml:"communities,omitempty" json:"communities,omitempty"`
+	DeviceGroups       []string          `yaml:"device_groups,omitempty" json:"device_groups,omitempty"`
+	PollInterval       uint64            `yaml:"poll_interval,omitempty" json:"poll_interval,omitempty"`
+	PollIntervals      map[string]uint64 `yaml:"poll_intervals,omitempty" json:"poll_intervals,omitempty"`
+	MaxOIDs            uint64            `yaml:"max_oids,omitempty" json:"max_oids,omitempty"`
+	V3Credentials      []V3Credential    `yaml:"v3_credentials,omitempty" json:"v3_credentials,omitempty"`
+	MaxRepetitions     uint32            `yaml:"max_repetitions,omitempty" json:"max_repetitions,omitempty"`
+	MaxConcurrentPolls uint32            `yaml:"max_concurrent_polls,omitempty" json:"max_concurrent_polls,omitempty"`
+	CiscoQosEnabled    bool              `yaml:"cisco_qos_enabled,omitempty" json:"cisco_qos_enabled,omitempty"`
 }
 
 func (d Device) Validate() error {
 	return nil
 }
 
-func (d Device) Type() string {
+func (d Device) Kind() string {
 	return "device"
 }
 

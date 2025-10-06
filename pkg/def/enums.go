@@ -4,7 +4,7 @@ import "fmt"
 
 type IntegerEnum map[int]string
 
-func (i IntegerEnum) Type() string {
+func (i IntegerEnum) Kind() string {
 	return "integer_enum"
 }
 
@@ -23,7 +23,7 @@ func (i IntegerEnum) Validate() error {
 
 type BitMapEnum map[int]string
 
-func (b BitMapEnum) Type() string {
+func (b BitMapEnum) Kind() string {
 	return "bit_map_enum"
 }
 
@@ -42,7 +42,7 @@ func (b BitMapEnum) Validate() error {
 
 type OidEnum string
 
-func (o OidEnum) Type() string {
+func (o OidEnum) Kind() string {
 	return "oid_enum"
 }
 

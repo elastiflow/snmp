@@ -38,12 +38,12 @@ func TestDeviceGroup_Validate(t *testing.T) {
 
 func TestDeviceGroup_Type(t *testing.T) {
 	deviceGroup := DeviceGroup{}
-	assert.Equal(t, "device_group", deviceGroup.Type())
+	assert.Equal(t, "device_group", deviceGroup.Kind())
 }
 
 func TestDeviceGroupName_Type(t *testing.T) {
 	dg := DeviceGroupName("device_group")
-	assert.Equal(t, "device_group", dg.Type())
+	assert.Equal(t, "device_group", dg.Kind())
 }
 
 func TestSysObjectID_Validate(t *testing.T) {
