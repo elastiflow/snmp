@@ -90,7 +90,7 @@ func (d Device) Id() string {
 // Unmarshal data into the struct
 func (d Device) Unmarshal(data []byte, dataType string) error {
 	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
-		return yaml.Unmarshal(data, d)
+		return yaml.Unmarshal(data, &d)
 	}
 	return json.Unmarshal(data, &d)
 }
