@@ -26,7 +26,7 @@ func (d Definitions) Validate() error {
 	for deviceGroupName, deviceGroup := range d.DeviceGroups {
 		for _, objectGroup := range deviceGroup.ObjectGroups {
 			if _, ok := d.ObjectGroups[objectGroup]; !ok {
-				errorMsg := fmt.Sprintf("device group %s references an undefined object group: %s", deviceGroupName, objectGroup)
+				errorMsg := fmt.Sprintf("device group %q references an undefined object group: %q", deviceGroupName, objectGroup)
 				invalidDefinitions = append(invalidDefinitions, errorMsg)
 			}
 		}
@@ -36,7 +36,7 @@ func (d Definitions) Validate() error {
 	for objectGroupName, objectGroup := range d.ObjectGroups {
 		for _, object := range objectGroup.Objects {
 			if _, ok := d.Objects[object]; !ok {
-				errorMsg := fmt.Sprintf("object group %s references an undefined object: %s", objectGroupName, object)
+				errorMsg := fmt.Sprintf("object group %q references an undefined object: %q", objectGroupName, object)
 				invalidDefinitions = append(invalidDefinitions, errorMsg)
 			}
 		}
@@ -46,7 +46,7 @@ func (d Definitions) Validate() error {
 	for _, object := range d.Objects {
 		if object.Type != "" {
 			if _, ok := d.ObjectTypes[object.Type]; !ok {
-				errorMsg := fmt.Sprintf("object %s references an undefined object type: %s", object.ObjectName, object.Type)
+				errorMsg := fmt.Sprintf("object %q references an undefined object type: %q", object.ObjectName, object.Type)
 				invalidDefinitions = append(invalidDefinitions, errorMsg)
 			}
 		}

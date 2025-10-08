@@ -50,7 +50,7 @@ func TestDefinitions_Validate(t *testing.T) {
 				},
 				DeviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
 			},
-			wantErr: "device group dg references an undefined object group: og",
+			wantErr: "device group \"dg\" references an undefined object group: \"og\"",
 		},
 		{
 			name: "invalid object group",
@@ -62,7 +62,7 @@ func TestDefinitions_Validate(t *testing.T) {
 				DeviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
 				ObjectGroups: map[string]ObjectGroup{"og": {Objects: []string{"object1", "object2"}}},
 			},
-			wantErr: "object group og references an undefined object: object1",
+			wantErr: "object group \"og\" references an undefined object: \"object1\"",
 		},
 		{
 			name: "invalid object",
@@ -77,7 +77,7 @@ func TestDefinitions_Validate(t *testing.T) {
 					"object1": {Mib: "IF-MIB", ObjectName: "system", Type: "object_type"},
 				},
 			},
-			wantErr: "object system references an undefined object type: object_type",
+			wantErr: "object \"system\" references an undefined object type: \"object_type\"",
 		},
 	}
 

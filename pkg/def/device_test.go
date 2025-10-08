@@ -26,7 +26,7 @@ func TestValidateDevices(t *testing.T) {
 		{
 			name:     "undefined device group",
 			devices:  map[string]Device{"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}}},
-			expected: "device device1 references an undefined device group: dg",
+			expected: "device \"device1\" references an undefined device group: \"dg\"",
 		},
 		{
 			name: "duplicate IP addresses",
@@ -42,7 +42,7 @@ func TestValidateDevices(t *testing.T) {
 				"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}, PollIntervals: map[string]uint64{"configuration": 60}},
 			},
 			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
-			expected:     "found 1 device definition errors:\ndevice device1 references an undefined object type: configuration",
+			expected:     "found 1 device definition errors:\ndevice \"device1\" references an undefined object type: \"configuration\"",
 		},
 		{
 			name:    "empty device map",

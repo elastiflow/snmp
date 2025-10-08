@@ -22,7 +22,7 @@ func ValidateDevices(
 		for _, dg := range device.DeviceGroups {
 			if _, ok := deviceGroups[dg]; !ok {
 				invalidDefinitions = append(invalidDefinitions,
-					fmt.Sprintf("device %s references an undefined device group: %s", deviceName, dg),
+					fmt.Sprintf("device %q references an undefined device group: %q", deviceName, dg),
 				)
 			}
 		}
@@ -30,20 +30,18 @@ func ValidateDevices(
 		// Ensure the device has a unique IP address.
 		if existingDeviceName, ok := deviceIPs[device.IP]; ok {
 			invalidDefinitions = append(invalidDefinitions,
-				fmt.Sprintf("device %s has the same IP address (%s) as device %s", deviceName, device.IP, existingDeviceName),
+				fmt.Sprintf("device %q has the same IP address (%s) as device %q", deviceName, device.IP, existingDeviceName),
 			)
 		} else {
 			deviceIPs[device.IP] = deviceName
 		}
 
 		// Ensure the device has valid object types
-		if device.PollIntervals != nil {
-			for objectType := range device.PollIntervals {
-				if _, ok := objectTypes[objectType]; !ok {
-					invalidDefinitions = append(invalidDefinitions,
-						fmt.Sprintf("device %s references an undefined object type: %s", deviceName, objectType),
-					)
-				}
+		for objectType := range device.PollIntervals {
+			if _, ok := objectTypes[objectType]; !ok {
+				invalidDefinitions = append(invalidDefinitions,
+					fmt.Sprintf("device %q references an undefined object type: %q", deviceName, objectType),
+				)
 			}
 		}
 	}
@@ -84,7 +82,7 @@ func (d Device) Kind() string {
 	return "device"
 }
 
-// Id returns the devices unique id
+// Id returns the device's unique id
 func (d Device) Id() string {
 	return d.IP + ":" + strconv.FormatUint(uint64(d.Port), 10)
 }
