@@ -9,7 +9,7 @@ import (
 
 func TestIntegerEnum_Type(t *testing.T) {
 	intEnum := IntegerEnum{}
-	assert.Equal(t, "integer_enum", intEnum.Type())
+	assert.Equal(t, "integer_enum", intEnum.Kind())
 }
 
 func TestIntegerEnum_Validate(t *testing.T) {
@@ -61,7 +61,7 @@ func TestIntegerEnum_Validate(t *testing.T) {
 
 func TestBitMapEnum_Type(t *testing.T) {
 	bitMapEnum := BitMapEnum{}
-	assert.Equal(t, "bit_map_enum", bitMapEnum.Type())
+	assert.Equal(t, "bit_map_enum", bitMapEnum.Kind())
 }
 
 func TestBitMapEnum_Validate(t *testing.T) {
@@ -113,7 +113,7 @@ func TestBitMapEnum_Validate(t *testing.T) {
 
 func TestOidEnum_Type(t *testing.T) {
 	oidEnum := OidEnum("")
-	assert.Equal(t, "oid_enum", oidEnum.Type())
+	assert.Equal(t, "oid_enum", oidEnum.Kind())
 }
 
 func TestOidEnum_Validate(t *testing.T) {

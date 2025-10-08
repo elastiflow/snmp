@@ -1,7 +1,6 @@
 package def
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,54 +8,55 @@ import (
 
 func TestValidateDevices(t *testing.T) {
 	tests := []struct {
-		name     string
-		devices  map[string]Device
-		expected error
+		name         string
+		devices      map[string]Device
+		deviceGroups map[string]DeviceGroup
+		objectTypes  map[string]ObjectType
+		expected     string
 	}{
 		{
 			name: "valid devices",
 			devices: map[string]Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-				"device2": {
-					IP: "192.168.1.2",
-				},
+				"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}, PollIntervals: map[string]uint64{"configuration": 60}},
+				"device2": {IP: "127.0.0.2", DeviceGroups: []string{"dg"}},
 			},
+			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+			objectTypes:  map[string]ObjectType{"configuration": {PollInterval: 60}},
+		},
+		{
+			name:     "undefined device group",
+			devices:  map[string]Device{"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}}},
+			expected: "device \"device1\" references an undefined device group: \"dg\"",
 		},
 		{
 			name: "duplicate IP addresses",
 			devices: map[string]Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-				"device2": {
-					IP: "192.168.1.1", // Same IP as device1
-				},
+				"device1": {IP: "127.0.0.1"},
+				"device2": {IP: "127.0.0.1"},
 			},
-			expected: fmt.Errorf("found 2 invalid device definitions:\ndevice device1 has the same IP address (192.168.1.1) as device device2\ndevice device2 has the same IP address (192.168.1.1) as device device1"),
+			expected: "has the same IP address (127.0.0.1)",
+		},
+		{
+			name: "undefined object type",
+			devices: map[string]Device{
+				"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}, PollIntervals: map[string]uint64{"configuration": 60}},
+			},
+			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+			expected:     "found 1 device definition errors:\ndevice \"device1\" references an undefined object type: \"configuration\"",
 		},
 		{
 			name:    "empty device map",
 			devices: map[string]Device{},
 		},
-		{
-			name: "single device",
-			devices: map[string]Device{
-				"device1": {
-					IP: "192.168.1.1",
-				},
-			},
-		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := ValidateDevices(tt.devices)
-			if tt.expected == nil {
+			err := ValidateDevices(tt.devices, tt.deviceGroups, tt.objectTypes)
+			if tt.expected == "" {
 				assert.Nil(t, err)
 			} else {
-				assert.Equal(t, tt.expected.Error(), err.Error())
+				assert.ErrorContains(t, err, tt.expected)
 			}
 		})
 	}
@@ -115,5 +115,5 @@ func TestDevice_Validate(t *testing.T) {
 
 func TestDevice_Type(t *testing.T) {
 	device := Device{}
-	assert.Equal(t, "device", device.Type())
+	assert.Equal(t, "device", device.Kind())
 }

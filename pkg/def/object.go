@@ -5,6 +5,7 @@ import _ "embed"
 type Object struct {
 	Mib                string           `yaml:"mib,omitempty" json:"mib,omitempty"`
 	ObjectName         string           `yaml:"object,omitempty" json:"object,omitempty"`
+	Type               string           `yaml:"type,omitempty" json:"type,omitempty"`
 	Index              []ObjectIndex    `yaml:"index,omitempty" json:"index,omitempty"`
 	Augments           string           `yaml:"augments,omitempty" json:"augments,omitempty"`
 	DiscoveryAttribute string           `yaml:"discovery_attribute,omitempty" json:"discovery_attribute,omitempty"`
@@ -15,7 +16,7 @@ func (o Object) Validate() error {
 	return validate(o, "schemas/object.json")
 }
 
-func (o Object) Type() string {
+func (o Object) Kind() string {
 	return "object"
 }
 

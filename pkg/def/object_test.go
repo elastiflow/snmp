@@ -105,5 +105,5 @@ func TestObject_Validate(t *testing.T) {
 
 func TestObject_Type(t *testing.T) {
 	object := Object{}
-	assert.Equal(t, "object", object.Type())
+	assert.Equal(t, "object", object.Kind())
 }

@@ -10,14 +10,14 @@ func (d DeviceGroup) Validate() error {
 	return nil
 }
 
-func (d DeviceGroup) Type() string {
+func (d DeviceGroup) Kind() string {
 	return "device_group"
 }
 
 // DeviceGroupName is a string that represents the name of a device group.
 type DeviceGroupName string
 
-func (d DeviceGroupName) Type() string {
+func (d DeviceGroupName) Kind() string {
 	return "device_group"
 }
 
