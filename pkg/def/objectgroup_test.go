@@ -1,6 +1,7 @@
 package def
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -17,7 +18,12 @@ func TestObjectGroup_Validate(t *testing.T) {
 			objectGroup: &ObjectGroup{
 				Objects: []string{},
 			},
-			expected: nil,
+			expected: errors.New("objects is required"),
+		},
+		{
+			name:        "objects is nil",
+			objectGroup: &ObjectGroup{},
+			expected:    errors.New("objects is required"),
 		},
 		{
 			name: "object group with objects",
