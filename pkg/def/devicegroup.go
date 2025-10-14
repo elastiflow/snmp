@@ -1,12 +1,18 @@
 package def
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type DeviceGroup struct {
 	ObjectGroups []string `yaml:"object_groups,omitempty" json:"object_groups,omitempty"`
 }
 
 func (d DeviceGroup) Validate() error {
+	if len(d.ObjectGroups) == 0 {
+		return errors.New("object_groups is required")
+	}
 	return nil
 }
 
