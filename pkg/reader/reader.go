@@ -78,6 +78,7 @@ func ReadDefinitions(
 		}
 	}
 
+	// Apply defaults to each device
 	d.ApplyDefaults()
 
 	if err = d.Validate(); err != nil {

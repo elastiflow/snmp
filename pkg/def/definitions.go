@@ -15,17 +15,23 @@ type Definitions struct {
 }
 
 func (d *Definitions) ApplyDefaults() {
+	// Create a default device if none is defined
 	if d.DefaultDevice == nil {
 		d.DefaultDevice = &Device{}
 	}
 
+	// Apply hardcoded defaults to the default device
 	d.DefaultDevice.applyHardcodedDefaults(d.ObjectTypes)
 
+	// Apply defaults to each device
 	for _, device := range d.Devices {
 		device.applyDefaults(d.DefaultDevice)
 	}
 }
 
+// Validate checks if the definitions are valid. All devices should be populated with required fields.
+// All device and object groups should reference existing object groups and objects, respectively.
+// All objects should reference existing object types.
 func (d *Definitions) Validate() error {
 	err := ValidateDevices(d.Devices, d.DeviceGroups, d.ObjectTypes)
 	if err != nil {
