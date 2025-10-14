@@ -6,7 +6,11 @@
   "required": ["ip", "version", "device_groups"],
   "properties": {
     "ip": {
-      "type": "string"
+      "type": "string",
+      "anyOf": [
+        { "format": "ipv4" },
+        { "format": "ipv6" }
+      ]
     },
     "port": {
       "type": "integer",
@@ -49,27 +53,22 @@
         "type": "object",
         "additionalProperties": false,
         "required": ["authentication_protocol"],
-        "dependentRequired": {
-          "privacy_passphrase": ["privacy_protocol"]
-        },
         "allOf": [
           {
             "if": {
               "properties": {"authentication_protocol": { "enum": ["md5", "sha", "sha224", "sha256", "sha384", "sha512"] } }
             },
             "then": {
-              "required": ["username", "authentication_protocol", "authentication_passphrase"]
+              "required": ["username", "authentication_passphrase"]
             }
           },
           {
             "if": {
+              "required": ["privacy_protocol"],
               "properties": {"privacy_protocol": { "enum": ["des", "aes", "aes192", "aes256", "aes192c", "aes256c"] } }
             },
             "then": {
-              "dependentRequired": {
-                "privacy_protocol": ["privacy_passphrase"],
-                "privacy_passphrase": ["privacy_protocol"]
-              }
+              "required": ["privacy_passphrase"]
             }
           }
         ],

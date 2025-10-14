@@ -16,7 +16,7 @@ var device1 = &Device{
 }
 
 var device2 = &Device{
-	IP:      "127.0.0.2",
+	IP:      "fc00::",
 	Port:    161,
 	Version: "3",
 	V3Credentials: []V3Credential{
@@ -24,6 +24,8 @@ var device2 = &Device{
 			Username:                 "username",
 			AuthenticationProtocol:   "sha",
 			AuthenticationPassphrase: "passphrase",
+			PrivacyProtocol:          "aes",
+			PrivacyPassphrase:        "privacy passphrase",
 		},
 	},
 	DeviceGroups: []string{"dg"},

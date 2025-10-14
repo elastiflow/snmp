@@ -26,6 +26,59 @@ func TestValidateDevices(t *testing.T) {
 			expected: "missing properties: 'version', 'device_groups'",
 		},
 		{
+			name: "bad IP address",
+			devices: map[string]*Device{"device1": {
+				IP:           "bad",
+				DeviceGroups: []string{"dg"},
+				Version:      "2c",
+				Communities:  []string{"public"},
+			}},
+			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+			expected:     "'bad' is not valid 'ipv4'",
+		},
+		{
+			name: "missing v3 credentials",
+			devices: map[string]*Device{"device1": {
+				IP:           "127.0.0.1",
+				DeviceGroups: []string{"dg"},
+				Version:      "3",
+			}},
+			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+			expected:     "missing properties: 'v3_credentials'",
+		},
+		{
+			name: "missing required v3 credentials when auth protocol is sha",
+			devices: map[string]*Device{"device1": {
+				IP:           "127.0.0.1",
+				DeviceGroups: []string{"dg"},
+				Version:      "3",
+				V3Credentials: []V3Credential{
+					{
+						AuthenticationProtocol: "sha",
+					},
+				},
+			}},
+			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+			expected:     "missing properties: 'username', 'authentication_passphrase'",
+		},
+		{
+			name: "missing required v3 credentials when privacy protocol is aes",
+			devices: map[string]*Device{"device1": {
+				IP:           "127.0.0.1",
+				DeviceGroups: []string{"dg"},
+				Version:      "3",
+				V3Credentials: []V3Credential{
+					{
+						AuthenticationProtocol:   "sha",
+						Username:                 "username",
+						AuthenticationPassphrase: "passphrase",
+						PrivacyProtocol:          "aes",
+					},
+				},
+			}},
+			expected: "missing properties: 'privacy_passphrase'",
+		},
+		{
 			name:     "undefined device group",
 			devices:  map[string]*Device{"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}}},
 			expected: "device \"device1\" references an undefined device group: \"dg\"",
