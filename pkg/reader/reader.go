@@ -16,19 +16,19 @@ const (
 func ReadTrapEnterprises(rulesDir, enterpriseFile string) (map[string]def.Enterprise, error) {
 	fileBytes, err := os.ReadFile(enterpriseFile)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file %s: %w", enterpriseFile, err)
+		return nil, fmt.Errorf("failed to read file %q: %w", enterpriseFile, err)
 	}
 
 	enterprises := make(map[string]def.Enterprise)
 	err = yaml.Unmarshal(fileBytes, &enterprises)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal file %s: %w", enterpriseFile, err)
+		return nil, fmt.Errorf("failed to unmarshal file %q: %w", enterpriseFile, err)
 	}
 
 	for enterpriseName, enterprise := range enterprises {
 		err = enterprise.Validate(rulesDir)
 		if err != nil {
-			return nil, fmt.Errorf("failed to validate enterprise %s: %w", enterpriseName, err)
+			return nil, fmt.Errorf("failed to validate enterprise %q: %w", enterpriseName, err)
 		}
 	}
 
@@ -45,7 +45,7 @@ func ReadDefinitions(
 	d := &def.Definitions{}
 	var err error
 
-	d.Devices, err = ReadDirectory[def.Device](devicesDir)
+	d.Devices, err = ReadDirectory[*def.Device](devicesDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read and validate devices: %w", err)
 	}
@@ -70,13 +70,16 @@ func ReadDefinitions(
 		d.ObjectTypes = objectTypes
 	}
 
-	defaultDevices, err := ReadFile[def.Device](fmt.Sprintf("%s/%s", defaultsDir, defaultDeviceFileName))
+	defaultDevices, err := ReadFile[*def.Device](fmt.Sprintf("%s/%s", defaultsDir, defaultDeviceFileName))
 	if err == nil && len(defaultDevices) > 0 {
 		for _, defaultDevice := range defaultDevices {
-			d.DefaultDevice = &defaultDevice
+			d.DefaultDevice = defaultDevice
 			break
 		}
 	}
+
+	// Apply defaults to each device
+	d.ApplyDefaults()
 
 	if err = d.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate definitions: %w", err)
@@ -93,7 +96,7 @@ func ReadEnums(enumsDir string) (*def.Enums, error) {
 
 	for oid := range integerEnums {
 		if !isValidOID(oid) {
-			return nil, fmt.Errorf("invalid oid %s in integer enums", oid)
+			return nil, fmt.Errorf("invalid oid %q in integer enums", oid)
 		}
 	}
 
@@ -104,7 +107,7 @@ func ReadEnums(enumsDir string) (*def.Enums, error) {
 
 	for oid := range bitMapEnums {
 		if !isValidOID(oid) {
-			return nil, fmt.Errorf("invalid oid %s in bit map enums", oid)
+			return nil, fmt.Errorf("invalid oid %q in bit map enums", oid)
 		}
 	}
 
@@ -115,7 +118,7 @@ func ReadEnums(enumsDir string) (*def.Enums, error) {
 
 	for oid := range oidEnums {
 		if !isValidOID(oid) {
-			return nil, fmt.Errorf("invalid oid %s in oid enums", oid)
+			return nil, fmt.Errorf("invalid oid %q in oid enums", oid)
 		}
 	}
 
@@ -148,13 +151,13 @@ func ReadDirectory[T Validator](dirPath string) (map[string]T, error) {
 		for id, definition := range definitionsInFile {
 			// ensure that each definition id is unique
 			if _, ok := definitions[id]; ok {
-				return nil, fmt.Errorf("found duplicate %s with id %s", definition.Kind(), id)
+				return nil, fmt.Errorf("found duplicate %s with id %q", definition.Kind(), id)
 			}
 
 			// ensure that each definition is valid
 			err := definition.Validate()
 			if err != nil {
-				return nil, fmt.Errorf("failed to validate %s with id %s: %w", definition.Kind(), id, err)
+				return nil, fmt.Errorf("failed to validate %s with id %q: %w", definition.Kind(), id, err)
 			}
 
 			definitions[id] = definition
@@ -167,13 +170,13 @@ func ReadDirectory[T Validator](dirPath string) (map[string]T, error) {
 func ReadFile[T Validator](filePath string) (map[string]T, error) {
 	fileBytes, err := os.ReadFile(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read file %s: %w", filePath, err)
+		return nil, fmt.Errorf("failed to read file %q: %w", filePath, err)
 	}
 
 	definitions := make(map[string]T)
 	err = yaml.Unmarshal(fileBytes, &definitions)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal file %s: %w", filePath, err)
+		return nil, fmt.Errorf("failed to unmarshal file %q: %w", filePath, err)
 	}
 
 	return definitions, nil
