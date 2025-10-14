@@ -1,0 +1,168 @@
+{
+  "$id": "device_schema",
+  "title": "Device Schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["ip", "version", "device_groups"],
+  "properties": {
+    "ip": {
+      "type": "string"
+    },
+    "port": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "timeout": {
+      "type": "integer"
+    },
+    "retries": {
+      "type": "integer"
+    },
+    "exponential_timeout": {
+      "type": "boolean"
+    },
+    "version": {
+      "enum": ["1", "2c", "3"]
+    },
+    "communities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "device_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "poll_interval": {
+      "type":  "integer"
+    },
+    "max_oids": {
+      "type":  "integer"
+    },
+    "v3_credentials": {
+      "type":  "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["authentication_protocol"],
+        "dependentRequired": {
+          "privacy_passphrase": ["privacy_protocol"]
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {"authentication_protocol": { "enum": ["md5", "sha", "sha224", "sha256", "sha384", "sha512"] } }
+            },
+            "then": {
+              "required": ["username", "authentication_protocol", "authentication_passphrase"]
+            }
+          },
+          {
+            "if": {
+              "properties": {"privacy_protocol": { "enum": ["des", "aes", "aes192", "aes256", "aes192c", "aes256c"] } }
+            },
+            "then": {
+              "dependentRequired": {
+                "privacy_protocol": ["privacy_passphrase"],
+                "privacy_passphrase": ["privacy_protocol"]
+              }
+            }
+          }
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "authentication_protocol": {
+            "enum": [
+              "noauth",
+              "md5",
+              "sha",
+              "sha224",
+              "sha256",
+              "sha384",
+              "sha512"
+            ]
+          },
+          "authentication_passphrase": {
+            "type": "string"
+          },
+          "privacy_protocol": {
+            "enum": [
+              "nopriv",
+              "des",
+              "aes",
+              "aes192",
+              "aes256",
+              "aes192c",
+              "aes256c"
+            ]
+          },
+          "privacy_passphrase": {
+            "type": "string"
+          },
+          "authoritative_engine_id": {
+            "type": "string"
+          },
+          "authoritative_engine_boots": {
+            "type": "integer"
+          },
+          "authoritative_engine_time": {
+            "type": "integer"
+          },
+          "authentication_parameters": {
+            "type": "string"
+          },
+          "privacy_parameters": {
+            "type": "string"
+          },
+          "secret_key": {
+            "type": "string"
+          },
+          "privacy_key": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "max_repetitions": {
+      "type": "integer"
+    },
+    "max_concurrent_polls": {
+      "type": "integer"
+    },
+    "cisco_qos_enabled": {
+      "type": "boolean"
+    },
+    "poll_intervals": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "version": { "enum": ["1", "2c"] } }
+      },
+      "then": {
+        "required": ["ip", "version", "device_groups", "communities"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "version": { "const": "3" } }
+      },
+      "then": {
+        "required": ["ip", "version", "device_groups", "v3_credentials"]
+      }
+    }
+  ]
+}

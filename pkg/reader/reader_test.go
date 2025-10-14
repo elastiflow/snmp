@@ -22,17 +22,17 @@ func TestReadTrapEnterprises(t *testing.T) {
 		{
 			name:           "enterprise file does not exist",
 			enterpriseFile: "testdata/traps/enterprises_does_not_exist.yml",
-			wantErr:        "failed to read file testdata/traps/enterprises_does_not_exist.yml",
+			wantErr:        "failed to read file \"testdata/traps/enterprises_does_not_exist.yml\"",
 		},
 		{
 			name:           "enterprise file cannot be unmarshalled",
 			enterpriseFile: "testdata/traps/enterprises_invalid.yml",
-			wantErr:        "failed to unmarshal file testdata/traps/enterprises_invalid.yml",
+			wantErr:        "failed to unmarshal file \"testdata/traps/enterprises_invalid.yml\"",
 		},
 		{
 			name:           "invalid rule in enterprises file",
 			enterpriseFile: "testdata/traps/enterprises_invalid_rule.yml",
-			wantErr:        "failed to validate enterprise .1.2.840.10036.1.6",
+			wantErr:        "failed to validate enterprise \".1.2.840.10036.1.6\"",
 		},
 	}
 
@@ -70,13 +70,14 @@ func TestReadDefinitions(t *testing.T) {
 			objectsDir:      "testdata/valid/objects",
 			defaultsDir:     "testdata/valid/defaults",
 			wantDefinitions: &def.Definitions{
-				Devices: map[string]def.Device{
+				Devices: map[string]*def.Device{
 					"test_device": {
 						IP:            "192.168.1.1",
 						Port:          161,
 						Version:       "2c",
 						Timeout:       5,
 						Retries:       3,
+						DeviceGroups:  []string{"test_device_group"},
 						PollIntervals: map[string]uint64{"configuration": 60},
 					},
 				},
@@ -114,6 +115,7 @@ func TestReadDefinitions(t *testing.T) {
 					Retries:      2,
 					Version:      "2c",
 					Communities:  []string{"public"},
+					DeviceGroups: []string{"test_device_group"},
 					PollInterval: 60,
 				},
 			},
@@ -126,7 +128,7 @@ func TestReadDefinitions(t *testing.T) {
 			objectsDir:      "testdata/valid/objects",
 			defaultsDir:     "testdata/invalid/defaults",
 			wantDefinitions: &def.Definitions{
-				Devices: map[string]def.Device{
+				Devices: map[string]*def.Device{
 					"test_device": {
 						IP:      "192.168.1.1",
 						Port:    161,
@@ -253,17 +255,17 @@ func TestReadEnums(t *testing.T) {
 		{
 			name:    "invalid integer oid",
 			enumDir: "testdata/invalid/enums_invalid_integer_oid",
-			wantErr: "invalid oid invalid_oid in integer enums",
+			wantErr: "invalid oid \"invalid_oid\" in integer enums",
 		},
 		{
 			name:    "invalid bit map oid",
 			enumDir: "testdata/invalid/enums_invalid_bitmap_oid",
-			wantErr: "invalid oid invalid_oid in bit map enums",
+			wantErr: "invalid oid \"invalid_oid\" in bit map enums",
 		},
 		{
 			name:    "invalid oid",
 			enumDir: "testdata/invalid/enums_invalid_oid_oid",
-			wantErr: "invalid oid invalid_oid in oid enums",
+			wantErr: "invalid oid \"invalid_oid\" in oid enums",
 		},
 	}
 
@@ -324,12 +326,12 @@ func TestReadDirectory(t *testing.T) {
 		{
 			name:    "duplicate objects",
 			dirPath: "testdata/invalid/objects_duplicate",
-			wantErr: "found duplicate object with id test_object",
+			wantErr: "found duplicate object with id \"test_object\"",
 		},
 		{
 			name:    "invalid object definition",
 			dirPath: "testdata/invalid/objects_invalid",
-			wantErr: "failed to validate object with id test_object_invalid: jsonschema: '/attributes/sysDescr/syntax' does not validate",
+			wantErr: "failed to validate object with id \"test_object_invalid\": jsonschema: '/attributes/sysDescr/syntax' does not validate",
 		},
 	}
 

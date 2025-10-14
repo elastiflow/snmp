@@ -9,44 +9,44 @@ import (
 func TestValidateDevices(t *testing.T) {
 	tests := []struct {
 		name         string
-		devices      map[string]Device
+		devices      map[string]*Device
 		deviceGroups map[string]DeviceGroup
 		objectTypes  map[string]ObjectType
 		expected     string
 	}{
 		{
-			name: "valid devices",
-			devices: map[string]Device{
-				"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}, PollIntervals: map[string]uint64{"configuration": 60}},
-				"device2": {IP: "127.0.0.2", DeviceGroups: []string{"dg"}},
-			},
+			name:         "valid devices",
+			devices:      map[string]*Device{"device1": device1, "device2": device2},
 			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
 			objectTypes:  map[string]ObjectType{"configuration": {PollInterval: 60}},
 		},
 		{
+			name:     "invalid device",
+			devices:  map[string]*Device{"device1": {IP: "127.0.0.1"}},
+			expected: "missing properties: 'version', 'device_groups'",
+		},
+		{
 			name:     "undefined device group",
-			devices:  map[string]Device{"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}}},
+			devices:  map[string]*Device{"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}}},
 			expected: "device \"device1\" references an undefined device group: \"dg\"",
 		},
 		{
 			name: "duplicate IP addresses",
-			devices: map[string]Device{
+			devices: map[string]*Device{
 				"device1": {IP: "127.0.0.1"},
 				"device2": {IP: "127.0.0.1"},
 			},
 			expected: "has the same IP address (127.0.0.1)",
 		},
 		{
-			name: "undefined object type",
-			devices: map[string]Device{
-				"device1": {IP: "127.0.0.1", DeviceGroups: []string{"dg"}, PollIntervals: map[string]uint64{"configuration": 60}},
-			},
+			name:         "undefined object type",
+			devices:      map[string]*Device{"device1": device1, "device2": device2},
 			deviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
 			expected:     "found 1 device definition errors:\ndevice \"device1\" references an undefined object type: \"configuration\"",
 		},
 		{
 			name:    "empty device map",
-			devices: map[string]Device{},
+			devices: map[string]*Device{},
 		},
 	}
 
@@ -113,7 +113,170 @@ func TestDevice_Validate(t *testing.T) {
 	}
 }
 
-func TestDevice_Type(t *testing.T) {
+func TestDevice_Kind(t *testing.T) {
 	device := Device{}
 	assert.Equal(t, "device", device.Kind())
+}
+
+func TestDevice_applyHardcodedDefaults(t *testing.T) {
+	tests := []struct {
+		name        string
+		device      *Device
+		objectTypes map[string]ObjectType
+		expected    *Device
+	}{
+		{
+			name:   "empty device",
+			device: &Device{},
+			objectTypes: map[string]ObjectType{
+				"interface": {PollInterval: 30},
+				"system":    {PollInterval: 60},
+			},
+			expected: &Device{
+				Port:               161,
+				Timeout:            3000,
+				Retries:            2,
+				PollInterval:       60,
+				MaxOIDs:            64,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 30,
+					"system":    60,
+				},
+			},
+		},
+		{
+			name: "partially filled device",
+			device: &Device{
+				Port:         162,
+				Timeout:      5000,
+				PollInterval: 120,
+			},
+			objectTypes: map[string]ObjectType{
+				"interface": {PollInterval: 30},
+			},
+			expected: &Device{
+				Port:               162,
+				Timeout:            5000,
+				Retries:            2,
+				PollInterval:       120,
+				MaxOIDs:            64,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 30,
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.device.applyHardcodedDefaults(tt.objectTypes)
+			assert.Equal(t, tt.expected, tt.device)
+		})
+	}
+}
+
+func TestDevice_applyDefaults(t *testing.T) {
+	tests := []struct {
+		name          string
+		device        *Device
+		defaultDevice *Device
+		expected      *Device
+	}{
+		{
+			name:   "empty device",
+			device: &Device{},
+			defaultDevice: &Device{
+				Port:               161,
+				Timeout:            3000,
+				Retries:            2,
+				ExponentialTimeout: true,
+				Version:            "2c",
+				Communities:        []string{"public"},
+				DeviceGroups:       []string{"default"},
+				PollInterval:       60,
+				MaxOIDs:            64,
+				V3Credentials:      []V3Credential{{Username: "admin"}},
+				MaxRepetitions:     10,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 30,
+					"system":    60,
+				},
+			},
+			expected: &Device{
+				Port:               161,
+				Timeout:            3000,
+				Retries:            2,
+				ExponentialTimeout: true,
+				Version:            "2c",
+				Communities:        []string{"public"},
+				DeviceGroups:       []string{"default"},
+				PollInterval:       60,
+				MaxOIDs:            64,
+				V3Credentials:      []V3Credential{{Username: "admin"}},
+				MaxRepetitions:     10,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 30,
+					"system":    60,
+				},
+			},
+		},
+		{
+			name: "partially filled device",
+			device: &Device{
+				Port:         162,
+				Timeout:      5000,
+				PollInterval: 120,
+				PollIntervals: map[string]uint64{
+					"interface": 45,
+				},
+			},
+			defaultDevice: &Device{
+				Port:               161,
+				Timeout:            3000,
+				Retries:            2,
+				ExponentialTimeout: true,
+				Version:            "2c",
+				Communities:        []string{"public"},
+				DeviceGroups:       []string{"default"},
+				PollInterval:       60,
+				MaxOIDs:            64,
+				V3Credentials:      []V3Credential{{Username: "admin"}},
+				MaxRepetitions:     10,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 30,
+					"system":    60,
+				},
+			},
+			expected: &Device{
+				Port:               162,
+				Timeout:            5000,
+				Retries:            2,
+				ExponentialTimeout: true,
+				Version:            "2c",
+				Communities:        []string{"public"},
+				DeviceGroups:       []string{"default"},
+				PollInterval:       120,
+				MaxOIDs:            64,
+				V3Credentials:      []V3Credential{{Username: "admin"}},
+				MaxRepetitions:     10,
+				MaxConcurrentPolls: 4,
+				PollIntervals: map[string]uint64{
+					"interface": 45,
+					"system":    60,
+				},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.device.applyDefaults(tt.defaultDevice)
+			assert.Equal(t, tt.expected, tt.device)
+		})
+	}
 }
