@@ -1,19 +1,19 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "Juniper JUNIPER-CFGMGMT-MIB"
+    root.out.origin.agent.name = "Juniper JUNIPER-DOM-MIB"
 - switch:
   - check: this.trap.SpecificTrap == 1
-    # jnxCmCfgChange
+    # jnxDomLaneAlarmSet
     #
-    # Notification of a configuration management event as recorded in jnxCmCfgChgEventTable.
+    # Notification of a recently set Dom Lane alarm.
     #
-    # jnxCmCfgChgEventTime (TimeTicks) - The value of sysUpTime when the event occurred.
-    # jnxCmCfgChgEventDate (DateAndTime) - The system date and time when the event occurred.
-    # jnxCmCfgChgEventSource (INTEGER) - The source of the configuration event.
-    # jnxCmCfgChgEventUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
-    #   applicable.
-    # jnxCmCfgChgEventLog (DisplayString) - The log of the configuration event. The length is zero if not available.
+    # ifDescr (DisplayString) - A textual string containing information about the interface.
+    # jnxDomLaneIndex (Integer32) - A lane (Laser) on this SFF optical interface
+    # jnxDomLaneLastAlarms (BITS) - A copy of jnxDomCurrentAlarms before last set or clear.
+    # jnxDomCurrentLaneAlarms (BITS) - The active DOM alarms on a particular Lane of a SFF physical interface.
+    # jnxDomCurrentLaneAlarmDate (DateAndTime) - The system date and time when the management subsystem learned of the
+    #   current lane alarm event.
     processors:
       - mapping: |-
           #!blobl
@@ -21,11 +21,11 @@
 
           meta varbinds_ok = false
           if this.trap.VarBinds.length() > 4 {
-            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.2") {
-            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.3") {
-            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.4") {
-            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.5") {
-            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.6") {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.4") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.2") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.3") {
               meta varbinds_ok = true
           }}}}}}
 
@@ -36,26 +36,76 @@
                 #!blobl
                 root = this
 
-                root.out.juniper.jnxCmCfgChgEventTime = this.trap.VarBinds.index(0).Value
-                root.out.juniper.jnxCmCfgChgEventDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
-                root.out.juniper.jnxCmCfgChgEventSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.1.7.1.4").string()
-                root.out.juniper.jnxCmCfgChgEventUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
-                root.out.juniper.jnxCmCfgChgEventLog = this.trap.VarBinds.index(4).Value.snmp_display_string()
+                root.out.ietf.ifDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxDomLaneIndex = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxDomLaneLastAlarms = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxDomCurrentLaneAlarms = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxDomCurrentLaneAlarmDate = this.trap.VarBinds.index(4).Value.snmp_date_and_time().ts_unix_milli()
 
-                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmCfgChgEventEntry"
-                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.18.1.7.1.4")
-                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
-                root.out.object.label = "user: " + root.out.juniper.jnxCmCfgChgEventUser
-
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-                root.out.event.category.name = "configuration change"
-                root.out.event.message = "configuration changed via " + root.out.juniper.jnxCmCfgChgEventSource
-                if root.out.juniper.jnxCmCfgChgEventLog != "" {
-                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxCmCfgChgEventLog
+                root.TEMP.alarms = ""
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(1) == 1 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(1) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "receive laser power high"
                 }
-                root.out.event.severity.code = 5
-                root.out.event.severity.level = "Notice"
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(2) == 2 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(2) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "receive laser power low"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(4) == 4 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(4) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser bias current high"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(8) == 8 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(8) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser bias current low"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(16) == 16 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(16) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser power high"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(32) == 32 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(32) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser power low"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(64) == 64 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(64) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "laser temperature high"
+                }
+                if root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(128) == 128 && root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(128) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "laser temperature low"
+                }
+
+                root.out.object.name = "JUNIPER-DOM-MIB::jnxDomCurrentLaneEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.60.1.2.1.1.1")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: " + root.out.ietf.ifDescr + ", lane: " + root.out.juniper.jnxDomLaneIndex
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmSet"
+                root.out.event.id = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmSet"
+                root.out.event.category.name = "DOM lane state"
+                root.out.event.message = "DOM lane alarm"
+                if root.TEMP.alarms.length() > 0 {
+                  root.out.event.message = root.out.event.message + ": " + root.TEMP.alarms
+                }
+                root.out.event.severity.code = 2
+                root.out.event.severity.level = "Alert"
 
             - mapping: |-
                 #!blobl
@@ -150,75 +200,26 @@
                 } else {
                   root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
                 }
-              if this.trap.VarBinds.length() > 10 {
-                root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
-                root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
-                }
-              if this.trap.VarBinds.length() > 11 {
-                root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
-                root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
-                }
-              if this.trap.VarBinds.length() > 12 {
-                root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
-                root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
-                }
-              if this.trap.VarBinds.length() > 13 {
-                root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
-                root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
-                }
-              if this.trap.VarBinds.length() > 14 {
-                root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
-                root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
-                }
-              if this.trap.VarBinds.length() > 15 {
-                root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
-                root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
-                }
-              }}}}}}}}}}}}}}}}
+              }}}}}}}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange-unknown"
-              root.out.event.category.name = "configuration change"
-              root.out.event.message = "configuration change - UNEXPECTED VARBINDS for jnxCmCfgChange trap!"
-              root.out.event.severity.code = 4
-              root.out.event.severity.level = "Warning"
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmSet"
+              root.out.event.id = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmSet-unknown"
+              root.out.event.category.name = "DOM lane state"
+              root.out.event.message = "DOM lane alarm set - UNEXPECTED VARBINDS for jnxDomLaneAlarmSet trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
 
   - check: this.trap.SpecificTrap == 2
-    # jnxCmRescueChange
+    # jnxDomLaneAlarmCleared
     #
-    # Notification of the latest rescue configuration change.
+    # Notification of a recently cleared Dom Lane alarm.
     #
-    # jnxCmRescueChgTime (TimeTicks) - The value of sysUpTime when the rescue configuration was last changed. If the
-    #   management subsystem was reset after the last configuration change, this object will return 0.
-    # jnxCmRescueChgDate (DateAndTime) - The date and time when the rescue configuration was last changed.
-    # jnxCmRescueChgSource (INTEGER) - The source of the rescue configuration event.
-    # jnxCmRescueChgUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
-    #   applicable.
-    # jnxCmRescueChgState (INTEGER) - The current state of the rescue configuration.
+    # ifDescr (DisplayString) - A textual string containing information about the interface.
+    # jnxDomLaneIndex (Integer32) - A lane (Laser) on this SFF optical interface
+    # jnxDomLaneLastAlarms (BITS) - A copy of jnxDomCurrentAlarms before last set or clear.
+    # jnxDomCurrentLaneAlarms (BITS) - The active DOM alarms on a particular Lane of a SFF physical interface.
+    # jnxDomCurrentLaneAlarmDate (DateAndTime) - The system date and time when the management subsystem learned of the
+    #   current lane alarm event.
     processors:
       - mapping: |-
           #!blobl
@@ -226,11 +227,11 @@
 
           meta varbinds_ok = false
           if this.trap.VarBinds.length() > 4 {
-            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.1") {
-            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.2") {
-            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.3") {
-            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.4") {
-            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.5") {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.4") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.2") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.60.1.2.1.1.3") {
               meta varbinds_ok = true
           }}}}}}
 
@@ -241,23 +242,76 @@
                 #!blobl
                 root = this
 
-                root.out.juniper.jnxCmRescueChgTime = this.trap.VarBinds.index(0).Value
-                root.out.juniper.jnxCmRescueChgDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
-                root.out.juniper.jnxCmRescueChgSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.3")
-                root.out.juniper.jnxCmRescueChgUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
-                root.out.juniper.jnxCmRescueChgState = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.5")
+                root.out.ietf.ifDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxDomLaneIndex = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxDomLaneLastAlarms = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxDomCurrentLaneAlarms = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxDomCurrentLaneAlarmDate = this.trap.VarBinds.index(4).Value.snmp_date_and_time().ts_unix_milli()
 
-                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmRescueChg"
-                root.out.object.index = "0"
+                root.TEMP.alarms = ""
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(1) == 1 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(1) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "receive laser power high"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(2) == 2 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(2) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "receive laser power low"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(4) == 4 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(4) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser bias current high"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(8) == 8 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(8) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser bias current low"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(16) == 16 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(16) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser power high"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(32) == 32 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(32) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "transmit laser power low"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(64) == 64 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(64) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "laser temperature high"
+                }
+                if root.out.juniper.jnxDomLaneLastAlarms.bitwise_and(128) == 128 && root.out.juniper.jnxDomCurrentLaneAlarms.bitwise_and(128) == 0 {
+                  if root.TEMP.alarms.length() > 0 {
+                    root.TEMP.alarms = root.TEMP.alarms + ", "
+                  }
+                  root.TEMP.alarms = root.TEMP.alarms + "laser temperature low"
+                }
+
+                root.out.object.name = "JUNIPER-DOM-MIB::jnxDomCurrentLaneEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.60.1.2.1.1.1")
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
-                root.out.object.label = "user: " + root.out.juniper.jnxCmRescueChgUser
+                root.out.object.label = "interface: " + root.out.ietf.ifDescr + ", lane: " + root.out.juniper.jnxDomLaneIndex
 
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-                root.out.event.category.name = "rescue configuration change"
-                root.out.event.message = "rescue configuration changed via " + root.out.juniper.jnxCmRescueChgSource
-                root.out.event.severity.code = 5
-                root.out.event.severity.level = "Notice"
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmCleared"
+                root.out.event.id = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmCleared"
+                root.out.event.category.name = "DOM lane state"
+                root.out.event.message = "DOM lane alarm cleared"
+                if root.TEMP.alarms.length() > 0 {
+                  root.out.event.message = root.out.event.message + ": " + root.TEMP.alarms
+                }
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
 
             - mapping: |-
                 #!blobl
@@ -352,60 +406,12 @@
                 } else {
                   root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
                 }
-              if this.trap.VarBinds.length() > 10 {
-                root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
-                root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
-                }
-              if this.trap.VarBinds.length() > 11 {
-                root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
-                root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
-                }
-              if this.trap.VarBinds.length() > 12 {
-                root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
-                root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
-                }
-              if this.trap.VarBinds.length() > 13 {
-                root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
-                root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
-                }
-              if this.trap.VarBinds.length() > 14 {
-                root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
-                root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
-                }
-              if this.trap.VarBinds.length() > 15 {
-                root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
-                root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
-                }
-              }}}}}}}}}}}}}}}}
+              }}}}}}}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange-unknown"
-              root.out.event.category.name = "rescue configuration change"
-              root.out.event.message = "rescue configuration change - UNEXPECTED VARBINDS for jnxCmRescueChange trap!"
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmCleared"
+              root.out.event.id = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-jnxDomLaneAlarmCleared-unknown"
+              root.out.event.category.name = "DOM lane state"
+              root.out.event.message = "DOM lane alarm cleared - UNEXPECTED VARBINDS for jnxDomLaneAlarmCleared trap!"
               root.out.event.severity.code = 4
               root.out.event.severity.level = "Warning"
 
@@ -545,9 +551,9 @@
           }
         }}}}}}}}}}}}}}}}
 
-        root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-unknown"
-        root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-" + this.trap.SpecificTrap.string()
+        root.out.event.class.name = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-unknown"
+        root.out.event.id = "SNMPTRAP-JUNIPER-DOM-MIB-jnxDomLaneNotifications-" + this.trap.SpecificTrap.string()
         root.out.event.category.name = "unknown specific trap"
-        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-CFGMGMT-MIB::jnxCmNotifications"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-DOM-MIB-jnxDomLaneNotifications"
         root.out.event.severity.code = 4
         root.out.event.severity.level = "Warning"

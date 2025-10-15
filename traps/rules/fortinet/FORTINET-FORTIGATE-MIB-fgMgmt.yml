@@ -1,33 +1,24 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "Juniper JUNIPER-CFGMGMT-MIB"
+    root.out.origin.agent.name = "Fortinet FORTINET-FORTIGATE-MIB"
 - switch:
-  - check: this.trap.SpecificTrap == 1
-    # jnxCmCfgChange
+  - check: this.trap.SpecificTrap == 1000
+    # fgFmTrapDeployComplete
     #
-    # Notification of a configuration management event as recorded in jnxCmCfgChgEventTable.
+    # Indicates when deployment of a new configuration has been completed. Used for verification by FortiManager.
     #
-    # jnxCmCfgChgEventTime (TimeTicks) - The value of sysUpTime when the event occurred.
-    # jnxCmCfgChgEventDate (DateAndTime) - The system date and time when the event occurred.
-    # jnxCmCfgChgEventSource (INTEGER) - The source of the configuration event.
-    # jnxCmCfgChgEventUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
-    #   applicable.
-    # jnxCmCfgChgEventLog (DisplayString) - The log of the configuration event. The length is zero if not available.
+    # fnSysSerial (DisplayString) - device serial number.
     processors:
       - mapping: |-
           #!blobl
           root = this
 
           meta varbinds_ok = false
-          if this.trap.VarBinds.length() > 4 {
-            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.2") {
-            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.3") {
-            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.4") {
-            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.5") {
-            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.1.7.1.6") {
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.100.1.1.1") {
               meta varbinds_ok = true
-          }}}}}}
+          }}
 
       - switch:
         - check: metadata("varbinds_ok")
@@ -36,34 +27,18 @@
                 #!blobl
                 root = this
 
-                root.out.juniper.jnxCmCfgChgEventTime = this.trap.VarBinds.index(0).Value
-                root.out.juniper.jnxCmCfgChgEventDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
-                root.out.juniper.jnxCmCfgChgEventSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.1.7.1.4").string()
-                root.out.juniper.jnxCmCfgChgEventUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
-                root.out.juniper.jnxCmCfgChgEventLog = this.trap.VarBinds.index(4).Value.snmp_display_string()
+                root.out.fortinet.fnSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
 
-                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmCfgChgEventEntry"
-                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.18.1.7.1.4")
+                root.out.object.name = "FORTINET-CORE-MIB::fnSystem"
+                root.out.object.index = "0"
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
-                root.out.object.label = "user: " + root.out.juniper.jnxCmCfgChgEventUser
 
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-                root.out.event.category.name = "configuration change"
-                root.out.event.message = "configuration changed via " + root.out.juniper.jnxCmCfgChgEventSource
-                if root.out.juniper.jnxCmCfgChgEventLog != "" {
-                  root.out.event.message = root.out.event.message + ": " + root.out.juniper.jnxCmCfgChgEventLog
-                }
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployComplete"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployComplete"
+                root.out.event.category.name = "configuration deployment state"
+                root.out.event.message = "configuration deployment complete"
                 root.out.event.severity.code = 5
                 root.out.event.severity.level = "Notice"
-
-            - mapping: |-
-                #!blobl
-                root = this
-
-                root.out.event.message = if root.out.exists("object.label") {
-                  root.out.event.message + "  [ " + root.out.object.label + " ]"
-                }
 
         - processors:
           - mapping: |-
@@ -110,115 +85,208 @@
                 } else {
                   root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
                 }
-              if this.trap.VarBinds.length() > 5 {
-                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
-                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
-                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
-                }
-              if this.trap.VarBinds.length() > 6 {
-                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
-                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
-                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
-                }
-              if this.trap.VarBinds.length() > 7 {
-                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
-                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
-                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
-                }
-              if this.trap.VarBinds.length() > 8 {
-                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
-                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
-                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
-                }
-              if this.trap.VarBinds.length() > 9 {
-                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
-                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
-                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
-                }
-              if this.trap.VarBinds.length() > 10 {
-                root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
-                root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
-                }
-              if this.trap.VarBinds.length() > 11 {
-                root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
-                root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
-                }
-              if this.trap.VarBinds.length() > 12 {
-                root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
-                root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
-                }
-              if this.trap.VarBinds.length() > 13 {
-                root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
-                root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
-                }
-              if this.trap.VarBinds.length() > 14 {
-                root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
-                root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
-                }
-              if this.trap.VarBinds.length() > 15 {
-                root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
-                root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
-                }
-              }}}}}}}}}}}}}}}}
+              }}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange"
-              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmCfgChange-unknown"
-              root.out.event.category.name = "configuration change"
-              root.out.event.message = "configuration change - UNEXPECTED VARBINDS for jnxCmCfgChange trap!"
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployComplete"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployComplete-unknown"
+              root.out.event.category.name = "configuration deployment state"
+              root.out.event.message = "configuration deployment complete - UNEXPECTED VARBINDS for fgFmTrapDeployComplete trap!"
               root.out.event.severity.code = 4
               root.out.event.severity.level = "Warning"
 
-  - check: this.trap.SpecificTrap == 2
-    # jnxCmRescueChange
+  - check: this.trap.SpecificTrap == 1002
+    # fgFmTrapDeployInProgress
     #
-    # Notification of the latest rescue configuration change.
+    # Indicates that a configuration change was not immediate and that the change is currently in progress. Used for
+    # verification by FortiManager.
     #
-    # jnxCmRescueChgTime (TimeTicks) - The value of sysUpTime when the rescue configuration was last changed. If the
-    #   management subsystem was reset after the last configuration change, this object will return 0.
-    # jnxCmRescueChgDate (DateAndTime) - The date and time when the rescue configuration was last changed.
-    # jnxCmRescueChgSource (INTEGER) - The source of the rescue configuration event.
-    # jnxCmRescueChgUser (DisplayString) - The name of the logged in user. The length is zero if not available or not
-    #   applicable.
-    # jnxCmRescueChgState (INTEGER) - The current state of the rescue configuration.
+    # fnSysSerial (DisplayString) - device serial number.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.100.1.1.1") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fnSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-CORE-MIB::fnSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployInProgress"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployInProgress"
+                root.out.event.category.name = "configuration deployment state"
+                root.out.event.message = "configuration deployment in-progress"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployInProgress"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapDeployInProgress-unknown"
+              root.out.event.category.name = "configuration deployment state"
+              root.out.event.message = "configuration deployment in-progress - UNEXPECTED VARBINDS for fgFmTrapDeployInProgress trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 1003
+    # fgFmTrapConfChange
+    #
+    # The device configuration has been changed by something other than the managing FortiManager device.
+    #
+    # fnSysSerial (DisplayString) - device serial number.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.100.1.1.1") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fnSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-CORE-MIB::fnSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapConfChange"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapConfChange"
+                root.out.event.category.name = "configuration change"
+                root.out.event.message = "configuration changed by something other than FortiManager"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapConfChange"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapConfChange-unknown"
+              root.out.event.category.name = "configuration change"
+              root.out.event.message = "configuration changed by something other than FortiManager - UNEXPECTED VARBINDS for fgFmTrapConfChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 1004
+    # fgFmTrapIfChange
+    #
+    # Trap is sent to the managing FortiManager if an interface IP is changed
+    #
+    # fnSysSerial (DisplayString) - device serial number.
+    # ifName (DisplayString) - The textual name of the interface.
+    # fgManIfIp (IpAddress) - IP address of the interface
+    # fgManIfMask (IpAddress) - Mask of subnet the interface belongs to
+    # fgManIfIp6 (OCTET STRING) - IPv6 address of the interface
     processors:
       - mapping: |-
           #!blobl
@@ -226,11 +294,11 @@
 
           meta varbinds_ok = false
           if this.trap.VarBinds.length() > 4 {
-            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.1") {
-            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.2") {
-            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.3") {
-            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.4") {
-            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.18.2.5") {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.100.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.12356.101.6.2.1") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.12356.101.6.2.2") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.12356.101.6.2.3") {
               meta varbinds_ok = true
           }}}}}}
 
@@ -241,21 +309,21 @@
                 #!blobl
                 root = this
 
-                root.out.juniper.jnxCmRescueChgTime = this.trap.VarBinds.index(0).Value
-                root.out.juniper.jnxCmRescueChgDate = this.trap.VarBinds.index(1).Value.snmp_date_and_time().ts_unix_milli()
-                root.out.juniper.jnxCmRescueChgSource = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.3")
-                root.out.juniper.jnxCmRescueChgUser = this.trap.VarBinds.index(3).Value.snmp_display_string()
-                root.out.juniper.jnxCmRescueChgState = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.18.2.5")
+                root.out.fortinet.fnSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.ifName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fgManIfIp = this.trap.VarBinds.index(2).Value
+                root.out.fortinet.fgManIfMask = this.trap.VarBinds.index(3).Value
+                root.out.fortinet.fgManIfIp6 = this.trap.VarBinds.index(4).Value.snmp_inet_address(2)
 
-                root.out.object.name = "JUNIPER-CFGMGMT-MIB::jnxCmRescueChg"
-                root.out.object.index = "0"
+                root.out.object.name = "IF-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
-                root.out.object.label = "user: " + root.out.juniper.jnxCmRescueChgUser
+                root.out.object.label = "interface: " + root.out.ietf.ifName
 
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-                root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-                root.out.event.category.name = "rescue configuration change"
-                root.out.event.message = "rescue configuration changed via " + root.out.juniper.jnxCmRescueChgSource
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapIfChange"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapIfChange"
+                root.out.event.category.name = "interface IP address change"
+                root.out.event.message = "interface IP address changed to, IPv4: " + root.out.fortinet.fgManIfIp + "/" + root.out.fortinet.fgManIfMask + ", IPv6: " + root.out.fortinet.fgManIfIp6
                 root.out.event.severity.code = 5
                 root.out.event.severity.level = "Notice"
 
@@ -336,76 +404,12 @@
                 } else {
                   root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
                 }
-              if this.trap.VarBinds.length() > 8 {
-                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
-                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
-                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
-                }
-              if this.trap.VarBinds.length() > 9 {
-                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
-                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
-                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
-                }
-              if this.trap.VarBinds.length() > 10 {
-                root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
-                root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
-                }
-              if this.trap.VarBinds.length() > 11 {
-                root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
-                root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
-                }
-              if this.trap.VarBinds.length() > 12 {
-                root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
-                root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
-                }
-              if this.trap.VarBinds.length() > 13 {
-                root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
-                root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
-                }
-              if this.trap.VarBinds.length() > 14 {
-                root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
-                root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
-                }
-              if this.trap.VarBinds.length() > 15 {
-                root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
-                root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
-                if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
-                } else {
-                  root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
-                }
-              }}}}}}}}}}}}}}}}
+              }}}}}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange"
-              root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-jnxCmRescueChange-unknown"
-              root.out.event.category.name = "rescue configuration change"
-              root.out.event.message = "rescue configuration change - UNEXPECTED VARBINDS for jnxCmRescueChange trap!"
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapIfChange"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-fgFmTrapIfChange-unknown"
+              root.out.event.category.name = "interface IP address change"
+              root.out.event.message = "interface IP address changed - UNEXPECTED VARBINDS for fgFmTrapIfChange trap!"
               root.out.event.severity.code = 4
               root.out.event.severity.level = "Warning"
 
@@ -545,9 +549,9 @@
           }
         }}}}}}}}}}}}}}}}
 
-        root.out.event.class.name = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-unknown"
-        root.out.event.id = "SNMPTRAP-JUNIPER-CFGMGMT-MIB-jnxCmNotifications-" + this.trap.SpecificTrap.string()
+        root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-unknown"
+        root.out.event.id = "SNMPTRAP-FORTINET-FORTIGATE-MIB-fgMgmt-" + this.trap.SpecificTrap.string()
         root.out.event.category.name = "unknown specific trap"
-        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-CFGMGMT-MIB::jnxCmNotifications"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Fortinet FORTINET-FORTIGATE-MIB-fgMgmt"
         root.out.event.severity.code = 4
         root.out.event.severity.level = "Warning"

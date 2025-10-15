@@ -1,0 +1,1738 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Fortinet FORTINET-FORTIMAIL-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 101
+    # fmlTrapCpuHighThreshold
+    #
+    # Trap being sent if CPU usage becomes too high
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapCpuHighThreshold"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapCpuHighThreshold"
+                root.out.event.category.name = "CPU utilization threshold"
+                root.out.event.message = "CPU utilization high"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapCpuHighThreshold"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapCpuHighThreshold-unknown"
+              root.out.event.category.name = "CPU utilization threshold"
+              root.out.event.message = "CPU utilization high - UNEXPECTED VARBINDS for fmlTrapCpuHighThreshold trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 102
+    # fmlTrapMemLowThreshold
+    #
+    # Trap being sent if memory usage becomes too high
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMemLowThreshold"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMemLowThreshold"
+                root.out.event.category.name = "memory utilization threshold"
+                root.out.event.message = "memory utilization high"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMemLowThreshold"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMemLowThreshold-unknown"
+              root.out.event.category.name = "memory utilization threshold"
+              root.out.event.message = "memory utilization high - UNEXPECTED VARBINDS for fmlTrapMemLowThreshold trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 103
+    # fmlTrapLogDiskHighThreshold
+    #
+    # Trap being sent if Log disk usage becomes too high
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapLogDiskHighThreshold"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapLogDiskHighThreshold"
+                root.out.event.category.name = "log disk utilization threshold"
+                root.out.event.message = "log disk full"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapLogDiskHighThreshold"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapLogDiskHighThreshold-unknown"
+              root.out.event.category.name = "log disk utilization threshold"
+              root.out.event.message = "log disk full - UNEXPECTED VARBINDS for fmlTrapLogDiskHighThreshold trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 104
+    # fmlTrapMailDiskHighThreshold
+    #
+    # Trap being sent if Mailbox disk usage becomes too high
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDiskHighThreshold"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDiskHighThreshold"
+                root.out.event.category.name = "mail disk utilization threshold"
+                root.out.event.message = "mail disk utilization high"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDiskHighThreshold"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDiskHighThreshold-unknown"
+              root.out.event.category.name = "mail disk utilization threshold"
+              root.out.event.message = "mail disk utilization high - UNEXPECTED VARBINDS for fmlTrapMailDiskHighThreshold trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 105
+    # fmlTrapMailDeferredQueueHighThreshold
+    #
+    # Trap being sent if Mail server deferred emails becomes too high
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDeferredQueueHighThreshold"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDeferredQueueHighThreshold"
+                root.out.event.category.name = "mail deferred queue threshold"
+                root.out.event.message = "mail deferred queue high"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDeferredQueueHighThreshold"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapMailDeferredQueueHighThreshold-unknown"
+              root.out.event.category.name = "mail deferred queue threshold"
+              root.out.event.message = "mail deferred queue high - UNEXPECTED VARBINDS for fmlTrapMailDeferredQueueHighThreshold trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 106
+    # fmlTrapAvThresholdEvent
+    #
+    # Trap being sent when detected virus number reaches the threshold
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapAvThresholdEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapAvThresholdEvent"
+                root.out.event.category.name = "detected virus threshold"
+                root.out.event.message = "detected virus count high"
+                root.out.event.severity.code = 2
+                root.out.event.severity.level = "Critical"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapAvThresholdEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapAvThresholdEvent-unknown"
+              root.out.event.category.name = "detected virus threshold"
+              root.out.event.message = "detected virus count high - UNEXPECTED VARBINDS for fmlTrapAvThresholdEvent trap!"
+              root.out.event.severity.code = 2
+              root.out.event.severity.level = "Critical"
+
+  - check: this.trap.SpecificTrap == 107
+    # fmlTrapSpamThresholdEvent
+    #
+    # Trap being sent when detected spam email number reaches the threshold
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSpamThresholdEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSpamThresholdEvent"
+                root.out.event.category.name = "detected spam email threshold"
+                root.out.event.message = "detected spam email count high"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSpamThresholdEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSpamThresholdEvent-unknown"
+              root.out.event.category.name = "detected spam email threshold"
+              root.out.event.message = "detected spam email count high - UNEXPECTED VARBINDS for fmlTrapSpamThresholdEvent trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 108
+    # fmlTrapPSUFailureEvent
+    #
+    # Trap being sent when detected a power suply unit failure
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # fmlHwSensorEntName (DisplayString) - Sensor Name
+    # fmlHwSensorEntValue (DisplayString) - Reading value of the sensor
+    # fmlHwSensorEntAlarmStatus (INTEGER) - Alarm status of the sensor
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.110.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.110.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.110.2.1.4") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlHwSensorEntName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlHwSensorEntValue = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlHwSensorEntAlarmStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.12356.105.1.110.2.1.4")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlHwSensorEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.12356.105.1.110.2.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "sensor: " + root.out.fortinet.fmlHwSensorEntName
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapPSUFailureEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapPSUFailureEvent"
+                root.out.event.category.name = "power supply state"
+                root.out.event.message = "power supply failure, sensor value: " + root.out.fortinet.fmlHwSensorEntValue + ", alarm: " + root.out.fortinet.fmlHwSensorEntAlarmStatus
+                root.out.event.severity.code = 2
+                root.out.event.severity.level = "Critical"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapPSUFailureEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapPSUFailureEvent-unknown"
+              root.out.event.category.name = "power supply state"
+              root.out.event.message = "power supply failure - UNEXPECTED VARBINDS for fmlTrapPSUFailureEvent trap!"
+              root.out.event.severity.code = 2
+              root.out.event.severity.level = "Critical"
+
+  - check: this.trap.SpecificTrap == 201
+    # fmlTrapSystemEvent
+    #
+    # Trap being sent when system component halt, reboot, upgrade etc.
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # fmlSysEventCode (INTEGER) - System component events
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.11") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta fmlSysEventCode = this.trap.VarBinds.index(1).Value
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlSysEventCode = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.12356.105.1.11")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSystemEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSystemEvent"
+
+            - switch:
+              - check: metadata("fmlSysEventCode") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-systemHalt"
+                      root.out.event.category.name = "system state"
+                      root.out.event.message = "system halted"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("fmlSysEventCode") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-systemReboot"
+                      root.out.event.category.name = "system state"
+                      root.out.event.message = "system reboot"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlSysEventCode") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-systemReload"
+                      root.out.event.category.name = "system state"
+                      root.out.event.message = "system reload"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlSysEventCode") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-systemUpgrade"
+                      root.out.event.category.name = "system state"
+                      root.out.event.message = "system upgrade"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlSysEventCode") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-guiUpgrade"
+                      root.out.event.category.name = "system state"
+                      root.out.event.message = "system GUI upgrade"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlSysEventCode") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-logdiskFormat"
+                      root.out.event.category.name = "log disk state"
+                      root.out.event.message = "log disk formatted"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("fmlSysEventCode") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-maildiskFormat"
+                      root.out.event.category.name = "mail disk state"
+                      root.out.event.message = "mail disk formatted"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("fmlSysEventCode") == 8
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-avDBUpdateSuccess"
+                      root.out.event.category.name = "anti-virus database update state"
+                      root.out.event.message = "anti-virus database update success"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("fmlSysEventCode") == 9
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-avDBUpdateNetworkError"
+                      root.out.event.category.name = "anti-virus database update state"
+                      root.out.event.message = "anti-virus database update network error"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("fmlSysEventCode") == 10
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-avDBUpdateFailure"
+                      root.out.event.category.name = "anti-virus database update state"
+                      root.out.event.message = "anti-virus database update failure"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.category.name = "system event"
+                    root.out.event.message = "system event, unknown code: " + root.out.fortinet.fmlSysEventCode
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSystemEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapSystemEvent-unknown"
+              root.out.event.category.name = "system event"
+              root.out.event.message = "system event - UNEXPECTED VARBINDS for fmlTrapSystemEvent trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 202
+    # fmlTrapRAIDEvent
+    #
+    # Trap being sent for RAID operation
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # fmlRAIDCode (INTEGER) - RAID system events
+    # fmlRAIDDevName (DisplayString) - RAID Device name
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.12") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.13") {
+              meta varbinds_ok = true
+          }}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta fmlRAIDCode = this.trap.VarBinds.index(1).Value
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlRAIDCode = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.12356.105.1.12")
+                root.out.fortinet.fmlRAIDDevName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "RAID device: " + root.out.fortinet.fmlRAIDDevName
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRAIDEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRAIDEvent"
+
+            - switch:
+              - check: metadata("fmlRAIDCode") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-degradedArray"
+                      root.out.event.category.name = "RAID array state"
+                      root.out.event.message = "RAID array degraded"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("fmlRAIDCode") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-sparesMissing"
+                      root.out.event.category.name = "RAID array state"
+                      root.out.event.message = "RAID array spares missing"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("fmlRAIDCode") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-rebuildStarted"
+                      root.out.event.category.name = "RAID array rebuild state"
+                      root.out.event.message = "RAID array rebuild started"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("fmlRAIDCode") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-rebuildFinished"
+                      root.out.event.category.name = "RAID array rebuild state"
+                      root.out.event.message = "RAID array rebuild finished"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("fmlRAIDCode") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-fail"
+                      root.out.event.category.name = "RAID array state"
+                      root.out.event.message = "RAID array inoperable"
+                      root.out.event.severity.code = 2
+                      root.out.event.severity.level = "Critical"
+
+              - check: metadata("fmlRAIDCode") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-failSpare"
+                      root.out.event.category.name = "RAID array spare state"
+                      root.out.event.message = "RAID array spare failed"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("fmlRAIDCode") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-spareActive"
+                      root.out.event.category.name = "RAID array spare state"
+                      root.out.event.message = "RAID array spare active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.category.name = "RAID event"
+                    root.out.event.message = "unknown RAID event"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRAIDEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRAIDEvent-unknown"
+              root.out.event.category.name = "RAID event"
+              root.out.event.message = "RAID event - UNEXPECTED VARBINDS for fmlTrapRAIDEvent trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 203
+    # fmlTrapHAEvent
+    #
+    # Trap being sent when HA event occurs.
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # fmlHAEventId (INTEGER) - HA event type ID
+    # fmlHAUnitIp (IpAddress) - Unit IP address where event occurs
+    # fmlHAEventReason (DisplayString) - The reason for the HA event
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.14") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.15") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.16") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta fmlHAEventId = this.trap.VarBinds.index(1).Value
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlHAEventId = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.12356.105.1.14")
+                root.out.fortinet.fmlHAUnitIp = this.trap.VarBinds.index(2).Value
+                root.out.fortinet.fmlHAEventReason = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "member: " + root.out.fortinet.fmlHAUnitIp
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapHAEvent"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapHAEvent"
+                root.out.event.category.name = "HA cluster member role state"
+
+            - switch:
+              - check: metadata("fmlHAEventId") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-masterUnitSwitch"
+                      root.out.event.message = "HA cluster member transitioned from secondary to primary, " + root.out.fortinet.fmlHAEventReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlHAEventId") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-slaveUnitSwitch"
+                      root.out.event.message = "HA cluster member transitioned from primary to secondary, " + root.out.fortinet.fmlHAEventReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("fmlHAEventId") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-unitShutdown"
+                      root.out.event.message = "HA cluster member shutdown, " + root.out.fortinet.fmlHAEventReason
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "HA cluster member role state unknown, " + root.out.fortinet.fmlHAEventReason
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapHAEvent"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapHAEvent-unknown"
+              root.out.event.category.name = "HA cluster member role state"
+              root.out.event.message = "HA cluster member role state unknown - UNEXPECTED VARBINDS for fmlTrapHAEvent trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 205
+    # fmlTrapRemoteStorage
+    #
+    # Trap being sent when status of the remote storage changes.
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # fmlRemoteStorageStatus (INTEGER) - Remote Storage Status
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.31") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta fmlRemoteStorageStatus = this.trap.VarBinds.index(1).Value
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.fortinet.fmlRemoteStorageStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.12356.105.1.31")
+
+                root.out.object.name = "FORTINET-FORTIMAIL-MIB::fmlSystem"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRemoteStorage"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRemoteStorage"
+                root.out.event.category.name = "remote storage state"
+
+            - switch:
+              - check: metadata("fmlRemoteStorageStatus") == 0
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-false"
+                      root.out.event.message = "remote storage failed"
+                      root.out.event.severity.code = 2
+                      root.out.event.severity.level = "Critical"
+
+              - check: metadata("fmlRemoteStorageStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-true"
+                      root.out.event.message = "remote storage OK"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "remote storage state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRemoteStorage"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapRemoteStorage-unknown"
+              root.out.event.category.name = "remote storage state"
+              root.out.event.message = "remote storage state unknown - UNEXPECTED VARBINDS for fmlTrapRemoteStorage trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 301
+    # fmlTrapIpChange
+    #
+    # Trap being sent when IP address of the specified interface has been changed
+    #
+    # fmlSysSerial (DisplayString) - Device serial number
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.12356.105.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.fortinet.fmlSysSerial = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).Value.string()
+
+                root.out.object.name = "IF-MIB::ifEntry"
+                root.out.object.index = root.out.ietf.ifIndex
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ietf.ifIndex
+
+                root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapIpChange"
+                root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapIpChange"
+                root.out.event.category.name = "interface IP address change"
+                root.out.event.message = "interface IP address changed"
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapIpChange"
+              root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-fmlTrapIpChange-unknown"
+              root.out.event.category.name = "interface IP address change"
+              root.out.event.message = "interface IP address changed - UNEXPECTED VARBINDS for fmlTrapIpChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        if this.trap.VarBinds.length() > 12 {
+          root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
+          root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
+          }
+        if this.trap.VarBinds.length() > 13 {
+          root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
+          root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
+          }
+        if this.trap.VarBinds.length() > 14 {
+          root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
+          root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
+          }
+        if this.trap.VarBinds.length() > 15 {
+          root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
+          root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
+          }
+        }}}}}}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-unknown"
+        root.out.event.id = "SNMPTRAP-FORTINET-FORTIMAIL-MIB-fnFortiMailMib-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Fortinet FORTINET-FORTIMAIL-MIB-fnFortiMailMib"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
