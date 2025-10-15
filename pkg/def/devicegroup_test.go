@@ -1,6 +1,7 @@
 package def
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -18,7 +19,12 @@ func TestDeviceGroup_Validate(t *testing.T) {
 			deviceGroup: &DeviceGroup{
 				ObjectGroups: []string{},
 			},
-			expected: nil,
+			expected: errors.New("object_groups is required"),
+		},
+		{
+			name:        "object group is nil",
+			deviceGroup: &DeviceGroup{},
+			expected:    errors.New("object_groups is required"),
 		},
 		{
 			name: "device group with object groups",

@@ -1,6 +1,9 @@
 package def
 
-import _ "embed"
+import (
+	_ "embed"
+	"fmt"
+)
 
 type Object struct {
 	Mib                string           `yaml:"mib,omitempty" json:"mib,omitempty"`
@@ -18,6 +21,25 @@ func (o Object) Validate() error {
 
 func (o Object) Kind() string {
 	return "object"
+}
+
+func (o Object) GetDiscoveryOid() (string, error) {
+	for key, attribute := range o.Attributes {
+		if key == o.DiscoveryAttribute {
+			return attribute.Oid, nil
+		}
+	}
+	return "", fmt.Errorf("discovery attribute not present for object %q", o.ObjectName)
+}
+
+func (o Object) GetOverrideOids() []string {
+	overrideOids := make([]string, 0)
+	for _, attribute := range o.Attributes {
+		if attribute.Overrides.Attribute != "" && attribute.Overrides.Object != "" {
+			overrideOids = append(overrideOids, attribute.Oid)
+		}
+	}
+	return overrideOids
 }
 
 type ObjectIndex struct {

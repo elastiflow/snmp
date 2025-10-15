@@ -1,6 +1,7 @@
 package def
 
 import (
+	_ "embed"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -9,8 +10,172 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Device struct {
+	IP                 string            `yaml:"ip,omitempty" json:"ip,omitempty"`
+	Port               uint16            `yaml:"port,omitempty" json:"port,omitempty"`
+	Timeout            uint64            `yaml:"timeout,omitempty" json:"timeout,omitempty"`
+	Retries            int               `yaml:"retries,omitempty" json:"retries,omitempty"`
+	ExponentialTimeout bool              `yaml:"exponential_timeout,omitempty" json:"exponential_timeout,omitempty"`
+	Version            string            `yaml:"version,omitempty" json:"version,omitempty"`
+	Communities        []string          `yaml:"communities,omitempty" json:"communities,omitempty"`
+	DeviceGroups       []string          `yaml:"device_groups,omitempty" json:"device_groups,omitempty"`
+	PollInterval       uint64            `yaml:"poll_interval,omitempty" json:"poll_interval,omitempty"`
+	PollIntervals      map[string]uint64 `yaml:"poll_intervals,omitempty" json:"poll_intervals,omitempty"`
+	MaxOIDs            uint64            `yaml:"max_oids,omitempty" json:"max_oids,omitempty"`
+	V3Credentials      []V3Credential    `yaml:"v3_credentials,omitempty" json:"v3_credentials,omitempty"`
+	MaxRepetitions     uint32            `yaml:"max_repetitions,omitempty" json:"max_repetitions,omitempty"`
+	MaxConcurrentPolls uint32            `yaml:"max_concurrent_polls,omitempty" json:"max_concurrent_polls,omitempty"`
+	CiscoQosEnabled    bool              `yaml:"cisco_qos_enabled,omitempty" json:"cisco_qos_enabled,omitempty"`
+}
+
+func (d *Device) Validate() error {
+	return nil
+}
+
+func (d *Device) Kind() string {
+	return "device"
+}
+
+// Id returns the device's unique id
+func (d *Device) Id() string {
+	return d.IP + ":" + strconv.FormatUint(uint64(d.Port), 10)
+}
+
+// Unmarshal data into the struct
+func (d *Device) Unmarshal(data []byte, dataType string) error {
+	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
+		return yaml.Unmarshal(data, &d)
+	}
+	return json.Unmarshal(data, &d)
+}
+
+// Marshal marshals the struct to YAML or JSON
+func (d *Device) Marshal(dataType string) ([]byte, error) {
+	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
+		return yaml.Marshal(d)
+	}
+	return json.Marshal(d)
+}
+
+// applyHardcodedDefaults sets default values for a Device if certain fields are unset or zero.
+// This is called for the DefaultDevice in the Definitions struct.
+func (d *Device) applyHardcodedDefaults(objectTypes map[string]ObjectType) {
+	if d.Port == 0 {
+		d.Port = 161
+	}
+
+	if d.Timeout == 0 {
+		d.Timeout = 3000 // 3 seconds
+	}
+
+	if d.Retries == 0 {
+		d.Retries = 2
+	}
+
+	if d.PollInterval == 0 {
+		d.PollInterval = 60 // 1 minute
+	}
+
+	if d.MaxOIDs == 0 {
+		d.MaxOIDs = 64
+	}
+
+	if d.MaxConcurrentPolls == 0 {
+		d.MaxConcurrentPolls = 4
+	}
+
+	pollIntervals := make(map[string]uint64)
+	for objectTypeName, objectType := range objectTypes {
+		pollIntervals[objectTypeName] = objectType.PollInterval
+	}
+	d.PollIntervals = pollIntervals
+}
+
+// applyDefaults sets default values for a Device if certain fields are unset or zero.
+// This is called for each Device in the Definitions struct.
+func (d *Device) applyDefaults(defaultDevice *Device) {
+	if d.Port == 0 {
+		d.Port = defaultDevice.Port
+	}
+
+	if d.Timeout == 0 {
+		d.Timeout = defaultDevice.Timeout
+	}
+
+	if d.Retries == 0 {
+		d.Retries = defaultDevice.Retries
+	}
+
+	if !d.ExponentialTimeout {
+		d.ExponentialTimeout = defaultDevice.ExponentialTimeout
+	}
+
+	if d.Version == "" {
+		d.Version = defaultDevice.Version
+	}
+
+	if d.Communities == nil {
+		d.Communities = defaultDevice.Communities
+	}
+
+	if d.DeviceGroups == nil {
+		d.DeviceGroups = defaultDevice.DeviceGroups
+	}
+
+	if d.PollInterval == 0 {
+		d.PollInterval = defaultDevice.PollInterval
+	}
+
+	if d.MaxOIDs == 0 {
+		d.MaxOIDs = defaultDevice.MaxOIDs
+	}
+
+	if d.V3Credentials == nil {
+		d.V3Credentials = defaultDevice.V3Credentials
+	}
+
+	if d.MaxRepetitions == 0 {
+		d.MaxRepetitions = defaultDevice.MaxRepetitions
+	}
+
+	if d.MaxConcurrentPolls == 0 {
+		d.MaxConcurrentPolls = defaultDevice.MaxConcurrentPolls
+	}
+
+	if d.PollIntervals == nil {
+		d.PollIntervals = defaultDevice.PollIntervals
+	} else {
+		for objectType, pollInterval := range defaultDevice.PollIntervals {
+			if d.PollIntervals[objectType] == 0 {
+				d.PollIntervals[objectType] = pollInterval
+			}
+		}
+	}
+}
+
+type V3Credential struct {
+	AuthoritativeEngineID    string `yaml:"authoritative_engine_id,omitempty" json:"authoritative_engine_id,omitempty"`
+	AuthoritativeEngineBoots uint32 `yaml:"authoritative_engine_boots,omitempty" json:"authoritative_engine_boots,omitempty"`
+	AuthoritativeEngineTime  uint32 `yaml:"authoritative_engine_time,omitempty" json:"authoritative_engine_time,omitempty"`
+
+	Username                 string `yaml:"username,omitempty" json:"username,omitempty"`
+	AuthenticationParameters string `yaml:"authentication_parameters,omitempty" json:"authentication_parameters,omitempty"`
+	PrivacyParameters        string `yaml:"privacy_parameters,omitempty" json:"privacy_parameters,omitempty"`
+
+	// string value will be mapped to gosnmp.SnmpV3AuthProtocol
+	AuthenticationProtocol string `yaml:"authentication_protocol,omitempty" json:"authentication_protocol,omitempty"`
+	// string value will be mapped to gosnmp.SnmpV3PrivProtocol
+	PrivacyProtocol string `yaml:"privacy_protocol,omitempty" json:"privacy_protocol,omitempty"`
+
+	AuthenticationPassphrase string `yaml:"authentication_passphrase,omitempty" json:"authentication_passphrase,omitempty"`
+	PrivacyPassphrase        string `yaml:"privacy_passphrase,omitempty" json:"privacy_passphrase,omitempty"`
+
+	SecretKey  string `yaml:"secret_key,omitempty" json:"secret_key,omitempty"`
+	PrivacyKey string `yaml:"privacy_key,omitempty" json:"privacy_key,omitempty"`
+}
+
 func ValidateDevices(
-	devices map[string]Device,
+	devices map[string]*Device,
 	deviceGroups map[string]DeviceGroup,
 	objectTypes map[string]ObjectType,
 ) error {
@@ -18,6 +183,13 @@ func ValidateDevices(
 	deviceIPs := make(map[string]string)
 
 	for deviceName, device := range devices {
+		// Validate fields in the device definition
+		if err := validate(device, "schemas/device.json"); err != nil {
+			invalidDefinitions = append(invalidDefinitions,
+				fmt.Sprintf("device %q is invalid: %s", deviceName, err),
+			)
+		}
+
 		// Ensure the device has valid device groups
 		for _, dg := range device.DeviceGroups {
 			if _, ok := deviceGroups[dg]; !ok {
@@ -54,72 +226,4 @@ func ValidateDevices(
 	}
 
 	return nil
-}
-
-type Device struct {
-	IP                 string            `yaml:"ip,omitempty" json:"ip,omitempty"`
-	Port               uint16            `yaml:"port,omitempty" json:"port,omitempty"`
-	Timeout            uint64            `yaml:"timeout,omitempty" json:"timeout,omitempty"`
-	Retries            int               `yaml:"retries,omitempty" json:"retries,omitempty"`
-	ExponentialTimeout bool              `yaml:"exponential_timeout,omitempty" json:"exponential_timeout,omitempty"`
-	Version            string            `yaml:"version,omitempty" json:"version,omitempty"`
-	Communities        []string          `yaml:"communities,omitempty" json:"communities,omitempty"`
-	DeviceGroups       []string          `yaml:"device_groups,omitempty" json:"device_groups,omitempty"`
-	PollInterval       uint64            `yaml:"poll_interval,omitempty" json:"poll_interval,omitempty"`
-	PollIntervals      map[string]uint64 `yaml:"poll_intervals,omitempty" json:"poll_intervals,omitempty"`
-	MaxOIDs            uint64            `yaml:"max_oids,omitempty" json:"max_oids,omitempty"`
-	V3Credentials      []V3Credential    `yaml:"v3_credentials,omitempty" json:"v3_credentials,omitempty"`
-	MaxRepetitions     uint32            `yaml:"max_repetitions,omitempty" json:"max_repetitions,omitempty"`
-	MaxConcurrentPolls uint32            `yaml:"max_concurrent_polls,omitempty" json:"max_concurrent_polls,omitempty"`
-	CiscoQosEnabled    bool              `yaml:"cisco_qos_enabled,omitempty" json:"cisco_qos_enabled,omitempty"`
-}
-
-func (d Device) Validate() error {
-	return nil
-}
-
-func (d Device) Kind() string {
-	return "device"
-}
-
-// Id returns the device's unique id
-func (d Device) Id() string {
-	return d.IP + ":" + strconv.FormatUint(uint64(d.Port), 10)
-}
-
-// Unmarshal data into the struct
-func (d Device) Unmarshal(data []byte, dataType string) error {
-	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
-		return yaml.Unmarshal(data, &d)
-	}
-	return json.Unmarshal(data, &d)
-}
-
-// Marshal marshals the struct to YAML or JSON
-func (d Device) Marshal(dataType string) ([]byte, error) {
-	if strings.ToLower(dataType) == "yml" || strings.ToLower(dataType) == "yaml" {
-		return yaml.Marshal(d)
-	}
-	return json.Marshal(d)
-}
-
-type V3Credential struct {
-	AuthoritativeEngineID    string `yaml:"authoritative_engine_id,omitempty" json:"authoritative_engine_id,omitempty"`
-	AuthoritativeEngineBoots uint32 `yaml:"authoritative_engine_boots,omitempty" json:"authoritative_engine_boots,omitempty"`
-	AuthoritativeEngineTime  uint32 `yaml:"authoritative_engine_time,omitempty" json:"authoritative_engine_time,omitempty"`
-
-	Username                 string `yaml:"username,omitempty" json:"username,omitempty"`
-	AuthenticationParameters string `yaml:"authentication_parameters,omitempty" json:"authentication_parameters,omitempty"`
-	PrivacyParameters        string `yaml:"privacy_parameters,omitempty" json:"privacy_parameters,omitempty"`
-
-	// string value will be mapped to gosnmp.SnmpV3AuthProtocol
-	AuthenticationProtocol string `yaml:"authentication_protocol,omitempty" json:"authentication_protocol,omitempty"`
-	// string value will be mapped to gosnmp.SnmpV3PrivProtocol
-	PrivacyProtocol string `yaml:"privacy_protocol,omitempty" json:"privacy_protocol,omitempty"`
-
-	AuthenticationPassphrase string `yaml:"authentication_passphrase,omitempty" json:"authentication_passphrase,omitempty"`
-	PrivacyPassphrase        string `yaml:"privacy_passphrase,omitempty" json:"privacy_passphrase,omitempty"`
-
-	SecretKey  string `yaml:"secret_key,omitempty" json:"secret_key,omitempty"`
-	PrivacyKey string `yaml:"privacy_key,omitempty" json:"privacy_key,omitempty"`
 }
