@@ -1,0 +1,2064 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Juniper JUNIPER-JVAE-NODE-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # jnxJVAECNMemoryLow
+    #
+    # This notification is generated whenever the free (unused) RAM goes below threshold for this compute node.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSysMemCapacity (Gauge32) - The amount of RAM on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    # jnxJVAECNSysMemUsed (Gauge32) - The amount of RAM used on the Compute Node, in kilo bytes. Zero if information in unavailable.
+    # jnxJVAECNSysMemFree (Gauge32) - The amount of RAM free on the Compute Node, in kilo bytes. Zero if information in unavailable.
+    # jnxJVAECNSysMemUsedPr (INTEGER) - The amount of RAM used on the Compute Node, in percentage. Zero if information in unavailable.
+    # jnxJVAECNSysSwapCapacity (Gauge32) - Total swap space on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    # jnxJVAECNSysSwapFree (Gauge32) - The amout of swap space free on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.4") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.5") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.6") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.7") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.8") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.9") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSysMemCapacity = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxJVAECNSysMemUsed = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxJVAECNSysMemFree = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxJVAECNSysMemUsedPr = this.trap.VarBinds.index(4).Value
+                root.out.juniper.jnxJVAECNSysSwapCapacity = this.trap.VarBinds.index(5).Value
+                root.out.juniper.jnxJVAECNSysSwapFree = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSysInfoEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.4")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryLow"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryLow"
+                root.out.event.category.name = "memory utilization threshold"
+                root.out.event.message = "memory utilization high: " + root.out.juniper.jnxJVAECNSysMemUsedPr.string() + "%"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              if this.trap.VarBinds.length() > 9 {
+                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+                }
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryLow"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryLow-unknown"
+              root.out.event.category.name = "memory utilization threshold"
+              root.out.event.message = "memory utilization high - UNEXPECTED VARBINDS for jnxJVAECNMemoryLow trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # jnxJVAECNMemoryOk
+    #
+    # This notification is generated whenever the free (unused) RAM recovers above threshold for this compute node and
+    # previously a jnxJVAECNMemoryLow was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSysMemCapacity (Gauge32) - The amount of RAM on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    # jnxJVAECNSysMemUsed (Gauge32) - The amount of RAM used on the Compute Node, in kilo bytes. Zero if information in unavailable.
+    # jnxJVAECNSysMemFree (Gauge32) - The amount of RAM free on the Compute Node, in kilo bytes. Zero if information in unavailable.
+    # jnxJVAECNSysMemUsedPr (INTEGER) - The amount of RAM used on the Compute Node, in percentage. Zero if information in unavailable.
+    # jnxJVAECNSysSwapCapacity (Gauge32) - Total swap space on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    # jnxJVAECNSysSwapFree (Gauge32) - The amout of swap space free on the Compute Node, in kilo bytes. Zero if information is unavailable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.4") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.5") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.6") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.7") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.8") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.9") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSysMemCapacity = this.trap.VarBinds.index(1).Value
+                root.out.juniper.jnxJVAECNSysMemUsed = this.trap.VarBinds.index(2).Value
+                root.out.juniper.jnxJVAECNSysMemFree = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxJVAECNSysMemUsedPr = this.trap.VarBinds.index(4).Value
+                root.out.juniper.jnxJVAECNSysSwapCapacity = this.trap.VarBinds.index(5).Value
+                root.out.juniper.jnxJVAECNSysSwapFree = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSysInfoEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.4")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryOk"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryOk"
+                root.out.event.category.name = "memory threshold"
+                root.out.event.message = "memory utilization OK: " + root.out.juniper.jnxJVAECNSysMemUsedPr.string() + "%"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              if this.trap.VarBinds.length() > 9 {
+                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+                }
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNMemoryOk-unknown"
+              root.out.event.category.name = "memory utilization threshold"
+              root.out.event.message = "memory utilization OK - UNEXPECTED VARBINDS for jnxJVAECNMemoryOk trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 3
+    # jnxJVAECNProcessingLoadHigh
+    #
+    # This notification is generated whenever the overall system processing load exceeds threshold.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSysProcessingLoad (INTEGER) - Total processing load on the Compute Node, in percentage.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.3") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSysProcessingLoad = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSysInfoEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadHigh"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadHigh"
+                root.out.event.category.name = "system processor load threshold"
+                root.out.event.message = "system processor load high: " + root.out.juniper.jnxJVAECNSysProcessingLoad.string() + "%"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadHigh"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadHigh-unknown"
+              root.out.event.category.name = "system processor load threshold"
+              root.out.event.message = "system processor load high - UNEXPECTED VARBINDS for jnxJVAECNProcessingLoadHigh trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 4
+    # jnxJVAECNProcessingLoadOk
+    #
+    # This notification is generated whenever the overall system processing load is within threshold and previously a
+    # jnxJVAECNProcessingLoadHigh was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSysProcessingLoad (INTEGER) - Total processing load on the Compute Node, in percentage.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.3") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSysProcessingLoad = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSysInfoEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadOk"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadOk"
+                root.out.event.category.name = "system processor load threshold"
+                root.out.event.message = "system processor load OK: " + root.out.juniper.jnxJVAECNSysProcessingLoad.string() + "%"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessingLoadOk-unknown"
+              root.out.event.category.name = "system processor load threshold"
+              root.out.event.message = "system processor load OK - UNEXPECTED VARBINDS for jnxJVAECNProcessingLoadOk trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 5
+    # jnxJVAECNProcessorLoadHigh
+    #
+    # This notification is generated whenever the load on a processor exceeds threshold.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNProcessorId (INTEGER) - An unique identifier for the processor with this Compute Node.
+    # jnxJVAECNProcessorLoad (INTEGER) - Load on the processor, expressed in percentage. Zero if information is unavailable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.2") {
+              meta varbinds_ok = true
+          }}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNProcessorId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNProcessorLoad = this.trap.VarBinds.index(2).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNProcessorEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", processor: " + root.out.juniper.jnxJVAECNProcessorId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadHigh"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadHigh"
+                root.out.event.category.name = "processor load threshold"
+                root.out.event.message = "processor load high: " + root.out.juniper.jnxJVAECNProcessorLoad.string() + "%"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadHigh"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadHigh-unknown"
+              root.out.event.category.name = "processor load threshold"
+              root.out.event.message = "processor load high - UNEXPECTED VARBINDS for jnxJVAECNProcessorLoadHigh trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 6
+    # jnxJVAECNProcessorLoadOk
+    #
+    # This notification is generated whenever the load on a processor is within threshold and previously a
+    # jnxJVAECNProcessorLoadHigh was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNProcessorId (INTEGER) - An unique identifier for the processor with this Compute Node.
+    # jnxJVAECNProcessorLoad (INTEGER) - Load on the processor, expressed in percentage. Zero if information is unavailable.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.2") {
+              meta varbinds_ok = true
+          }}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNProcessorId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNProcessorLoad = this.trap.VarBinds.index(2).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNProcessorEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.2.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", processor: " + root.out.juniper.jnxJVAECNProcessorId
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadOk"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadOk"
+                root.out.event.category.name = "processor load threshold"
+                root.out.event.message = "processor load OK: " + root.out.juniper.jnxJVAECNProcessorLoad.string() + "%"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNProcessorLoadOk-unknown"
+              root.out.event.category.name = "processor load threshold"
+              root.out.event.message = "processor load OK - UNEXPECTED VARBINDS for jnxJVAECNProcessorLoadOk trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 7
+    # jnxJVAECNifDown
+    #
+    # This notification is generated whenever network interface is down.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNifId (INTEGER) - An unique identifier for the network interface.
+    # jnxJVAECNifName (DisplayString) - Description of the interface.
+    # jnxJVAECNifOperStatus (INTEGER) - Operational state of the interface.
+    # jnxJVAECNifAdminStatus (INTEGER) - Administrative state of the interface.
+    # jnxJVAECNifLinkDetect (INTEGER) - Link presence, True if present else False. This field is meaningless when the
+    #   interface is administered down.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.5") {
+              meta varbinds_ok = true
+          }}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta jnxJVAECNifAdminStatus = this.trap.VarBinds.index(4).Value
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNifId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNifName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNifOperStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.3")
+                root.out.juniper.jnxJVAECNifAdminStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.4")
+                root.out.juniper.jnxJVAECNifLinkDetect = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.5")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNifEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", interface: " + root.out.juniper.jnxJVAECNifName
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifDown"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifDown"
+                root.out.event.category.name = "interface state"
+                root.out.event.message = "interface down"
+
+            - switch:
+              - check: metadata("jnxJVAECNifAdminStatus") == 0
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-administratively"
+                      root.out.event.message = root.out.event.message + ", administratively"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("jnxJVAECNifAdminStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      if root.out.juniper.jnxJVAECNifLinkDetect == "false" {
+                        root.out.event.id = root.out.event.id + "-nolink"
+                        root.out.event.message = root.out.event.message + ", no link"
+                      }
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.severity.code = 3
+                    root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              }}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifDown"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifDown-unknown"
+              root.out.event.category.name = "interface state"
+              root.out.event.message = "interface down - UNEXPECTED VARBINDS for jnxJVAECNifDown trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 8
+    # jnxJVAECNifUp
+    #
+    # This notification is generated whenever network interface is up and previously a jnxJVAECNifDown was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNifId (INTEGER) - An unique identifier for the network interface.
+    # jnxJVAECNifName (DisplayString) - Description of the interface.
+    # jnxJVAECNifOperStatus (INTEGER) - Operational state of the interface.
+    # jnxJVAECNifAdminStatus (INTEGER) - Administrative state of the interface.
+    # jnxJVAECNifLinkDetect (INTEGER) - Link presence, True if present else False. This field is meaningless when the
+    #   interface is administered down.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.5") {
+              meta varbinds_ok = true
+          }}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNifId = this.trap.VarBinds.index(1).Value.string() 
+                root.out.juniper.jnxJVAECNifName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNifOperStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.3")
+                root.out.juniper.jnxJVAECNifAdminStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.4")
+                root.out.juniper.jnxJVAECNifLinkDetect = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.5")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNifEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.3.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", interface: " + root.out.juniper.jnxJVAECNifName
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifUp"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifUp"
+                root.out.event.category.name = "interface state"
+                root.out.event.message = "interface up"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              }}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifUp"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNifUp-unknown"
+              root.out.event.category.name = "interface state"
+              root.out.event.message = "interface up - UNEXPECTED VARBINDS for jnxJVAECNifUp trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 9
+    # jnxJVAECNStorageLow
+    #
+    # This notification is generated whenever storage space falls below threshold.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNFileSysId (INTEGER) - An unique identifier for the file system.
+    # jnxJVAECNFileSysMountPoint (DisplayString) - The Filesystem path where the file system is mounted.
+    # jnxJVAECNFileSysSize (Gauge32) - Total storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysUsed (Gauge32) - Used Storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysFree (Gauge32) - Unused Storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysUsedPr (INTEGER) - Used Storage capacity of the file system, in percentage.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.5") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.6") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNFileSysId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNFileSysMountPoint = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNFileSysSize = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxJVAECNFileSysUsed = this.trap.VarBinds.index(4).Value
+                root.out.juniper.jnxJVAECNFileSysFree = this.trap.VarBinds.index(5).Value
+                root.out.juniper.jnxJVAECNFileSysUsedPr = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNFileSysEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", file system: " + root.out.juniper.jnxJVAECNFileSysMountPoint
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageLow"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageLow"
+                root.out.event.category.name = "storage utilization threshold"
+                root.out.event.message = "storage utilization high: " + root.out.juniper.jnxJVAECNFileSysUsedPr.string() + "%"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              if this.trap.VarBinds.length() > 9 {
+                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+                }
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageLow"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageLow-unknown"
+              root.out.event.category.name = "storage utilization threshold"
+              root.out.event.message = "storage utilization high - UNEXPECTED VARBINDS for jnxJVAECNStorageLow trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 10
+    # jnxJVAECNStorageOk
+    #
+    # This notification is generated whenever storage space recovers and previously a jnxJVAECNStorageLow was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNFileSysId (INTEGER) - An unique identifier for the file system.
+    # jnxJVAECNFileSysMountPoint (DisplayString) - The Filesystem path where the file system is mounted.
+    # jnxJVAECNFileSysSize (Gauge32) - Total storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysUsed (Gauge32) - Used Storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysFree (Gauge32) - Unused Storage capacity of the file system, in kilo bytes.
+    # jnxJVAECNFileSysUsedPr (INTEGER) - Used Storage capacity of the file system, in percentage.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.5") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.6") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNFileSysId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNFileSysMountPoint = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNFileSysSize = this.trap.VarBinds.index(3).Value
+                root.out.juniper.jnxJVAECNFileSysUsed = this.trap.VarBinds.index(4).Value
+                root.out.juniper.jnxJVAECNFileSysFree = this.trap.VarBinds.index(5).Value
+                root.out.juniper.jnxJVAECNFileSysUsedPr = this.trap.VarBinds.index(6).Value
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNFileSysEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.4.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", file system: " + root.out.juniper.jnxJVAECNFileSysMountPoint
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageOk"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageOk"
+                root.out.event.category.name = "storage utilization threshold"
+                root.out.event.message = "storage utilization OK: " + root.out.juniper.jnxJVAECNFileSysUsedPr.string() + "%"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              if this.trap.VarBinds.length() > 9 {
+                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+                }
+              }}}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNStorageOk-unknown"
+              root.out.event.category.name = "storage utilization threshold"
+              root.out.event.message = "storage utilization OK - UNEXPECTED VARBINDS for jnxJVAECNStorageOk trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 11
+    # jnxJVAECNRaidError
+    #
+    # This notification is generated whenever raid array degradation or failure is detected.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNRaidId (INTEGER) - The unique identifier for this raid array.
+    # jnxJVAECNRaidName (DisplayString) - Name of the raid array.
+    # jnxJVAECNRaidState (DisplayString) - State of the raid array.
+    # jnxJVAECNRaidOSPath (DisplayString) - The raid device disk path.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.9") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNRaidName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidState = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidOSPath = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNRaidEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", array: " + root.out.juniper.jnxJVAECNRaidName + ", path: " + root.out.juniper.jnxJVAECNRaidOSPath
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidError"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidError"
+                root.out.event.category.name = "RAID array state"
+                root.out.event.message = "RAID array error, " + root.out.juniper.jnxJVAECNRaidState
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidError"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidError-unknown"
+              root.out.event.category.name = "RAID array state"
+              root.out.event.message = "RAID array error - UNEXPECTED VARBINDS for jnxJVAECNRaidError trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 12
+    # jnxJVAECNRaidOk
+    #
+    # This notification is generated whenever raid array recovers and previously a jnxJVAECNRaidError was reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNRaidId (INTEGER) - The unique identifier for this raid array.
+    # jnxJVAECNRaidName (DisplayString) - Name of the raid array.
+    # jnxJVAECNRaidState (DisplayString) - State of the raid array.
+    # jnxJVAECNRaidOSPath (DisplayString) - The raid device disk path.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.2") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.9") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNRaidName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidState = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNRaidOSPath = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNRaidEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.6.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "node: " + root.out.juniper.jnxJVAECNSysId + ", array: " + root.out.juniper.jnxJVAECNRaidName + ", path: " + root.out.juniper.jnxJVAECNRaidOSPath
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidOk"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidOk"
+                root.out.event.category.name = "RAID array state"
+                root.out.event.message = "RAID array OK, " + root.out.juniper.jnxJVAECNRaidState
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNRaidOk-unknown"
+              root.out.event.category.name = "RAID array state"
+              root.out.event.message = "RAID array OK - UNEXPECTED VARBINDS for jnxJVAECNRaidOk trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 13
+    # jnxJVAECNSensorAlert
+    #
+    # This notification is generated whenever sensor reading is not within the normal operating range.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSensorId (INTEGER) - The unique identifier for this sensor.
+    # jnxJVAECNSensorValue (DisplayString) - Sensor reading.
+    # jnxJVAECNSensorType (INTEGER) - Type of the sensor.
+    # jnxJVAECNSensorRange (DisplayString) - Normal operating range for the sensor, traps are raised the reading is not within this range.
+    # jnxJVAECNSensorDesc (DisplayString) - Description of the sensor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.2") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.5") {
+              meta varbinds_ok = true
+          }}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNSensorValue = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.2")
+                root.out.juniper.jnxJVAECNSensorRange = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorDesc = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSensorEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "sensor: " + root.out.juniper.jnxJVAECNSensorDesc
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert"
+                root.out.event.category.name = root.out.juniper.jnxJVAECNSensorType + " sensor threshold"
+                root.out.event.message = root.out.juniper.jnxJVAECNSensorType + " sensor, " + root.out.juniper.jnxJVAECNSensorValue + ", out-of-range " + root.out.juniper.jnxJVAECNSensorRange
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              }}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert-unknown"
+              root.out.event.category.name = "sensor threshold"
+              root.out.event.message = "sensor out-of-range - UNEXPECTED VARBINDS for jnxJVAECNSensorAlert trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 14
+    # jnxJVAECNSensorOk
+    #
+    # This notification is generated whenever sensor reading recovers and previously a jnxJVAECNSensorAlert was
+    # reported.
+    #
+    # jnxJVAECNSysId (DisplayString) - Id of the Compute Node.
+    # jnxJVAECNSensorId (INTEGER) - The unique identifier for this sensor.
+    # jnxJVAECNSensorValue (DisplayString) - Sensor reading.
+    # jnxJVAECNSensorType (INTEGER) - Type of the sensor.
+    # jnxJVAECNSensorRange (DisplayString) - Normal operating range for the sensor, traps are raised the reading is not within this range.
+    # jnxJVAECNSensorDesc (DisplayString) - Description of the sensor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.1") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.2") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.5") {
+              meta varbinds_ok = true
+          }}}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.juniper.jnxJVAECNSysId = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorId = this.trap.VarBinds.index(1).Value.string()
+                root.out.juniper.jnxJVAECNSensorValue = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.2")
+                root.out.juniper.jnxJVAECNSensorRange = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+                root.out.juniper.jnxJVAECNSensorDesc = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "JUNIPER-JVAE-NODE-MIB::jnxJVAECNSensorEntry"
+                root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.4.1.2636.3.69.2.1.1.7.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "sensor: " + root.out.juniper.jnxJVAECNSensorDesc
+
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert"
+                root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorAlert"
+                root.out.event.category.name = root.out.juniper.jnxJVAECNSensorType + " sensor threshold"
+                root.out.event.message = root.out.juniper.jnxJVAECNSensorType + " sensor, " + root.out.juniper.jnxJVAECNSensorValue + ", within range " + root.out.juniper.jnxJVAECNSensorRange
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              }}}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorOk"
+              root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-jnxJVAECNSensorOk-unknown"
+              root.out.event.category.name = "sensor threshold"
+              root.out.event.message = "sensor within range - UNEXPECTED VARBINDS for jnxJVAECNSensorOk trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        }}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-unknown"
+        root.out.event.id = "SNMPTRAP-JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Juniper JUNIPER-JVAE-NODE-MIB-jnxJVAENodeMIB"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
