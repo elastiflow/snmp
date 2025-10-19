@@ -2,6 +2,8 @@
 
 Definitions for the ElastiFlow&trade; SNMP Poller and SNMP Trap Collectors.
 
+> NOTE: The `main` branch requires `7.18.0` or later of the ElastiFlow NetObserv Collectors.
+
 ## Validation
 
 The `make validate` command can be used to validate the SNMP definition files in the repository. It checks:
