@@ -1,110 +1,1656 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "Generic SNMP Trap"
+    root.out.origin.agent.name = "IETF SNMPv2-MIB"
 - switch:
-    - check: this.trap.GenericTrap == 0
-      processors:
-        - label: cold_start
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "Generic"
-            root.out.event.id = "SNMPTRAP-coldStart"
-            root.out.event.message = "Cold Start"
-            root.out.event.class.name = "SNMPTRAP-coldStart"
+  - check: this.trap.GenericTrap == 0
+    # coldStart
+    #
+    # A coldStart trap signifies that the SNMP entity, supporting a notification originator application, is
+    # reinitializing itself and that its configuration may have been altered.
+    #
+    # RFC1215-MIB - SNMPv1 - enterprise is sysObjectID
+    # none
+    #
+    # APC - SNMPv1 - enterprise is sysObjectID
+		# sysDescr (DisplayString) - A textual description of the entity.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# sysUpTime (TimeTicks) - The time (in hundredths of a second) since the network management portion of the system was last re-initialized.
+		# whyReload (DisplayString) - This variable contains a printable octet string which contains the reason why the system was last restarted.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# whyReload (DisplayString) - This variable contains a printable octet string which contains the reason why the system was last restarted.
+    #
+    # Hatteras - SNMPv2c
+		# hnTrapHostOriginatingIPAddr (IpAddress) - This address identifies the originating interface in traps issued to the host.
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    #
+    # Network Harmony (NHI) - SNMPv2c
+		# none
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.event.severity.code = 4
-            root.out.event.severity.level = "Warning"
-    - check: this.trap.GenericTrap == 1
-      processors:
-        - label: warm_start
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "Generic"
-            root.out.event.id = "SNMPTRAP-warmStart"
-            root.out.event.message = "Warm Start"
-            root.out.event.class.name = "SNMPTRAP-warmStart"
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(0).Value
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(1).Value
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(2).Value
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(3).Value
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(3).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+              root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(4).Value
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(4).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+              root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              }
+            }
+          }}}}}
 
-            root.out.event.severity.code = 4
-            root.out.event.severity.level = "Warning"
-    - check: this.trap.GenericTrap == 2
-      processors:
-        - label: link_down_variables
-          mapping: |-
-            #!blobl
-            root = this
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
 
-            root.out.generic.ifIndex = this.trap.VarBinds.index(0).Value
-        - label: link_down
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "Generic Link Status"
-            root.out.event.id = "SNMPTRAP-linkDown"
-            root.out.event.message = "Link Down"
-            root.out.event.class.name = "SNMPTRAP-linkDown"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+          root.out.object.name = "SNMPv2-MIB::system"
+          root.out.object.index = "0"
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
 
-            root.out.event.severity.code = 2
-            root.out.event.severity.level = "Critical"
-    - check: this.trap.GenericTrap == 3
-      processors:
-        - label: link_up_variables
-          mapping: |-
-            #!blobl
-            root = this
+          root.out.event.class.name = "SNMPTRAP-SNMPv2-MIB-snmpTraps-coldStart"
+          root.out.event.id = "SNMPTRAP-SNMPv2-MIB-snmpTraps-coldStart"
+          root.out.event.category.name = "system state"
+          root.out.event.message = "system cold start"
+          if root.out.exists("cisco.whyReload") {
+            root.out.event.message = root.out.event.message + ", " + root.out.cisco.whyReload
+          }
+          root.out.event.severity.code = 4
+          root.out.event.severity.level = "Warning"
 
-            root.out.generic.ifIndex = this.trap.VarBinds.index(0).Value
-        - label: link_up
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "Generic Link Status"
-            root.out.event.id = "SNMPTRAP-linkUp"
-            root.out.event.message = "Link Up"
-            root.out.event.class.name = "SNMPTRAP-linkUp"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string()
+  - check: this.trap.GenericTrap == 1
+    # warmStart
+    #
+    # A warmStart trap signifies that the SNMP entity, supporting a notification originator application, is
+    # reinitializing itself such that its configuration is unaltered.
+    #
+    # RFC1215-MIB - SNMPv1 - enterprise is sysObjectID
+    # none
+    #
+    # APC - SNMPv1 - enterprise is sysObjectID
+		# sysDescr (DisplayString) - A textual description of the entity.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.event.severity.code = 5
-            root.out.event.severity.level = "Notice"
-    - check: this.trap.GenericTrap == 4
-      processors:
-        - label: authentication_failure
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "Generic Authentication"
-            root.out.event.id = "SNMPTRAP-authenticationFailure"
-            root.out.event.message = "Authentication Failure"
-            root.out.event.class.name = "SNMPTRAP-authenticationFailure"
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(0).Value
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(1).Value
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(2).Value
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(3).Value
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(3).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+              root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.1.1") {
+              root.out.ietf.sysDescr = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.1.3") {
+              root.out.ietf.sysUpTime = this.trap.VarBinds.index(4).Value
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.9.2.1.2") {
+              root.out.cisco.whyReload = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(4).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+              root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              }
+            }
+          }}}}}
 
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-    - check: this.trap.GenericTrap == 5
-      processors:
-        - label: egp_neighbor_loss_variables
-          mapping: |-
-            #!blobl
-            root = this
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
 
-            root.out.generic.egpNeighAddr = this.trap.VarBinds.index(0).Value
-        - label: egp_neighbor_loss
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = "EGP Neighbor Status"
-            root.out.event.id = "SNMPTRAP-egpNeighborLoss"
-            root.out.event.message = "EGP Neighbor Loss"
-            root.out.event.class.name = "SNMPTRAP-egpNeighborLoss"
+          root.out.object.name = "SNMPv2-MIB::system"
+          root.out.object.index = "0"
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
 
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-    - processors:
-        - label: default
-          mapping: |
-            #!blobl
-            root = this
+          root.out.event.class.name = "SNMPTRAP-SNMPv2-MIB-snmpTraps-warmStart"
+          root.out.event.id = "SNMPTRAP-SNMPv2-MIB-snmpTraps-warmStart"
+          root.out.event.category.name = "system state"
+          root.out.event.message = "system warm start"
+          if root.out.exists("cisco.whyReload") {
+            root.out.event.message = root.out.event.message + ", " + root.out.cisco.whyReload
+          }
+          root.out.event.severity.code = 4
+          root.out.event.severity.level = "Warning"
 
-            root.out.event.category.name = "Invalid Generic Trap"
+  - check: this.trap.GenericTrap == 2
+    # linkDown
+    #
+    # A linkDown trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object
+    # for one of its communication links is about to enter the down state from some other state (but not from the
+    # notPresent state). This other state is indicated by the included value of ifOperStatus.
+    #
+    # RFC1215-MIB - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifName (DisplayString) - The textual name of the interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+    #
+    # Telesystems - SNMPv1
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Force10 - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # unknown - .1.3.6.1.4.1.6027.3.3.1.1.1.1.3.0
+    #
+    # Hatteras - linkDown - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# hnTrapHostOriginatingIPAddr (IpAddress) - This address identifies the originating interface in traps issued to the host.
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    #
+    # IP Unity - SNMPv2c
+		# ipUnityTrapSeverity (INTEGER) - Gives the severity of the trap message generated by the Media Server.
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    #
+    # Juniper - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifName (DisplayString) - The textual name of the interface.
+    #
+    # Overture - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Telindus - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    # unknown - .1.3.6.1.4.1.776.69.1.1
+		# sysName (DisplayString) - An administratively assigned name for this managed node.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifAlias (DisplayString) - This object is an 'alias' name for the interface as specified by a network manager, and provides a non-volatile 'handle' for the interface.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          root.out.origin.agent.name = "IETF IF-MIB"
+
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(0).Value.string()
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(1).Value.string()
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(2).Value.string()
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(3).Value.string()
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(3).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+              root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(4).Value.string()
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(4).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+              root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(5).Value.string()
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(5).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+              root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(6).Value.string()
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(6).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+              root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+            if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(7).Value.string()
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(7).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+              root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              }
+            }
+          }}}}}}}}
+
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
+
+          root.out.object.name = "IF-MIB::ifEntry"
+          root.out.object.index = if root.out.exists("ietf.ifIndex") {
+            root.out.ietf.ifIndex
+          } else {
+            "0"
+          }
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+          root.out.object.label = "interface: "
+          if root.out.exists("ietf.ifName") {
+            root.out.object.label = root.out.object.label + root.out.ietf.ifName
+          }
+          else if root.out.exists("ietf.ifDescr") {
+            root.out.object.label = root.out.object.label + root.out.ietf.ifDescr
+          }
+          else if root.out.exists("ietf.ifIndex") {
+            root.out.object.label = root.out.object.label + "ifIndex " + root.out.ietf.ifIndex
+          }
+          else {
+            root.out.object.label = root.out.object.label + "unknown"
+          }
+
+          root.out.event.class.name = "SNMPTRAP-IF-MIB-snmpTraps-linkDown"
+          root.out.event.id = "SNMPTRAP-IF-MIB-snmpTraps-linkDown"
+          root.out.event.category.name = "interface link state"
+          root.out.event.message = "interface link down"
+          if root.out.exists("ietf.ifType") {
+            root.out.event.message = root.out.ietf.ifType + " " + root.out.event.message
+          }
+          if root.out.exists("cisco.locIfReason") {
+            if root.out.cisco.locIfReason != "" {
+              root.out.event.message = root.out.event.message + ", " + root.out.cisco.locIfReason
+            }
+          }
+          if root.out.exists("ietf.ifAdminStatus") {
+            root.out.event.message = root.out.event.message + ", administratively " + root.out.ietf.ifAdminStatus
+          }
+          root.out.event.severity.code = 3
+          root.out.event.severity.level = "Error"
+
+          root.out.event.message = if root.out.exists("object.label") {
+            root.out.event.message + "  [ " + root.out.object.label + " ]"
+          }
+
+  - check: this.trap.GenericTrap == 3
+    # linkUp
+    #
+    # A linkUp trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object
+    # for one of its communication links left the down state and transitioned into some other state (but not into the
+    # notPresent state). This other state is indicated by the included value of ifOperStatus.
+    #
+    # RFC1215-MIB - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifName (DisplayString) - The textual name of the interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+    #
+    # Telesystems - SNMPv1
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Force10 - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # unknown - .1.3.6.1.4.1.6027.3.3.1.1.1.1.3.0
+    #
+    # Hatteras - linkDown - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# hnTrapHostOriginatingIPAddr (IpAddress) - This address identifies the originating interface in traps issued to the host.
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    #
+    # IP Unity - SNMPv2c
+		# ipUnityTrapSeverity (INTEGER) - Gives the severity of the trap message generated by the Media Server.
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    #
+    # Juniper - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+		# ifName (DisplayString) - The textual name of the interface.
+    #
+    # Overture - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifAdminStatus (INTEGER) - The desired state of the interface.
+		# ifOperStatus (INTEGER) - The current operational state of the interface.
+    #
+    # Cisco - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifType (INTEGER) - The type of interface.
+		# locIfReason (DisplayString) - The reason for the interface status change.
+    #
+    # Telindus - SNMPv2c
+		# ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    # unknown - .1.3.6.1.4.1.776.69.1.1
+		# sysName (DisplayString) - An administratively assigned name for this managed node.
+		# ifDescr (DisplayString) - A textual string containing information about the interface.
+		# ifAlias (DisplayString) - This object is an 'alias' name for the interface as specified by a network manager, and provides a non-volatile 'handle' for the interface.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          root.out.origin.agent.name = "IETF IF-MIB"
+
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(0).Value.string()
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(1).Value.string()
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(2).Value.string()
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(3).Value.string()
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(3).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(3).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+              root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(4).Value.string()
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(4).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(4).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(4).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+              root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(5).Value.string()
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(5).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(5).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(5).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+              root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(6).Value.string()
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(6).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(6).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(6).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(6).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+              root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 7 {
+            if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+              root.out.ietf.ifIndex = this.trap.VarBinds.index(7).Value.string()
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.7") {
+              root.out.ietf.ifAdminStatus = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.7")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.7")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.8") {
+              root.out.ietf.ifOperStatus = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.8")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.8")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.31.1.1.1.1") {
+              root.out.ietf.ifName = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.31.1.1.1.1")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.2") {
+              root.out.ietf.ifDescr = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.2")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.2.1.2.2.1.3") {
+              root.out.ietf.ifType = this.trap.VarBinds.index(7).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.2.2.1.3")
+              if !root.out.exists("ietf.ifIndex") {
+                root.out.ietf.ifIndex = this.trap.VarBinds.index(7).OID.snmp_oid_get_index(".1.3.6.1.2.1.2.2.1.3")
+              }
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.4.1.9.2.2.1.1.20") {
+              root.out.cisco.locIfReason = this.trap.VarBinds.index(7).Value.snmp_octet_display_hint("255t")
+            }
+            else if this.trap.VarBinds.index(7).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(7).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+              root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+              }
+            }
+          }}}}}}}}
+
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
+
+          root.out.object.name = "IF-MIB::ifEntry"
+          root.out.object.index = if root.out.exists("ietf.ifIndex") {
+            root.out.ietf.ifIndex
+          } else {
+            "0"
+          }
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+          root.out.object.label = "interface: "
+          if root.out.exists("ietf.ifName") {
+            root.out.object.label = root.out.object.label + root.out.ietf.ifName
+          }
+          else if root.out.exists("ietf.ifDescr") {
+            root.out.object.label = root.out.object.label + root.out.ietf.ifDescr
+          }
+          else if root.out.exists("ietf.ifIndex") {
+            root.out.object.label = root.out.object.label + "ifIndex " + root.out.ietf.ifIndex
+          }
+          else {
+            root.out.object.label = root.out.object.label + "unknown"
+          }
+
+          root.out.event.class.name = "SNMPTRAP-IF-MIB-snmpTraps-linkUp"
+          root.out.event.id = "SNMPTRAP-IF-MIB-snmpTraps-linkUp"
+          root.out.event.category.name = "interface link state"
+          root.out.event.message = "interface link up"
+          if root.out.exists("ietf.ifType") {
+            root.out.event.message = root.out.ietf.ifType + " " + root.out.event.message
+          }
+          if root.out.exists("cisco.locIfReason") {
+            if root.out.cisco.locIfReason != "" {
+              root.out.event.message = root.out.event.message + ", " + root.out.cisco.locIfReason
+            }
+          }
+          root.out.event.severity.code = 6
+          root.out.event.severity.level = "Informational"
+
+          root.out.event.message = if root.out.exists("object.label") {
+            root.out.event.message + "  [ " + root.out.object.label + " ]"
+          }
+
+  - check: this.trap.GenericTrap == 4
+    # authenticationFailure
+    #
+    # An authenticationFailure trap signifies that the SNMP entity has received a protocol message that is not properly
+    # authenticated. While all implementations of SNMP entities MAY be capable of generating this trap, the
+    # snmpEnableAuthenTraps object indicates whether this trap will be generated.
+    #
+    # RFC1215-MIB - SNMPv1 - enterprise is sysObjectID
+    # none
+    #
+    # Cisco - SNMPv1 - enterprise is sysObjectID
+		# authAddr (IpAddress) - This variable contains the last SNMP authorization failure IP address.
+    #
+    # Cisco - SNMPv2c
+		# authAddr (IpAddress) - This variable contains the last SNMP authorization failure IP address.
+    #
+    # NET-SNMP - SNMPv2c
+		# snmpTrapEnterprise (OBJECT IDENTIFIER) - The authoritative identification of the enterprise associated with the trap currently being sent.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.2.1.5") {
+              root.out.cisco.authAddr = this.trap.VarBinds.index(0).Value.string()
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.2.1.5") {
+              root.out.cisco.authAddr = this.trap.VarBinds.index(1).Value.string()
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.2.1.5") {
+              root.out.cisco.authAddr = this.trap.VarBinds.index(2).Value.string()
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          }}}
+
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
+
+          root.out.object.name = "SNMPv2-MIB::system"
+          root.out.object.index = "0"
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+          root.out.event.class.name = "SNMPTRAP-SNMPv2-MIB-snmpTraps-authenticationFailure"
+          root.out.event.id = "SNMPTRAP-SNMPv2-MIB-snmpTraps-authenticationFailure"
+          root.out.event.category.name = "SNMP authentication state"
+          root.out.event.message = "SNMP authentication failure"
+          if root.out.exists("cisco.authAddr") {
+            root.out.event.message = root.out.event.message + ", from " + root.out.cisco.authAddr
+          }
+          root.out.event.severity.code = 4
+          root.out.event.severity.level = "Warning"
+
+  - check: this.trap.GenericTrap == 5
+    # egpNeighborLoss
+    #
+    # An egpNeighborLoss trap signifies that an EGP neighbor for whom the sending protocol entity was an EGP peer has
+    # been marked down and the peer relationship no longer obtains.
+    #
+    # RFC1215-MIB - SNMPv1
+		# egpNeighAddr (IpAddress) - The IP address of this entry's EGP neighbor.
+    #
+    # Huawei - SNMPv1
+		# egpNeighAddr (INTEGER) - The IP address of this entry's EGP neighbor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          root.out.origin.agent.name = "IETF RFC1213-MIB"
+
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.8.5.1.2") {
+              root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.8.5.1.2")
+              if this.trap.VarBinds.index(0).Value.type() == "number" {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(0).Value.snmp_int_to_ipv4()
+              } else {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(0).Value
+              }
+            }
+            else if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(0).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+              root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.8.5.1.2") {
+              root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.8.5.1.2")
+              if this.trap.VarBinds.index(1).Value.type() == "number" {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(1).Value.snmp_int_to_ipv4()
+              } else {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+            else if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(1).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+              root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+              }
+            }
+          if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.8.5.1.2") {
+              root.out.object.index = this.trap.VarBinds.index(2).OID.snmp_oid_get_index(".1.3.6.1.2.1.8.5.1.2")
+              if this.trap.VarBinds.index(2).Value.type() == "number" {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(2).Value.snmp_int_to_ipv4()
+              } else {
+                root.out.ietf.egpNeighAddr = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+            else if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.6.3.1.1.4.3") {
+              root.out.ietf.snmpTrapEnterprise = this.trap.VarBinds.index(2).Value
+            }
+            else {
+              root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+              root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+              if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+              } else {
+                root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+              }
+            }
+          }}}
+
+          if !root.out.exists("ietf.snmpTrapEnterprise") {
+            root.out.ietf.snmpTrapEnterprise = this.trap.Enterprise
+          }
+
+          root.out.object.name = "RFC1213-MIB::egpNeighEntry"
+          if !root.out.exists("object.index") {
+            root.out.object.index = "0"
+            root.out.object.label = "neighbor: unknown"
+          } else {
+            root.out.object.label = "neighbor: " + root.out.ietf.egpNeighAddr
+          }
+          root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+          
+          root.out.event.class.name = "SNMPTRAP-RFC1213-MIB-snmpTraps-egpNeighborLoss"
+          root.out.event.id = "SNMPTRAP-RFC1213-MIB-snmpTraps-egpNeighborLoss"
+          root.out.event.category.name = "EGP neighbor state"
+          root.out.event.message = "EGP neighbor loss"
+          root.out.event.severity.code = 3
+          root.out.event.severity.level = "Error"
+
+          root.out.event.message = if root.out.exists("object.label") {
+            root.out.event.message + "  [ " + root.out.object.label + " ]"
+          }
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-SNMPv2-MIB-snmpTraps-unknown"
+        root.out.event.id = "SNMPTRAP-SNMPv2-MIB-snmpTraps-" + this.trap.GenericTrap.string()
+        root.out.event.category.name = "unknown generic trap"
+        root.out.event.message = "unknown generic trap " + this.trap.GenericTrap.string() + " from IETF SNMPv2-MIB-snmpTraps"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
