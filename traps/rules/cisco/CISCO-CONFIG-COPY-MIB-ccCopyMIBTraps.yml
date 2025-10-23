@@ -1,91 +1,324 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "CISCO-CONFIG-COPY-MIB"
+    root.out.origin.agent.name = "Cisco CISCO-CONFIG-COPY-MIB"
 - switch:
-    - check: this.trap.SpecificTrap == 1
-      processors:
-        - label: cc_copy_completion_variables
-          mapping: |-
-            #!blobl
-            root = this
+  - check: this.trap.SpecificTrap == 1
+    # ccCopyCompletion
+    #
+    # A ccCopyCompletion trap is sent at the completion of a config-copy request. The ccCopyFailCause is not
+    # instantiated, and hence not included in a trap, when the ccCopyState is success.
+    #
+    # ccCopyServerAddress (IpAddress) - The IP address of the TFTP server from (or to) which to copy the configuration
+    #   file. This object must be created when either the ccCopySourceFileType or ccCopyDestFileType has the value
+    #   'networkFile'. Values of 0.0.0.0 or FF.FF.FF.FF for ccCopyServerAddress are not allowed.
+    # ccCopyFileName (DisplayString) - The file name (including the path, if applicable) of the file. This object must
+    #   be created when either the ccCopySourceFileType or ccCopyDestFileType has the value 'networkFile' or 'iosFile'.
+    # ccCopyState (INTEGER) - Specifies the state of this config-copy request.
+    # ccCopyTimeStarted (TimeTicks) - Specifies the time the ccCopyState last transitioned to 'running', or 0 if the
+    #   state has never transitioned to 'running'(e.g., stuck in 'waiting' state).
+    # ccCopyTimeCompleted (TimeTicks) - Specifies the time the ccCopyState last transitioned from 'running' to
+    #   'successful' or 'failed' states. This object is instantiated only after the row has been instantiated. Its value
+    #   will remain 0 until the request has completed.
+    # ccCopyFailCause (INTEGER) - The reason why the config-copy operation failed. This object is instantiated only when
+    #   the ccCopyState for this entry is in the 'failed' state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.cisco.ccCopyServerAddress = this.trap.VarBinds.index(0).Value
-            root.out.cisco.ccCopyFileName = this.trap.VarBinds.index(1).Value.snmp_display_string()
-            root.out.cisco.ccCopyState = this.trap.VarBinds.index(2).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.10")
-            root.out.cisco.ccCopyTimeStarted = this.trap.VarBinds.index(3).Value
-            root.out.cisco.ccCopyTimeCompleted = this.trap.VarBinds.index(4).Value
-            root.out.cisco.ccCopyFailCause = this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.13")
-        - label: cc_copy_completion_rules_1
-          mapping: |-
-            #!blobl
-            root = this
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 5 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.5") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.6") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.10") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.11") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.12") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.4.1.9.9.96.1.1.1.1.13") {
+              meta varbinds_ok = true
+          }}}}}}}
 
-            root.out.event.class.name = "SNMPTRAP-cisco-CISCO-CONFIG-COPY-MIB-ccCopyCompletion"
-            root.out.event.id = "SNMPTRAP-cisco-CISCO-CONFIG-COPY-MIB-ccCopyCompletion"
-            root.out.event.category.name = "Configuration Copy Status"
-            root.out.object.name = "ccCopyEntry.1"
-        - label: cc_copy_completion_rules_2
-          switch:
-            - check: this.trap.VarBinds.index(2).Value == 1
-              processors:
-                - label: cc_copy_completion_rules_2_1
-                  mapping: |-
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ccCopyState = this.trap.VarBinds.index(2).Value
+
+                root.out.cisco.ccCopyServerAddress = this.trap.VarBinds.index(0).Value
+                root.out.cisco.ccCopyFileName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.cisco.ccCopyState = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.10")
+                root.out.cisco.ccCopyTimeStarted = this.trap.VarBinds.index(3).Value
+                root.out.cisco.ccCopyTimeCompleted = this.trap.VarBinds.index(4).Value
+                root.out.cisco.ccCopyFailCause = this.trap.VarBinds.index(5).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.13")
+
+                root.out.object.name = "CISCO-CONFIG-COPY-MIB::ccCopyEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.96.1.1.1.1.5")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "server: " + root.out.cisco.ccCopyServerAddress + ", file: " + root.out.cisco.ccCopyFileName
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-ccCopyCompletion"
+                root.out.event.id = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-ccCopyCompletion"
+                root.out.event.category.name = "configuration copy state"
+
+            - switch:
+              - check: metadata("ccCopyState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-waiting"
+                      root.out.event.message = "configuration copy to/from " + root.out.cisco.ccCopyServerAddress + " waiting"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ccCopyState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-running"
+                      root.out.event.message = "configuration copy to/from " + root.out.cisco.ccCopyServerAddress + " running"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ccCopyState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-successful"
+                      root.out.event.message = "configuration copy to/from " + root.out.cisco.ccCopyServerAddress + " successful"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ccCopyState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-failed"
+                      root.out.event.message = "configuration copy to/from " + root.out.cisco.ccCopyServerAddress + " failed, " + root.out.cisco.ccCopyFailCause
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - processors:
+                - mapping: |-
                     #!blobl
                     root = this
 
-                    root.out.event.message = "Configuration Copy Waiting"
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "configuration copy state to/from " + root.out.cisco.ccCopyServerAddress + " unknown"
                     root.out.event.severity.code = 4
                     root.out.event.severity.level = "Warning"
-            - check: this.trap.VarBinds.index(2).Value == 2
-              processors:
-                - label: cc_copy_completion_rules_2_2
-                  mapping: |-
-                    #!blobl
-                    root = this
 
-                    root.out.event.message = "Configuration Copy Running"
-                    root.out.event.severity.code = 4
-                    root.out.event.severity.level = "Warning"
-            - check: this.trap.VarBinds.index(2).Value == 3
-              processors:
-                - label: cc_copy_completion_rules_2_3
-                  mapping: |-
-                    #!blobl
-                    root = this
+            - mapping: |-
+                #!blobl
+                root = this
 
-                    root.out.event.message = "Configuration Copy Successful"
-                    root.out.event.severity.code = 5
-                    root.out.event.severity.level = "Notice"
-            - check: this.trap.VarBinds.index(2).Value == 4
-              processors:
-                - label: cc_copy_completion_rules_2_4
-                  mapping: |-
-                    #!blobl
-                    root = this
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
 
-                    root.out.event.message = "Configuration Copy Failed, " + this.trap.VarBinds.index(5).Value.enum_enrich(".1.3.6.1.4.1.9.9.96.1.1.1.1.13").string()
-                    root.out.event.severity.code = 3
-                    root.out.event.severity.level = "Error"
-            - processors:
-                - label: cc_copy_completion_rules_2_default
-                  mapping: |-
-                    #!blobl
-                    root = this
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
 
-                    root.out.event.message = "Configuration Copy Status Unknown"
-                    root.out.event.severity.code = 4
-                    root.out.event.severity.level = "Warning"
-        - label: cc_copy_completion_rules_3
-          mapping: |-
-            #!blobl
-            root = this
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              }}}}}}}}}
 
-            root.out.event.message = root.out.event.message + "  ( TFTP Server: " + this.trap.VarBinds.index(0).Value.string() + ", File: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() +  " )"
-    - processors:
-        - label: default
-          mapping: |
-            #!blobl
-            root = this
+              root.out.event.class.name = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-ccCopyCompletion"
+              root.out.event.id = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-ccCopyCompletion-unknown"
+              root.out.event.category.name = "configuration copy state"
+              root.out.event.message = "configuration copy request completed - UNEXPECTED VARBINDS for ccCopyCompletion trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
 
-            root.out.event.category.name = "Unknown Trap"
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        }}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-unknown"
+        root.out.event.id = "SNMPTRAP-CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Cisco CISCO-CONFIG-COPY-MIB-ccCopyMIBTraps"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
