@@ -1,166 +1,1005 @@
 - mapping: |-
     #!blobl
     root = this
-    root.out.origin.agent.name = "IEEE802dot11-MIB"
+    root.out.origin.agent.name = "IEEE IEEE802dot11-MIB"
 - switch:
-    - check: this.trap.SpecificTrap == 1
-      processors:
-        - label: dot11disassociate_variables
-          mapping: |-
-            #!blobl
-            root = this
+  - check: this.trap.SpecificTrap == 1
+    # dot11Disassociate
+    #
+    # The disassociate notification is sent when the STA sends a Disassociation frame. The value of the notification
+    # includes the MAC address of the MAC to which the Disassociation frame was sent and the reason for the
+    # disassociation.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11DisassociateReason (INTEGER) - This attribute holds the most recently transmitted Reason Code in a
+    #   Disassociation frame. If no Disassociation frame has been transmitted, the value of this attribute is 0.
+    # dot11DisassociateStation (MacAddress) - This attribute holds the MAC address from the Address 1 field of the most
+    #   recently transmitted Disassociation frame. If no Disassociation frame has been transmitted, the value of this
+    #   attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11DisassociateReason = this.trap.VarBinds.index(1).Value
-            root.out.ieee.dot11DisassociateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
-        - label: dot11disassociate_rules_1
-          mapping: |-
-            #!blobl
-            root = this
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.15") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.16") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.15") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.16") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
 
-            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
-            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Disassociate"
-            root.out.event.category.name = "802.11 Disassociation"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string()
-            root.out.event.message = "STA Sent Disassociation Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string() + " )"
-            root.out.event.severity.code = 4
-            root.out.event.severity.level = "Warning"
-    - check: this.trap.SpecificTrap == 2
-      processors:
-        - label: dot11deauthenticate_variables
-          mapping: |-
-            #!blobl
-            root = this
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11DeauthenticateReason = this.trap.VarBinds.index(1).Value
-            root.out.ieee.dot11DeauthenticateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
-        - label: dot11deauthenticate_rules_1
-          mapping: |-
-            #!blobl
-            root = this
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11DisassociateReason = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.15")
+                  root.out.ieee.dot11DisassociateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.15")
+                  root.out.ieee.dot11DisassociateReason = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.15")
+                  root.out.ieee.dot11DisassociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                }
 
-            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
-            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11Deauthenticate"
-            root.out.event.category.name = "802.11 Deauthentication"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string()
-            root.out.event.message = "STA Sent Deauthentication Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string() + " )"
-            root.out.event.severity.code = 4
-            root.out.event.severity.level = "Warning"
-    - check: this.trap.SpecificTrap == 3
-      processors:
-        - label: dot11authenticate_fail_variables
-          mapping: |-
-            #!blobl
-            root = this
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11DisassociateStation
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11AuthenticateFailStatus = this.trap.VarBinds.index(1).Value
-            root.out.ieee.dot11AuthenticateFailStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
-        - label: dot11authenticate_fail_rules_1
-          mapping: |-
-            #!blobl
-            root = this
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Disassociate"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Disassociate"
+                root.out.event.category.name = "STA association state"
+                root.out.event.message = "STA disassociation, " + root.out.ieee.dot11DisassociateReason
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Notice"
 
-            root.out.event.class.name = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
-            root.out.event.id = "SNMPTRAP-IEEE-IEEE802dot11-MIB-dot11AuthenticateFail"
-            root.out.event.category.name = "802.11 Authentication Failure"
-            root.out.object.name = "ifEntry." + this.trap.VarBinds.index(0).Value.string() + ", Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string()
-            root.out.event.message = "STA Sent Authentication Failure Frame  ( to Station MAC: " + this.trap.VarBinds.index(2).Value.snmp_mac_address().string() + " )"
-            root.out.event.severity.code = 3
-            root.out.event.severity.level = "Error"
-    - check: this.trap.SpecificTrap == 4
-      processors:
-        - label: dot11associate_variables
-          mapping: |-
-            #!blobl
-            root = this
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11AssociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
-            root.out.ieee.dot11AssociateID = this.trap.VarBinds.index(2).Value
-        - label: dot11associate_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 5
-      processors:
-        - label: dot11associate_failed_variables
-          mapping: |-
-            #!blobl
-            root = this
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11AssociateFailStatus = this.trap.VarBinds.index(1).Value
-            root.out.ieee.dot11AssociateFailStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
-        - label: dot11associate_failed_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 6
-      processors:
-        - label: dot11reassociate_variables
-          mapping: |-
-            #!blobl
-            root = this
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Disassociate"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Disassociate-unknown"
+              root.out.event.category.name = "STA association state"
+              root.out.event.message = "STA disassociation - UNEXPECTED VARBINDS for dot11Disassociate trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
-            root.out.ieee.dot11ReassociateID = this.trap.VarBinds.index(2).Value
-        - label: dot11reassociate_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+  - check: this.trap.SpecificTrap == 2
+    # dot11Deauthenticate
+    #
+    # The deauthenticate notification is sent when the STA sends a Deauthentication frame. The value of the notification
+    # includes the MAC address of the MAC to which the Deauthentication frame was sent and the reason for the
+    # deauthentication.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11DeauthenticateReason (INTEGER) - This attribute holds the most recently transmitted Reason Code in a
+    #   Deauthentication frame. If no Deauthentication frame has been transmitted, the value of this attribute is 0.
+    # dot11DeauthenticateStation (MacAddress) - This attribute holds the MAC address from the Address 1 field of the
+    #   most recently transmitted Deauthentication frame. If no Deauthentication frame has been transmitted, the value
+    #   of this attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - check: this.trap.SpecificTrap == 7
-      processors:
-        - label: dot11reassociate_failed_variables
-          mapping: |-
-            #!blobl
-            root = this
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.17") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.18") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.17") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.18") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
 
-            root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value
-            root.out.ieee.dot11ReassociateFailStatus = this.trap.VarBinds.index(1).Value
-            root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
-        - label: dot11reassociate_failed_template
-          mapping: |
-            #!blobl
-            root = this
-            root.out.event.category.name = ""
-            root.out.event.id = ""
-            root.out.event.message = ""
-            root.out.object.name = ""
-            root.out.event.class.name = ""
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
 
-            root.out.event.severity.code = 7
-            root.out.event.severity.level = "Debug"
-    - processors:
-        - label: default
-          mapping: |
-            #!blobl
-            root = this
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11DeauthenticateReason = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.17")
+                  root.out.ieee.dot11DeauthenticateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.17")
+                  root.out.ieee.dot11DeauthenticateReason = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.17")
+                  root.out.ieee.dot11DeauthenticateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                }
 
-            root.out.event.category.name = "Unknown Trap"
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11DeauthenticateStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Deauthenticate"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Deauthenticate"
+                root.out.event.category.name = "STA authentication state"
+                root.out.event.message = "STA deauthentication, " + root.out.ieee.dot11DeauthenticateReason
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Deauthenticate"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Deauthenticate-unknown"
+              root.out.event.category.name = "STA authentication state"
+              root.out.event.message = "STA deauthentication - UNEXPECTED VARBINDS for dot11Deauthenticate trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 3
+    # dot11AuthenticateFail
+    #
+    # The authenticate failure notification is sent when the STA sends an Authentication frame with a status code other
+    # than SUCCESS. The value of the notification includes the MAC address of the MAC to which the Authentication frame
+    # was sent and the reason for the authentication failure.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11AuthenticateFailStatus (INTEGER) - This attribute holds the most recently transmitted Status Code in a
+    #   failed Authentication frame. If no failed Authentication frame has been transmitted, the value of this attribute
+    #   is 0.
+    # dot11AuthenticateFailStation (MacAddress) - This attribute holds the MAC address from the Address 1 field of the
+    #   most recently transmitted failed Authentication frame. If no failed Authentication frame has been transmitted,
+    #   the value of this attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.19") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.20") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.19") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.20") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11AuthenticateFailStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.19")
+                  root.out.ieee.dot11AuthenticateFailStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.19")
+                  root.out.ieee.dot11AuthenticateFailStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.19")
+                  root.out.ieee.dot11AuthenticateFailStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                }
+
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11AuthenticateFailStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AuthenticateFail"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AuthenticateFail"
+                root.out.event.category.name = "STA authentication state"
+                root.out.event.message = "STA authentication failed, " + root.out.ieee.dot11AuthenticateFailStatus
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AuthenticateFail"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AuthenticateFail-unknown"
+              root.out.event.category.name = "STA authentication state"
+              root.out.event.message = "STA authentication failed - UNEXPECTED VARBINDS for dot11AuthenticateFail trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 4
+    # dot11Associate
+    #
+    # The associate notification is sent when the STA sends an Association Response frame with a status code equal to
+    # SUCCESS. The value of the notification includes the MAC address of the MAC to which the Association Response frame
+    # was sent and the Association ID.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11AssociateStation (MacAddress) - This attribute indicates the MAC address from the Address 1 field of the most
+    #   recently transmitted Association Response frame. If no Association Response frame has been transmitted, the
+    #   value of this attribute is 0.
+    # dot11AssociateID (Unsigned32) - This attribute indicates the Association ID from the most recently transmitted
+    #   Association Response frame. If no Association Response frame has been transmitted, the value of this attribute
+    #   is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.43") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.44") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.43") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.44") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11AssociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                  root.out.ieee.dot11AssociateID = this.trap.VarBinds.index(2).Value.string()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.43")
+                  root.out.ieee.dot11AssociateStation = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+                  root.out.ieee.dot11AssociateID = this.trap.VarBinds.index(1).Value.string()
+                }
+
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11AssociateStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Associate"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Associate"
+                root.out.event.category.name = "STA association state"
+                root.out.event.message = "STA association successful"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Associate"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Associate-unknown"
+              root.out.event.category.name = "STA association state"
+              root.out.event.message = "STA association successful - UNEXPECTED VARBINDS for dot11Associate trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 5
+    # dot11AssociateFailed
+    #
+    # The associate failed notification is sent when the STA sends an Association Response frame with a status code
+    # other than SUCCESS. The value of the notification includes the MAC address of the MAC to which the Association
+    # Response frame was sent and the reason for the association failure.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11AssociateFailStatus (INTEGER) - This attribute indicates the most recently transmitted Status Code in a
+    #   failed Association Response frame. If no failed Association Response frame has been transmitted, the value of
+    #   this attribute is 0.
+    # dot11AssociateFailStation (MacAddress) - This attribute indicates the MAC address from the Address 1 field of the
+    #   most recently transmitted failed Association Response frame. If no failed Association Response frame has been
+    #   transmitted, the value of this attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.46") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.45") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.46") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.45") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11AssociateFailStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.46")
+                  root.out.ieee.dot11AssociateFailStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.46")
+                  root.out.ieee.dot11AssociateFailStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.46")
+                  root.out.ieee.dot11AssociateFailStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                }
+
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11AssociateFailStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AssociateFailed"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AssociateFailed"
+                root.out.event.category.name = "STA association state"
+                root.out.event.message = "STA association failed, " + root.out.ieee.dot11AssociateFailStatus
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AssociateFailed"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11AssociateFailed-unknown"
+              root.out.event.category.name = "STA association state"
+              root.out.event.message = "STA association failed - UNEXPECTED VARBINDS for dot11AssociateFailed trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 6
+    # dot11Reassociate
+    #
+    # The reassociate notification is sent when the STA sends a Reassociation Response frame with a status code equal to
+    # SUCCESS. The value of the notification includes the MAC address of the MAC to which the Reassociation Response
+    # frame was sent and the Reassociation ID.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11ReassociateStation (MacAddress) - This attribute indicates the MAC address from the Address 1 field of the
+    #   most recently transmitted Reassociation Response frame. If no Reassociation Response frame has been transmitted,
+    #   the value of this attribute is 0.
+    # dot11ReassociateID (Unsigned32) - This attribute indicates the Association ID from the most recently transmitted
+    #   Reassociation Response frame. If no Reassociation Response frame has been transmitted, the value of this
+    #   attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.47") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.48") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.47") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.48") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                  root.out.ieee.dot11ReassociateID = this.trap.VarBinds.index(2).Value.string()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.47")
+                  root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(0).Value.snmp_mac_address()
+                  root.out.ieee.dot11ReassociateID = this.trap.VarBinds.index(1).Value.string()
+                }
+
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11ReassociateStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Reassociate"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Reassociate"
+                root.out.event.category.name = "STA association state"
+                root.out.event.message = "STA reassociation successful"
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Reassociate"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11Reassociate-unknown"
+              root.out.event.category.name = "STA association state"
+              root.out.event.message = "STA reassociation successful - UNEXPECTED VARBINDS for dot11Reassociate trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 7
+    # dot11ReassociateFailed
+    #
+    # The reassociate failed notification is sent when the STA sends a Reassociation Response frame with a status code
+    # other than SUCCESS. The value of the notification includes the MAC address of the MAC to which the Reassociation
+    # Response frame was sent and the reason for the reassociation failure.
+    #
+    # ifIndex (Integer32) - A unique value, greater than zero, for each interface.
+    # dot11ReassociateFailStatus (INTEGER) - This attribute indicates the most recently transmitted Status Code in a
+    #   failed Association Response frame. If no failed Association Response frame has been transmitted, the value of
+    #   this attribute is 0.
+    # dot11ReassociateStation (MacAddress) - This attribute indicates the MAC address from the Address 1 field of the
+    #   most recently transmitted Reassociation Response frame. If no Reassociation Response frame has been transmitted,
+    #   the value of this attribute is 0.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds = "unexpected"
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.2.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.50") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.2.840.10036.1.1.1.47") {
+              meta varbinds = "standard"
+          }}}} else {
+            if this.trap.VarBinds.length() > 1 {
+              if this.trap.VarBinds.index(0).OID.has_prefix(".1.2.840.10036.1.1.1.50") {
+              if this.trap.VarBinds.index(1).OID.has_prefix(".1.2.840.10036.1.1.1.47") {
+                meta varbinds = "no_ifIndex"
+            }}}
+          }
+
+      - switch:
+        - check: metadata("varbinds") != "unexpected"
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                if metadata("varbinds") == "standard" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).Value.string()
+                  root.out.ieee.dot11ReassociateFailStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.50")
+                  root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(2).Value.snmp_mac_address()
+                } else if metadata("varbinds") == "no_ifIndex" {
+                  root.out.ieee.ifIndex = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.2.840.10036.1.1.1.50")
+                  root.out.ieee.dot11ReassociateFailStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.2.840.10036.1.1.1.50")
+                  root.out.ieee.dot11ReassociateStation = this.trap.VarBinds.index(1).Value.snmp_mac_address()
+                }
+
+                root.out.object.name = "IEEE802dot11-MIB::ifEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).Value.string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "interface: ifIndex " + root.out.ieee.ifIndex + ", station: " + root.out.ieee.dot11ReassociateStation
+
+                root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11ReassociateFailed"
+                root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11ReassociateFailed"
+                root.out.event.category.name = "STA association state"
+                root.out.event.message = "STA reassociation failed, " + root.out.ieee.dot11ReassociateFailStatus
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11ReassociateFailed"
+              root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-dot11ReassociateFailed-unknown"
+              root.out.event.category.name = "STA association state"
+              root.out.event.message = "STA reassociation failed - UNEXPECTED VARBINDS for dot11ReassociateFailed trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-unknown"
+        root.out.event.id = "SNMPTRAP-IEEE802dot11-MIB-dot11SMTnotification-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IEEE IEEE802dot11-MIB-dot11SMTnotification"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
