@@ -1,0 +1,798 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF DISMAN-EVENT-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # mteTriggerFired
+    #
+    # Notification that the trigger indicated by the object instances has fired, for triggers with mteTriggerType
+    # 'boolean' or 'existence'.
+    #
+    # mteHotTrigger (SnmpAdminString) - The name of the trigger causing the notification.
+    # mteHotTargetName (SnmpAdminString) - The SNMP Target MIB's snmpTargetAddrName related to the notification.
+    # mteHotContextName (SnmpAdminString) - The context name related to the notification.
+    # mteHotOID (OBJECT IDENTIFIER) - The object identifier of the destination object related to the notification.
+    # mteHotValue (Integer32) - The value of the object at mteTriggerValueID when a trigger fired.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.88.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.88.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.88.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.88.2.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.88.2.1.5") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.mteHotTrigger = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotTargetName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotContextName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotOID = this.trap.VarBinds.index(3).Value
+                root.out.ietf.mteHotValue = this.trap.VarBinds.index(4).Value
+
+                root.out.object.name = "DISMAN-EVENT-MIB::mteTrigger"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "trigger: " + root.out.ietf.mteHotTrigger + ", target: " + root.out.ietf.mteHotTargetName + ", context: " + root.out.ietf.mteHotContextName + ", OID: " + root.out.ietf.mteHotOID
+
+                root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFired"
+                root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFired"
+                root.out.event.category.name = "event state"
+                root.out.event.message = "event fired, value: " + root.out.ietf.mteHotValue.string()
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFired"
+              root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFired-unknown"
+              root.out.event.category.name = "event state"
+              root.out.event.message = "event fired - UNEXPECTED VARBINDS for mteTriggerFired trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # mteTriggerRising
+    #
+    # Notification that the rising threshold was met for triggers with mteTriggerType 'threshold'.
+    #
+    # mteHotTrigger (SnmpAdminString) - The name of the trigger causing the notification.
+    # mteHotTargetName (SnmpAdminString) - The SNMP Target MIB's snmpTargetAddrName related to the notification.
+    # mteHotContextName (SnmpAdminString) - The context name related to the notification.
+    # mteHotOID (OBJECT IDENTIFIER) - The object identifier of the destination object related to the notification.
+    # mteHotValue (Integer32) - The value of the object at mteTriggerValueID when a trigger fired.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.88.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.88.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.88.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.88.2.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.88.2.1.5") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.mteHotTrigger = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotTargetName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotContextName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotOID = this.trap.VarBinds.index(3).Value
+                root.out.ietf.mteHotValue = this.trap.VarBinds.index(4).Value
+
+                root.out.object.name = "DISMAN-EVENT-MIB::mteTrigger"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "trigger: " + root.out.ietf.mteHotTrigger + ", target: " + root.out.ietf.mteHotTargetName + ", context: " + root.out.ietf.mteHotContextName + ", OID: " + root.out.ietf.mteHotOID
+
+                root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerRising"
+                root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerRising"
+                root.out.event.category.name = "event threshold"
+                root.out.event.message = "event threshold rising, value: " + root.out.ietf.mteHotValue.string()
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerRising"
+              root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerRising-unknown"
+              root.out.event.category.name = "event threshold"
+              root.out.event.message = "event threshold rising - UNEXPECTED VARBINDS for mteTriggerRising trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 3
+    # mteTriggerFalling
+    #
+    # Notification that the falling threshold was met for triggers with mteTriggerType 'threshold'.
+    #
+    # mteHotTrigger (SnmpAdminString) - The name of the trigger causing the notification.
+    # mteHotTargetName (SnmpAdminString) - The SNMP Target MIB's snmpTargetAddrName related to the notification.
+    # mteHotContextName (SnmpAdminString) - The context name related to the notification.
+    # mteHotOID (OBJECT IDENTIFIER) - The object identifier of the destination object related to the notification.
+    # mteHotValue (Integer32) - The value of the object at mteTriggerValueID when a trigger fired.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.88.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.88.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.88.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.88.2.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.88.2.1.5") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.mteHotTrigger = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotTargetName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotContextName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotOID = this.trap.VarBinds.index(3).Value
+                root.out.ietf.mteHotValue = this.trap.VarBinds.index(4).Value
+
+                root.out.object.name = "DISMAN-EVENT-MIB::mteTrigger"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "trigger: " + root.out.ietf.mteHotTrigger + ", target: " + root.out.ietf.mteHotTargetName + ", context: " + root.out.ietf.mteHotContextName + ", OID: " + root.out.ietf.mteHotOID
+
+                root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFalling"
+                root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFalling"
+                root.out.event.category.name = "event threshold"
+                root.out.event.message = "event threshold falling, value: " + root.out.ietf.mteHotValue.string()
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFalling"
+              root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFalling-unknown"
+              root.out.event.category.name = "event threshold"
+              root.out.event.message = "event threshold falling - UNEXPECTED VARBINDS for mteTriggerFalling trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 4
+    # mteTriggerFailure
+    #
+    # Notification that an attempt to check a trigger has failed.
+    #
+    # mteHotTrigger (SnmpAdminString) - The name of the trigger causing the notification.
+    # mteHotTargetName (SnmpAdminString) - The SNMP Target MIB's snmpTargetAddrName related to the notification.
+    # mteHotContextName (SnmpAdminString) - The context name related to the notification.
+    # mteHotOID (OBJECT IDENTIFIER) - The object identifier of the destination object related to the notification.
+    # mteFailedReason (INTEGER) - The reason for the failure of an attempt to check for a trigger condition or set an
+    #   object in response to an event.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.88.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.88.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.88.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.88.2.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.88.2.1.6") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.mteHotTrigger = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotTargetName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotContextName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotOID = this.trap.VarBinds.index(3).Value
+                root.out.ietf.mteFailedReason = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.88.2.1.6")
+
+                root.out.object.name = "DISMAN-EVENT-MIB::mteTrigger"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "trigger: " + root.out.ietf.mteHotTrigger + ", target: " + root.out.ietf.mteHotTargetName + ", context: " + root.out.ietf.mteHotContextName + ", OID: " + root.out.ietf.mteHotOID
+
+                root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFailure"
+                root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFailure"
+                root.out.event.category.name = "event trigger state"
+                root.out.event.message = "event trigger failed, " + root.out.ietf.mteFailedReason
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFailure"
+              root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteTriggerFailure-unknown"
+              root.out.event.category.name = "event trigger state"
+              root.out.event.message = "event trigger failed - UNEXPECTED VARBINDS for mteTriggerFailure trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 5
+    # mteEventSetFailure
+    #
+    # Notification that an attempt to do a set in response to an event has failed.
+    #
+    # mteHotTrigger (SnmpAdminString) - The name of the trigger causing the notification.
+    # mteHotTargetName (SnmpAdminString) - The SNMP Target MIB's snmpTargetAddrName related to the notification.
+    # mteHotContextName (SnmpAdminString) - The context name related to the notification.
+    # mteHotOID (OBJECT IDENTIFIER) - The object identifier of the destination object related to the notification.
+    # mteFailedReason (INTEGER) - The reason for the failure of an attempt to check for a trigger condition or set an
+    #   object in response to an event.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.88.2.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.88.2.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.88.2.1.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.88.2.1.4") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.88.2.1.6") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.mteHotTrigger = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotTargetName = this.trap.VarBinds.index(1).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotContextName = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.mteHotOID = this.trap.VarBinds.index(3).Value
+                root.out.ietf.mteFailedReason = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.88.2.1.6")
+
+                root.out.object.name = "DISMAN-EVENT-MIB::mteTrigger"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "trigger: " + root.out.ietf.mteHotTrigger + ", target: " + root.out.ietf.mteHotTargetName + ", context: " + root.out.ietf.mteHotContextName + ", OID: " + root.out.ietf.mteHotOID
+
+                root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteEventSetFailure"
+                root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteEventSetFailure"
+                root.out.event.category.name = "event response state"
+                root.out.event.message = "event response failed, " + root.out.ietf.mteFailedReason
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteEventSetFailure"
+              root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-mteEventSetFailure-unknown"
+              root.out.event.category.name = "event response state"
+              root.out.event.message = "event response failed - UNEXPECTED VARBINDS for mteEventSetFailure trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        }}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-unknown"
+        root.out.event.id = "SNMPTRAP-DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF DISMAN-EVENT-MIB-dismanEventMIBNotificationPrefix"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
