@@ -1,0 +1,429 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "H3C HH3C-SYS-MAN-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # hh3cSysClockChangedNotification
+    #
+    # A clock changed notification is generated when the current local date and time for the system has been manually
+    # changed. The value of hh3cSysLocalClock reflects new date and time.
+    #
+    # hh3cSysLocalClock (DateAndTime) - This node gives the current local time of the system. The unit of it is DateAndTime.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.1.1") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.h3c.hh3cSysLocalClock = this.trap.VarBinds.index(0).Value.snmp_date_and_time().ts_unix_milli()
+
+                root.out.object.name = "HH3C-SYS-MAN-MIB::hh3cSysClock"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysClockChangedNotification"
+                root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysClockChangedNotification"
+                root.out.event.category.name = "system clock state"
+                root.out.event.message = "system clock changed, " + this.trap.VarBinds.index(0).Value.snmp_date_and_time()
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              }}}}
+
+              root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysClockChangedNotification"
+              root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysClockChangedNotification-unknown"
+              root.out.event.category.name = "system clock state"
+              root.out.event.message = "system clock changed - UNEXPECTED VARBINDS for hh3cSysClockChangedNotification trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 2
+    # hh3cSysReloadNotification
+    #
+    # A hh3cSysReloadNotification will be sent before the corresponding entity is rebooted. It will also be sent if the
+    # entity fails to reboot because the clock has changed.
+    #
+    # hh3cSysReloadImage (Integer32) - The value indicates an entry in hh3cSysImageTable.
+    # hh3cSysReloadCfgFile (Integer32) - The value indicates an entry in hh3cSysCFGFileTable.
+    # hh3cSysReloadReason (DisplayString) - The reason of system's reloading.
+    # hh3cSysReloadScheduleTime (DateAndTime) - Specify the local time at which the reload action will occur.
+    # hh3cSysReloadAction (INTEGER)
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.3.3.1.4") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.3.3.1.3") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.3.3.1.5") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.3.3.1.6") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.3.2") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.h3c.hh3cSysReloadImage = this.trap.VarBinds.index(0).Value.string()
+                root.out.h3c.hh3cSysReloadCfgFile = this.trap.VarBinds.index(1).Value.string()
+                root.out.h3c.hh3cSysReloadReason = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.h3c.hh3cSysReloadScheduleTime = this.trap.VarBinds.index(3).Value.snmp_date_and_time().ts_unix_milli()
+                root.out.h3c.hh3cSysReloadAction = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.25506.2.3.1.3.2")
+
+                root.out.object.name = "HH3C-SYS-MAN-MIB::hh3cSysImageEntry"
+                root.out.object.index = root.out.h3c.hh3cSysReloadImage
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "image: hh3cSysReloadImage " + root.out.h3c.hh3cSysReloadImage + ", configuration: hh3cSysReloadCfgFile " + root.out.h3c.hh3cSysReloadCfgFile
+
+                root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysReloadNotification"
+                root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysReloadNotification"
+                root.out.event.category.name = "system reload"
+                root.out.event.message = root.out.h3c.hh3cSysReloadAction + " system reload, " + root.out.h3c.hh3cSysReloadReason
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysReloadNotification"
+              root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysReloadNotification-unknown"
+              root.out.event.category.name = "system reload"
+              root.out.event.message = "system reload - UNEXPECTED VARBINDS for hh3cSysReloadNotification trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 3
+    # hh3cSysStartUpNotification
+    #
+    # a hh3cSysStartUpNotification trap will be sent when the system starts up with 'main' image file failed, a trap
+    # will be sent to indicate which type the current image file (I.e backup or secure) is.
+    #
+    # hh3cSysImageType (INTEGER) - It indicates the reloading sequence attribute of the image.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.25506.2.3.1.4.2.1.5") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.h3c.hh3cSysImageType = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.25506.2.3.1.4.2.1.5")
+
+                root.out.object.name = "HH3C-SYS-MAN-MIB::hh3cSysImageEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.25506.2.3.1.4.2.1.5")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "image: hh3cSysImageIndex " + root.out.object.index
+
+                root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysStartUpNotification"
+                root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysStartUpNotification"
+                root.out.event.category.name = "system startup state"
+                root.out.event.message = "system startup, main image failed, using " + root.out.h3c.hh3cSysImageType
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              }}}}
+
+              root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysStartUpNotification"
+              root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-hh3cSysStartUpNotification-unknown"
+              root.out.event.category.name = "system startup state"
+              root.out.event.message = "system startup, main image failed - UNEXPECTED VARBINDS for hh3cSysStartUpNotification trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        }}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-unknown"
+        root.out.event.id = "SNMPTRAP-HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from H3C HH3C-SYS-MAN-MIB-hh3cSystemManMIBNotifications"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
