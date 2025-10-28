@@ -1,0 +1,283 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF VRRP-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # vrrpTrapNewMaster
+    #
+    # The newMaster trap indicates that the sending agent has transitioned to 'Master' state.
+    #
+    # vrrpOperMasterIpAddr (IpAddress) - The master router's real (primary) IP address.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 0 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.68.1.3.1.7") {
+              meta varbinds_ok = true
+          }}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.vrrpOperMasterIpAddr = this.trap.VarBinds.index(0).Value
+
+                root.out.object.name = "VRRP-MIB::vrrpOperEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.68.1.3.1.7")
+                root.TEMP.vrrpOperEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ifIndex = root.TEMP.vrrpOperEntry.index(0).string()
+                root.out.ietf.vrrpOperVrId = root.TEMP.vrrpOperEntry.index(1).string()
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "router: " + root.out.ietf.vrrpOperMasterIpAddr + ", interface: ifIndex " + root.out.ietf.ifIndex + ", VRID: " + root.out.ietf.vrrpOperVrId
+
+                root.out.event.class.name = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapNewMaster"
+                root.out.event.id = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapNewMaster"
+                root.out.event.category.name = "VRRP master state"
+                root.out.event.message = "transitioned to VRRP master"
+                root.out.event.severity.code = 5
+                root.out.event.severity.level = "Notice"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              }}}}
+
+              root.out.event.class.name = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapNewMaster"
+              root.out.event.id = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapNewMaster-unknown"
+              root.out.event.category.name = "VRRP master state"
+              root.out.event.message = "transitioned to VRRP master - UNEXPECTED VARBINDS for vrrpTrapNewMaster trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # vrrpTrapAuthFailure
+    #
+    # A vrrpAuthFailure trap signifies that a packet has been received from a router whose authentication key or
+    # authentication type conflicts with this router's authentication key or authentication type. Implementation of this
+    # trap is optional.
+    #
+    # vrrpTrapPacketSrc (IpAddress) - The IP address of an inbound VRRP packet.
+    # vrrpTrapAuthErrorType (INTEGER) - Potential types of configuration conflicts.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.68.1.5") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.68.1.6") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.vrrpTrapPacketSrc = this.trap.VarBinds.index(0).Value
+                root.out.ietf.vrrpTrapAuthErrorType = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.68.1.6")
+
+                root.out.object.name = "VRRP-MIB::vrrpOperations"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "from: " + root.out.ietf.vrrpTrapPacketSrc
+
+                root.out.event.class.name = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapAuthFailure"
+                root.out.event.id = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapAuthFailure"
+                root.out.event.category.name = "VRRP authentication state"
+                root.out.event.message = "VRRP authentication failure, " + root.out.ietf.vrrpTrapAuthErrorType
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapAuthFailure"
+              root.out.event.id = "SNMPTRAP-VRRP-MIB-vrrpMIB-vrrpTrapAuthFailure-unknown"
+              root.out.event.category.name = "VRRP authentication state"
+              root.out.event.message = "VRRP authentication failure - UNEXPECTED VARBINDS for vrrpTrapAuthFailure trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-VRRP-MIB-vrrpMIB-unknown"
+        root.out.event.id = "SNMPTRAP-VRRP-MIB-vrrpMIB-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF VRRP-MIB-vrrpMIB"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
