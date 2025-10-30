@@ -1,0 +1,353 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF ACCOUNTING-CONTROL-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # acctngFileNearlyFull
+    #
+    # An indication that the size of the file into which accounting information is currently being collected has
+    # exceeded the threshold percentage of its maximum file size. This notification is generated only at the time of the
+    # transition from not-exceeding to exceeding.
+    #
+    # acctngFileName (DisplayString) - The name of the file into which accounting data is to be stored. If files are
+    #   named using suffixes, then the name of the current file is the concatenation of acctngFileName and
+    #   acctngFileNameSuffix.
+    # acctngFileMaximumSize (Integer32) - The maximum size of the file (including header information). When the file of
+    #   collected data reaches this size, either the agent automatically swaps to a new version (i.e., a new value
+    #   acctngFileNameSuffix) of the file, or new records are discarded. Since a file must contain an integral number of
+    #   connection records, the actual maximum size of the file may be just less OR Just greater than the value of this
+    #   object.
+    # acctngControlTrapThreshold (INTEGER) - A percentage of the maximum file size at which a 'nearly-full' trap is
+    #   generated.
+    # acctngFileNameSuffix (DisplayString) - The suffix, if any, of the name of a file into which accounting data is
+    #   currently being stored. If suffixes are not used, then the value of this object is the zero-length string. Note
+    #   that if a separator, such as a period, is used in appending the suffix to the file name, then that separator
+    #   appears as the first character of this value.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.6") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.60.1.4.1") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.3") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.acctngFileName = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.acctngFileMaximumSize = this.trap.VarBinds.index(1).Value
+                root.out.ietf.acctngControlTrapThreshold = this.trap.VarBinds.index(2).Value
+                root.out.ietf.acctngFileNameSuffix = this.trap.VarBinds.index(3).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "ACCOUNTING-CONTROL-MIB::acctngFileEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.60.1.2.1.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "file: " + root.out.ietf.acctngFileName
+                if root.out.ietf.acctngFileNameSuffix.length() > 0 {
+                  root.out.object.label = root.out.object.label + root.out.ietf.acctngFileNameSuffix
+                }
+
+                root.out.event.class.name = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileNearlyFull"
+                root.out.event.id = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileNearlyFull"
+                root.out.event.category.name = "accounting file state"
+                root.out.event.message = "accounting file over " + root.out.ietf.acctngControlTrapThreshold.string() + "% full"
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileNearlyFull"
+              root.out.event.id = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileNearlyFull-unknown"
+              root.out.event.category.name = "accounting file state"
+              root.out.event.message = "accounting file nearly full - UNEXPECTED VARBINDS for acctngFileNearlyFull trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # acctngFileFull
+    #
+    # An indication that the size of the file into which accounting information is currently being collected has
+    # transistioned to its maximum file size. This notification is generated (for all values of acctngAgentMode) at the
+    # time of the transition from not-full to full. If acctngAgentMode has the value 'swapOnCommand', it is also
+    # generated periodically thereafter until such time as collection of data is no longer inhibited by the file full
+    # condition.
+    #
+    # acctngFileName (DisplayString) - The name of the file into which accounting data is to be stored. If files are
+    #   named using suffixes, then the name of the current file is the concatenation of acctngFileName and
+    #   acctngFileNameSuffix.
+    # acctngFileMaximumSize (Integer32) - The maximum size of the file (including header information). When the file of
+    #   collected data reaches this size, either the agent automatically swaps to a new version (i.e., a new value
+    #   acctngFileNameSuffix) of the file, or new records are discarded. Since a file must contain an integral number of
+    #   connection records, the actual maximum size of the file may be just less OR Just greater than the value of this
+    #   object.
+    # acctngFileNameSuffix (DisplayString) - The suffix, if any, of the name of a file into which accounting data is
+    #   currently being stored. If suffixes are not used, then the value of this object is the zero-length string. Note
+    #   that if a separator, such as a period, is used in appending the suffix to the file name, then that separator
+    #   appears as the first character of this value.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.2") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.6") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.60.1.2.1.1.3") {
+              meta varbinds_ok = true
+          }}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.acctngFileName = this.trap.VarBinds.index(0).Value.snmp_octet_display_hint("255t")
+                root.out.ietf.acctngFileMaximumSize = this.trap.VarBinds.index(1).Value
+                root.out.ietf.acctngFileNameSuffix = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "ACCOUNTING-CONTROL-MIB::acctngFileEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.60.1.2.1.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "file: " + root.out.ietf.acctngFileName
+                if root.out.ietf.acctngFileNameSuffix.length() > 0 {
+                  root.out.object.label = root.out.object.label + root.out.ietf.acctngFileNameSuffix
+                }
+
+                root.out.event.class.name = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileFull"
+                root.out.event.id = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileFull"
+                root.out.event.category.name = "accounting file state"
+                root.out.event.message = "accounting file full"
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileFull"
+              root.out.event.id = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-acctngFileFull-unknown"
+              root.out.event.category.name = "accounting file state"
+              root.out.event.message = "accounting file full - UNEXPECTED VARBINDS for acctngFileFull trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-unknown"
+        root.out.event.id = "SNMPTRAP-ACCOUNTING-CONTROL-MIB-acctngNotifications-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF ACCOUNTING-CONTROL-MIB-acctngNotifications"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
