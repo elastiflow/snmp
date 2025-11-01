@@ -1,0 +1,2275 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF OSPFV3-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # ospfv3VirtIfStateChange
+    #
+    # An ospfv3VirtIfStateChange notification signifies that there has been a change in the state of an OSPFv3 virtual
+    # interface.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3VirtIfState (INTEGER) - OSPF virtual interface states.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.8.1.9") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3VirtIfStateChange = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3VirtIfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.8.1.9")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3VirtIfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.8.1.9")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3VirtIfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3VirtIfAreaId = root.TEMP.ospfv3VirtIfEntry.index(0).string()
+                root.out.ietf.ospfv3VirtIfNeighbor = root.TEMP.ospfv3VirtIfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3VirtIfAreaId + ", neighbor: " + root.out.ietf.ospfv3VirtIfNeighbor
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfStateChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfStateChange"
+                root.out.event.category.name = "OSPF virtual interface state"
+
+            - switch:
+              - check: metadata("ospfv3VirtIfStateChange") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-down"
+                      root.out.event.message = "OSPF virtual interface down"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("ospfv3VirtIfStateChange") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-pointToPoint"
+                      root.out.event.message = "OSPF virtual interface point-to-point"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF virtual interface state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfStateChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfStateChange-unknown"
+              root.out.event.category.name = "OSPF virtual interface state"
+              root.out.event.message = "OSPF virtual interface state changed - UNEXPECTED VARBINDS for ospfv3VirtIfStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # ospfv3NbrStateChange
+    #
+    # An ospfv3NbrStateChange notification signifies that there has been a change in the state of a non-virtual OSPFv3
+    # neighbor.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3NbrState (INTEGER) - The state of the relationship with this neighbor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.9.1.8") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3NbrState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3NbrState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.9.1.8")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3NbrEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.9.1.8")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3NbrEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer,Integer")
+                root.out.ietf.ospfv3NbrIfIndex = root.TEMP.ospfv3NbrEntry.index(0).string()
+                root.out.ietf.ospfv3NbrIfInstId = root.TEMP.ospfv3NbrEntry.index(1).string()
+                root.out.ietf.ospfv3NbrRtrId = root.TEMP.ospfv3NbrEntry.index(2).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", interface: ifIndex " + root.out.ietf.ospfv3NbrIfIndex + ", instance: " + root.out.ietf.ospfv3NbrIfInstId + ", neighbor: " + root.out.ietf.ospfv3NbrRtrId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrStateChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrStateChange"
+                root.out.event.category.name = "OSPF neighbor state"
+
+            - switch:
+              - check: metadata("ospfv3NbrState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-down"
+                      root.out.event.message = "OSPF neighbor down"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("ospfv3NbrState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-attempt"
+                      root.out.event.message = "OSPF neighbor attempt"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("ospfv3NbrState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-init"
+                      root.out.event.message = "OSPF neighbor initializing"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3NbrState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-twoWay"
+                      root.out.event.message = "OSPF neighbor two-way"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3NbrState") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-exchangeStart"
+                      root.out.event.message = "OSPF neighbor exchange start"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3NbrState") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-exchange"
+                      root.out.event.message = "OSPF neighbor exchange"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3NbrState") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-loading"
+                      root.out.event.message = "OSPF neighbor loading"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3NbrState") == 8
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-full"
+                      root.out.event.message = "OSPF neighbor full"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF neighbor state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrStateChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrStateChange-unknown"
+              root.out.event.category.name = "OSPF neighbor state"
+              root.out.event.message = "OSPF neighbor state changed - UNEXPECTED VARBINDS for ospfv3NbrStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 3
+    # ospfv3VirtNbrStateChange
+    #
+    # An ospfv3VirtNbrStateChange notification signifies that there has been a change in the state of an OSPFv3 virtual
+    # neighbor.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3VirtNbrState (INTEGER) - The state of the virtual neighbor relationship.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.11.1.8") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3VirtNbrState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3VirtNbrState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.11.1.8")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3VirtIfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.11.1.8")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3VirtIfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3VirtIfAreaId = root.TEMP.ospfv3VirtIfEntry.index(0).string()
+                root.out.ietf.ospfv3VirtIfNeighbor = root.TEMP.ospfv3VirtIfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3VirtIfAreaId + ", neighbor: " + root.out.ietf.ospfv3VirtIfNeighbor
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrStateChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrStateChange"
+                root.out.event.category.name = "OSPF virtual neighbor state"
+
+            - switch:
+              - check: metadata("ospfv3VirtNbrState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-down"
+                      root.out.event.message = "OSPF virtual neighbor down"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("ospfv3VirtNbrState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-attempt"
+                      root.out.event.message = "OSPF virtual neighbor attempt"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("ospfv3VirtNbrState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-init"
+                      root.out.event.message = "OSPF virtual neighbor initializing"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3VirtNbrState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-twoWay"
+                      root.out.event.message = "OSPF virtual neighbor two-way"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3VirtNbrState") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-exchangeStart"
+                      root.out.event.message = "OSPF virtual neighbor exchange start"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3VirtNbrState") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-exchange"
+                      root.out.event.message = "OSPF virtual neighbor exchange"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3VirtNbrState") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-loading"
+                      root.out.event.message = "OSPF virtual neighbor loading"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3VirtNbrState") == 8
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-full"
+                      root.out.event.message = "OSPF virtual neighbor full"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF virtual neighbor state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrStateChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrStateChange-unknown"
+              root.out.event.category.name = "OSPF virtual neighbor state"
+              root.out.event.message = "OSPF virtual neighbor state changed - UNEXPECTED VARBINDS for ospfv3VirtNbrStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 4
+    # ospfv3IfConfigError
+    #
+    # An ospfv3IfConfigError notification signifies that a packet has been received on a non-virtual interface from a
+    # router whose configuration parameters conflict with this router's configuration parameters.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3IfState (INTEGER) - The OSPFv3 interface state.
+    # ospfv3PacketSrc (OCTET STRING) - The IPv6 address of an inbound packet that cannot be identified by a neighbor instance.
+    # ospfv3ConfigErrorType (INTEGER) - Potential types of configuration conflicts.
+    # ospfv3PacketType (INTEGER) - OSPFv3 packet types.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 4 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.7.1.12") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.14.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.14.1") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.191.1.14.2") {
+              meta varbinds_ok = true
+          }}}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3IfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.7.1.12")
+                root.out.ietf.ospfv3PacketSrc = this.trap.VarBinds.index(2).Value.snmp_inet_address(2)
+                root.out.ietf.ospfv3ConfigErrorType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.1")
+                root.out.ietf.ospfv3PacketType = this.trap.VarBinds.index(4).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.2")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3IfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.7.1.12")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3IfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3IfIndex = root.TEMP.ospfv3IfEntry.index(0).string()
+                root.out.ietf.ospfv3IfInstId = root.TEMP.ospfv3IfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", interface: ifIndex " + root.out.ietf.ospfv3IfIndex + ", instance: " + root.out.ietf.ospfv3IfInstId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfConfigError"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfConfigError"
+                root.out.event.category.name = "OSPF interface configuration state"
+                root.out.event.message = "OSPF interface ingress " + root.out.ietf.ospfv3PacketType + " packet configuration error: " + root.out.ietf.ospfv3ConfigErrorType + " from " + root.out.ietf.ospfv3PacketSrc
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              }}}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfConfigError"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfConfigError-unknown"
+              root.out.event.category.name = "OSPF interface configuration state"
+              root.out.event.message = "OSPF interface ingress packet configuration error - UNEXPECTED VARBINDS for ospfv3IfConfigError trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 5
+    # ospfv3VirtIfConfigError
+    #
+    # An ospfv3VirtIfConfigError notification signifies that a packet has been received on a virtual interface from a
+    # router whose configuration parameters conflict with this router's configuration parameters.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3VirtIfState (INTEGER) - OSPF virtual interface states.
+    # ospfv3ConfigErrorType (INTEGER) - Potential types of configuration conflicts.
+    # ospfv3PacketType (INTEGER) - OSPFv3 packet types.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.8.1.9") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.14.1") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.14.2") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3VirtIfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.8.1.9")
+                root.out.ietf.ospfv3ConfigErrorType = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.1")
+                root.out.ietf.ospfv3PacketType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.2")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3VirtIfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.8.1.9")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3VirtIfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3VirtIfAreaId = root.TEMP.ospfv3VirtIfEntry.index(0).string()
+                root.out.ietf.ospfv3VirtIfNeighbor = root.TEMP.ospfv3VirtIfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3VirtIfAreaId + ", neighbor: " + root.out.ietf.ospfv3VirtIfNeighbor
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfConfigError"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfConfigError"
+                root.out.event.category.name = "OSPF virtual interface configuration state"
+                root.out.event.message = "OSPF virtual interface ingress " + root.out.ietf.ospfv3PacketType + " packet configuration error: " + root.out.ietf.ospfv3ConfigErrorType
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfConfigError"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfConfigError-unknown"
+              root.out.event.category.name = "OSPF virtual interface configuration state"
+              root.out.event.message = "OSPF virtual interface configuration error - UNEXPECTED VARBINDS for ospfv3VirtIfConfigError trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 6
+    # ospfv3IfRxBadPacket
+    #
+    # An ospfv3IfRxBadPacket notification signifies that an OSPFv3 packet that cannot be parsed has been received on a
+    # non-virtual interface.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3IfState (INTEGER) - The OSPFv3 interface state.
+    # ospfv3PacketSrc (OCTET STRING) - The IPv6 address of an inbound packet that cannot be identified by a neighbor instance.
+    # ospfv3PacketType (INTEGER) - OSPFv3 packet types.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.7.1.12") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.14.3") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.14.2") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3IfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.7.1.12")
+                root.out.ietf.ospfv3PacketSrc = this.trap.VarBinds.index(2).Value.snmp_inet_address(2)
+                root.out.ietf.ospfv3PacketType = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.2")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3IfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.7.1.12")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3IfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3IfIndex = root.TEMP.ospfv3IfEntry.index(0).string()
+                root.out.ietf.ospfv3IfInstId = root.TEMP.ospfv3IfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", interface: ifIndex " + root.out.ietf.ospfv3IfIndex + ", instance: " + root.out.ietf.ospfv3IfInstId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfRxBadPacket"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfRxBadPacket"
+                root.out.event.category.name = "OSPF interface ingress packet state"
+                root.out.event.message = "OSPF interface bad ingress " + root.out.ietf.ospfv3PacketType + " packet from " + root.out.ietf.ospfv3PacketSrc
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfRxBadPacket"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfRxBadPacket-unknown"
+              root.out.event.category.name = "OSPF interface ingress packet state"
+              root.out.event.message = "OSPF interface bad ingress packet - UNEXPECTED VARBINDS for ospfv3IfRxBadPacket trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 7
+    # ospfv3VirtIfRxBadPacket
+    #
+    # An ospfv3VirtIfRxBadPacket notification signifies that an OSPFv3 packet that cannot be parsed has been received on
+    # a virtual interface.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3VirtIfState (INTEGER) - OSPF virtual interface states.
+    # ospfv3PacketType (INTEGER) - OSPFv3 packet types.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.8.1.9") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.14.2") {
+              meta varbinds_ok = true
+          }}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3VirtIfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.8.1.9")
+                root.out.ietf.ospfv3PacketType = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.14.2")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3VirtIfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.8.1.9")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3VirtIfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3VirtIfAreaId = root.TEMP.ospfv3VirtIfEntry.index(0).string()
+                root.out.ietf.ospfv3VirtIfNeighbor = root.TEMP.ospfv3VirtIfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3VirtIfAreaId + ", neighbor: " + root.out.ietf.ospfv3VirtIfNeighbor
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfRxBadPacket"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfRxBadPacket"
+                root.out.event.category.name = "OSPF virtual interface ingress packet state"
+                root.out.event.message = "OSPF virtual interface bad ingress " + root.out.ietf.ospfv3PacketType + " packet"
+                root.out.event.severity.code = 3
+                root.out.event.severity.level = "Error"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfRxBadPacket"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtIfRxBadPacket-unknown"
+              root.out.event.category.name = "OSPF virtual interface ingress packet state"
+              root.out.event.message = "OSPF virtual interface bad ingress packet - UNEXPECTED VARBINDS for ospfv3VirtIfRxBadPacket trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 8
+    # ospfv3LsdbOverflow
+    #
+    # An ospfv3LsdbOverflow notification signifies that the number of LSAs in the router's link state database has
+    # exceeded ospfv3ExtAreaLsdbLimit.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3ExtAreaLsdbLimit (Integer32) - The maximum number of non-default AS-external-LSA entries that can be stored
+    #   in the link state database.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.1.11") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3ExtAreaLsdbLimit = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3GeneralGroup"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbOverflow"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbOverflow"
+                root.out.event.category.name = "OSPF LSDB state"
+                root.out.event.message = "OSPF LSDB overflow, limit: " + root.out.ietf.ospfv3ExtAreaLsdbLimit.string()
+                root.out.event.severity.code = 2
+                root.out.event.severity.level = "Critical"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbOverflow"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbOverflow-unknown"
+              root.out.event.category.name = "OSPF LSDB state"
+              root.out.event.message = "OSPF LSDB overflow - UNEXPECTED VARBINDS for ospfv3LsdbOverflow trap!"
+              root.out.event.severity.code = 2
+              root.out.event.severity.level = "Critical"
+
+  - check: this.trap.SpecificTrap == 9
+    # ospfv3LsdbApproachingOverflow
+    #
+    # An ospfv3LsdbApproachingOverflow notification signifies that the number of LSAs in the router's link state
+    # database has exceeded ninety percent of ospfv3ExtAreaLsdbLimit.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3ExtAreaLsdbLimit (Integer32) - The maximum number of non-default AS-external-LSA entries that can be stored
+    #   in the link state database.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.1.11") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3ExtAreaLsdbLimit = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3GeneralGroup"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbApproachingOverflow"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbApproachingOverflow"
+                root.out.event.category.name = "OSPF LSDB state"
+                root.out.event.message = "OSPF LSDB approaching overflow, exceeds 90% of limit: " + root.out.ietf.ospfv3ExtAreaLsdbLimit.string()
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbApproachingOverflow"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3LsdbApproachingOverflow-unknown"
+              root.out.event.category.name = "OSPF LSDB state"
+              root.out.event.message = "OSPF LSDB approaching overflow - UNEXPECTED VARBINDS for ospfv3LsdbApproachingOverflow trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 10
+    # ospfv3IfStateChange
+    #
+    # An ospfv3IfStateChange notification signifies that there has been a change in the state of a non-virtual OSPFv3
+    # interface.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3IfState (INTEGER) - The OSPFv3 interface state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.7.1.12") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3IfState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3IfState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.7.1.12")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3IfEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.7.1.12")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3IfEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3IfIndex = root.TEMP.ospfv3IfEntry.index(0).string()
+                root.out.ietf.ospfv3IfInstId = root.TEMP.ospfv3IfEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", interface: ifIndex " + root.out.ietf.ospfv3IfIndex + ", instance: " + root.out.ietf.ospfv3IfInstId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfStateChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfStateChange"
+                root.out.event.category.name = "OSPF interface state"
+
+            - switch:
+              - check: metadata("ospfv3IfState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-down"
+                      root.out.event.message = "OSPF interface down"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("ospfv3IfState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-loopback"
+                      root.out.event.message = "OSPF interface loopback"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("ospfv3IfState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-waiting"
+                      root.out.event.message = "OSPF interface waiting"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3IfState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-pointToPoint"
+                      root.out.event.message = "OSPF interface point-to-point"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3IfState") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-designatedRouter"
+                      root.out.event.message = "OSPF interface designated router"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3IfState") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-backupDesignatedRouter"
+                      root.out.event.message = "OSPF interface backup designated router"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3IfState") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-otherDesignatedRouter"
+                      root.out.event.message = "OSPF interface other designated router"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3IfState") == 8
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-standby"
+                      root.out.event.message = "OSPF interface standby"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF interface unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfStateChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3IfStateChange-unknown"
+              root.out.event.category.name = "OSPF interface state"
+              root.out.event.message = "OSPF interface state changed - UNEXPECTED VARBINDS for ospfv3IfStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 11
+    # ospfv3NssaTranslatorStatusChange
+    #
+    # An ospfv3NssaTranslatorStatusChange notification indicates that there has been a change in the router's ability to
+    # translate OSPFv3 NSSA LSAs into OSPFv3 External LSAs.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3AreaNssaTranslatorState (INTEGER) - Indicates if and how an NSSA border router is performing NSSA
+    #   translation of NSSA-LSAs into AS-External-LSAs.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.2.1.12") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3AreaNssaTranslatorState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3AreaNssaTranslatorState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.2.1.12")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3AreaEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.2.1.12")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.ietf.ospfv3AreaId = root.out.object.index
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3AreaId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NssaTranslatorStatusChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NssaTranslatorStatusChange"
+                root.out.event.category.name = "OSPF NSSA translator state"
+
+            - switch:
+              - check: metadata("ospfv3AreaNssaTranslatorState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-enabled"
+                      root.out.event.message = "OSPF NSSA translator enabled"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3AreaNssaTranslatorState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-elected"
+                      root.out.event.message = "OSPF NSSA translator elected"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3AreaNssaTranslatorState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-disabled"
+                      root.out.event.message = "OSPF NSSA translator disabled"
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF NSSA translator unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NssaTranslatorStatusChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NssaTranslatorStatusChange-unknown"
+              root.out.event.category.name = "OSPF NSSA translator state"
+              root.out.event.message = "OSPF NSSA translator state changed - UNEXPECTED VARBINDS for ospfv3NssaTranslatorStatusChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 12
+    # ospfv3RestartStatusChange
+    #
+    # An ospfv3RestartStatusChange notification signifies that there has been a change in the graceful restart state for
+    # the router.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3RestartStatus (INTEGER) - The current status of OSPF graceful restart capability.
+    # ospfv3RestartInterval (Unsigned32) - Configured OSPF graceful restart timeout interval.
+    # ospfv3RestartExitReason (INTEGER) - Describes the outcome of the last attempt at a graceful restart.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.1.18") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.1.16") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.1.20") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3RestartStatus = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3RestartStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.1.18")
+                root.out.ietf.ospfv3RestartInterval = this.trap.VarBinds.index(2).Value
+                root.out.ietf.ospfv3RestartExitReason = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.1.20")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3GeneralGroup"
+                root.out.object.index = "0"
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3RestartStatusChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3RestartStatusChange"
+                root.out.event.category.name = "OSPF restart state"
+
+            - switch:
+              - check: metadata("ospfv3RestartStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-notRestarting"
+                      root.out.event.message = "OSPF running: " + root.out.ietf.ospfv3RestartExitReason
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("ospfv3RestartStatus") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-plannedRestart"
+                      root.out.event.message = "OSPF planned restart: " + root.out.ietf.ospfv3RestartExitReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("ospfv3RestartStatus") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-unplannedRestart"
+                      root.out.event.message = "OSPF unplanned restart: " + root.out.ietf.ospfv3RestartExitReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF restart state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3RestartStatusChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3RestartStatusChange-unknown"
+              root.out.event.category.name = "OSPF restart state"
+              root.out.event.message = "OSPF restart state changed - UNEXPECTED VARBINDS for ospfv3RestartStatusChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 13
+    # ospfv3NbrRestartHelperStatusChange
+    #
+    # An ospfv3NbrRestartHelperStatusChange notification signifies that there has been a change in the graceful restart
+    # helper state for the neighbor.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3NbrRestartHelperStatus (INTEGER) - Indicates whether the router is acting as a graceful restart helper for
+    #   the neighbor.
+    # ospfv3NbrRestartHelperAge (Unsigned32) - Remaining time in current OSPF graceful restart interval, if the router
+    #   is acting as a restart helper for the neighbor.
+    # ospfv3NbrRestartHelperExitReason (INTEGER) - Describes the outcome of the last attempt at acting as a graceful
+    #   restart helper for the neighbor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.9.1.13") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.9.1.14") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.9.1.15") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3NbrRestartHelperStatus = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3NbrRestartHelperStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.9.1.13")
+                root.out.ietf.ospfv3NbrRestartHelperAge = this.trap.VarBinds.index(2).Value
+                root.out.ietf.ospfv3NbrRestartHelperExitReason = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.9.1.15")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3NbrEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.9.1.13")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3NbrEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer,Integer")
+                root.out.ietf.ospfv3NbrIfIndex = root.TEMP.ospfv3NbrEntry.index(0).string()
+                root.out.ietf.ospfv3NbrIfInstId = root.TEMP.ospfv3NbrEntry.index(1).string()
+                root.out.ietf.ospfv3NbrRtrId = root.TEMP.ospfv3NbrEntry.index(2).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", interface: ifIndex " + root.out.ietf.ospfv3NbrIfIndex + ", instance: " + root.out.ietf.ospfv3NbrIfInstId + ", neighbor: " + root.out.ietf.ospfv3NbrRtrId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrRestartHelperStatusChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrRestartHelperStatusChange"
+                root.out.event.category.name = "OSPF neighbor graceful restart helper state"
+
+            - switch:
+              - check: metadata("ospfv3NbrRestartHelperStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-notHelping"
+                      root.out.event.message = "OSPF neighbor graceful restart helper not helping: " + root.out.ietf.ospfv3NbrRestartHelperExitReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("ospfv3NbrRestartHelperStatus") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-helping"
+                      root.out.event.message = "OSPF neighbor graceful restart helper helping: " + root.out.ietf.ospfv3NbrRestartHelperExitReason
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF neighbor graceful restart helper unknown: " + root.out.ietf.ospfv3NbrRestartHelperExitReason
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrRestartHelperStatusChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3NbrRestartHelperStatusChange-unknown"
+              root.out.event.category.name = "OSPF neighbor graceful restart helper state"
+              root.out.event.message = "OSPF neighbor graceful restart helper state changed - UNEXPECTED VARBINDS for ospfv3NbrRestartHelperStatusChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 14
+    # ospfv3VirtNbrRestartHelperStatusChange
+    #
+    # An ospfv3VirtNbrRestartHelperStatusChange notification signifies that there has been a change in the graceful
+    # restart helper state for the virtual neighbor.
+    #
+    # ospfv3RouterId (Unsigned32) - A 32-bit unsigned integer uniquely identifying the router in the Autonomous System.
+    # ospfv3VirtNbrRestartHelperStatus (INTEGER) - Indicates whether the router is acting as a graceful restart helper
+    #   for the neighbor.
+    # ospfv3VirtNbrRestartHelperAge (Unsigned32) - Remaining time in the current OSPF graceful restart interval, if the
+    #   router is acting as a restart helper for the neighbor.
+    # ospfv3VirtNbrRestartHelperExitReason (INTEGER) - Describes the outcome of the last attempt at acting as a graceful
+    #   restart helper for the neighbor.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.191.1.1.1") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.191.1.11.1.13") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.191.1.11.1.14") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.191.1.11.1.15") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta ospfv3VirtNbrRestartHelperStatus = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.ospfv3RouterId = this.trap.VarBinds.index(0).Value.string()
+                root.out.ietf.ospfv3VirtNbrRestartHelperStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.11.1.13")
+                root.out.ietf.ospfv3VirtNbrRestartHelperAge = this.trap.VarBinds.index(2).Value
+                root.out.ietf.ospfv3VirtNbrRestartHelperExitReason = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.191.1.11.1.15")
+
+                root.out.object.name = "OSPFV3-MIB::ospfv3VirtNbrEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.191.1.11.1.13")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.ospfv3VirtNbrEntry = root.out.object.index.snmp_oid_extract_index("Integer,Integer")
+                root.out.ietf.ospfv3VirtNbrArea = root.TEMP.ospfv3VirtNbrEntry.index(0).string()
+                root.out.ietf.ospfv3VirtNbrRtrId = root.TEMP.ospfv3VirtNbrEntry.index(1).string()
+                root.out.object.label = "router: " + root.out.ietf.ospfv3RouterId + ", area: " + root.out.ietf.ospfv3VirtNbrArea + ", neighbor: " + root.out.ietf.ospfv3VirtNbrRtrId
+
+                root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrRestartHelperStatusChange"
+                root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrRestartHelperStatusChange"
+                root.out.event.category.name = "OSPF virtual neighbor graceful restart helper state"
+
+            - switch:
+              - check: metadata("ospfv3VirtNbrRestartHelperStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-notHelping"
+                      root.out.event.message = "OSPF virtual neighbor graceful restart helper not helping: " + root.out.ietf.ospfv3VirtNbrRestartHelperExitReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("ospfv3VirtNbrRestartHelperStatus") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-helping"
+                      root.out.event.message = "OSPF virtual neighbor graceful restart helper helping: " + root.out.ietf.ospfv3VirtNbrRestartHelperExitReason
+                      root.out.event.severity.code = 1
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "OSPF virtual neighbor graceful restart helper state unknown: " + root.out.ietf.ospfv3VirtNbrRestartHelperExitReason
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrRestartHelperStatusChange"
+              root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-ospfv3VirtNbrRestartHelperStatusChange-unknown"
+              root.out.event.category.name = "OSPF virtual neighbor graceful restart helper state"
+              root.out.event.message = "OSPF virtual neighbor graceful restart helper state changed - UNEXPECTED VARBINDS for ospfv3VirtNbrRestartHelperStatusChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        if this.trap.VarBinds.length() > 12 {
+          root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
+          root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
+          }
+        if this.trap.VarBinds.length() > 13 {
+          root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
+          root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
+          }
+        if this.trap.VarBinds.length() > 14 {
+          root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
+          root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
+          }
+        if this.trap.VarBinds.length() > 15 {
+          root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
+          root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
+          }
+        }}}}}}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-unknown"
+        root.out.event.id = "SNMPTRAP-OSPFV3-MIB-ospfv3MIB-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF OSPFV3-MIB-ospfv3MIB"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
