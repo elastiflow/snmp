@@ -673,6 +673,8 @@
                 root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value
                 root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value
 
+                meta cbgpPeer2LastError = root.out.cisco.cbgpPeer2LastError
+
                 root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
                 root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
@@ -762,265 +764,265 @@
                     root.out.event.severity.level = "Warning"
 
             - switch:
-              - check: metadata("bgpPeerLastError") == "0000"
+              - check: metadata("cbgpPeer2LastError") == "0000"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", No Error"
-              - check: metadata("bgpPeerLastError") == "0100"
+              - check: metadata("cbgpPeer2LastError") == "0100"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0101"
+              - check: metadata("cbgpPeer2LastError") == "0101"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Connection Not Synchronized"
-              - check: metadata("bgpPeerLastError") == "0102"
+              - check: metadata("cbgpPeer2LastError") == "0102"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Length"
-              - check: metadata("bgpPeerLastError") == "0103"
+              - check: metadata("cbgpPeer2LastError") == "0103"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Type"
-              - check: metadata("bgpPeerLastError") == "0200"
+              - check: metadata("cbgpPeer2LastError") == "0200"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0201"
+              - check: metadata("cbgpPeer2LastError") == "0201"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Version Number"
-              - check: metadata("bgpPeerLastError") == "0202"
+              - check: metadata("cbgpPeer2LastError") == "0202"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad Peer AS"
-              - check: metadata("bgpPeerLastError") == "0203"
+              - check: metadata("cbgpPeer2LastError") == "0203"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad BGP Identifier"
-              - check: metadata("bgpPeerLastError") == "0204"
+              - check: metadata("cbgpPeer2LastError") == "0204"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Optional Parameter"
-              - check: metadata("bgpPeerLastError") == "0206"
+              - check: metadata("cbgpPeer2LastError") == "0206"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unacceptable Hold Time"
-              - check: metadata("bgpPeerLastError") == "0207"
+              - check: metadata("cbgpPeer2LastError") == "0207"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Capability"
-              - check: metadata("bgpPeerLastError") == "020b"
+              - check: metadata("cbgpPeer2LastError") == "020b"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Role Mismatch"
-              - check: metadata("bgpPeerLastError") == "0300"
+              - check: metadata("cbgpPeer2LastError") == "0300"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0301"
+              - check: metadata("cbgpPeer2LastError") == "0301"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed Attribute List"
-              - check: metadata("bgpPeerLastError") == "0302"
+              - check: metadata("cbgpPeer2LastError") == "0302"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unrecognized Well-known Attribute"
-              - check: metadata("bgpPeerLastError") == "0303"
+              - check: metadata("cbgpPeer2LastError") == "0303"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Missing Well-known Attribute"
-              - check: metadata("bgpPeerLastError") == "0304"
+              - check: metadata("cbgpPeer2LastError") == "0304"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Flags Error"
-              - check: metadata("bgpPeerLastError") == "0305"
+              - check: metadata("cbgpPeer2LastError") == "0305"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Length Error"
-              - check: metadata("bgpPeerLastError") == "0306"
+              - check: metadata("cbgpPeer2LastError") == "0306"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid ORIGIN Attribute"
-              - check: metadata("bgpPeerLastError") == "0308"
+              - check: metadata("cbgpPeer2LastError") == "0308"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid NEXT_HOP Attribute"
-              - check: metadata("bgpPeerLastError") == "0309"
+              - check: metadata("cbgpPeer2LastError") == "0309"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Optional Attribute Error"
-              - check: metadata("bgpPeerLastError") == "030a"
+              - check: metadata("cbgpPeer2LastError") == "030a"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid Network Field"
-              - check: metadata("bgpPeerLastError") == "030b"
+              - check: metadata("cbgpPeer2LastError") == "030b"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed AS_PATH"
-              - check: metadata("bgpPeerLastError") == "0400"
+              - check: metadata("cbgpPeer2LastError") == "0400"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Hold Timer Expired"
-              - check: metadata("bgpPeerLastError") == "0500"
+              - check: metadata("cbgpPeer2LastError") == "0500"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error"
-              - check: metadata("bgpPeerLastError") == "0501"
+              - check: metadata("cbgpPeer2LastError") == "0501"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenSent State"
-              - check: metadata("bgpPeerLastError") == "0502"
+              - check: metadata("cbgpPeer2LastError") == "0502"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenConfirm State"
-              - check: metadata("bgpPeerLastError") == "0503"
+              - check: metadata("cbgpPeer2LastError") == "0503"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in Established State"
-              - check: metadata("bgpPeerLastError") == "0600"
+              - check: metadata("cbgpPeer2LastError") == "0600"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease"
-              - check: metadata("bgpPeerLastError") == "0601"
+              - check: metadata("cbgpPeer2LastError") == "0601"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Maximum Number of Prefixes Reached"
-              - check: metadata("bgpPeerLastError") == "0602"
+              - check: metadata("cbgpPeer2LastError") == "0602"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Administrative Shutdown"
-              - check: metadata("bgpPeerLastError") == "0603"
+              - check: metadata("cbgpPeer2LastError") == "0603"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Peer De-configured"
-              - check: metadata("bgpPeerLastError") == "0604"
+              - check: metadata("cbgpPeer2LastError") == "0604"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Administrative Reset"
-              - check: metadata("bgpPeerLastError") == "0605"
+              - check: metadata("cbgpPeer2LastError") == "0605"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Connection Rejected"
-              - check: metadata("bgpPeerLastError") == "0606"
+              - check: metadata("cbgpPeer2LastError") == "0606"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Other Configuration Change"
-              - check: metadata("bgpPeerLastError") == "0607"
+              - check: metadata("cbgpPeer2LastError") == "0607"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Connection Collision Resolution"
-              - check: metadata("bgpPeerLastError") == "0608"
+              - check: metadata("cbgpPeer2LastError") == "0608"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Out of Resources"
-              - check: metadata("bgpPeerLastError") == "0609"
+              - check: metadata("cbgpPeer2LastError") == "0609"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Hard Reset"
-              - check: metadata("bgpPeerLastError") == "060a"
+              - check: metadata("cbgpPeer2LastError") == "060a"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - BFD Down"
-              - check: metadata("bgpPeerLastError") == "0700"
+              - check: metadata("cbgpPeer2LastError") == "0700"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error"
-              - check: metadata("bgpPeerLastError") == "0701"
+              - check: metadata("cbgpPeer2LastError") == "0701"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error - Invalid Message Length"
-              - check: metadata("bgpPeerLastError") == "0800"
+              - check: metadata("cbgpPeer2LastError") == "0800"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Send Hold Timer Expired"
-              - check: metadata("bgpPeerLastError") == "0900"
+              - check: metadata("cbgpPeer2LastError") == "0900"
                 processors:
                   - mapping: |-
                       #!blobl
@@ -1121,6 +1123,8 @@
                 root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value
                 root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value
 
+                meta cbgpPeer2LastError = root.out.cisco.cbgpPeer2LastError
+
                 root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
                 root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
@@ -1210,265 +1214,265 @@
                     root.out.event.severity.level = "Warning"
 
             - switch:
-              - check: metadata("bgpPeerLastError") == "0000"
+              - check: metadata("cbgpPeer2LastError") == "0000"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", No Error"
-              - check: metadata("bgpPeerLastError") == "0100"
+              - check: metadata("cbgpPeer2LastError") == "0100"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0101"
+              - check: metadata("cbgpPeer2LastError") == "0101"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Connection Not Synchronized"
-              - check: metadata("bgpPeerLastError") == "0102"
+              - check: metadata("cbgpPeer2LastError") == "0102"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Length"
-              - check: metadata("bgpPeerLastError") == "0103"
+              - check: metadata("cbgpPeer2LastError") == "0103"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Type"
-              - check: metadata("bgpPeerLastError") == "0200"
+              - check: metadata("cbgpPeer2LastError") == "0200"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0201"
+              - check: metadata("cbgpPeer2LastError") == "0201"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Version Number"
-              - check: metadata("bgpPeerLastError") == "0202"
+              - check: metadata("cbgpPeer2LastError") == "0202"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad Peer AS"
-              - check: metadata("bgpPeerLastError") == "0203"
+              - check: metadata("cbgpPeer2LastError") == "0203"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad BGP Identifier"
-              - check: metadata("bgpPeerLastError") == "0204"
+              - check: metadata("cbgpPeer2LastError") == "0204"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Optional Parameter"
-              - check: metadata("bgpPeerLastError") == "0206"
+              - check: metadata("cbgpPeer2LastError") == "0206"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unacceptable Hold Time"
-              - check: metadata("bgpPeerLastError") == "0207"
+              - check: metadata("cbgpPeer2LastError") == "0207"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Capability"
-              - check: metadata("bgpPeerLastError") == "020b"
+              - check: metadata("cbgpPeer2LastError") == "020b"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", OPEN Message Error - Role Mismatch"
-              - check: metadata("bgpPeerLastError") == "0300"
+              - check: metadata("cbgpPeer2LastError") == "0300"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unspecific"
-              - check: metadata("bgpPeerLastError") == "0301"
+              - check: metadata("cbgpPeer2LastError") == "0301"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed Attribute List"
-              - check: metadata("bgpPeerLastError") == "0302"
+              - check: metadata("cbgpPeer2LastError") == "0302"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unrecognized Well-known Attribute"
-              - check: metadata("bgpPeerLastError") == "0303"
+              - check: metadata("cbgpPeer2LastError") == "0303"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Missing Well-known Attribute"
-              - check: metadata("bgpPeerLastError") == "0304"
+              - check: metadata("cbgpPeer2LastError") == "0304"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Flags Error"
-              - check: metadata("bgpPeerLastError") == "0305"
+              - check: metadata("cbgpPeer2LastError") == "0305"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Length Error"
-              - check: metadata("bgpPeerLastError") == "0306"
+              - check: metadata("cbgpPeer2LastError") == "0306"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid ORIGIN Attribute"
-              - check: metadata("bgpPeerLastError") == "0308"
+              - check: metadata("cbgpPeer2LastError") == "0308"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid NEXT_HOP Attribute"
-              - check: metadata("bgpPeerLastError") == "0309"
+              - check: metadata("cbgpPeer2LastError") == "0309"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Optional Attribute Error"
-              - check: metadata("bgpPeerLastError") == "030a"
+              - check: metadata("cbgpPeer2LastError") == "030a"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid Network Field"
-              - check: metadata("bgpPeerLastError") == "030b"
+              - check: metadata("cbgpPeer2LastError") == "030b"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed AS_PATH"
-              - check: metadata("bgpPeerLastError") == "0400"
+              - check: metadata("cbgpPeer2LastError") == "0400"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Hold Timer Expired"
-              - check: metadata("bgpPeerLastError") == "0500"
+              - check: metadata("cbgpPeer2LastError") == "0500"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error"
-              - check: metadata("bgpPeerLastError") == "0501"
+              - check: metadata("cbgpPeer2LastError") == "0501"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenSent State"
-              - check: metadata("bgpPeerLastError") == "0502"
+              - check: metadata("cbgpPeer2LastError") == "0502"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenConfirm State"
-              - check: metadata("bgpPeerLastError") == "0503"
+              - check: metadata("cbgpPeer2LastError") == "0503"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in Established State"
-              - check: metadata("bgpPeerLastError") == "0600"
+              - check: metadata("cbgpPeer2LastError") == "0600"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease"
-              - check: metadata("bgpPeerLastError") == "0601"
+              - check: metadata("cbgpPeer2LastError") == "0601"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Maximum Number of Prefixes Reached"
-              - check: metadata("bgpPeerLastError") == "0602"
+              - check: metadata("cbgpPeer2LastError") == "0602"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Administrative Shutdown"
-              - check: metadata("bgpPeerLastError") == "0603"
+              - check: metadata("cbgpPeer2LastError") == "0603"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Peer De-configured"
-              - check: metadata("bgpPeerLastError") == "0604"
+              - check: metadata("cbgpPeer2LastError") == "0604"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Administrative Reset"
-              - check: metadata("bgpPeerLastError") == "0605"
+              - check: metadata("cbgpPeer2LastError") == "0605"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Connection Rejected"
-              - check: metadata("bgpPeerLastError") == "0606"
+              - check: metadata("cbgpPeer2LastError") == "0606"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Other Configuration Change"
-              - check: metadata("bgpPeerLastError") == "0607"
+              - check: metadata("cbgpPeer2LastError") == "0607"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Connection Collision Resolution"
-              - check: metadata("bgpPeerLastError") == "0608"
+              - check: metadata("cbgpPeer2LastError") == "0608"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Out of Resources"
-              - check: metadata("bgpPeerLastError") == "0609"
+              - check: metadata("cbgpPeer2LastError") == "0609"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - Hard Reset"
-              - check: metadata("bgpPeerLastError") == "060a"
+              - check: metadata("cbgpPeer2LastError") == "060a"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Cease - BFD Down"
-              - check: metadata("bgpPeerLastError") == "0700"
+              - check: metadata("cbgpPeer2LastError") == "0700"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error"
-              - check: metadata("bgpPeerLastError") == "0701"
+              - check: metadata("cbgpPeer2LastError") == "0701"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error - Invalid Message Length"
-              - check: metadata("bgpPeerLastError") == "0800"
+              - check: metadata("cbgpPeer2LastError") == "0800"
                 processors:
                   - mapping: |-
                       #!blobl
                       root = this
                       root.out.event.message = root.out.event.message + ", Send Hold Timer Expired"
-              - check: metadata("bgpPeerLastError") == "0900"
+              - check: metadata("cbgpPeer2LastError") == "0900"
                 processors:
                   - mapping: |-
                       #!blobl
