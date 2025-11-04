@@ -12,7 +12,7 @@
     # jnxLacpifIndex (Integer32) - Snmp ifIndex of member interface.
     # jnxLacpAggregateInterfaceName (DisplayString) - Lacp Aggregate interface.
     # jnxLacpAggregateifIndex (Integer32) - Snmp ifIndex of Aggregator.
-    # jnxLacpAggPortActorOperState (DisplayStringv) - Port actor operational state.
+    # jnxLacpAggPortActorOperState (DisplayString) - Port actor operational state.
     processors:
       - mapping: |-
           #!blobl
@@ -46,8 +46,8 @@
                 root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
                 root.out.object.label = "aggregate interface: " + root.out.juniper.jnxLacpAggregateInterfaceName + ", member interface: " + root.out.juniper.jnxLacpInterfaceName
 
-                root.out.event.class.name = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-SPECIFIC"
-                root.out.event.id = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-SPECIFIC"
+                root.out.event.class.name = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-jnxLacpTimeOut"
+                root.out.event.id = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-jnxLacpTimeOut"
                 root.out.event.category.name = "interface LACP state"
                 root.out.event.message = "LACP timeout, " + root.out.juniper.jnxLacpAggPortActorOperState
                 root.out.event.severity.code = 3
@@ -124,10 +124,10 @@
                 }
               }}}}}}}
 
-              root.out.event.class.name = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-SPECIFIC"
-              root.out.event.id = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-SPECIFIC-unknown"
+              root.out.event.class.name = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-jnxLacpTimeOut"
+              root.out.event.id = "SNMPTRAP-JUNIPER-L2CP-FEATURES-MIB-jnxLacpNotificationsPrefix-jnxLacpTimeOut-unknown"
               root.out.event.category.name = "interface LACP state"
-              root.out.event.message = "interface LACP timeout - UNEXPECTED VARBINDS for SPECIFIC trap!"
+              root.out.event.message = "interface LACP timeout - UNEXPECTED VARBINDS for jnxLacpTimeOut trap!"
               root.out.event.severity.code = 3
               root.out.event.severity.level = "Error"
 
