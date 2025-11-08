@@ -1,0 +1,389 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF GMPLS-TE-STD-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # gmplsTunnelDown
+    #
+    # This notification is generated when an mplsTunnelOperStatus object for a tunnel in the gmplsTunnelTable is about
+    # to enter the down state from some other state.
+    #
+    # mplsTunnelAdminStatus (INTEGER) - Indicates the desired operational status of this tunnel.
+    # mplsTunnelOperStatus (INTEGER) - Indicates the actual operational status of this tunnel, which is typically but
+    #   not limited to, a function of the state of individual segments of this tunnel.
+    # gmplsTunnelErrorLastErrorType (INTEGER) - The nature of the last error.
+    # gmplsTunnelErrorReporterType (InetAddressType) - The address type of the error reported.
+    # gmplsTunnelErrorReporter (InetAddress) - The address of the node reporting the last error, or the address of
+    #   the resource (such as an interface) associated with the error.
+    # gmplsTunnelErrorCode (Unsigned32) - The primary error code associated with the last error.
+    # gmplsTunnelErrorSubcode (Unsigned32) - The secondary error code associated with the last error and the protocol
+    #   used to signal this tunnel.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 6 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.10.166.3.2.2.1.34") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.10.166.3.2.2.1.35") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.10.166.13.2.6.1.1") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.2.1.10.166.13.2.6.1.3") {
+            if this.trap.VarBinds.index(4).OID.has_prefix(".1.3.6.1.2.1.10.166.13.2.6.1.4") {
+            if this.trap.VarBinds.index(5).OID.has_prefix(".1.3.6.1.2.1.10.166.13.2.6.1.5") {
+            if this.trap.VarBinds.index(6).OID.has_prefix(".1.3.6.1.2.1.10.166.13.2.6.1.6") {
+              meta varbinds_ok = true
+          }}}}}}}}
+
+          root.out.event.class.name = "SNMPTRAP-GMPLS-TE-STD-MIB-gmplsTeStdMIB-gmplsTunnelDown"
+          root.out.event.id = "SNMPTRAP-GMPLS-TE-STD-MIB-gmplsTeStdMIB-gmplsTunnelDown"
+          root.out.event.category.name = "GMPLS tunnel state"
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.mplsTunnelAdminStatus = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+                root.out.ietf.mplsTunnelOperStatus = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.10.166.3.2.2.1.35")
+                root.out.ietf.gmplsTunnelErrorLastErrorType = this.trap.VarBinds.index(2).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.10.166.13.2.6.1.1")
+                root.out.ietf.gmplsTunnelErrorReporter = this.trap.VarBinds.index(4).Value.snmp_inet_address(this.trap.VarBinds.index(3).Value)
+                root.out.ietf.gmplsTunnelErrorCode = this.trap.VarBinds.index(5).Value.string()
+                root.out.ietf.gmplsTunnelErrorSubcode = this.trap.VarBinds.index(6).Value.string()
+
+                root.out.object.name = "MPLS-TE-STD-MIB::mplsTunnelEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.10.166.3.2.2.1.34")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                
+                root.TEMP.mplsTunnelEntry = root.out.object.index.snmp_oid_extract_index("Unsigned32,Unsigned32,Unsigned32,Unsigned32")
+                root.out.ietf.mplsTunnelIndex = root.TEMP.mplsTunnelEntry.index(0).string()
+                root.out.ietf.mplsTunnelInstance = root.TEMP.mplsTunnelEntry.index(1).string()
+                root.out.ietf.mplsTunnelIngressLSRId = root.TEMP.mplsTunnelEntry.index(2).string()
+                root.out.ietf.mplsTunnelEgressLSRId = root.TEMP.mplsTunnelEntry.index(3).string()
+
+                root.out.object.label = "tunnel set: " + root.out.ietf.mplsTunnelIndex + ", tunnel: " + root.out.ietf.mplsTunnelInstance + ", ingress LSR: " + root.out.ietf.mplsTunnelIngressLSRId + ", egress LSR: " + root.out.ietf.mplsTunnelEgressLSRId + ", reporter: " + root.out.ietf.gmplsTunnelErrorReporter
+
+            - switch:
+              - check: metadata("mplsTunnelOperStatus") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-up"
+                      root.out.event.message = "GMPLS tunnel up"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("mplsTunnelOperStatus") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-down"
+                      root.out.event.message = "GMPLS tunnel down, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("mplsTunnelOperStatus") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-testing"
+                      root.out.event.message = "GMPLS tunnel testing, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("mplsTunnelOperStatus") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dormant"
+                      root.out.event.message = "GMPLS tunnel dormant, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("mplsTunnelOperStatus") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-notPresent"
+                      root.out.event.message = "GMPLS tunnel not present, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("mplsTunnelOperStatus") == 7
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-lowerLayerDown"
+                      root.out.event.message = "GMPLS tunnel lower-layer down, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "GMPLS tunnel state unknown, " + root.out.ietf.gmplsTunnelErrorLastErrorType + " - code " + root.out.ietf.gmplsTunnelErrorCode + " subcode " + root.out.ietf.gmplsTunnelErrorSubcode
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              if this.trap.VarBinds.length() > 7 {
+                root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+                root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+                }
+              if this.trap.VarBinds.length() > 8 {
+                root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+                root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+                }
+              if this.trap.VarBinds.length() > 9 {
+                root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+                root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+                }
+              }}}}}}}}}}
+
+              root.out.event.id = root.out.event.id + "-unknown"
+              root.out.event.message = "GMPLS tunnel down - UNEXPECTED VARBINDS for gmplsTunnelDown trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        if this.trap.VarBinds.length() > 8 {
+          root.out.snmptrap.varbind.oid_8 = this.trap.VarBinds.index(8).OID
+          root.out.snmptrap.varbind.type_8 = this.trap.VarBinds.index(8).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(8).Type == 4 || this.trap.VarBinds.index(8).Type == 68 {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_8 = this.trap.VarBinds.index(8).Value.string()
+          }
+        if this.trap.VarBinds.length() > 9 {
+          root.out.snmptrap.varbind.oid_9 = this.trap.VarBinds.index(9).OID
+          root.out.snmptrap.varbind.type_9 = this.trap.VarBinds.index(9).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(9).Type == 4 || this.trap.VarBinds.index(9).Type == 68 {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_9 = this.trap.VarBinds.index(9).Value.string()
+          }
+        if this.trap.VarBinds.length() > 10 {
+          root.out.snmptrap.varbind.oid_10 = this.trap.VarBinds.index(10).OID
+          root.out.snmptrap.varbind.type_10 = this.trap.VarBinds.index(10).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(10).Type == 4 || this.trap.VarBinds.index(10).Type == 68 {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_10 = this.trap.VarBinds.index(10).Value.string()
+          }
+        if this.trap.VarBinds.length() > 11 {
+          root.out.snmptrap.varbind.oid_11 = this.trap.VarBinds.index(11).OID
+          root.out.snmptrap.varbind.type_11 = this.trap.VarBinds.index(11).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(11).Type == 4 || this.trap.VarBinds.index(11).Type == 68 {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_11 = this.trap.VarBinds.index(11).Value.string()
+          }
+        if this.trap.VarBinds.length() > 12 {
+          root.out.snmptrap.varbind.oid_12 = this.trap.VarBinds.index(12).OID
+          root.out.snmptrap.varbind.type_12 = this.trap.VarBinds.index(12).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(12).Type == 4 || this.trap.VarBinds.index(12).Type == 68 {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_12 = this.trap.VarBinds.index(12).Value.string()
+          }
+        if this.trap.VarBinds.length() > 13 {
+          root.out.snmptrap.varbind.oid_13 = this.trap.VarBinds.index(13).OID
+          root.out.snmptrap.varbind.type_13 = this.trap.VarBinds.index(13).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(13).Type == 4 || this.trap.VarBinds.index(13).Type == 68 {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_13 = this.trap.VarBinds.index(13).Value.string()
+          }
+        if this.trap.VarBinds.length() > 14 {
+          root.out.snmptrap.varbind.oid_14 = this.trap.VarBinds.index(14).OID
+          root.out.snmptrap.varbind.type_14 = this.trap.VarBinds.index(14).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(14).Type == 4 || this.trap.VarBinds.index(14).Type == 68 {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_14 = this.trap.VarBinds.index(14).Value.string()
+          }
+        if this.trap.VarBinds.length() > 15 {
+          root.out.snmptrap.varbind.oid_15 = this.trap.VarBinds.index(15).OID
+          root.out.snmptrap.varbind.type_15 = this.trap.VarBinds.index(15).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(15).Type == 4 || this.trap.VarBinds.index(15).Type == 68 {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_15 = this.trap.VarBinds.index(15).Value
+          }
+        }}}}}}}}}}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-GMPLS-TE-STD-MIB-gmplsTeStdMIB-unknown"
+        root.out.event.id = "SNMPTRAP-GMPLS-TE-STD-MIB-gmplsTeStdMIB-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF GMPLS-TE-STD-MIB-gmplsTeStdMIB"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
