@@ -1,0 +1,570 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "IETF ENERGY-OBJECT-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # eoPowerStateChange
+    #
+    # The SNMP entity generates the eoPowerStateChange when the values of eoPowerAdminState or eoPowerOperState, in the
+    # context of the Power State Set, have changed for the Energy Object represented by the entPhysicalIndex.
+    #
+    # eoPowerAdminState (INTEGER) - This object specifies the desired Power State and the Power State Set for the Energy Object.
+    # eoPowerOperState (INTEGER) - This object specifies the current operational Power State and the Power State Set for the Energy Object.
+    # eoPowerStateEnterReason (OwnerString) - This string object describes the reason for the eoPowerAdminState transition.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 2 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.229.1.2.1.8") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.229.1.2.1.9") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.2.1.229.1.2.1.10") {
+              meta varbinds_ok = true
+          }}}}
+
+          root.out.event.class.name = "SNMPTRAP-ENERGY-OBJECT-MIB-energyObjectMib-eoPowerStateChange"
+          root.out.event.id = "SNMPTRAP-ENERGY-OBJECT-MIB-energyObjectMib-eoPowerStateChange"
+          root.out.event.category.name = "power state"
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta eoPowerOperState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.eoPowerAdminState = this.trap.VarBinds.index(0).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.229.1.2.1.8")
+                root.out.ietf.eoPowerOperState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.229.1.2.1.9")
+                root.out.ietf.eoPowerStateEnterReason = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+
+                root.out.object.name = "ENTITY-MIB::entPhysicalEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.2.1.229.1.2.1.8")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                
+                root.out.object.label = "entity: entPhysicalIndex " + root.out.object.index
+
+            - switch:
+              - check: metadata("eoPowerOperState") == 256
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-ieee1621"
+                      root.out.event.message = "power unknown (IEEE 1621), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 257
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-ieee1621Off"
+                      root.out.event.message = "power off (IEEE 1621), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 258
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-ieee1621Sleep"
+                      root.out.event.message = "power sleep (IEEE 1621), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 259
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-ieee1621On"
+                      root.out.event.message = "power on (IEEE 1621), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("eoPowerOperState") == 512
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtf"
+                      root.out.event.message = "power unknown (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 513
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfOn"
+                      root.out.event.message = "power on (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("eoPowerOperState") == 514
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfSleepLight"
+                      root.out.event.message = "power sleep-light (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 515
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfSleepDeep"
+                      root.out.event.message = "power sleep-deep (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 516
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfOffHard"
+                      root.out.event.message = "power off-hard (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 517
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfOffSoft"
+                      root.out.event.message = "power off-soft (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 518
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfHibernate"
+                      root.out.event.message = "power hibernate (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 519
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfPowerOffSoft"
+                      root.out.event.message = "power cycle off-soft (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 520
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfPowerOffHard"
+                      root.out.event.message = "power cycle off-hard (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 521
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfMasterBusReset"
+                      root.out.event.message = "power master bus reset (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 522
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfDiagnosticInterrapt"
+                      root.out.event.message = "power diagnostic interrupt (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 523
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfOffSoftGraceful"
+                      root.out.event.message = "power off-soft graceful (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 524
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfOffHardGraceful"
+                      root.out.event.message = "power off-hard graceful (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 525
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfMasterBusResetGraceful"
+                      root.out.event.message = "power master bus reset graceful (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 526
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfPowerCycleOffSoftGraceful"
+                      root.out.event.message = "power cycle off-soft graceful (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 527
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-dmtfPowerCycleHardGraceful"
+                      root.out.event.message = "power cycle off-hard graceful (DMTF), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1024
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-eman"
+                      root.out.event.message = "power unknown (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1025
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanMechOff"
+                      root.out.event.message = "power mechoff (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1026
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanSoftOff"
+                      root.out.event.message = "power softoff (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1027
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanHibernate"
+                      root.out.event.message = "power hibernate (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1028
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanSleep"
+                      root.out.event.message = "power sleep (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1029
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanStandby"
+                      root.out.event.message = "power standby (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("eoPowerOperState") == 1030
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanReady"
+                      root.out.event.message = "power ready (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - check: metadata("eoPowerOperState") == 1031
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanLowMinus"
+                      root.out.event.message = "power low minus (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1032
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanLow"
+                      root.out.event.message = "power low (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1033
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanMediumMinus"
+                      root.out.event.message = "power medium minus (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1034
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanMedium"
+                      root.out.event.message = "power medium (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1035
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanHighMinus"
+                      root.out.event.message = "power high minus (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - check: metadata("eoPowerOperState") == 1036
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-emanHigh"
+                      root.out.event.message = "power high (EMAN), " + root.out.ietf.eoPowerStateEnterReason
+                      root.out.event.severity.code = 4
+                      root.out.event.severity.level = "Warning"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "power state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              }}}}}}
+
+              root.out.event.id = root.out.event.id + "-unknown"
+              root.out.event.message = "power state unknown - UNEXPECTED VARBINDS for eoPowerStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-ENERGY-OBJECT-MIB-energyObjectMib-unknown"
+        root.out.event.id = "SNMPTRAP-ENERGY-OBJECT-MIB-energyObjectMib-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from IETF ENERGY-OBJECT-MIB-energyObjectMib"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"
