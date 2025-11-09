@@ -1,0 +1,2261 @@
+- mapping: |-
+    #!blobl
+    root = this
+    root.out.origin.agent.name = "Cisco CISCO-BGP4-MIB"
+- switch:
+  - check: this.trap.SpecificTrap == 1
+    # cbgpFsmStateChange
+    #
+    # The BGP cbgpFsmStateChange notification is generated for every BGP FSM state change.
+    #
+    # bgpPeerLastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # bgpPeerState (INTEGER) - The BGP peer connection state.
+    # cbgpPeerLastErrorTxt (SnmpAdminString) - Implementation specific error description for bgpPeerLastErrorReceived.
+    # cbgpPeerPrevState (INTEGER) - The BGP peer connection previous stat
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.15.3.1.14") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.15.3.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.1.1.7") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.1.1.8") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta bgpPeerState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.bgpPeerLastError = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                root.out.ietf.bgpPeerState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.15.3.1.2")
+                root.out.cisco.cbgpPeerLastErrorTxt = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.cisco.cbgpPeerPrevState = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.1.1.8")
+
+                root.out.object.name = "CISCO-BGP4-MIB::bgpPeerEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.15.3.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.ietf.bgpPeerRemoteAddr = root.out.object.index
+                root.out.object.label = "peer: " + root.out.ietf.bgpPeerRemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpFsmStateChange"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpFsmStateChange"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("bgpPeerState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("bgpPeerState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("cisco.cbgpPeerPrevState") {
+                  root.out.event.message + ", was " + root.out.cisco.cbgpPeerPrevState
+                }
+                root.out.event.message = if root.out.exists("cisco.cbgpPeerLastErrorTxt") {
+                  root.out.event.message + ", " + root.out.cisco.cbgpPeerLastErrorTxt
+                }
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpFsmStateChange"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpFsmStateChange-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer state changed - UNEXPECTED VARBINDS for cbgpFsmStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 2
+    # cbgpBackwardTransition
+    #
+    # The cbgpBackwardTransition Event is generated when the BGP FSM moves from a higher numbered state to a lower
+    # numbered state.
+    #
+    # bgpPeerLastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # bgpPeerState (INTEGER) - The BGP peer connection state.
+    # cbgpPeerLastErrorTxt (SnmpAdminString) - Implementation specific error description for bgpPeerLastErrorReceived.
+    # cbgpPeerPrevState (INTEGER) - The BGP peer connection previous stat
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.2.1.15.3.1.14") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.2.1.15.3.1.2") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.1.1.7") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.1.1.8") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta bgpPeerState = this.trap.VarBinds.index(1).Value
+
+                root.out.ietf.bgpPeerLastError = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                root.out.ietf.bgpPeerState = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.2.1.15.3.1.2")
+                root.out.cisco.cbgpPeerLastErrorTxt = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.cisco.cbgpPeerPrevState = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.1.1.8")
+
+                root.out.object.name = "CISCO-BGP4-MIB::bgpPeerEntry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.2.1.15.3.1.2")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.out.ietf.bgpPeerRemoteAddr = root.out.object.index
+                root.out.object.label = "peer: " + root.out.ietf.bgpPeerRemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpBackwardTransition"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpBackwardTransition"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("bgpPeerState") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("bgpPeerState") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("bgpPeerState") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("cisco.cbgpPeerPrevState") {
+                  root.out.event.message + ", was " + root.out.cisco.cbgpPeerPrevState
+                }
+                root.out.event.message = if root.out.exists("cisco.cbgpPeerLastErrorTxt") {
+                  root.out.event.message + ", " + root.out.cisco.cbgpPeerLastErrorTxt
+                }
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpBackwardTransition"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpBackwardTransition-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer state backward transition - UNEXPECTED VARBINDS for cbgpBackwardTransition trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 3
+    # cbgpPrefixThresholdExceeded
+    #
+    # The cbgpPrefixThresholdExceeded notification is generated when prefix count exceeds the configured warning
+    # threshold on a session for an address family.
+    #
+    # cbgpPeerPrefixAdminLimit (Unsigned32) - Max number of route prefixes accepted for an address family on this
+    #   connection.
+    # cbgpPeerPrefixThreshold (Unsigned32) - Prefix threshold value (%) for an address family on this connection at
+    #   which warning message stating the prefix count is crossed the threshold or corresponding SNMP notification is
+    #   generated.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.4.1.3") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.4.1.4") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.cisco.cbgpPeerPrefixAdminLimit = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeerPrefixThreshold = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeerAddrFamilyEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.4.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeerAddrFamilyEntry = root.out.object.index.snmp_oid_extract_index("IpAddress,Integer,Integer")
+                root.out.ietf.bgpPeerRemoteAddr = root.TEMP.cbgpPeerAddrFamilyEntry.index(0)
+                root.out.cisco.cbgpPeerAddrFamilyAfi = root.TEMP.cbgpPeerAddrFamilyEntry.index(1).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.3.1.1")
+                root.out.cisco.cbgpPeerAddrFamilySafi = root.TEMP.cbgpPeerAddrFamilyEntry.index(2).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.3.1.2")
+                root.out.object.label = "peer: " + root.out.ietf.bgpPeerRemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdExceeded"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdExceeded"
+                root.out.event.category.name = "BGP prefix threshold"
+                root.out.event.message = "BGP " + root.out.cisco.cbgpPeerAddrFamilyAfi + " " + root.out.cisco.cbgpPeerAddrFamilySafi + " prefixes exceeds " + root.out.cisco.cbgpPeerPrefixThreshold.string()
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdExceeded"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdExceeded-unknown"
+              root.out.event.category.name = "BGP prefix threshold"
+              root.out.event.message = "BGP prefixes exceed threshold - UNEXPECTED VARBINDS for cbgpPrefixThresholdExceeded trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 4
+    # cbgpPrefixThresholdClear
+    #
+    # The cbgpPrefixThresholdClear notification is generated when prefix count drops below the configured clear
+    # threshold on a session for an address family once cbgpPrefixThresholdExceeded is generated. This won't be
+    # generated if the peer session goes down after the generation of cbgpPrefixThresholdExceeded.
+    #
+    # cbgpPeerPrefixAdminLimit (Unsigned32) - Max number of route prefixes accepted for an address family on this
+    #   connection.
+    # cbgpPeerPrefixClearThreshold (Unsigned32) - Prefix threshold value (%) for an address family on this connection at
+    #   which SNMP clear notification is generated if prefix threshold notification is already generated.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.4.1.3") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.4.1.5") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.cisco.cbgpPeerPrefixAdminLimit = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeerPrefixClearThreshold = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeerAddrFamilyEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.4.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeerAddrFamilyEntry = root.out.object.index.snmp_oid_extract_index("IpAddress,Integer,Integer")
+                root.out.ietf.bgpPeerRemoteAddr = root.TEMP.cbgpPeerAddrFamilyEntry.index(0)
+                root.out.cisco.cbgpPeerAddrFamilyAfi = root.TEMP.cbgpPeerAddrFamilyEntry.index(1).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.3.1.1")
+                root.out.cisco.cbgpPeerAddrFamilySafi = root.TEMP.cbgpPeerAddrFamilyEntry.index(2).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.3.1.2")
+                root.out.object.label = "peer: " + root.out.ietf.bgpPeerRemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdClear"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdClear"
+                root.out.event.category.name = "BGP prefix threshold"
+                root.out.event.message = "BGP " + root.out.cisco.cbgpPeerAddrFamilyAfi + " " + root.out.cisco.cbgpPeerAddrFamilySafi + " prefixes below " + root.out.cisco.cbgpPeerPrefixClearThreshold.string()
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdClear"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPrefixThresholdClear-unknown"
+              root.out.event.category.name = "BGP prefix threshold"
+              root.out.event.message = "BGP prefixes below threshold - UNEXPECTED VARBINDS for cbgpPrefixThresholdClear trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 5
+    # cbgpPeer2EstablishedNotification
+    #
+    # The cbgpPeer2EstablishedNotification notification is generated when the BGP FSM enters the established state.
+    #
+    # cbgpPeer2LastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # cbgpPeer2State (INTEGER) - The BGP peer connection state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.17") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.3") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                meta cbgpPeer2LastError = root.out.cisco.cbgpPeer2LastError
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2Entry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString")
+                root.out.ietf.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2Entry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2Entry.index(0))
+                root.out.object.label = "peer: " + root.out.ietf.cbgpPeer2RemoteAddr
+                
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2EstablishedNotification"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2EstablishedNotification"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("cbgpPeer2State") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("cbgpPeer2State") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - switch:
+              - check: metadata("cbgpPeer2LastError") == "0000"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", No Error"
+              - check: metadata("cbgpPeer2LastError") == "0100"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0101"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Connection Not Synchronized"
+              - check: metadata("cbgpPeer2LastError") == "0102"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Length"
+              - check: metadata("cbgpPeer2LastError") == "0103"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Type"
+              - check: metadata("cbgpPeer2LastError") == "0200"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0201"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Version Number"
+              - check: metadata("cbgpPeer2LastError") == "0202"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad Peer AS"
+              - check: metadata("cbgpPeer2LastError") == "0203"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad BGP Identifier"
+              - check: metadata("cbgpPeer2LastError") == "0204"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Optional Parameter"
+              - check: metadata("cbgpPeer2LastError") == "0206"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unacceptable Hold Time"
+              - check: metadata("cbgpPeer2LastError") == "0207"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Capability"
+              - check: metadata("cbgpPeer2LastError") == "020b"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Role Mismatch"
+              - check: metadata("cbgpPeer2LastError") == "0300"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0301"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed Attribute List"
+              - check: metadata("cbgpPeer2LastError") == "0302"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unrecognized Well-known Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0303"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Missing Well-known Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0304"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Flags Error"
+              - check: metadata("cbgpPeer2LastError") == "0305"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Length Error"
+              - check: metadata("cbgpPeer2LastError") == "0306"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid ORIGIN Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0308"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid NEXT_HOP Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0309"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Optional Attribute Error"
+              - check: metadata("cbgpPeer2LastError") == "030a"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid Network Field"
+              - check: metadata("cbgpPeer2LastError") == "030b"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed AS_PATH"
+              - check: metadata("cbgpPeer2LastError") == "0400"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Hold Timer Expired"
+              - check: metadata("cbgpPeer2LastError") == "0500"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error"
+              - check: metadata("cbgpPeer2LastError") == "0501"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenSent State"
+              - check: metadata("cbgpPeer2LastError") == "0502"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenConfirm State"
+              - check: metadata("cbgpPeer2LastError") == "0503"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in Established State"
+              - check: metadata("cbgpPeer2LastError") == "0600"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease"
+              - check: metadata("cbgpPeer2LastError") == "0601"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Maximum Number of Prefixes Reached"
+              - check: metadata("cbgpPeer2LastError") == "0602"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Administrative Shutdown"
+              - check: metadata("cbgpPeer2LastError") == "0603"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Peer De-configured"
+              - check: metadata("cbgpPeer2LastError") == "0604"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Administrative Reset"
+              - check: metadata("cbgpPeer2LastError") == "0605"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Connection Rejected"
+              - check: metadata("cbgpPeer2LastError") == "0606"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Other Configuration Change"
+              - check: metadata("cbgpPeer2LastError") == "0607"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Connection Collision Resolution"
+              - check: metadata("cbgpPeer2LastError") == "0608"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Out of Resources"
+              - check: metadata("cbgpPeer2LastError") == "0609"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Hard Reset"
+              - check: metadata("cbgpPeer2LastError") == "060a"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - BFD Down"
+              - check: metadata("cbgpPeer2LastError") == "0700"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error"
+              - check: metadata("cbgpPeer2LastError") == "0701"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error - Invalid Message Length"
+              - check: metadata("cbgpPeer2LastError") == "0800"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Send Hold Timer Expired"
+              - check: metadata("cbgpPeer2LastError") == "0900"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Loss of LSDB Synchronization"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2EstablishedNotification"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2EstablishedNotification-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer established - UNEXPECTED VARBINDS for cbgpPeer2EstablishedNotification trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - check: this.trap.SpecificTrap == 6
+    # cbgpPeer2BackwardTransNotification
+    #
+    # The cbgpPeer2BackwardTransNotification notification is generated when the BGP FSM moves from a higher numbered
+    # state to a lower numbered state.
+    #
+    # cbgpPeer2LastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # cbgpPeer2State (INTEGER) - The BGP peer connection state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.17") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.3") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                meta cbgpPeer2LastError = root.out.cisco.cbgpPeer2LastError
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2Entry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString")
+                root.out.ietf.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2Entry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2Entry.index(0))
+                root.out.object.label = "peer: " + root.out.ietf.cbgpPeer2RemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransNotification"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransNotification"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("cbgpPeer2State") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("cbgpPeer2State") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - switch:
+              - check: metadata("cbgpPeer2LastError") == "0000"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", No Error"
+              - check: metadata("cbgpPeer2LastError") == "0100"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0101"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Connection Not Synchronized"
+              - check: metadata("cbgpPeer2LastError") == "0102"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Length"
+              - check: metadata("cbgpPeer2LastError") == "0103"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Message Header Error - Bad Message Type"
+              - check: metadata("cbgpPeer2LastError") == "0200"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0201"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Version Number"
+              - check: metadata("cbgpPeer2LastError") == "0202"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad Peer AS"
+              - check: metadata("cbgpPeer2LastError") == "0203"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Bad BGP Identifier"
+              - check: metadata("cbgpPeer2LastError") == "0204"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Optional Parameter"
+              - check: metadata("cbgpPeer2LastError") == "0206"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unacceptable Hold Time"
+              - check: metadata("cbgpPeer2LastError") == "0207"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Unsupported Capability"
+              - check: metadata("cbgpPeer2LastError") == "020b"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", OPEN Message Error - Role Mismatch"
+              - check: metadata("cbgpPeer2LastError") == "0300"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unspecific"
+              - check: metadata("cbgpPeer2LastError") == "0301"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed Attribute List"
+              - check: metadata("cbgpPeer2LastError") == "0302"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Unrecognized Well-known Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0303"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Missing Well-known Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0304"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Flags Error"
+              - check: metadata("cbgpPeer2LastError") == "0305"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Attribute Length Error"
+              - check: metadata("cbgpPeer2LastError") == "0306"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid ORIGIN Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0308"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid NEXT_HOP Attribute"
+              - check: metadata("cbgpPeer2LastError") == "0309"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Optional Attribute Error"
+              - check: metadata("cbgpPeer2LastError") == "030a"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Invalid Network Field"
+              - check: metadata("cbgpPeer2LastError") == "030b"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", UPDATE Message Error - Malformed AS_PATH"
+              - check: metadata("cbgpPeer2LastError") == "0400"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Hold Timer Expired"
+              - check: metadata("cbgpPeer2LastError") == "0500"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error"
+              - check: metadata("cbgpPeer2LastError") == "0501"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenSent State"
+              - check: metadata("cbgpPeer2LastError") == "0502"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in OpenConfirm State"
+              - check: metadata("cbgpPeer2LastError") == "0503"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Finite State Machine Error - Receive Unexpected Message in Established State"
+              - check: metadata("cbgpPeer2LastError") == "0600"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease"
+              - check: metadata("cbgpPeer2LastError") == "0601"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Maximum Number of Prefixes Reached"
+              - check: metadata("cbgpPeer2LastError") == "0602"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Administrative Shutdown"
+              - check: metadata("cbgpPeer2LastError") == "0603"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Peer De-configured"
+              - check: metadata("cbgpPeer2LastError") == "0604"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Administrative Reset"
+              - check: metadata("cbgpPeer2LastError") == "0605"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Connection Rejected"
+              - check: metadata("cbgpPeer2LastError") == "0606"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Other Configuration Change"
+              - check: metadata("cbgpPeer2LastError") == "0607"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Connection Collision Resolution"
+              - check: metadata("cbgpPeer2LastError") == "0608"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Out of Resources"
+              - check: metadata("cbgpPeer2LastError") == "0609"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - Hard Reset"
+              - check: metadata("cbgpPeer2LastError") == "060a"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Cease - BFD Down"
+              - check: metadata("cbgpPeer2LastError") == "0700"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error"
+              - check: metadata("cbgpPeer2LastError") == "0701"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", ROUTE-REFRESH Message Error - Invalid Message Length"
+              - check: metadata("cbgpPeer2LastError") == "0800"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Send Hold Timer Expired"
+              - check: metadata("cbgpPeer2LastError") == "0900"
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+                      root.out.event.message = root.out.event.message + ", Loss of LSDB Synchronization"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransNotification"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransNotification-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer state backward transition - UNEXPECTED VARBINDS for cbgpPeer2BackwardTransNotification trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 7
+    # cbgpPeer2FsmStateChange
+    #
+    # The cbgpPeer2FsmStateChange notification is generated for every BGP FSM state change.
+    #
+    # cbgpPeer2LastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # cbgpPeer2State (INTEGER) - The BGP peer connection state.
+    # cbgpPeer2LastErrorTxt (SnmpAdminString) - Implementation specific error description for bgpPeerLastErrorReceived.
+    # cbgpPeer2PrevState (INTEGER) - The BGP peer connection previous state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.17") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.3") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.28") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.30") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.cisco.cbgpPeer2LastErrorTxt = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.cisco.cbgpPeer2PrevState = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.5.1.29")
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2Entry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString")
+                root.out.cisco.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2Entry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2Entry.index(0))
+                root.out.object.label = "peer: " + root.out.cisco.cbgpPeer2RemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2FsmStateChange"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2FsmStateChange"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("cbgpPeer2State") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("cbgpPeer2State") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("cisco.cbgpPeer2PrevState") {
+                  root.out.event.message + ", was " + root.out.cisco.cbgpPeer2PrevState
+                }
+                root.out.event.message = if root.out.exists("cisco.cbgpPeer2LastErrorTxt") {
+                  root.out.event.message + ", " + root.out.cisco.cbgpPeer2LastErrorTxt
+                }
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2FsmStateChange"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2FsmStateChange-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer state changed - UNEXPECTED VARBINDS for cbgpPeer2FsmStateChange trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 8
+    # cbgpPeer2BackwardTransition
+    #
+    # The cbgpPeer2BackwardTransition notification is generated when the BGP FSM moves from a higher numbered state to a
+    # lower numbered state.
+    #
+    # cbgpPeer2LastError (OCTET STRING) - The last error code and subcode seen by this peer on this connection.
+    # cbgpPeer2State (INTEGER) - The BGP peer connection state.
+    # cbgpPeer2LastErrorTxt (SnmpAdminString) - Implementation specific error description for bgpPeerLastErrorReceived.
+    # cbgpPeer2PrevState (INTEGER) - The BGP peer connection previous state.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 3 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.17") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.3") {
+            if this.trap.VarBinds.index(2).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.28") {
+            if this.trap.VarBinds.index(3).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.5.1.30") {
+              meta varbinds_ok = true
+          }}}}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                meta cbgpPeer2State = this.trap.VarBinds.index(1).Value
+
+                root.out.cisco.cbgpPeer2LastError = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                root.out.cisco.cbgpPeer2State = this.trap.VarBinds.index(1).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.cisco.cbgpPeer2LastErrorTxt = this.trap.VarBinds.index(2).Value.snmp_octet_display_hint("255t")
+                root.out.cisco.cbgpPeer2PrevState = this.trap.VarBinds.index(3).Value.snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.5.1.29")
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2Entry"
+                root.out.object.index = this.trap.VarBinds.index(1).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.5.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2Entry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString")
+                root.out.cisco.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2Entry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2Entry.index(0))
+                root.out.object.label = "peer: " + root.out.cisco.cbgpPeer2RemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransition"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransition"
+                root.out.event.category.name = "BGP peer state"
+
+            - switch:
+              - check: metadata("cbgpPeer2State") == 1
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-idle"
+                      root.out.event.message = "BGP peer idle"
+                      root.out.event.severity.code = 3
+                      root.out.event.severity.level = "Error"
+
+              - check: metadata("cbgpPeer2State") == 2
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-connect"
+                      root.out.event.message = "BGP peer connect"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 3
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-active"
+                      root.out.event.message = "BGP peer active"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 4
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-opensent"
+                      root.out.event.message = "BGP peer open sent"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 5
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-openconfirm"
+                      root.out.event.message = "BGP peer open confirm"
+                      root.out.event.severity.code = 5
+                      root.out.event.severity.level = "Notice"
+
+              - check: metadata("cbgpPeer2State") == 6
+                processors:
+                  - mapping: |-
+                      #!blobl
+                      root = this
+
+                      root.out.event.id = root.out.event.id + "-established"
+                      root.out.event.message = "BGP peer established"
+                      root.out.event.severity.code = 6
+                      root.out.event.severity.level = "Informational"
+
+              - processors:
+                - mapping: |-
+                    #!blobl
+                    root = this
+
+                    root.out.event.id = root.out.event.id + "-unknown"
+                    root.out.event.message = "BGP peer state unknown"
+                    root.out.event.severity.code = 4
+                    root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("cisco.cbgpPeer2PrevState") {
+                  root.out.event.message + ", was " + root.out.cisco.cbgpPeer2PrevState
+                }
+                root.out.event.message = if root.out.exists("cisco.cbgpPeer2LastErrorTxt") {
+                  root.out.event.message + ", " + root.out.cisco.cbgpPeer2LastErrorTxt
+                }
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              if this.trap.VarBinds.length() > 5 {
+                root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+                root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+                }
+              if this.trap.VarBinds.length() > 6 {
+                root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+                root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+                }
+              }}}}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransition"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2BackwardTransition-unknown"
+              root.out.event.category.name = "BGP peer state"
+              root.out.event.message = "BGP peer state backward transition - UNEXPECTED VARBINDS for cbgpPeer2BackwardTransition trap!"
+              root.out.event.severity.code = 3
+              root.out.event.severity.level = "Error"
+
+  - check: this.trap.SpecificTrap == 9
+    # cbgpPeer2PrefixThresholdExceeded
+    #
+    # The cbgpPeer2PrefixThresholdExceeded notification is generated when prefix count exceeds the configured warning
+    # threshold on a session for an address family.
+    #
+    # cbgpPeer2PrefixAdminLimit (Unsigned32) - Max number of route prefixes accepted for an address family on this
+    #   connection.
+    # cbgpPeer2PrefixThreshold (Unsigned32) - Prefix threshold value (%) for an address family on this connection at
+    #   which warning message stating the prefix count is crossed the threshold or corresponding SNMP notification is
+    #   generated.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.8.1.3") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.8.1.4") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.cisco.cbgpPeer2PrefixAdminLimit = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeer2PrefixThreshold = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2AddrFamilyEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.8.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2AddrFamilyEntry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString,Integer,Integer")
+                root.out.cisco.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2AddrFamilyEntry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2AddrFamilyEntry.index(0))
+                root.out.cisco.cbgpPeer2AddrFamilyAfi = root.TEMP.cbgpPeer2AddrFamilyEntry.index(2).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.7.1.1")
+                root.out.cisco.cbgpPeer2AddrFamilySafi = root.TEMP.cbgpPeer2AddrFamilyEntry.index(3).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.7.1.2")
+                root.out.object.label = "peer: " + root.out.cisco.cbgpPeer2RemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdExceeded"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdExceeded"
+                root.out.event.category.name = "BGP prefix threshold"
+                root.out.event.message = "BGP " + root.out.cisco.cbgpPeer2AddrFamilyAfi + " " + root.out.cisco.cbgpPeer2AddrFamilySafi + " prefixes exceeds " + root.out.cisco.cbgpPeer2PrefixThreshold.string()
+                root.out.event.severity.code = 4
+                root.out.event.severity.level = "Warning"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdExceeded"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdExceeded-unknown"
+              root.out.event.category.name = "BGP prefix threshold"
+              root.out.event.message = "BGP prefixes exceed threshold - UNEXPECTED VARBINDS for cbgpPeer2PrefixThresholdExceeded trap!"
+              root.out.event.severity.code = 4
+              root.out.event.severity.level = "Warning"
+
+  - check: this.trap.SpecificTrap == 10
+    # cbgpPeer2PrefixThresholdClear
+    #
+    # The cbgpPeer2PrefixThresholdClear notification is generated when prefix count drops below the configured clear
+    # threshold on a session for an address family once cbgpPeer2PrefixThresholdExceeded is generated.
+    #
+    # cbgpPeer2PrefixAdminLimit (Unsigned32) - Max number of route prefixes accepted for an address family on this
+    #   connection.
+    # cbgpPeer2PrefixClearThreshold (Unsigned32) - Prefix threshold value (%) for an address family on this connection
+    #   at which SNMP clear notification is generated if prefix threshold notification is already generated.
+    processors:
+      - mapping: |-
+          #!blobl
+          root = this
+
+          meta varbinds_ok = false
+          if this.trap.VarBinds.length() > 1 {
+            if this.trap.VarBinds.index(0).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.8.1.3") {
+            if this.trap.VarBinds.index(1).OID.has_prefix(".1.3.6.1.4.1.9.9.187.1.2.8.1.5") {
+              meta varbinds_ok = true
+          }}}
+
+      - switch:
+        - check: metadata("varbinds_ok")
+          processors:
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.cisco.cbgpPeer2PrefixAdminLimit = this.trap.VarBinds.index(0).Value
+                root.out.cisco.cbgpPeer2PrefixClearThreshold = this.trap.VarBinds.index(1).Value
+
+                root.out.object.name = "CISCO-BGP4-MIB::cbgpPeer2AddrFamilyPrefixEntry"
+                root.out.object.index = this.trap.VarBinds.index(0).OID.snmp_oid_get_index(".1.3.6.1.4.1.9.9.187.1.2.8.1.3")
+                root.out.object.entity = this.trap.AgentAddress.string() + "_" + root.out.object.name + "." + root.out.object.index
+                root.TEMP.cbgpPeer2AddrFamilyEntry = root.out.object.index.snmp_oid_extract_index("Integer,OctetString,Integer,Integer")
+                root.out.cisco.cbgpPeer2RemoteAddr = root.TEMP.cbgpPeer2AddrFamilyEntry.index(1).snmp_inet_address(root.TEMP.cbgpPeer2AddrFamilyEntry.index(0))
+                root.out.cisco.cbgpPeer2AddrFamilyAfi = root.TEMP.cbgpPeer2AddrFamilyEntry.index(2).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.7.1.1")
+                root.out.cisco.cbgpPeer2AddrFamilySafi = root.TEMP.cbgpPeer2AddrFamilyEntry.index(3).snmp_int_enum_enrich(".1.3.6.1.4.1.9.9.187.1.2.7.1.2")
+                root.out.object.label = "peer: " + root.out.cisco.cbgpPeer2RemoteAddr
+
+                root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdClear"
+                root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdClear"
+                root.out.event.category.name = "BGP prefix threshold"
+                root.out.event.message = "BGP " + root.out.cisco.cbgpPeer2AddrFamilyAfi + " " + root.out.cisco.cbgpPeer2AddrFamilySafi + " prefixes below " + root.out.cisco.cbgpPeer2PrefixClearThreshold.string()
+                root.out.event.severity.code = 6
+                root.out.event.severity.level = "Informational"
+
+            - mapping: |-
+                #!blobl
+                root = this
+
+                root.out.event.message = if root.out.exists("object.label") {
+                  root.out.event.message + "  [ " + root.out.object.label + " ]"
+                }
+
+        - processors:
+          - mapping: |-
+              #!blobl
+              root = this
+
+              if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+                root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+                root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+                }
+              if this.trap.VarBinds.length() > 1 {
+                root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+                root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+                }
+              if this.trap.VarBinds.length() > 2 {
+                root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+                root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+                }
+              if this.trap.VarBinds.length() > 3 {
+                root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+                root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+                }
+              if this.trap.VarBinds.length() > 4 {
+                root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+                root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+                if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+                } else {
+                  root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+                }
+              }}}}}
+
+              root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdClear"
+              root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-cbgpPeer2PrefixThresholdClear-unknown"
+              root.out.event.category.name = "BGP prefix threshold"
+              root.out.event.message = "BGP prefixes below threshold - UNEXPECTED VARBINDS for cbgpPeer2PrefixThresholdClear trap!"
+              root.out.event.severity.code = 5
+              root.out.event.severity.level = "Notice"
+
+  - processors:
+    - label: default
+      mapping: |
+        #!blobl
+        root = this
+
+        if this.trap.exists("VarBinds") && this.trap.VarBinds.length() > 0 {
+          root.out.snmptrap.varbind.oid_0 = this.trap.VarBinds.index(0).OID
+          root.out.snmptrap.varbind.type_0 = this.trap.VarBinds.index(0).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(0).Type == 4 || this.trap.VarBinds.index(0).Type == 68 {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_0 = this.trap.VarBinds.index(0).Value.string()
+          }
+        if this.trap.VarBinds.length() > 1 {
+          root.out.snmptrap.varbind.oid_1 = this.trap.VarBinds.index(1).OID
+          root.out.snmptrap.varbind.type_1 = this.trap.VarBinds.index(1).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(1).Type == 4 || this.trap.VarBinds.index(1).Type == 68 {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_1 = this.trap.VarBinds.index(1).Value.string()
+          }
+        if this.trap.VarBinds.length() > 2 {
+          root.out.snmptrap.varbind.oid_2 = this.trap.VarBinds.index(2).OID
+          root.out.snmptrap.varbind.type_2 = this.trap.VarBinds.index(2).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(2).Type == 4 || this.trap.VarBinds.index(2).Type == 68 {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_2 = this.trap.VarBinds.index(2).Value.string()
+          }
+        if this.trap.VarBinds.length() > 3 {
+          root.out.snmptrap.varbind.oid_3 = this.trap.VarBinds.index(3).OID
+          root.out.snmptrap.varbind.type_3 = this.trap.VarBinds.index(3).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(3).Type == 4 || this.trap.VarBinds.index(3).Type == 68 {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_3 = this.trap.VarBinds.index(3).Value.string()
+          }
+        if this.trap.VarBinds.length() > 4 {
+          root.out.snmptrap.varbind.oid_4 = this.trap.VarBinds.index(4).OID
+          root.out.snmptrap.varbind.type_4 = this.trap.VarBinds.index(4).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(4).Type == 4 || this.trap.VarBinds.index(4).Type == 68 {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_4 = this.trap.VarBinds.index(4).Value.string()
+          }
+        if this.trap.VarBinds.length() > 5 {
+          root.out.snmptrap.varbind.oid_5 = this.trap.VarBinds.index(5).OID
+          root.out.snmptrap.varbind.type_5 = this.trap.VarBinds.index(5).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(5).Type == 4 || this.trap.VarBinds.index(5).Type == 68 {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_5 = this.trap.VarBinds.index(5).Value.string()
+          }
+        if this.trap.VarBinds.length() > 6 {
+          root.out.snmptrap.varbind.oid_6 = this.trap.VarBinds.index(6).OID
+          root.out.snmptrap.varbind.type_6 = this.trap.VarBinds.index(6).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(6).Type == 4 || this.trap.VarBinds.index(6).Type == 68 {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_6 = this.trap.VarBinds.index(6).Value.string()
+          }
+        if this.trap.VarBinds.length() > 7 {
+          root.out.snmptrap.varbind.oid_7 = this.trap.VarBinds.index(7).OID
+          root.out.snmptrap.varbind.type_7 = this.trap.VarBinds.index(7).Type.snmp_int_enum_enrich(".1_SnmpTypes")
+          if this.trap.VarBinds.index(7).Type == 4 || this.trap.VarBinds.index(7).Type == 68 {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.snmp_octet_string()
+          } else {
+            root.out.snmptrap.varbind.value_7 = this.trap.VarBinds.index(7).Value.string()
+          }
+        }}}}}}}}
+
+        root.out.event.class.name = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-unknown"
+        root.out.event.id = "SNMPTRAP-CISCO-BGP4-MIB-ciscoBgp4MIB-" + this.trap.SpecificTrap.string()
+        root.out.event.category.name = "unknown specific trap"
+        root.out.event.message = "unknown specific trap " + this.trap.SpecificTrap.string() + " from Cisco CISCO-BGP4-MIB-ciscoBgp4MIB"
+        root.out.event.severity.code = 4
+        root.out.event.severity.level = "Warning"

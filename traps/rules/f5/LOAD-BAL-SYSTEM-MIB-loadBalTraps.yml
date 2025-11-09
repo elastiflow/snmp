@@ -22,8 +22,8 @@
             root = this
 
             root.out.event.category.name = "Miscellaneous Message"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 2
       # loadBalTrapServiceDown
@@ -49,8 +49,8 @@
             root = this
 
             root.out.event.category.name = "Service State"
-            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 3
       # loadBalTrapServiceUP
@@ -76,8 +76,8 @@
             root = this
 
             root.out.event.category.name = "Service State"
-            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string().string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = "Device: " + this.trap.VarBinds.index(1).Value.snmp_display_string() + ", Port: " + this.trap.VarBinds.index(2).Value.string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 4
       # loadBalTrapReset
@@ -98,8 +98,8 @@
             root = this
 
             root.out.event.category.name = "System State"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 5
       # loadBalTrapDenial
@@ -120,8 +120,8 @@
             root = this
 
             root.out.event.category.name = "Request State"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_display_string().string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().re_find_all_submatch("denial (.*):[0-9]+ ->").index(0).index(-1) + this.trap.VarBinds.index(0).Value.snmp_display_string().re_find_all_submatch("denial .*:[0-9]+( -> .*)$").index(0).index(-1)
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 6
       # loadBalTrapLogin
@@ -142,8 +142,8 @@
             root = this
 
             root.out.event.category.name = "Root Login"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 7
       # loadBalTrapRemoveUnit
@@ -164,8 +164,8 @@
             root = this
 
             root.out.event.category.name = "Unit State"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - check: this.trap.SpecificTrap == 8
       # loadBalTrapAddUnit
@@ -186,8 +186,8 @@
             root = this
 
             root.out.event.category.name = "Unit State"
-            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
-            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string().string()
+            root.out.object.name = this.trap.VarBinds.index(0).Value.snmp_display_string()
+            root.out.event.message = this.trap.VarBinds.index(0).Value.snmp_display_string()
 
     - processors:
         - label: default
