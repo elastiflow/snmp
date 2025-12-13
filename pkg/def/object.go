@@ -16,7 +16,16 @@ type Object struct {
 }
 
 func (o Object) Validate() error {
-	return validate(o, "schemas/object.json")
+	if err := validate(o, "schemas/object.json"); err != nil {
+		return err
+	}
+	// Validate discovery_attribute exists in attributes
+	if o.DiscoveryAttribute != "" {
+		if _, ok := o.Attributes[o.DiscoveryAttribute]; !ok {
+			return fmt.Errorf("discovery_attribute %q not found in attributes", o.DiscoveryAttribute)
+		}
+	}
+	return nil
 }
 
 func (o Object) Kind() string {
