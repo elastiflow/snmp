@@ -1,3 +1,4 @@
+// Package def provides the definitions that are to be validated.
 package def
 
 import (
