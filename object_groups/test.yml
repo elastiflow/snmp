@@ -3143,23 +3143,12 @@ all:
     - ONEFS-SNAPSHOT-MIB::ssSensorInfoEntry
 
     # Juniper
-    - JUNIPER-MIB::jnxBoxAnatomy
-    - JUNIPER-MIB::jnxContainersEntry
-    - JUNIPER-MIB::jnxContentsEntry
-    # - JUNIPER-MIB::jnxLEDEntry
-    - JUNIPER-MIB::jnxFilledEntry
-    - JUNIPER-MIB::jnxOperatingEntry
-    - JUNIPER-MIB::jnxRedundancyEntry
-    - JUNIPER-MIB::jnxFruEntry
-    - JUNIPER-FRU-MIB::jnxFruCfgEntry
-    - JUNIPER-HOSTRESOURCES-MIB::jnxHrStorageEntry
-    - JUNIPER-HOSTRESOURCES-MIB::jnxHrSystem
-    - JUNIPER-IPv6-MIB::jnxIpv6GlobalStats
-    - JUNIPER-IPv6-MIB::jnxIcmpv6GlobalStats
-    - JUNIPER-IPv6-MIB::jnxIpv6IfStatsEntry
-    - JUNIPER-VIRTUALCHASSIS-MIB::jnxVirtualChassisMemberEntry
-    - JUNIPER-VIRTUALCHASSIS-MIB::jnxVirtualChassisPortEntry
-    - JUNIPER-MAG-MIB::jnxMagSSOObjects
+    - JUNIPER-ALARM-MIB::jnxCraftAlarms
+    - JUNIPER-CFGMGMT-MIB::jnxCmCfgChg
+    - JUNIPER-CFGMGMT-MIB::jnxCmRescueChg
+    - JUNIPER-COLLECTOR-MIB::jnxCollGlobalStats
+    - JUNIPER-COLLECTOR-MIB::jnxCollPicIfEntry
+    - JUNIPER-COLLECTOR-MIB::jnxCollFileEntry
     - JUNIPER-COS-MIB::jnxCosIfqStatsEntry
     # - JUNIPER-COS-MIB::jnxCosFcEntry
     # - JUNIPER-COS-MIB::jnxCosFcIdEntry
@@ -3170,20 +3159,87 @@ all:
     - JUNIPER-COS-MIB::jnxCosIfsetQstatEntry
     - JUNIPER-COS-MIB::jnxCosPfcPriorityEntry
     - JUNIPER-COS-MIB::jnxCosWatchdogTxQueueEntry
+    - JUNIPER-EX-MAC-NOTIFICATION-MIB::jnxMacNotificationMIBGlobalObjects
     - JUNIPER-FABRIC-MIB::jnxFabricSourceStatisticsEntry
     - JUNIPER-FIREWALL-MIB::jnxFirewallsEntry
     - JUNIPER-FIREWALL-MIB::jnxFirewallCounterEntry
     - JUNIPER-FIREWALL-MIB::jnxFWCntrXEntry
+    - JUNIPER-FRU-MIB::jnxFruCfgEntry
+    - JUNIPER-HOSTRESOURCES-MIB::jnxHrStorageEntry
+    - JUNIPER-HOSTRESOURCES-MIB::jnxHrSystem
     - JUNIPER-IDP-MIB::jnxIdpSensor
+    - JUNIPER-IF-MIB::ifJnxEntry
+    - JUNIPER-IF-MIB::ifJnxPolEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecFlowMonPhaseOne
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeTunnelMonEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalInitiatorIkev2SaInitStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalResponderIkev2SaInitStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalInitiatorIkev2AuthStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalResponderIkev2AuthStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalInitiatorIkev2IkeSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalResponderIkev2IkeSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalInitiatorIkev2IpsecSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalResponderIkev2IpsecSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeGlobalIkev2MsgFailStats
+    # - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkePeerAddrEntry
+    # - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkePeerIdEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkePeerStatsEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxPeerIkeSaCorrEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxPeerIPSecTunnelCorrEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalInitiatorIkev2SaInitStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalResponderIkev2SaInitStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalInitiatorIkev2AuthStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalResponderIkev2AuthStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalInitiatorIkev2IkeSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalResponderIkev2IkeSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalInitiatorIkev2IpsecSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalResponderIkev2IpsecSaRekeyStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIkeHaLinkGlobalIkev2MsgFailStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecFlowMonPhaseTwo
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecTunnelMonEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecSaMonEntry
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecGlobalStats
+    - JUNIPER-IPSEC-FLOW-MON-MIB::jnxIpSecHaLinkGlobalStats
+    - JUNIPER-IPv6-MIB::jnxIpv6GlobalStats
+    - JUNIPER-IPv6-MIB::jnxIcmpv6GlobalStats
+    - JUNIPER-IPv6-MIB::jnxIpv6IfStatsEntry
+    - JUNIPER-JS-AUTH-MIB::jnxJsFwAuthStats
+    # - JUNIPER-JS-CERT-MIB::jnxJsLoadedCaCertEntry
+    # - JUNIPER-JS-CERT-MIB::jnxJsLoadedLocalCertEntry
+    - JUNIPER-JS-DNS-MIB::jnxJsDnsProxyDataObjects
+    - JUNIPER-JS-FLOW-MIB::jnxJsFlow
+    - JUNIPER-JS-IDP-MIB::jnxJsIdpObjects
+    - JUNIPER-JS-IDP-MIB::jnxJsIdpAttackEntry
+    - JUNIPER-JS-IF-EXT-MIB::jnxJsIfMonEntry
+    - JUNIPER-JS-IPSEC-VPN-MIB::jnxJsIpSecTunnelEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsSrcNatEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsNatIfSrcPoolPortEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsSrcNatStatsEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsNatRuleEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsNatPoolEntry
+    - JUNIPER-JS-NAT-MIB::jnxJsNatPbaStatsEntry
+    - JUNIPER-JS-POLICY-MIB::jnxJsPolicyEntry
+    - JUNIPER-JS-POLICY-MIB::jnxJsPolicyStatsEntry
     - JUNIPER-LICENSE-MIB::jnxLicenseInstallEntry
     - JUNIPER-LICENSE-MIB::jnxLicenseFeatureListEntry
     - JUNIPER-LICENSE-MIB::jnxLicenseSettings
-    - JUNIPER-ALARM-MIB::jnxCraftAlarms
-    - JUNIPER-CFGMGMT-MIB::jnxCmCfgChg
-    - JUNIPER-CFGMGMT-MIB::jnxCmRescueChg
-    - JUNIPER-COLLECTOR-MIB::jnxCollGlobalStats
-    - JUNIPER-COLLECTOR-MIB::jnxCollPicIfEntry
-    - JUNIPER-COLLECTOR-MIB::jnxCollFileEntry
+    - JUNIPER-MAC-MIB::jnxMacStatsEntry
+    - JUNIPER-MAG-MIB::jnxMagSSOObjects
+    - JUNIPER-MIB::jnxBoxAnatomy
+    - JUNIPER-MIB::jnxContainersEntry
+    - JUNIPER-MIB::jnxContentsEntry
+    # - JUNIPER-MIB::jnxLEDEntry
+    - JUNIPER-MIB::jnxFilledEntry
+    - JUNIPER-MIB::jnxOperatingEntry
+    - JUNIPER-MIB::jnxRedundancyEntry
+    - JUNIPER-MIB::jnxFruEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIDot1sJuniperMst
+    - JUNIPER-MIMSTP-MIB::jnxMIDot1sJuniperMstEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiBridgeEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIMstCistPortEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiPortEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIMstCistPortProtectEntry
+    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiPortProtectEntry
     - JUNIPER-MPLS-LDP-MIB::jnxMplsLdpLsrObjects
     - JUNIPER-MPLS-LDP-MIB::jnxMplsLdpEntityEntry
     - JUNIPER-MPLS-LDP-MIB::jnxMplsLdpEntityStatsEntry
@@ -3192,42 +3248,34 @@ all:
     - JUNIPER-MPLS-LDP-MIB::jnxMplsLdpSesStatsEntry
     - JUNIPER-MPLS-LDP-MIB::jnxMplsLdpHelloAdjacencyEntry
     - JUNIPER-MPLS-LDP-MIB::jnxMplsFecEntry
-    - MPLS-MIB::mplsInfo
-    # - MPLS-MIB::mplsLspEntry
-    - MPLS-MIB::mplsLspInfoEntry
-    - JUNIPER-IF-MIB::ifJnxEntry
-    - JUNIPER-IF-MIB::ifJnxPolEntry
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3GeneralGroup
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3AreaEntry
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3IfEntry
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3VirtIfEntry
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3NbrEntry
-    - OSPFV3-MIB-JUNIPER::jnxOspfv3VirtNbrEntry
-    - JUNIPER-EX-MAC-NOTIFICATION-MIB::jnxMacNotificationMIBGlobalObjects
-    - JUNIPER-MAC-MIB::jnxMacStatsEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIDot1sJuniperMst
-    - JUNIPER-MIMSTP-MIB::jnxMIDot1sJuniperMstEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiBridgeEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIMstCistPortEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiPortEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIMstCistPortProtectEntry
-    - JUNIPER-MIMSTP-MIB::jnxMIMstMstiPortProtectEntry
+    - JUNIPER-TUNNEL-STATS-MIB::jnxTunnelStatsEntry
+    - JUNIPER-VIRTUALCHASSIS-MIB::jnxVirtualChassisMemberEntry
+    - JUNIPER-VIRTUALCHASSIS-MIB::jnxVirtualChassisPortEntry
     - JUNIPER-VLAN-MIB::jnxVlanEntry
     - JUNIPER-VLAN-MIB::jnxVlanInterfaceEntry
     - JUNIPER-VLAN-MIB::jnxVlanPortGroupEntry
     - JUNIPER-VLAN-MIB::jnxExVlanEntry
     - JUNIPER-VLAN-MIB::jnxExVlanInterfaceEntry
     - JUNIPER-VLAN-MIB::jnxExVlanPortGroupEntry
-    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsConfigEntry
-    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsStatusEntry
-    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsPwBindEntry
-    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsBgpADConfigEntry
-    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsBgpRteTargetEntry
     - JUNIPER-VPN-MIB::jnxVpnInfo
     - JUNIPER-VPN-MIB::jnxVpnEntry
     - JUNIPER-VPN-MIB::jnxVpnIfEntry
     - JUNIPER-VPN-MIB::jnxVpnPwEntry
     - JUNIPER-VPN-MIB::jnxVpnRTEntry
+    - MPLS-MIB::mplsInfo
+    # - MPLS-MIB::mplsLspEntry
+    - MPLS-MIB::mplsLspInfoEntry
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3GeneralGroup
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3AreaEntry
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3IfEntry
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3VirtIfEntry
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3NbrEntry
+    - OSPFV3-MIB-JUNIPER::jnxOspfv3VirtNbrEntry
+    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsConfigEntry
+    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsStatusEntry
+    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsPwBindEntry
+    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsBgpADConfigEntry
+    - VPLS-GENERIC-DRAFT-01-MIB::jnxVplsBgpRteTargetEntry
 
     # Mellanox
     - MELLANOX-CONFIG-DB-MIB::mellanoxConfigDBCmd

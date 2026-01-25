@@ -1,0 +1,99 @@
+JUNIPER-JS-POLICY-MIB::jnxJsPolicyEntry:
+  mib: JUNIPER-JS-POLICY-MIB
+  object: jnxJsPolicyEntry
+  index:
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.1
+      name: juniper.policy.zone.from
+      syntax: DisplayString
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.2
+      name: juniper.policy.zone.to
+      syntax: DisplayString
+    - type: OctetString
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.3
+      name: juniper.policy.name
+      syntax: DisplayString
+  discovery_attribute: jnxJsPolicySequenceNumber
+  attributes:
+    jnxJsPolicySequenceNumber:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.4
+      name: juniper.policy.seq_num
+      syntax: IntegerAsID
+    jnxJsPolicyAction:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.5
+      name: juniper.policy.action
+      syntax: EnumInteger
+    jnxJsPolicyScheduler:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.6
+      name: juniper.policy.scheduler
+      syntax: DisplayString
+    jnxJsPolicyState:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.7
+      name: juniper.policy.state
+      syntax: EnumInteger
+    jnxJsPolicyStatsAvailability:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.8
+      name: juniper.policy.availability
+      syntax: EnumInteger
+    jnxJsPolicyPerSecBytesThreshold:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.9
+      name: juniper.policy.threshold.bytes_sec
+      syntax: BytesB
+      metric: gauge
+    jnxJsPolicyPerMinKbytesThreshold:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.2.1.10
+      name: juniper.policy.threshold.bytes_min
+      syntax: BytesKB
+      metric: gauge
+
+JUNIPER-JS-POLICY-MIB::jnxJsPolicyStatsEntry:
+  mib: JUNIPER-JS-POLICY-MIB
+  object: jnxJsPolicyStatsEntry
+  augments: JUNIPER-JS-POLICY-MIB::jnxJsPolicyEntry
+  discovery_attribute: jnxJsPolicyStatsInputBytes
+  attributes:
+    jnxJsPolicyStatsCreationTime:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.1
+      name: juniper.policy.time_created
+      syntax: TimeStamp
+    jnxJsPolicyStatsInputBytes:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.2
+      name: juniper.policy.bytes.in
+      syntax: Counter64
+      metric: counter
+    jnxJsPolicyStatsOutputBytes:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.4
+      name: juniper.policy.bytes.out
+      syntax: Counter64
+      metric: counter
+    jnxJsPolicyStatsInputPackets:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.6
+      name: juniper.policy.packets.in
+      syntax: Counter32
+      metric: counter
+    jnxJsPolicyStatsOutputPackets:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.8
+      name: juniper.policy.packets.out
+      syntax: Counter32
+      metric: counter
+    jnxJsPolicyStatsNumSessions:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.10
+      name: juniper.policy.sessions
+      syntax: Counter32
+      metric: counter
+    jnxJsPolicyStatsSessionDeleted:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.12
+      name: juniper.policy.sessions_deleted
+      syntax: Counter32
+      metric: counter
+    jnxJsPolicyStatsLookups:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.13
+      name: juniper.policy.lookups
+      syntax: Counter32
+      metric: counter
+    jnxJsPolicyStatsCountAlarm:
+      oid: .1.3.6.1.4.1.2636.3.39.1.4.1.1.3.1.14
+      name: juniper.policy.alarms
+      syntax: Counter32
+      metric: counter
