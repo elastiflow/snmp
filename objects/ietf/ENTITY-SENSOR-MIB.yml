@@ -1,7 +1,12 @@
 ENTITY-SENSOR-MIB::entPhySensorEntry:
   mib: ENTITY-SENSOR-MIB
   object: entPhySensorEntry
-  augments: ENTITY-MIB::entPhysicalEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
   discovery_attribute: entPhySensorType
   attributes:
     entPhySensorType:
@@ -38,3 +43,19 @@ ENTITY-SENSOR-MIB::entPhySensorEntry:
       name: entity.phys.sensor.value_update_rate
       syntax: TicksMilliSec
       metric: gauge
+    # Additional Attributes as Tags
+    entPhysicalDescr:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.2
+      tag: true
+      name: entity.phys.descr
+      syntax: DisplayString
+    entPhysicalClass:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.5
+      tag: true
+      name: entity.phys.class
+      syntax: EnumInteger
+    entPhysicalName:
+      oid: .1.3.6.1.2.1.47.1.1.1.1.7
+      tag: true
+      name: entity.phys.name
+      syntax: DisplayString
