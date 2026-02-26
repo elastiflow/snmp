@@ -1,6 +1,7 @@
 FORTINET-FORTIGATE-MIB::fgVdInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVdInfo
+  type: stable
   discovery_attribute: fgVdNumber
   attributes:
     fgVdNumber:
@@ -19,6 +20,7 @@ FORTINET-FORTIGATE-MIB::fgVdInfo:
 FORTINET-FORTIGATE-MIB::fgVdEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVdEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -58,6 +60,7 @@ FORTINET-FORTIGATE-MIB::fgVdEntry:
 FORTINET-FORTIGATE-MIB::fgVdTpEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVdTpEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgVdEntry
   discovery_attribute: fgVdTpMgmtAddr
   attributes:
@@ -73,6 +76,7 @@ FORTINET-FORTIGATE-MIB::fgVdTpEntry:
 FORTINET-FORTIGATE-MIB::fgSystemInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgSystemInfo
+  type: dynamic
   discovery_attribute: fgSysVersion
   attributes:
     fgSysVersion:
@@ -155,6 +159,7 @@ FORTINET-FORTIGATE-MIB::fgSystemInfo:
 FORTINET-FORTIGATE-MIB::fgSoftware:
   mib: FORTINET-FORTIGATE-MIB
   object: fgSoftware
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgSystemInfo
   discovery_attribute: fgSysVersionAv
   attributes:
@@ -170,6 +175,7 @@ FORTINET-FORTIGATE-MIB::fgSoftware:
 FORTINET-FORTIGATE-MIB::fgHwSensors:
   mib: FORTINET-FORTIGATE-MIB
   object: fgHwSensors
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgHwSensorCount
   attributes:
@@ -181,6 +187,7 @@ FORTINET-FORTIGATE-MIB::fgHwSensors:
 FORTINET-FORTIGATE-MIB::fgHwSensorEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgHwSensorEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.4.3.2.1.1
@@ -204,6 +211,7 @@ FORTINET-FORTIGATE-MIB::fgHwSensorEntry:
 FORTINET-FORTIGATE-MIB::fgProcessors:
   mib: FORTINET-FORTIGATE-MIB
   object: fgProcessors
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgProcessorCount
   attributes:
@@ -215,6 +223,7 @@ FORTINET-FORTIGATE-MIB::fgProcessors:
 FORTINET-FORTIGATE-MIB::fgProcessorEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgProcessorEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.4.4.2.1.1
@@ -262,6 +271,7 @@ FORTINET-FORTIGATE-MIB::fgProcessorEntry:
 FORTINET-FORTIGATE-MIB::fgProcessorModules:
   mib: FORTINET-FORTIGATE-MIB
   object: fgProcessorModules
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgProcessorModuleCount
   attributes:
@@ -273,6 +283,7 @@ FORTINET-FORTIGATE-MIB::fgProcessorModules:
 FORTINET-FORTIGATE-MIB::fgProcessorModuleEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgProcessorModuleEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.4.5.3.1.1
@@ -316,6 +327,7 @@ FORTINET-FORTIGATE-MIB::fgProcessorModuleEntry:
 FORTINET-FORTIGATE-MIB::fgSysInfoAdvMem:
   mib: FORTINET-FORTIGATE-MIB
   object: fgSysInfoAdvMem
+  type: dynamic
   discovery_attribute: fgSIAdvMemPageCache
   attributes:
     fgSIAdvMemPageCache:
@@ -334,26 +346,27 @@ FORTINET-FORTIGATE-MIB::fgSysInfoAdvMem:
       oid: .1.3.6.1.4.1.12356.101.4.6.1.4
       name: fortinet.fgSIAdvMemBuffer
       syntax: BytesKB
-    fgSIAdvMemEnterKerConsThrsh:
-      oid: .1.3.6.1.4.1.12356.101.4.6.1.5
-      name: fortinet.fgSIAdvMemEnterKerConsThrsh
-      syntax: BytesKB
-    fgSIAdvMemLeaveKerConsThrsh:
-      oid: .1.3.6.1.4.1.12356.101.4.6.1.6
-      name: fortinet.fgSIAdvMemLeaveKerConsThrsh
-      syntax: BytesKB
-    fgSIAdvMemEnterProxyConsThrsh:
-      oid: .1.3.6.1.4.1.12356.101.4.6.1.7
-      name: fortinet.fgSIAdvMemEnterProxyConsThrsh
-      syntax: BytesKB
-    fgSIAdvMemLeaveProxyConsThrsh:
-      oid: .1.3.6.1.4.1.12356.101.4.6.1.8
-      name: fortinet.fgSIAdvMemLeaveProxyConsThrsh
-      syntax: BytesKB
+    # fgSIAdvMemEnterKerConsThrsh:
+    #   oid: .1.3.6.1.4.1.12356.101.4.6.1.5
+    #   name: fortinet.fgSIAdvMemEnterKerConsThrsh
+    #   syntax: BytesKB
+    # fgSIAdvMemLeaveKerConsThrsh:
+    #   oid: .1.3.6.1.4.1.12356.101.4.6.1.6
+    #   name: fortinet.fgSIAdvMemLeaveKerConsThrsh
+    #   syntax: BytesKB
+    # fgSIAdvMemEnterProxyConsThrsh:
+    #   oid: .1.3.6.1.4.1.12356.101.4.6.1.7
+    #   name: fortinet.fgSIAdvMemEnterProxyConsThrsh
+    #   syntax: BytesKB
+    # fgSIAdvMemLeaveProxyConsThrsh:
+    #   oid: .1.3.6.1.4.1.12356.101.4.6.1.8
+    #   name: fortinet.fgSIAdvMemLeaveProxyConsThrsh
+    #   syntax: BytesKB
 
 FORTINET-FORTIGATE-MIB::fgSysInfoAdvSessions:
   mib: FORTINET-FORTIGATE-MIB
   object: fgSysInfoAdvSessions
+  type: dynamic
   discovery_attribute: fgSIAdvSesEphemeralCount
   attributes:
     fgSIAdvSesEphemeralCount:
@@ -388,6 +401,7 @@ FORTINET-FORTIGATE-MIB::fgSysInfoAdvSessions:
 FORTINET-FORTIGATE-MIB::fgUsbports:
   mib: FORTINET-FORTIGATE-MIB
   object: fgUsbports
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgUsbportCount
   attributes:
@@ -399,6 +413,7 @@ FORTINET-FORTIGATE-MIB::fgUsbports:
 FORTINET-FORTIGATE-MIB::fgUsbportEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgUsbportEntry
+  type: immutable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.4.7.2.1.1
@@ -446,6 +461,7 @@ FORTINET-FORTIGATE-MIB::fgUsbportEntry:
 FORTINET-FORTIGATE-MIB::fgLinkMonitor:
   mib: FORTINET-FORTIGATE-MIB
   object: fgLinkMonitor
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgLinkMonitorNumber
   attributes:
@@ -457,6 +473,7 @@ FORTINET-FORTIGATE-MIB::fgLinkMonitor:
 FORTINET-FORTIGATE-MIB::fgLinkMonitorEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgLinkMonitorEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.4.8.2.1.1
@@ -500,6 +517,7 @@ FORTINET-FORTIGATE-MIB::fgLinkMonitorEntry:
 FORTINET-FORTIGATE-MIB::fgFwPolStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwPolStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -541,6 +559,7 @@ FORTINET-FORTIGATE-MIB::fgFwPolStatsEntry:
 FORTINET-FORTIGATE-MIB::fgFwPol6StatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwPol6StatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -568,6 +587,7 @@ FORTINET-FORTIGATE-MIB::fgFwPol6StatsEntry:
 FORTINET-FORTIGATE-MIB::fgFwUserInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwUserInfo
+  type: active
   discovery_attribute: fgFwUserNumber
   attributes:
     fgFwUserNumber:
@@ -582,6 +602,7 @@ FORTINET-FORTIGATE-MIB::fgFwUserInfo:
 FORTINET-FORTIGATE-MIB::fgFwUserEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwUserEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.5.2.2.1.1.1
@@ -609,6 +630,7 @@ FORTINET-FORTIGATE-MIB::fgFwUserEntry:
 FORTINET-FORTIGATE-MIB::fgFwGtpStats:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwGtpStats
+  type: dynamic
   discovery_attribute: fgFwGtpStatsRequest
   attributes:
     fgFwGtpStatsRequest:
@@ -691,6 +713,7 @@ FORTINET-FORTIGATE-MIB::fgFwGtpStats:
 FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsCPkts:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwGtpRtStatsCPkts
+  type: dynamic
   discovery_attribute: fgFwGtpRtStatsCForwarded
   attributes:
     fgFwGtpRtStatsCForwarded:
@@ -801,6 +824,7 @@ FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsCPkts:
 FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsDPkts:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwGtpRtStatsDPkts
+  type: dynamic
   discovery_attribute: fgFwGtpRtStatsDForwarded
   attributes:
     fgFwGtpRtStatsDForwarded:
@@ -851,6 +875,7 @@ FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsDPkts:
 FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsBPkts:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFwGtpRtStatsBPkts
+  type: dynamic
   discovery_attribute: fgFwGtpRtStatsBForwarded
   attributes:
     fgFwGtpRtStatsBForwarded:
@@ -877,6 +902,7 @@ FORTINET-FORTIGATE-MIB::fgFwGtpRtStatsBPkts:
 FORTINET-FORTIGATE-MIB::fgAdminOptions:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAdminOptions
+  type: stable
   discovery_attribute: fgAdminIdleTimeout
   attributes:
     fgAdminIdleTimeout:
@@ -891,7 +917,8 @@ FORTINET-FORTIGATE-MIB::fgAdminOptions:
 FORTINET-FORTIGATE-MIB::fgAdminEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAdminEntry
-  augments: FORTINET-CORE-MIB::fnAdminEntry
+  type: immutable
+  augments: FORTINET-CORE-MIB::fnSystem
   discovery_attribute: fgAdminVdom
   attributes:
     fgAdminVdom:
@@ -902,6 +929,7 @@ FORTINET-FORTIGATE-MIB::fgAdminEntry:
 FORTINET-FORTIGATE-MIB::fgIntfEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIntfEntry
+  type: immutable
   index:
     - type: Integer
       oid: .1.3.6.1.2.1.2.2.1.1
@@ -938,6 +966,7 @@ FORTINET-FORTIGATE-MIB::fgIntfEntry:
 FORTINET-FORTIGATE-MIB::fgIntfVrrps:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIntfVrrps
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgIntfVrrpCount
   attributes:
@@ -949,6 +978,7 @@ FORTINET-FORTIGATE-MIB::fgIntfVrrps:
 FORTINET-FORTIGATE-MIB::fgIntfVrrpEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIntfVrrpEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.7.3.2.1.1
@@ -980,6 +1010,7 @@ FORTINET-FORTIGATE-MIB::fgIntfVrrpEntry:
 FORTINET-FORTIGATE-MIB::fgIntfVlanHbs:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIntfVlanHbs
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgIntfVlanHbCount
   attributes:
@@ -991,6 +1022,7 @@ FORTINET-FORTIGATE-MIB::fgIntfVlanHbs:
 FORTINET-FORTIGATE-MIB::fgIntfVlanHbEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIntfVlanHbEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.7.4.2.1.1
@@ -1014,6 +1046,7 @@ FORTINET-FORTIGATE-MIB::fgIntfVlanHbEntry:
 FORTINET-FORTIGATE-MIB::fgAvStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAvStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1097,6 +1130,7 @@ FORTINET-FORTIGATE-MIB::fgAvStatsEntry:
 FORTINET-FORTIGATE-MIB::fgIpsStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIpsStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1144,6 +1178,7 @@ FORTINET-FORTIGATE-MIB::fgIpsStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWebfilterStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWebfilterStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1183,6 +1218,7 @@ FORTINET-FORTIGATE-MIB::fgWebfilterStatsEntry:
 FORTINET-FORTIGATE-MIB::fgFortiGuardStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgFortiGuardStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1234,6 +1270,7 @@ FORTINET-FORTIGATE-MIB::fgFortiGuardStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxy:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxy
+  type: dynamic
   discovery_attribute: fgApHTTPUpTime
   attributes:
     fgApHTTPUpTime:
@@ -1256,6 +1293,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxy:
 FORTINET-FORTIGATE-MIB::fgAppStats:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppStats
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1271,6 +1309,7 @@ FORTINET-FORTIGATE-MIB::fgAppStats:
 FORTINET-FORTIGATE-MIB::fgAppProxySMTP:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxySMTP
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApSMTPUpTime
   attributes:
@@ -1294,6 +1333,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxySMTP:
 FORTINET-FORTIGATE-MIB::fgApSMTPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApSMTPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApSMTPReqProcessed
   attributes:
@@ -1309,6 +1349,7 @@ FORTINET-FORTIGATE-MIB::fgApSMTPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxyPOP3:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxyPOP3
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApPOP3UpTime
   attributes:
@@ -1332,6 +1373,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxyPOP3:
 FORTINET-FORTIGATE-MIB::fgApPOP3StatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApPOP3StatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApPOP3ReqProcessed
   attributes:
@@ -1347,6 +1389,7 @@ FORTINET-FORTIGATE-MIB::fgApPOP3StatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxyIMAP:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxyIMAP
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApIMAPUpTime
   attributes:
@@ -1370,6 +1413,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxyIMAP:
 FORTINET-FORTIGATE-MIB::fgApIMAPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApIMAPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApIMAPReqProcessed
   attributes:
@@ -1385,6 +1429,7 @@ FORTINET-FORTIGATE-MIB::fgApIMAPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxyNNTP:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxyNNTP
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApNNTPUpTime
   attributes:
@@ -1408,6 +1453,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxyNNTP:
 FORTINET-FORTIGATE-MIB::fgApNNTPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApNNTPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApNNTPReqProcessed
   attributes:
@@ -1419,6 +1465,7 @@ FORTINET-FORTIGATE-MIB::fgApNNTPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxyIM:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxyIM
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApIMUpTime
   attributes:
@@ -1434,6 +1481,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxyIM:
 FORTINET-FORTIGATE-MIB::fgApIMStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApIMStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApIMReqProcessed
   attributes:
@@ -1445,6 +1493,7 @@ FORTINET-FORTIGATE-MIB::fgApIMStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxySIP:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxySIP
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApSIPUpTime
   attributes:
@@ -1460,6 +1509,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxySIP:
 FORTINET-FORTIGATE-MIB::fgApSIPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApSIPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApSIPClientReg
   attributes:
@@ -1483,6 +1533,7 @@ FORTINET-FORTIGATE-MIB::fgApSIPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppScanUnit:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppScanUnit
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgAppSuNumber
   attributes:
@@ -1494,6 +1545,7 @@ FORTINET-FORTIGATE-MIB::fgAppScanUnit:
 FORTINET-FORTIGATE-MIB::fgAppSuStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppSuStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.10.107.2.1.1
@@ -1509,6 +1561,7 @@ FORTINET-FORTIGATE-MIB::fgAppSuStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppVoIPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppVoIPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgAppVoIPConn
   attributes:
@@ -1524,6 +1577,7 @@ FORTINET-FORTIGATE-MIB::fgAppVoIPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppP2PStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppP2PStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgAppP2PConnBlocked
   attributes:
@@ -1535,6 +1589,7 @@ FORTINET-FORTIGATE-MIB::fgAppP2PStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppP2PProtoEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppP2PProtoEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1558,6 +1613,7 @@ FORTINET-FORTIGATE-MIB::fgAppP2PProtoEntry:
 FORTINET-FORTIGATE-MIB::fgAppIMStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppIMStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgAppIMMessages
   attributes:
@@ -1581,6 +1637,7 @@ FORTINET-FORTIGATE-MIB::fgAppIMStatsEntry:
 FORTINET-FORTIGATE-MIB::fgAppProxyFTP:
   mib: FORTINET-FORTIGATE-MIB
   object: fgAppProxyFTP
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppProxy
   discovery_attribute: fgApFTPUpTime
   attributes:
@@ -1604,6 +1661,7 @@ FORTINET-FORTIGATE-MIB::fgAppProxyFTP:
 FORTINET-FORTIGATE-MIB::fgApFTPStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgApFTPStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgAppStats
   discovery_attribute: fgApFTPReqProcessed
   attributes:
@@ -1615,6 +1673,7 @@ FORTINET-FORTIGATE-MIB::fgApFTPStatsEntry:
 FORTINET-FORTIGATE-MIB::fgExplicitProxyInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgExplicitProxyInfo
+  type: dynamic
   discovery_attribute: fgExplicitProxyUpTime
   attributes:
     fgExplicitProxyUpTime:
@@ -1633,6 +1692,7 @@ FORTINET-FORTIGATE-MIB::fgExplicitProxyInfo:
 FORTINET-FORTIGATE-MIB::fgExplicitProxyStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgExplicitProxyStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1652,6 +1712,7 @@ FORTINET-FORTIGATE-MIB::fgExplicitProxyStatsEntry:
 FORTINET-FORTIGATE-MIB::fgExplicitProxyScanStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgExplicitProxyScanStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1711,6 +1772,7 @@ FORTINET-FORTIGATE-MIB::fgExplicitProxyScanStatsEntry:
 FORTINET-FORTIGATE-MIB::fgExplicitProxyScriptStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgExplicitProxyScriptStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgExplicitProxyStatsEntry
   discovery_attribute: fgExplicitProxyFilteredApplets
   attributes:
@@ -1742,6 +1804,7 @@ FORTINET-FORTIGATE-MIB::fgExplicitProxyScriptStatsEntry:
 FORTINET-FORTIGATE-MIB::fgExplicitProxyFilterStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgExplicitProxyFilterStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgExplicitProxyStatsEntry
   discovery_attribute: fgExplicitProxyBlockedDLP
   attributes:
@@ -1777,6 +1840,7 @@ FORTINET-FORTIGATE-MIB::fgExplicitProxyFilterStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWebCacheInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWebCacheInfo
+  type: dynamic
   discovery_attribute: fgWebCacheRAMLimit
   attributes:
     fgWebCacheRAMLimit:
@@ -1811,6 +1875,7 @@ FORTINET-FORTIGATE-MIB::fgWebCacheInfo:
 FORTINET-FORTIGATE-MIB::fgWebCacheDiskStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWebCacheDiskStatsEntry
+  type: dynamic
   index:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.12356.101.10.113.2.1.1
@@ -1838,6 +1903,7 @@ FORTINET-FORTIGATE-MIB::fgWebCacheDiskStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWanOptInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWanOptInfo
+  type: dynamic
   discovery_attribute: fgMemCacheLimit
   attributes:
     fgMemCacheLimit:
@@ -1872,6 +1938,7 @@ FORTINET-FORTIGATE-MIB::fgWanOptInfo:
 FORTINET-FORTIGATE-MIB::fgWanOptStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWanOptStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1903,6 +1970,7 @@ FORTINET-FORTIGATE-MIB::fgWanOptStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWanOptHistoryStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWanOptHistoryStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1934,6 +2002,7 @@ FORTINET-FORTIGATE-MIB::fgWanOptHistoryStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWanOptTrafficStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWanOptTrafficStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -1965,6 +2034,7 @@ FORTINET-FORTIGATE-MIB::fgWanOptTrafficStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWanOptDiskStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWanOptDiskStatsEntry
+  type: dynamic
   index:
     - type: Unsigned32
       oid: .1.3.6.1.4.1.12356.101.10.114.5.1.1
@@ -1992,6 +2062,7 @@ FORTINET-FORTIGATE-MIB::fgWanOptDiskStatsEntry:
 FORTINET-FORTIGATE-MIB::fgIpSessEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIpSessEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.11.2.1.1.1
@@ -2031,6 +2102,7 @@ FORTINET-FORTIGATE-MIB::fgIpSessEntry:
 FORTINET-FORTIGATE-MIB::fgIpSessStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIpSessStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgVdEntry
   discovery_attribute: fgIpSessNumber
   attributes:
@@ -2042,6 +2114,7 @@ FORTINET-FORTIGATE-MIB::fgIpSessStatsEntry:
 FORTINET-FORTIGATE-MIB::fgIp6SessStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgIp6SessStatsEntry
+  type: dynamic
   augments: FORTINET-FORTIGATE-MIB::fgVdEntry
   discovery_attribute: fgIp6SessNumber
   attributes:
@@ -2053,6 +2126,7 @@ FORTINET-FORTIGATE-MIB::fgIp6SessStatsEntry:
 FORTINET-FORTIGATE-MIB::fgVpnInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVpnInfo
+  type: stable
   augments: FORTINET-FORTIGATE-MIB::fgVdInfo
   discovery_attribute: fgVpnTunnelUpCount
   attributes:
@@ -2064,6 +2138,7 @@ FORTINET-FORTIGATE-MIB::fgVpnInfo:
 FORTINET-FORTIGATE-MIB::fgVpnDialupEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVpnDialupEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.12.2.1.1.1
@@ -2111,6 +2186,7 @@ FORTINET-FORTIGATE-MIB::fgVpnDialupEntry:
 FORTINET-FORTIGATE-MIB::fgVpnTunEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVpnTunEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.12.2.2.1.1
@@ -2202,6 +2278,7 @@ FORTINET-FORTIGATE-MIB::fgVpnTunEntry:
 FORTINET-FORTIGATE-MIB::fgVpnSslStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVpnSslStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2241,6 +2318,7 @@ FORTINET-FORTIGATE-MIB::fgVpnSslStatsEntry:
 FORTINET-FORTIGATE-MIB::fgVpnSslTunnelEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgVpnSslTunnelEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.12.2.4.1.1
@@ -2280,6 +2358,7 @@ FORTINET-FORTIGATE-MIB::fgVpnSslTunnelEntry:
 FORTINET-FORTIGATE-MIB::fgHaInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgHaInfo
+  type: stable
   discovery_attribute: fgHaSystemMode
   attributes:
     fgHaSystemMode:
@@ -2314,6 +2393,7 @@ FORTINET-FORTIGATE-MIB::fgHaInfo:
 FORTINET-FORTIGATE-MIB::fgHaStatsEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgHaStatsEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.13.2.1.1.1
@@ -2385,6 +2465,7 @@ FORTINET-FORTIGATE-MIB::fgHaStatsEntry:
 FORTINET-FORTIGATE-MIB::fgWcInfo:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcInfo
+  type: active
   discovery_attribute: fgWcInfoName
   attributes:
     fgWcInfoName:
@@ -2419,6 +2500,7 @@ FORTINET-FORTIGATE-MIB::fgWcInfo:
 FORTINET-FORTIGATE-MIB::fgWcWlanEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWlanEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2482,6 +2564,7 @@ FORTINET-FORTIGATE-MIB::fgWcWlanEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpProfileEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpProfileEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2509,6 +2592,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpProfileEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpProfileRadioEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpProfileRadioEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2600,6 +2684,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpProfileRadioEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpConfigEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpConfigEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2667,6 +2752,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpConfigEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpSessionEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpSessionEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2758,6 +2844,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpSessionEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpSessionRadioEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpSessionRadioEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2805,6 +2892,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpSessionRadioEntry:
 FORTINET-FORTIGATE-MIB::fgWcWtpSessionVapEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcWtpSessionVapEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2844,6 +2932,7 @@ FORTINET-FORTIGATE-MIB::fgWcWtpSessionVapEntry:
 FORTINET-FORTIGATE-MIB::fgWcStaEntry:
   mib: FORTINET-FORTIGATE-MIB
   object: fgWcStaEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.12356.101.3.2.1.1.1
@@ -2939,6 +3028,7 @@ FORTINET-FORTIGATE-MIB::fgWcStaEntry:
 FORTINET-FORTIGATE-MIB::fgUsbModemInfoObjects:
   mib: FORTINET-FORTIGATE-MIB
   object: fgUsbModemInfoObjects
+  type: stable
   discovery_attribute: fgUsbModemSignalStrength
   attributes:
     fgUsbModemSignalStrength:
