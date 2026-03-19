@@ -1,6 +1,7 @@
 CPDU-MIB::cPDU:
   mib: CPDU-MIB
   object: cPDU
+  type: stable
   discovery_attribute: pduNamePlateTableSize
   attributes:
     pduNamePlateTableSize:
@@ -47,6 +48,7 @@ CPDU-MIB::cPDU:
 CPDU-MIB::pduNamePlateEntry:
   mib: CPDU-MIB
   object: pduNamePlateEntry
+  type: immutable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.1.2.1.1
@@ -111,99 +113,101 @@ CPDU-MIB::pduNamePlateEntry:
       name: apc.pduNamePlateType
       syntax: EnumInteger
 
-CPDU-MIB::pduUnitConfigEntry:
-  mib: CPDU-MIB
-  object: pduUnitConfigEntry
-  augments: CPDU-MIB::pduUnitStatusEntry
-  discovery_attribute: pduUnitConfigName
-  attributes:
-    pduUnitConfigName:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.2
-      name: apc.pduUnitConfigName
-      syntax: DisplayString
-    pduUnitConfigLocation:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.3
-      name: apc.pduUnitConfigLocation
-      syntax: DisplayString
-    pduUnitConfigDisplayOrientation:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.4
-      name: apc.pduUnitConfigDisplayOrientation
-      syntax: EnumInteger
-    pduUnitConfigOledDisplayControl:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.5
-      name: apc.pduUnitConfigOledDisplayControl
-      syntax: EnumInteger
-    pduUnitConfigColdstartDelay:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.6
-      name: apc.pduUnitConfigColdstartDelay
-      syntax: TicksSec
-      metric: gauge
-    pduUnitConfigGlobalOutletStateOnStartup:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.7
-      name: apc.pduUnitConfigGlobalOutletStateOnStartup
-      syntax: EnumInteger
-    pduUnitConfigLowerCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.8
-      name: apc.pduUnitConfigLowerCriticalThreshold
-      syntax: PowerWatt
-      metric: gauge
-    pduUnitConfigLowerWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.9
-      name: apc.pduUnitConfigLowerWarningThreshold
-      syntax: PowerWatt
-      metric: gauge
-    pduUnitConfigUpperCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.10
-      name: apc.pduUnitConfigUpperCriticalThreshold
-      syntax: PowerWatt
-      metric: gauge
-    pduUnitConfigUpperWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.11
-      name: apc.pduUnitConfigUpperWarningThreshold
-      syntax: PowerWatt
-      metric: gauge
-    pduUnitConfigAlarmResetThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.12
-      name: apc.pduUnitConfigAlarmResetThreshold
-      syntax: PowerWatt
-      metric: gauge
-    pduUnitConfigAlarmStateChangeDelay:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.13
-      name: apc.pduUnitConfigAlarmStateChangeDelay
-      syntax: Unsigned32
-      metric: gauge
-    pduUnitConfigEnabledThresholds:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.14
-      name: apc.pduUnitConfigEnabledThresholds
-      syntax: EnumBitmap
-    # pduUnitConfigPeakPowerReset:
-    #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.15
-    #   name: apc.pduUnitConfigPeakPowerReset
-    #   syntax: EnumInteger
-    # pduUnitConfigEnergyReset:
-    #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.16
-    #   name: apc.pduUnitConfigEnergyReset
-    #   syntax: EnumInteger
-    # pduUnitConfigOutletPeakPowerReset:
-    #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.17
-    #   name: apc.pduUnitConfigOutletPeakPowerReset
-    #   syntax: EnumInteger
-    # pduUnitConfigOutletEnergyReset:
-    #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.18
-    #   name: apc.pduUnitConfigOutletEnergyReset
-    #   syntax: EnumInteger
-    pduUnitConfigSsh:
-      oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.19
-      name: apc.pduUnitConfigSsh
-      syntax: EnumInteger
-    # pduUnitConfigResetNetworkManagementCard:
-    #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.20
-    #   name: apc.pduUnitConfigResetNetworkManagementCard
-    #   syntax: EnumInteger
+# CPDU-MIB::pduUnitConfigEntry:
+#   mib: CPDU-MIB
+#   object: pduUnitConfigEntry
+#   type: dynamic
+#   augments: CPDU-MIB::pduUnitStatusEntry
+#   discovery_attribute: pduUnitConfigName
+#   attributes:
+#     pduUnitConfigName:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.2
+#       name: apc.pduUnitConfigName
+#       syntax: DisplayString
+#     pduUnitConfigLocation:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.3
+#       name: apc.pduUnitConfigLocation
+#       syntax: DisplayString
+#     pduUnitConfigDisplayOrientation:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.4
+#       name: apc.pduUnitConfigDisplayOrientation
+#       syntax: EnumInteger
+#     pduUnitConfigOledDisplayControl:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.5
+#       name: apc.pduUnitConfigOledDisplayControl
+#       syntax: EnumInteger
+#     pduUnitConfigColdstartDelay:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.6
+#       name: apc.pduUnitConfigColdstartDelay
+#       syntax: TicksSec
+#       metric: gauge
+#     pduUnitConfigGlobalOutletStateOnStartup:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.7
+#       name: apc.pduUnitConfigGlobalOutletStateOnStartup
+#       syntax: EnumInteger
+#     pduUnitConfigLowerCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.8
+#       name: apc.pduUnitConfigLowerCriticalThreshold
+#       syntax: PowerWatt
+#       metric: gauge
+#     pduUnitConfigLowerWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.9
+#       name: apc.pduUnitConfigLowerWarningThreshold
+#       syntax: PowerWatt
+#       metric: gauge
+#     pduUnitConfigUpperCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.10
+#       name: apc.pduUnitConfigUpperCriticalThreshold
+#       syntax: PowerWatt
+#       metric: gauge
+#     pduUnitConfigUpperWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.11
+#       name: apc.pduUnitConfigUpperWarningThreshold
+#       syntax: PowerWatt
+#       metric: gauge
+#     pduUnitConfigAlarmResetThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.12
+#       name: apc.pduUnitConfigAlarmResetThreshold
+#       syntax: PowerWatt
+#       metric: gauge
+#     pduUnitConfigAlarmStateChangeDelay:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.13
+#       name: apc.pduUnitConfigAlarmStateChangeDelay
+#       syntax: Unsigned32
+#       metric: gauge
+#     pduUnitConfigEnabledThresholds:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.14
+#       name: apc.pduUnitConfigEnabledThresholds
+#       syntax: EnumBitmap
+#     # pduUnitConfigPeakPowerReset:
+#     #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.15
+#     #   name: apc.pduUnitConfigPeakPowerReset
+#     #   syntax: EnumInteger
+#     # pduUnitConfigEnergyReset:
+#     #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.16
+#     #   name: apc.pduUnitConfigEnergyReset
+#     #   syntax: EnumInteger
+#     # pduUnitConfigOutletPeakPowerReset:
+#     #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.17
+#     #   name: apc.pduUnitConfigOutletPeakPowerReset
+#     #   syntax: EnumInteger
+#     # pduUnitConfigOutletEnergyReset:
+#     #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.18
+#     #   name: apc.pduUnitConfigOutletEnergyReset
+#     #   syntax: EnumInteger
+#     pduUnitConfigSsh:
+#       oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.19
+#       name: apc.pduUnitConfigSsh
+#       syntax: EnumInteger
+#     # pduUnitConfigResetNetworkManagementCard:
+#     #   oid: .1.3.6.1.4.1.318.1.1.32.2.2.1.20
+#     #   name: apc.pduUnitConfigResetNetworkManagementCard
+#     #   syntax: EnumInteger
 
 CPDU-MIB::pduUnitPropertiesEntry:
   mib: CPDU-MIB
   object: pduUnitPropertiesEntry
+  type: active
   augments: CPDU-MIB::pduUnitStatusEntry
   discovery_attribute: pduUnitPropertiesName
   attributes:
@@ -278,6 +282,7 @@ CPDU-MIB::pduUnitPropertiesEntry:
 CPDU-MIB::pduUnitStatusEntry:
   mib: CPDU-MIB
   object: pduUnitStatusEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -338,6 +343,7 @@ CPDU-MIB::pduUnitStatusEntry:
 CPDU-MIB::pduUnitPsEntry:
   mib: CPDU-MIB
   object: pduUnitPsEntry
+  type: active
   augments: CPDU-MIB::pduUnitStatusEntry
   discovery_attribute: pduUnitPsSupportUpstreamStatus
   attributes:
@@ -354,93 +360,95 @@ CPDU-MIB::pduUnitPsEntry:
       name: apc.pduUnitPsOptMode
       syntax: EnumInteger
 
-CPDU-MIB::pduInputPhaseConfigEntry:
-  mib: CPDU-MIB
-  object: pduInputPhaseConfigEntry
-  augments: CPDU-MIB::pduInputPhaseStatusEntry
-  discovery_attribute: pduInputPhaseConfigCount
-  attributes:
-    pduInputPhaseConfigCount:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.2
-      name: apc.pduInputPhaseConfigCount
-      syntax: Integer32
-      metric: gauge
-    pduInputPhaseConfigOverloadRestriction:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.3
-      name: apc.pduInputPhaseConfigOverloadRestriction
-      syntax: EnumInteger
-    pduInputPhaseConfigCurrentLowerCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.4
-      name: apc.pduInputPhaseConfigCurrentLowerCriticalThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigCurrentLowerWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.5
-      name: apc.pduInputPhaseConfigCurrentLowerWarningThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigCurrentUpperCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.6
-      name: apc.pduInputPhaseConfigCurrentUpperCriticalThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigCurrentUpperWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.7
-      name: apc.pduInputPhaseConfigCurrentUpperWarningThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigVoltageLowerCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.8
-      name: apc.pduInputPhaseConfigVoltageLowerCriticalThreshold
-      syntax: VoltageVolt
-      metric: gauge
-    pduInputPhaseConfigVoltageLowerWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.9
-      name: apc.pduInputPhaseConfigVoltageLowerWarningThreshold
-      syntax: VoltageVolt
-      metric: gauge
-    pduInputPhaseConfigVoltageUpperCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.10
-      name: apc.pduInputPhaseConfigVoltageUpperCriticalThreshold
-      syntax: VoltageVolt
-      metric: gauge
-    pduInputPhaseConfigVoltageUpperWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.11
-      name: apc.pduInputPhaseConfigVoltageUpperWarningThreshold
-      syntax: VoltageVolt
-      metric: gauge
-    pduInputPhaseConfigCurrentAlarmResetThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.12
-      name: apc.pduInputPhaseConfigCurrentAlarmResetThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigCurrentAlarmStateChangeDelay:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.13
-      name: apc.pduInputPhaseConfigCurrentAlarmStateChangeDelay
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduInputPhaseConfigCurrentEnabledThresholds:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.14
-      name: apc.pduInputPhaseConfigCurrentEnabledThresholds
-      syntax: EnumBitmap
-    pduInputPhaseConfigVoltageAlarmResetThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.15
-      name: apc.pduInputPhaseConfigVoltageAlarmResetThreshold
-      syntax: VoltageVolt
-      metric: gauge
-    pduInputPhaseConfigVoltageAlarmStateChangeDelay:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.16
-      name: apc.pduInputPhaseConfigVoltageAlarmStateChangeDelay
-      syntax: Integer32
-      metric: gauge
-    pduInputPhaseConfigVoltageEnabledThresholds:
-      oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.17
-      name: apc.pduInputPhaseConfigVoltageEnabledThresholds
-      syntax: EnumBitmap
+# CPDU-MIB::pduInputPhaseConfigEntry:
+#   mib: CPDU-MIB
+#   object: pduInputPhaseConfigEntry
+#   type: dynamic
+#   augments: CPDU-MIB::pduInputPhaseStatusEntry
+#   discovery_attribute: pduInputPhaseConfigCount
+#   attributes:
+#     pduInputPhaseConfigCount:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.2
+#       name: apc.pduInputPhaseConfigCount
+#       syntax: Integer32
+#       metric: gauge
+#     pduInputPhaseConfigOverloadRestriction:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.3
+#       name: apc.pduInputPhaseConfigOverloadRestriction
+#       syntax: EnumInteger
+#     pduInputPhaseConfigCurrentLowerCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.4
+#       name: apc.pduInputPhaseConfigCurrentLowerCriticalThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigCurrentLowerWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.5
+#       name: apc.pduInputPhaseConfigCurrentLowerWarningThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigCurrentUpperCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.6
+#       name: apc.pduInputPhaseConfigCurrentUpperCriticalThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigCurrentUpperWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.7
+#       name: apc.pduInputPhaseConfigCurrentUpperWarningThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigVoltageLowerCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.8
+#       name: apc.pduInputPhaseConfigVoltageLowerCriticalThreshold
+#       syntax: VoltageVolt
+#       metric: gauge
+#     pduInputPhaseConfigVoltageLowerWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.9
+#       name: apc.pduInputPhaseConfigVoltageLowerWarningThreshold
+#       syntax: VoltageVolt
+#       metric: gauge
+#     pduInputPhaseConfigVoltageUpperCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.10
+#       name: apc.pduInputPhaseConfigVoltageUpperCriticalThreshold
+#       syntax: VoltageVolt
+#       metric: gauge
+#     pduInputPhaseConfigVoltageUpperWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.11
+#       name: apc.pduInputPhaseConfigVoltageUpperWarningThreshold
+#       syntax: VoltageVolt
+#       metric: gauge
+#     pduInputPhaseConfigCurrentAlarmResetThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.12
+#       name: apc.pduInputPhaseConfigCurrentAlarmResetThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigCurrentAlarmStateChangeDelay:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.13
+#       name: apc.pduInputPhaseConfigCurrentAlarmStateChangeDelay
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduInputPhaseConfigCurrentEnabledThresholds:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.14
+#       name: apc.pduInputPhaseConfigCurrentEnabledThresholds
+#       syntax: EnumBitmap
+#     pduInputPhaseConfigVoltageAlarmResetThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.15
+#       name: apc.pduInputPhaseConfigVoltageAlarmResetThreshold
+#       syntax: VoltageVolt
+#       metric: gauge
+#     pduInputPhaseConfigVoltageAlarmStateChangeDelay:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.16
+#       name: apc.pduInputPhaseConfigVoltageAlarmStateChangeDelay
+#       syntax: Integer32
+#       metric: gauge
+#     pduInputPhaseConfigVoltageEnabledThresholds:
+#       oid: .1.3.6.1.4.1.318.1.1.32.3.2.1.17
+#       name: apc.pduInputPhaseConfigVoltageEnabledThresholds
+#       syntax: EnumBitmap
 
 CPDU-MIB::pduInputPhasePropertiesEntry:
   mib: CPDU-MIB
   object: pduInputPhasePropertiesEntry
+  type: stable
   augments: CPDU-MIB::pduInputPhaseStatusEntry
   discovery_attribute: pduInputPhasePropertiesCount
   attributes:
@@ -453,6 +461,7 @@ CPDU-MIB::pduInputPhasePropertiesEntry:
 CPDU-MIB::pduInputPhaseStatusEntry:
   mib: CPDU-MIB
   object: pduInputPhaseStatusEntry
+  type: dynamic
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -503,63 +512,65 @@ CPDU-MIB::pduInputPhaseStatusEntry:
       syntax: Integer32
       metric: gauge
 
-CPDU-MIB::pduCircuitBreakerConfigEntry:
-  mib: CPDU-MIB
-  object: pduCircuitBreakerConfigEntry
-  augments: CPDU-MIB::pduCircuitBreakerStatusEntry
-  discovery_attribute: pduCircuitBreakerConfigCount
-  attributes:
-    pduCircuitBreakerConfigCount:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.2
-      name: apc.pduCircuitBreakerConfigCount
-      syntax: Integer32
-      metric: gauge
-    pduCircuitBreakerName:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.3
-      name: apc.pduCircuitBreakerName
-      syntax: DisplayString
-    pduCircuitBreakerConfigOverloadRestriction:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.4
-      name: apc.pduCircuitBreakerConfigOverloadRestriction
-      syntax: EnumInteger
-    pduCircuitBreakerConfigLowerCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.5
-      name: apc.pduCircuitBreakerConfigLowerCriticalThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduCircuitBreakerConfigLowerWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.6
-      name: apc.pduCircuitBreakerConfigLowerWarningThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduCircuitBreakerConfigUpperCriticalThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.7
-      name: apc.pduCircuitBreakerConfigUpperCriticalThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduCircuitBreakerConfigUpperWarningThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.8
-      name: apc.pduCircuitBreakerConfigUpperWarningThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduCircuitBreakerConfigAlarmResetThreshold:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.9
-      name: apc.pduCircuitBreakerConfigAlarmResetThreshold
-      syntax: CurrentCentiAmp
-      metric: gauge
-    pduCircuitBreakerConfigAlarmStateChangeDelay:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.10
-      name: apc.pduCircuitBreakerConfigAlarmStateChangeDelay
-      syntax: Unsigned32
-      metric: gauge
-    pduCircuitBreakerConfigEnabledThresholds:
-      oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.11
-      name: apc.pduCircuitBreakerConfigEnabledThresholds
-      syntax: EnumBitmap
+# CPDU-MIB::pduCircuitBreakerConfigEntry:
+#   mib: CPDU-MIB
+#   object: pduCircuitBreakerConfigEntry
+#   type: active
+#   augments: CPDU-MIB::pduCircuitBreakerStatusEntry
+#   discovery_attribute: pduCircuitBreakerConfigCount
+#   attributes:
+#     pduCircuitBreakerConfigCount:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.2
+#       name: apc.pduCircuitBreakerConfigCount
+#       syntax: Integer32
+#       metric: gauge
+#     pduCircuitBreakerName:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.3
+#       name: apc.pduCircuitBreakerName
+#       syntax: DisplayString
+#     pduCircuitBreakerConfigOverloadRestriction:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.4
+#       name: apc.pduCircuitBreakerConfigOverloadRestriction
+#       syntax: EnumInteger
+#     pduCircuitBreakerConfigLowerCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.5
+#       name: apc.pduCircuitBreakerConfigLowerCriticalThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduCircuitBreakerConfigLowerWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.6
+#       name: apc.pduCircuitBreakerConfigLowerWarningThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduCircuitBreakerConfigUpperCriticalThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.7
+#       name: apc.pduCircuitBreakerConfigUpperCriticalThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduCircuitBreakerConfigUpperWarningThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.8
+#       name: apc.pduCircuitBreakerConfigUpperWarningThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduCircuitBreakerConfigAlarmResetThreshold:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.9
+#       name: apc.pduCircuitBreakerConfigAlarmResetThreshold
+#       syntax: CurrentCentiAmp
+#       metric: gauge
+#     pduCircuitBreakerConfigAlarmStateChangeDelay:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.10
+#       name: apc.pduCircuitBreakerConfigAlarmStateChangeDelay
+#       syntax: Unsigned32
+#       metric: gauge
+#     pduCircuitBreakerConfigEnabledThresholds:
+#       oid: .1.3.6.1.4.1.318.1.1.32.4.2.1.11
+#       name: apc.pduCircuitBreakerConfigEnabledThresholds
+#       syntax: EnumBitmap
 
 CPDU-MIB::pduCircuitBreakerPropertiesEntry:
   mib: CPDU-MIB
   object: pduCircuitBreakerPropertiesEntry
+  type: active
   augments: CPDU-MIB::pduCircuitBreakerStatusEntry
   discovery_attribute: pduCircuitBreakerPropertiesCount
   attributes:
@@ -581,6 +592,7 @@ CPDU-MIB::pduCircuitBreakerPropertiesEntry:
 CPDU-MIB::pduCircuitBreakerStatusEntry:
   mib: CPDU-MIB
   object: pduCircuitBreakerStatusEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -614,6 +626,7 @@ CPDU-MIB::pduCircuitBreakerStatusEntry:
 CPDU-MIB::pduOutletSwitchedConfigEntry:
   mib: CPDU-MIB
   object: pduOutletSwitchedConfigEntry
+  type: stable
   augments: CPDU-MIB::pduOutletSwitchedStatusEntry
   discovery_attribute: pduOutletSwitchedName
   attributes:
@@ -644,6 +657,7 @@ CPDU-MIB::pduOutletSwitchedConfigEntry:
 CPDU-MIB::pduOutletSwitchedPropertiesEntry:
   mib: CPDU-MIB
   object: pduOutletSwitchedPropertiesEntry
+  type: stable
   augments: CPDU-MIB::pduOutletSwitchedStatusEntry
   discovery_attribute: pduOutletSwitchedPropertiesNumber
   attributes:
@@ -672,6 +686,7 @@ CPDU-MIB::pduOutletSwitchedPropertiesEntry:
 CPDU-MIB::pduOutletSwitchedStatusEntry:
   mib: CPDU-MIB
   object: pduOutletSwitchedStatusEntry
+  type: stable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -696,28 +711,30 @@ CPDU-MIB::pduOutletSwitchedStatusEntry:
       name: apc.pduOutletSwitchedStatusState
       syntax: EnumInteger
 
-CPDU-MIB::pduOutletSwitchedControlEntry:
-  mib: CPDU-MIB
-  object: pduOutletSwitchedControlEntry
-  augments: CPDU-MIB::pduOutletSwitchedStatusEntry
-  discovery_attribute: pduOutletSwitchedControlNumber
-  attributes:
-    pduOutletSwitchedControlNumber:
-      oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.2
-      name: apc.pduOutletSwitchedControlNumber
-      syntax: IntegerAsID
-    pduOutletSwitchedControlName:
-      oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.3
-      name: apc.pduOutletSwitchedControlName
-      syntax: DisplayString
-    pduOutletSwitchedControlCommand:
-      oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.4
-      name: apc.pduOutletSwitchedControlCommand
-      syntax: EnumInteger
+# CPDU-MIB::pduOutletSwitchedControlEntry:
+#   mib: CPDU-MIB
+#   object: pduOutletSwitchedControlEntry
+#   type: dynamic
+#   augments: CPDU-MIB::pduOutletSwitchedStatusEntry
+#   discovery_attribute: pduOutletSwitchedControlNumber
+#   attributes:
+#     pduOutletSwitchedControlNumber:
+#       oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.2
+#       name: apc.pduOutletSwitchedControlNumber
+#       syntax: IntegerAsID
+#     pduOutletSwitchedControlName:
+#       oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.3
+#       name: apc.pduOutletSwitchedControlName
+#       syntax: DisplayString
+#     pduOutletSwitchedControlCommand:
+#       oid: .1.3.6.1.4.1.318.1.1.32.5.5.1.4
+#       name: apc.pduOutletSwitchedControlCommand
+#       syntax: EnumInteger
 
 CPDU-MIB::pduOutletMeteredConfigEntry:
   mib: CPDU-MIB
   object: pduOutletMeteredConfigEntry
+  type: active
   augments: CPDU-MIB::pduOutletMeteredStatusEntry
   discovery_attribute: pduOutletMeteredName
   attributes:
@@ -763,6 +780,7 @@ CPDU-MIB::pduOutletMeteredConfigEntry:
 CPDU-MIB::pduOutletMeteredPropertiesEntry:
   mib: CPDU-MIB
   object: pduOutletMeteredPropertiesEntry
+  type: active
   augments: CPDU-MIB::pduOutletMeteredStatusEntry
   discovery_attribute: pduOutletMeteredPropertiesNumber
   attributes:
@@ -796,6 +814,7 @@ CPDU-MIB::pduOutletMeteredPropertiesEntry:
 CPDU-MIB::pduOutletMeteredStatusEntry:
   mib: CPDU-MIB
   object: pduOutletMeteredStatusEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -856,6 +875,7 @@ CPDU-MIB::pduOutletMeteredStatusEntry:
 CPDU-MIB::pduExternalSensorNamePlateEntry:
   mib: CPDU-MIB
   object: pduExternalSensorNamePlateEntry
+  type: active
   augments: CPDU-MIB::pduExternalSensorStatusEntry
   discovery_attribute: pduExternalSensorNamePlateName
   attributes:
@@ -891,6 +911,7 @@ CPDU-MIB::pduExternalSensorNamePlateEntry:
 CPDU-MIB::pduExternalSensorConfigEntry:
   mib: CPDU-MIB
   object: pduExternalSensorConfigEntry
+  type: active
   augments: CPDU-MIB::pduExternalSensorStatusEntry
   discovery_attribute: pduExternalSensorConfigLowerCriticalThreshold
   attributes:
@@ -926,6 +947,7 @@ CPDU-MIB::pduExternalSensorConfigEntry:
 CPDU-MIB::pduExternalSensorStatusEntry:
   mib: CPDU-MIB
   object: pduExternalSensorStatusEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.2.4.1.1
@@ -967,6 +989,7 @@ CPDU-MIB::pduExternalSensorStatusEntry:
 CPDU-MIB::pduUnitSmartCabinetEntry:
   mib: CPDU-MIB
   object: pduUnitSmartCabinetEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.7.2.1.1
@@ -994,6 +1017,7 @@ CPDU-MIB::pduUnitSmartCabinetEntry:
 CPDU-MIB::pduUnitSmartCabinetControl:
   mib: CPDU-MIB
   object: pduUnitSmartCabinetControl
+  type: active
   discovery_attribute: pduUnitSmartCabinetControlUserName
   attributes:
     pduUnitSmartCabinetControlUserName:
@@ -1028,6 +1052,7 @@ CPDU-MIB::pduUnitSmartCabinetControl:
 CPDU-MIB::pduUnitSmartCabinetLockStateEntry:
   mib: CPDU-MIB
   object: pduUnitSmartCabinetLockStateEntry
+  type: active
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.7.4.1.1
@@ -1055,6 +1080,7 @@ CPDU-MIB::pduUnitSmartCabinetLockStateEntry:
 CPDU-MIB::pduEhandleEntry:
   mib: CPDU-MIB
   object: pduEhandleEntry
+  type: immutable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.9.1.1.1
@@ -1118,6 +1144,7 @@ CPDU-MIB::pduEhandleEntry:
 CPDU-MIB::pduEhandleControlEntry:
   mib: CPDU-MIB
   object: pduEhandleControlEntry
+  type: immutable
   index:
     - type: Integer32
       oid: .1.3.6.1.4.1.318.1.1.32.9.2.1.1

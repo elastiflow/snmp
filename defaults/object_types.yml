@@ -1,15 +1,27 @@
-configuration: {
-  poll_interval: 86400 # 24 hours
-}
+# SNMP Polling Types
+# These type values define the polling frequency based on the expected volatility of the underlying SNMP data. Assign
+# the appropriate value to the `type` parameter of SNMP object definitions to balance data resolution with device/poller
+# performance.
 
-telemetry: {
-  poll_interval: 60 # 1 minute
-}
+# Highly volatile metrics and critical operational states.  Use for data requiring near high granularity or immediate
+# alerting.
+# Examples: ifInOctets/ifOutOctets (traffic counters), CPU utilization, BGP peer states.
+dynamic:
+  poll_interval: 60
 
-status: {
-  poll_interval: 300 # 5 minutes
-}
+# Routine metrics that fluctuate regularly but do not require high granularity tracking.
+# Examples: Environmental sensors (temperature/fans), connection counts, active processes.
+active:
+  poll_interval: 300
 
-performance: {
-  poll_interval: 120 # 2 minutes
-}
+# Slow-moving data and logical topology states that change infrequently. Use for heavy tables that are too expensive to
+# poll frequently, but change often enough to need regular tracking.
+# Examples: LLDP neighbor tables and ARP caches (ipNetToMediaTable).
+stable:
+  poll_interval: 3600
+
+# Static inventory and administrative metadata that rarely, if ever, changes. Use for physical hardware tracking and
+# system-level settings.
+# Examples: entPhysicalTable (serial numbers, hardware models), firmware versions.
+immutable:
+  poll_interval: 86400
