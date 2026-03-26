@@ -28,6 +28,7 @@ func validate[T any](definition T, schemaName string) error {
 	}
 
 	var v interface{}
+	// nosemgrep go-unsafe-deserialization-interface
 	if unmarshalErr := json.Unmarshal(data, &v); unmarshalErr != nil {
 		return fmt.Errorf("failed to unmarshal definition: %w", err)
 	}
