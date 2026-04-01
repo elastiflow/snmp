@@ -21,7 +21,7 @@ jobs:
       valid_tag: ${{ steps.set_standard_vars.outputs.valid_tag }}
       rc: ${{ steps.set_standard_vars.outputs.rc }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: set outputs with default values
         id: set_standard_vars
         run: |
@@ -64,7 +64,7 @@ jobs:
     steps:
     - name: Generate SBOM and submit results to Github Dependency Graph
       if: ${{ !fromJSON(needs.set_standard_vars.outputs.rc) }}
-      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2
+      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2 # v0.21.0
       with:
         scan-type: 'fs'
         image-ref: '.'
@@ -75,7 +75,7 @@ jobs:
         output: 'dependency-results.sbom.json'
         github-pat: ${{ secrets.GITHUB_TOKEN }}
     - name: Scan Licenses
-      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2
+      uses: aquasecurity/trivy-action@fd25fed6972e341ff0007ddb61f77e88103953c2 # v0.21.0
       with:
         image-ref: ''
         scan-type: rootfs
