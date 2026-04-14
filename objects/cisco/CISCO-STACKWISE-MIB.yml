@@ -1,0 +1,261 @@
+CISCO-STACKWISE-MIB::cswGlobals:
+  mib: CISCO-STACKWISE-MIB
+  object: cswGlobals
+  type: stable
+  discovery_attribute: cswMaxSwitchNum
+  attributes:
+    cswMaxSwitchNum:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.1
+      name: cisco.csw.MaxSwitchNum
+      syntax: Unsigned32
+    cswMaxSwitchConfigPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.2
+      name: cisco.csw.MaxSwitchConfigPriority
+      syntax: Unsigned32
+    cswRingRedundant:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.3
+      name: cisco.csw.RingRedundant
+      syntax: TruthValue
+    cswEnableStackNotifications:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.4
+      name: cisco.csw.EnableStackNotifications
+      syntax: TruthValue
+    # cswEnableIndividualStackNotifications:
+    #   oid: .1.3.6.1.4.1.9.9.500.1.1.5
+    #   name: cisco.csw.EnableIndividualStackNotifications
+    #   syntax: EnumBitmap
+    cswStackDomainNum:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.6
+      name: cisco.csw.Stack.DomainNum
+      syntax: UnsignedAsID
+    cswStackType:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.7
+      name: cisco.csw.Stack.Type
+      syntax: Unsigned32
+    cswStackBandWidth:
+      oid: .1.3.6.1.4.1.9.9.500.1.1.8
+      name: cisco.csw.Stack.BandWidth
+      syntax: Unsigned32
+
+CISCO-STACKWISE-MIB::cswSwitchInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswSwitchInfoEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+  discovery_attribute: cswSwitchNumNextReload
+  attributes:
+    cswSwitchNumCurrent:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.1
+      name: cisco.csw.Switch.NumCurrent
+      syntax: UnsignedAsID
+    cswSwitchNumNextReload:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.2
+      name: cisco.csw.Switch.NumNextReload
+      syntax: UnsignedAsID
+    cswSwitchRole:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.3
+      name: cisco.csw.Switch.Role
+      syntax: EnumInteger
+    cswSwitchSwPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.4
+      name: cisco.csw.Switch.SwPriority
+      syntax: Unsigned32
+    cswSwitchHwPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.5
+      name: cisco.csw.Switch.HwPriority
+      syntax: Unsigned32
+    cswSwitchState:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.6
+      name: cisco.csw.Switch.State
+      syntax: EnumInteger
+    cswSwitchMacAddress:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.7
+      name: cisco.csw.Switch.MacAddress
+      syntax: MacAddressNoSuffix
+    cswSwitchSoftwareImage:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.8
+      name: cisco.csw.Switch.SoftwareImage
+      syntax: DisplayString
+    cswSwitchPowerBudget:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.9
+      name: cisco.csw.Switch.PowerBudget
+      syntax: PowerWatt
+      metric: gauge
+    cswSwitchPowerCommited:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.10
+      name: cisco.csw.Switch.PowerCommited
+      syntax: PowerWatt
+      metric: gauge
+    cswSwitchSystemPowerPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.11
+      name: cisco.csw.Switch.SystemPowerPriority
+      syntax: Unsigned32
+    cswSwitchPoeDevicesLowPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.12
+      name: cisco.csw.Switch.PoeDevicesLowPriority
+      syntax: Unsigned32
+    cswSwitchPoeDevicesHighPriority:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.13
+      name: cisco.csw.Switch.PoeDevicesHighPriority
+      syntax: Unsigned32
+    cswSwitchPowerAllocated:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.1.1.14
+      name: cisco.csw.Switch.PowerAllocated
+      syntax: PowerWatt
+      metric: gauge
+
+CISCO-STACKWISE-MIB::cswStackPortInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswStackPortInfoEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: cswStackPortNeighbor
+  attributes:
+    cswStackPortOperStatus:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.2.1.1
+      name: cisco.csw.StackPort.OperStatus
+      syntax: EnumInteger
+    cswStackPortNeighbor:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.2.1.2
+      name: cisco.csw.StackPort.Neighbor
+      syntax: IntegerAsID
+
+CISCO-STACKWISE-MIB::cswDistrStackLinkInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswDistrStackLinkInfoEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.500.1.2.3.1.1
+      name: cisco.csw.DistrStackLink.Index
+      syntax: UnsignedAsID
+  discovery_attribute: cswDistrStackLinkBundleOperStatus
+  attributes:
+    cswDistrStackLinkBundleOperStatus:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.3.1.2
+      name: cisco.csw.DistrStackLink.BundleOperStatus
+      syntax: EnumInteger
+
+CISCO-STACKWISE-MIB::cswDistrStackPhyPortInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswDistrStackPhyPortInfoEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.500.1.2.3.1.1
+      name: cisco.csw.DistrStackLink.Index
+      syntax: UnsignedAsID
+    - type: Integer32
+      oid: .1.3.6.1.2.1.2.2.1.1
+      name: netif # ifIndex
+      syntax: InterfaceIndex
+  discovery_attribute: cswDistrStackPhyPortOperStatus
+  attributes:
+    cswDistrStackPhyPort:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.4.1.1
+      name: cisco.csw.DistrStackPhyPort.Name
+      syntax: DisplayString
+    cswDistrStackPhyPortOperStatus:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.4.1.2
+      name: cisco.csw.DistrStackPhyPort.OperStatus
+      syntax: EnumInteger
+    cswDistrStackPhyPortNbr:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.4.1.3
+      name: cisco.csw.DistrStackPhyPort.Nbr
+      syntax: DisplayString
+    cswDistrStackPhyPortNbrsw:
+      oid: .1.3.6.1.4.1.9.9.500.1.2.4.1.4
+      name: cisco.csw.DistrStackPhyPort.Nbrsw
+      syntax: IntegerAsID
+
+CISCO-STACKWISE-MIB::cswStackPowerInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswStackPowerInfoEntry
+  type: active
+  index:
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.1
+      name: cisco.csw.StackPower.StackNumber
+      syntax: UnsignedAsID
+  discovery_attribute: cswStackPowerMode
+  attributes:
+    cswStackPowerMode:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.2
+      name: cisco.csw.StackPower.Mode
+      syntax: EnumInteger
+    cswStackPowerMasterMacAddress:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.3
+      name: cisco.csw.StackPower.MasterMacAddress
+      syntax: MacAddressNoSuffix
+    cswStackPowerMasterSwitchNum:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.4
+      name: cisco.csw.StackPower.MasterSwitchNum
+      syntax: UnsignedAsID
+    cswStackPowerNumMembers:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.5
+      name: cisco.csw.StackPower.NumMembers
+      syntax: Unsigned32
+    cswStackPowerType:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.6
+      name: cisco.csw.StackPower.Type
+      syntax: EnumInteger
+    cswStackPowerName:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.1.1.7
+      name: cisco.csw.StackPower.Name
+      syntax: DisplayString
+
+CISCO-STACKWISE-MIB::cswStackPowerPortInfoEntry:
+  mib: CISCO-STACKWISE-MIB
+  object: cswStackPowerPortInfoEntry
+  type: active
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.2.1.47.1.1.1.1.1
+      name: entity.phys.index # entPhysicalIndex
+      syntax: IntegerAsID
+    - type: Unsigned32
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.1
+      name: cisco.csw.StackPowerPort.Index
+      syntax: UnsignedAsID
+  discovery_attribute: cswStackPowerPortOperStatus
+  attributes:
+    cswStackPowerPortOperStatus:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.2
+      name: cisco.csw.StackPowerPort.OperStatus
+      syntax: EnumInteger
+    cswStackPowerPortNeighborMacAddress:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.3
+      name: cisco.csw.StackPowerPort.NeighborMacAddress
+      syntax: MacAddressNoSuffix
+    cswStackPowerPortNeighborSwitchNum:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.4
+      name: cisco.csw.StackPowerPort.NeighborSwitchNum
+      syntax: UnsignedAsID
+    cswStackPowerPortLinkStatus:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.5
+      name: cisco.csw.StackPowerPort.LinkStatus
+      syntax: EnumInteger
+    cswStackPowerPortOverCurrentThreshold:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.6
+      name: cisco.csw.StackPowerPort.OverCurrentThreshold
+      syntax: CurrentAmp
+    cswStackPowerPortName:
+      oid: .1.3.6.1.4.1.9.9.500.1.3.2.1.7
+      name: cisco.csw.StackPowerPort.Name
+      syntax: DisplayString
