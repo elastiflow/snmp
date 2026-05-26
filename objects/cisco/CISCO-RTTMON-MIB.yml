@@ -1,0 +1,611 @@
+CISCO-RTTMON-MIB::rttMonAppl:
+  mib: CISCO-RTTMON-MIB
+  object: rttMonAppl
+  type: immutable
+  discovery_attribute: rttMonApplVersion
+  attributes:
+    rttMonApplVersion:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.1
+      name: cisco.rttmon.appl.version
+      syntax: DisplayString
+    rttMonApplMaxPacketDataSize:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.2
+      name: cisco.rttmon.appl.max_packet_data_size
+      syntax: BytesB
+      metric: gauge
+    rttMonApplNumCtrlAdminEntry:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.4
+      name: cisco.rttmon.appl.num_ctrl_admin_entry
+      syntax: Integer32
+      metric: gauge
+    rttMonApplProbeCapacity:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.10
+      name: cisco.rttmon.appl.probe_capacity
+      syntax: Integer32
+      metric: gauge
+    rttMonApplFreeMemLowWaterMark:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.11
+      name: cisco.rttmon.appl.free_mem_low_waterMark
+      syntax: BytesB
+      metric: gauge
+    rttMonApplResponder:
+      oid: .1.3.6.1.4.1.9.9.42.1.1.13
+      name: cisco.rttmon.appl.responder
+      syntax: TruthValue
+
+CISCO-RTTMON-MIB::rttMonLatestHTTPOperEntry:
+  mib: CISCO-RTTMON-MIB
+  object: rttMonLatestHTTPOperEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.1
+      name: cisco.rttmon.ctrl.index
+      syntax: IntegerAsID
+  discovery_attribute: rttMonLatestHTTPOperDNSRTT
+  attributes:
+    rttMonLatestHTTPOperRTT:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.1
+      name: cisco.rttmon.http.rtt
+      syntax: TicksMilliSec
+      metric: gauge
+    rttMonLatestHTTPOperDNSRTT:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.2
+      name: cisco.rttmon.http.dns_rtt
+      syntax: TicksMilliSec
+      metric: gauge
+    rttMonLatestHTTPOperTCPConnectRTT:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.3
+      name: cisco.rttmon.http.tcp_connect_rtt
+      syntax: TicksMilliSec
+      metric: gauge
+    rttMonLatestHTTPOperTransactionRTT:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.4
+      name: cisco.rttmon.http.transaction_rtt
+      syntax: TicksMilliSec
+      metric: gauge
+    rttMonLatestHTTPOperMessageBodyOctets:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.5
+      name: cisco.rttmon.http.message_body_octets
+      syntax: BytesB
+      metric: gauge
+    rttMonLatestHTTPOperSense:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.6
+      name: cisco.rttmon.http.sense
+      syntax: EnumInteger
+    rttMonLatestHTTPErrorSenseDescription:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.1.1.7
+      name: cisco.rttmon.http.error_sense_description
+      syntax: DisplayString
+
+    # from rttMonCtrlAdminEntry
+    rttMonCtrlAdminOwner:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.2
+      name: cisco.rttmon.ctrl.owner
+      syntax: DisplayString
+    rttMonCtrlAdminRttType:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.4
+      name: cisco.rttmon.ctrl.rtt_type
+      syntax: EnumInteger
+    rttMonCtrlAdminGroupName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.11
+      name: cisco.rttmon.ctrl.group.name
+      syntax: DisplayString
+
+    # from rttMonEchoAdminEntry
+    rttMonEchoAdminProtocol:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.1
+      # WARNING: Do NOT rename this field. It is used by the internal logic of the collector to decode attributes of
+      # type CiscoRttMonTargetAddress.
+      name: cisco.rttmon.echo.protocol
+      syntax: EnumIntegerKeepID
+    rttMonEchoAdminTargetAddress:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.2
+      name: cisco.rttmon.echo.target_address
+      syntax: CiscoRttMonTargetAddress
+    rttMonEchoAdminSourceAddress:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.6
+      name: cisco.rttmon.echo.source_address
+      syntax: CiscoRttMonTargetAddress
+    rttMonEchoAdminSourcePort:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.7
+      name: cisco.rttmon.echo.source_port
+      syntax: IntegerAsIDNotZero
+    rttMonEchoAdminTOS:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.9
+      name: cisco.rttmon.echo.tos
+      syntax: Integer32
+      metric: gauge
+    rttMonEchoAdminOperation:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.13
+      name: cisco.rttmon.echo.operation
+      syntax: EnumInteger
+    rttMonEchoAdminHTTPVersion:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.14
+      name: cisco.rttmon.echo.http.version
+      syntax: DisplayString
+    rttMonEchoAdminURL:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.15
+      name: cisco.rttmon.echo.http.url
+      syntax: DisplayString
+    rttMonEchoAdminCache:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.16
+      name: cisco.rttmon.echo.http.cache
+      syntax: TruthValue
+    rttMonEchoAdminProxy:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.19
+      name: cisco.rttmon.echo.http.proxy
+      syntax: DisplayString
+    # rttMonEchoAdminString1:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.20
+    #   name: cisco.rttmon.echo.string1
+    #   syntax: DisplayString
+    # rttMonEchoAdminString2:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.21
+    #   name: cisco.rttmon.echo.string2
+    #   syntax: DisplayString
+    # rttMonEchoAdminString3:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.22
+    #   name: cisco.rttmon.echo.string3
+    #   syntax: DisplayString
+    # rttMonEchoAdminString4:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.23
+    #   name: cisco.rttmon.echo.string4
+    #   syntax: DisplayString
+    # rttMonEchoAdminString5:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.24
+    #   name: cisco.rttmon.echo.string5
+    #   syntax: DisplayString
+    rttMonEchoAdminVrfName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.26
+      name: cisco.rttmon.echo.vrf.name
+      syntax: DisplayString
+    rttMonEchoAdminDscp:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.57
+      name: cisco.rttmon.echo.dscp
+      syntax: Integer32
+    rttMonEchoAdminReserveDsp:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.58
+      name: cisco.rttmon.echo.reserve_dsp
+      syntax: EnumIntegerNotZero
+    rttMonEchoAdminInputInterface:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.59
+      name: cisco.rttmon.echo.input_interface
+      syntax: InterfaceIndexNotZero
+    rttMonEchoAdminEndPointListName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.67
+      name: cisco.rttmon.echo.endpoint_list_name
+      syntax: DisplayString
+    rttMonEchoAdminOutputInterface:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.79
+      name: cisco.rttmon.echo.output_interface
+      syntax: InterfaceIndexNotZero
+
+CISCO-RTTMON-MIB::rttMonLatestJitterOperEntry:
+  mib: CISCO-RTTMON-MIB
+  object: rttMonLatestJitterOperEntry
+  index:
+    - type: Integer32
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.1
+      name: cisco.rttmon.ctrl.index
+      syntax: IntegerAsID
+  discovery_attribute: rttMonLatestJitterOperRTTMin
+  attributes:
+    # rttMonLatestJitterOperNumOfRTT:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.1
+    #   name: cisco.rttmon.jitter.num_of_rtt
+    #   syntax: Gauge32
+    #   metric: gauge
+    # rttMonLatestJitterOperRTTSum:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.2
+    #   name: cisco.rttmon.jitter.rtt_sum
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperRTTSum2:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.3
+    #   name: cisco.rttmon.jitter.rtt_sum2
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    rttMonLatestJitterOperRTTMin:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.4
+      name: cisco.rttmon.jitter.rtt_min
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    rttMonLatestJitterOperRTTMax:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.5
+      name: cisco.rttmon.jitter.rtt_max
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    # rttMonLatestJitterOperMinOfPositivesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.6
+    #   name: cisco.rttmon.jitter.min_positives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMaxOfPositivesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.7
+    #   name: cisco.rttmon.jitter.max_positives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperNumOfPositivesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.8
+    #   name: cisco.rttmon.jitter.num_positives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSumOfPositivesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.9
+    #   name: cisco.rttmon.jitter.sum_positives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSum2PositivesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.10
+    #   name: cisco.rttmon.jitter.sum2_positives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMinOfNegativesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.11
+    #   name: cisco.rttmon.jitter.min_negatives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMaxOfNegativesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.12
+    #   name: cisco.rttmon.jitter.max_negatives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperNumOfNegativesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.13
+    #   name: cisco.rttmon.jitter.num_negatives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSumOfNegativesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.14
+    #   name: cisco.rttmon.jitter.sum_negatives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSum2NegativesSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.15
+    #   name: cisco.rttmon.jitter.sum2_negatives_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMinOfPositivesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.16
+    #   name: cisco.rttmon.jitter.min_positives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMaxOfPositivesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.17
+    #   name: cisco.rttmon.jitter.max_positives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperNumOfPositivesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.18
+    #   name: cisco.rttmon.jitter.num_positives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSumOfPositivesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.19
+    #   name: cisco.rttmon.jitter.sum_positives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSum2PositivesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.20
+    #   name: cisco.rttmon.jitter.sum2_positives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMinOfNegativesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.21
+    #   name: cisco.rttmon.jitter.min_negatives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperMaxOfNegativesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.22
+    #   name: cisco.rttmon.jitter.max_negatives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperNumOfNegativesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.23
+    #   name: cisco.rttmon.jitter.num_negatives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSumOfNegativesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.24
+    #   name: cisco.rttmon.jitter.sum_negatives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperSum2NegativesDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.25
+    #   name: cisco.rttmon.jitter.sum2_negatives_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperPacketLossSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.26
+    #   name: cisco.rttmon.jitter.packet_loss_sd
+    #   syntax: Gauge32
+    #   metric: gauge
+    # rttMonLatestJitterOperPacketLossDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.27
+    #   name: cisco.rttmon.jitter.packet_loss_ds
+    #   syntax: Gauge32
+    #   metric: gauge
+    rttMonLatestJitterOperPacketOutOfSequence:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.28
+      name: cisco.rttmon.jitter.packets_out_of_sequence
+      syntax: Gauge32
+      metric: gauge
+    rttMonLatestJitterOperPacketMIA:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.29
+      name: cisco.rttmon.jitter.packets_mia
+      syntax: Gauge32
+      metric: gauge
+    rttMonLatestJitterOperPacketLateArrival:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.30
+      name: cisco.rttmon.jitter.packets_late_arrival
+      syntax: Gauge32
+      metric: gauge
+    rttMonLatestJitterOperSense:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.31
+      name: cisco.rttmon.jitter.sense
+      syntax: EnumInteger
+    rttMonLatestJitterErrorSenseDescription:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.32
+      name: cisco.rttmon.jitter.error_sense_description
+      syntax: DisplayString
+    # rttMonLatestJitterOperOWSumSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.33
+    #   name: cisco.rttmon.jitter.oneway_sum_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSum2SD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.34
+    #   name: cisco.rttmon.jitter.oneway_sum2_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWMinSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.35
+    #   name: cisco.rttmon.jitter.oneway_min_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperOWMaxSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.36
+    #   name: cisco.rttmon.jitter.oneway_max_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSumDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.37
+    #   name: cisco.rttmon.jitter.oneway_sum_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSum2DS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.38
+    #   name: cisco.rttmon.jitter.oneway_sum2_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWMinDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.39
+    #   name: cisco.rttmon.jitter.oneway_min_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperOWMaxDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.40
+    #   name: cisco.rttmon.jitter.oneway_max_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperNumOfOW:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.41
+    #   name: cisco.rttmon.jitter.num_oneway
+    #   syntax: Gauge32
+    #   metric: gauge
+    rttMonLatestJitterOperMOS:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.42
+      name: cisco.rttmon.jitter.mos
+      syntax: Gauge32NotZero
+      metric: gauge
+    rttMonLatestJitterOperICPIF:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.43
+      name: cisco.rttmon.jitter.icpif
+      syntax: Gauge32NotZero
+      metric: gauge
+    rttMonLatestJitterOperIAJOut:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.44
+      name: cisco.rttmon.jitter.iaj.out
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    rttMonLatestJitterOperIAJIn:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.45
+      name: cisco.rttmon.jitter.iaj.in
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    rttMonLatestJitterOperAvgJitter:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.46
+      name: cisco.rttmon.jitter.avg
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    rttMonLatestJitterOperAvgSDJ:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.47
+      name: cisco.rttmon.jitter.avg_sd
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    rttMonLatestJitterOperAvgDSJ:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.48
+      name: cisco.rttmon.jitter.avg_ds
+      syntax: CiscoTicksRttMonEchoAdminPrecision
+      metric: gauge
+    # rttMonLatestJitterOperOWAvgSD:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.49
+    #   name: cisco.rttmon.jitter.oneway_avg_sd
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    # rttMonLatestJitterOperOWAvgDS:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.50
+    #   name: cisco.rttmon.jitter.oneway_avg_ds
+    #   syntax: CiscoTicksRttMonEchoAdminPrecision
+    #   metric: gauge
+    rttMonLatestJitterOperNTPState:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.51
+      name: cisco.rttmon.jitter.ntp_state
+      syntax: EnumIntegerNotZero
+    rttMonLatestJitterOperUnSyncRTs:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.52
+      name: cisco.rttmon.jitter.unsync_rts
+      syntax: Counter32
+      metric: counter
+    # rttMonLatestJitterOperRTTSumHigh:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.53
+    #   name: cisco.rttmon.jitter.rtt_sum_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperRTTSum2High:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.54
+    #   name: cisco.rttmon.jitter.rtt_sum2_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSumSDHigh:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.55
+    #   name: cisco.rttmon.jitter.oneway_sum_sd_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSum2SDHigh:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.56
+    #   name: cisco.rttmon.jitter.oneway_sum2_sd_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSumDSHigh:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.57
+    #   name: cisco.rttmon.jitter.oneway_sum_ds_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    # rttMonLatestJitterOperOWSum2DSHigh:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.58
+    #   name: cisco.rttmon.jitter.oneway_sum2_ds_high
+    #   syntax: CiscoTicksRttMonEchoAdminPrecisionWithHigh
+    #   metric: gauge
+    rttMonLatestJitterOperNumOverThresh:
+      oid: .1.3.6.1.4.1.9.9.42.1.5.2.1.59
+      name: cisco.rttmon.jitter.num_over_thresh
+      syntax: Gauge32
+      metric: gauge
+
+    # from rttMonCtrlAdminEntry
+    rttMonCtrlAdminOwner:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.2
+      name: cisco.rttmon.ctrl.owner
+      syntax: DisplayString
+    rttMonCtrlAdminRttType:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.4
+      name: cisco.rttmon.ctrl.rtt_type
+      syntax: EnumInteger
+    rttMonCtrlAdminGroupName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.1.1.11
+      name: cisco.rttmon.ctrl.group.name
+      syntax: DisplayString
+
+    # from rttMonEchoAdminEntry
+    rttMonEchoAdminProtocol:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.1
+      # WARNING: Do NOT rename this field. It is used by the internal logic of the collector to decode attributes of
+      # type CiscoRttMonTargetAddress.
+      name: cisco.rttmon.echo.protocol
+      syntax: EnumIntegerKeepID
+    rttMonEchoAdminTargetAddress:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.2
+      name: cisco.rttmon.echo.target_address
+      syntax: CiscoRttMonTargetAddress
+    rttMonEchoAdminTargetPort:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.5
+      name: cisco.rttmon.echo.target_port
+      syntax: IntegerAsIDNotZero
+    rttMonEchoAdminSourceAddress:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.6
+      name: cisco.rttmon.echo.source_address
+      syntax: CiscoRttMonTargetAddress
+    rttMonEchoAdminSourcePort:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.7
+      name: cisco.rttmon.echo.source_port
+      syntax: IntegerAsIDNotZero
+    rttMonEchoAdminTOS:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.9
+      name: cisco.rttmon.echo.tos
+      syntax: Integer32
+      metric: gauge
+    # rttMonEchoAdminInterval:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.17
+    #   name: cisco.rttmon.echo.jitter.interval
+    #   syntax: TicksMilliSecNotZero
+    rttMonEchoAdminNumPackets:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.18
+      name: cisco.rttmon.echo.jitter.num_packets
+      syntax: Integer32NotZero
+      metric: gauge
+    rttMonEchoAdminVrfName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.26
+      name: cisco.rttmon.echo.vrf.name
+      syntax: DisplayString
+    rttMonEchoAdminCodecType:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.27
+      name: cisco.rttmon.echo.jitter.codec.type
+      syntax: EnumIntegerNotZero
+    rttMonEchoAdminCodecInterval:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.28
+      name: cisco.rttmon.echo.jitter.codec.interval
+      syntax: TicksMilliSecNotZero
+    rttMonEchoAdminCodecPayload:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.29
+      name: cisco.rttmon.echo.jitter.codec.payload
+      syntax: BytesBNotZero
+      metric: gauge
+    rttMonEchoAdminCodecNumPackets:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.30
+      name: cisco.rttmon.echo.jitter.codec.num_packets
+      syntax: Integer32NotZero
+      metric: gauge
+    rttMonEchoAdminICPIFAdvFactor:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.31
+      name: cisco.rttmon.echo.jitter.icpif_adv_factor
+      syntax: Integer32NotZero
+      metric: gauge
+    rttMonEchoAdminPrecision:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.37
+      # WARNING: Do NOT rename this field. It is used by the internal logic of the collector to decode attributes of
+      # type CiscoTicksRttMonEchoAdminPrecision and CiscoTicksRttMonEchoAdminPrecisionWithHigh.
+      name: cisco.rttmon.echo.jitter.precision
+      syntax: EnumIntegerKeepIDNotZero
+    rttMonEchoAdminProbePakPriority:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.38
+      name: cisco.rttmon.echo.jitter.probe_pak_priority
+      syntax: EnumIntegerNotZero
+    rttMonEchoAdminOWNTPSyncTolAbs:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.39
+      name: cisco.rttmon.echo.jitter.oneway_ntp_sync.tolerance_abs
+      syntax: Integer32NotZero
+      metric: gauge
+    rttMonEchoAdminOWNTPSyncTolPct:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.40
+      name: cisco.rttmon.echo.jitter.oneway_ntp_sync.tolerance_pct
+      syntax: Integer32NotZero
+      metric: gauge
+    rttMonEchoAdminOWNTPSyncTolType:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.41
+      name: cisco.rttmon.echo.jitter.oneway_ntp_sync.tolerance_type
+      syntax: EnumIntegerNotZero
+    rttMonEchoAdminDscp:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.57
+      name: cisco.rttmon.echo.dscp
+      syntax: Integer32
+    rttMonEchoAdminReserveDsp:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.58
+      name: cisco.rttmon.echo.reserve_dsp
+      syntax: EnumIntegerNotZero
+    rttMonEchoAdminInputInterface:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.59
+      name: cisco.rttmon.echo.input_interface
+      syntax: InterfaceIndexNotZero
+    rttMonEchoAdminEndPointListName:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.67
+      name: cisco.rttmon.echo.endpoint_list_name
+      syntax: DisplayString
+    # rttMonEchoAdminTstampOptimization:
+    #   oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.76
+    #   name: cisco.rttmon.echo.jitter.tstamp_optimization
+    #   syntax: TruthValueNotZero
+    rttMonEchoAdminOutputInterface:
+      oid: .1.3.6.1.4.1.9.9.42.1.2.2.1.79
+      name: cisco.rttmon.echo.output_interface
+      syntax: InterfaceIndexNotZero
