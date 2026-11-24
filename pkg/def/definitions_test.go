@@ -104,6 +104,63 @@ func TestDefinitions_Validate(t *testing.T) {
 			},
 			wantErr: "object \"system\" references an undefined object type: \"object_type\"",
 		},
+		{
+			name: "overridden object not in device group",
+			definitions: Definitions{
+				Devices:      map[string]*Device{"device1": device1, "device2": device2},
+				DeviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+				ObjectGroups: map[string]ObjectGroup{"og": {Objects: []string{"object1"}}},
+				Objects: map[string]Object{
+					"object1": {
+						Mib: "IF-MIB",
+						ObjectName: "system",
+						Attributes: map[string]ObjectAttribute{
+							"ifNumber": {
+								Name: "ifNumber",
+								Overrides: ObjectAttributeOverride{
+									Object: "ifEntry",
+									Attribute: "ifIndex",
+								},
+							},
+						},
+					},
+				},
+				ObjectTypes: map[string]ObjectType{
+					"configuration": {PollInterval: 60},
+					"performance":   {PollInterval: 300},
+				},
+			},
+			wantErr: "device group \"dg\" object \"object1\" attribute \"ifNumber\" overrides object \"ifEntry\", which is not included in the device group",
+		},
+		{
+			name: "overridden attribute does not exist",
+			definitions: Definitions{
+				Devices:      map[string]*Device{"device1": device1, "device2": device2},
+				DeviceGroups: map[string]DeviceGroup{"dg": {ObjectGroups: []string{"og"}}},
+				ObjectGroups: map[string]ObjectGroup{"og": {Objects: []string{"object1", "object2"}}},
+				Objects: map[string]Object{
+					"object1": {
+						Mib: "IF-MIB",
+						ObjectName: "system",
+						Attributes: map[string]ObjectAttribute{
+							"ifNumber": {
+								Name: "ifNumber",
+								Overrides: ObjectAttributeOverride{
+									Object: "object2",
+									Attribute: "ifIndex",
+								},
+							},
+						},
+					},
+					"object2": {Mib: "IF-MIB", ObjectName: "ifEntry"},
+				},
+				ObjectTypes: map[string]ObjectType{
+					"configuration": {PollInterval: 60},
+					"performance":   {PollInterval: 300},
+				},
+			},
+			wantErr: "device group \"dg\" object \"object1\" attribute \"ifNumber\" overrides an undefined attribute \"ifIndex\" on object \"object2\"",
+		},
 	}
 
 	for _, tt := range tests {

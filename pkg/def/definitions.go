@@ -33,6 +33,7 @@ func (d *Definitions) ApplyDefaults() {
 // Validate checks if the definitions are valid. All devices should be populated with required fields.
 // All device and object groups should reference existing object groups and objects, respectively.
 // All objects should reference existing object types.
+// All attribute overrides should reference objects and attributes that exist within the device group
 func (d *Definitions) Validate() error {
 	err := ValidateDevices(d.Devices, d.DeviceGroups, d.ObjectTypes)
 	if err != nil {
@@ -42,11 +43,49 @@ func (d *Definitions) Validate() error {
 	invalidDefinitions := make([]string, 0)
 
 	// Ensure every object group in every device group is defined.
+	// Ensure every overridden object in a devivce group exists
 	for deviceGroupName, deviceGroup := range d.DeviceGroups {
-		for _, objectGroup := range deviceGroup.ObjectGroups {
-			if _, ok := d.ObjectGroups[objectGroup]; !ok {
-				errorMsg := fmt.Sprintf("device group %q references an undefined object group: %q", deviceGroupName, objectGroup)
+		objectsInDeviceGroup := make(map[string]Object)
+		for _, objectGroupName := range deviceGroup.ObjectGroups {
+			objectGroup, ok := d.ObjectGroups[objectGroupName]
+			if !ok {
+				errorMsg := fmt.Sprintf("device group %q references an undefined object group: %q", deviceGroupName, objectGroupName)
 				invalidDefinitions = append(invalidDefinitions, errorMsg)
+				continue
+			}
+			for _, objectName := range objectGroup.Objects {
+				object, ok := d.Objects[objectName]
+				if !ok {
+					continue
+				}
+				objectsInDeviceGroup[objectName] = object
+			}
+		}
+
+		for objectName, object := range objectsInDeviceGroup {
+			for attributeName, attribute := range object.Attributes {
+				targetObjectName := attribute.Overrides.Object
+				targetAttributeName := attribute.Overrides.Attribute
+				// no overide on this attribute
+				if targetObjectName == "" && targetAttributeName == "" {
+					continue
+				}
+				targetObject, ok := objectsInDeviceGroup[targetObjectName]
+				// object not in device group
+				if !ok {
+					invalidDefinitions = append(invalidDefinitions, fmt.Sprintf(
+						"device group %q object %q attribute %q overrides object %q, which is not included in the device group",
+						deviceGroupName, objectName, attributeName, targetObjectName,
+					))
+					continue
+				}
+				// object in device group, but attribute does not exist for object
+				if _, ok := targetObject.Attributes[targetAttributeName]; !ok {
+					invalidDefinitions = append(invalidDefinitions, fmt.Sprintf(
+						"device group %q object %q attribute %q overrides an undefined attribute %q on object %q",
+						deviceGroupName, objectName, attributeName, targetAttributeName, targetObjectName,
+					))
+				}
 			}
 		}
 	}
